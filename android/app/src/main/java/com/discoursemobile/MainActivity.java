@@ -1,6 +1,7 @@
 package com.discoursemobile;
 
 import com.facebook.react.ReactActivity;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
 
 public class MainActivity extends ReactActivity {
