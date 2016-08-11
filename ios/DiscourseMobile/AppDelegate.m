@@ -18,7 +18,13 @@
 {
   NSURL *jsCodeLocation;
 
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+  #ifdef STORYBOOK
+    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index_stories.ios.bundle?platform=ios&dev=true"];
+  #elif defined DEBUG
+    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+  #else
+    jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  #endif
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"DiscourseMobile"
