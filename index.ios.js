@@ -68,12 +68,12 @@ class SiteManager {
   }
 
   refreshSites() {
-    let sites = this.sites.splice(0);
-
+    let sites = this.sites.slice(0);
 
     return new Promise((resolve,reject)=>{
       if (sites.length === 0) {
-        resolve();
+        resolve(false);
+        return;
       }
 
       let site = sites.pop();
@@ -81,7 +81,7 @@ class SiteManager {
 
       let processSite = (site) => {
         site.refreshNotificationCounts().then((changed) => {
-          somethingChanged = somethingChanged || change;
+          somethingChanged = somethingChanged || changed;
           let s = sites.pop();
           if (s) { processSite(s); }
           else {
@@ -143,7 +143,8 @@ class Site {
 
   refreshNotificationCounts(){
     return new Promise((resolve,reject) => {
-      if(!this.authToken) { return resolve(false); }
+
+      if(!this.authToken) { resolve(false);  return;}
 
       FetchBlob.fetch('GET', this.url + "/session/current.json")
          .then(resp=>{
@@ -157,7 +158,8 @@ class Site {
 
            resolve(changed);
 
-          }).catch(()=>{
+          }).catch((e)=>{
+           console.log(e);
            resolve(false);
          });
     });
@@ -238,6 +240,15 @@ class HomePage extends Component {
 
     this._onChangeSites = () => this.onChangeSites();
     this.props.siteManager.subscribe(this._onChangeSites);
+  }
+
+  componentDidMount() {
+    this.props.siteManager.refreshSites()
+      .then(()=>{
+        this.setState({
+          refreshMessage: "Last updated: " + Moment().format("LT")
+        })
+      });
   }
 
   componentWillUnmount() {
