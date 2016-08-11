@@ -28,6 +28,7 @@ import CookieManager from 'react-native-cookies';
 import FetchBlob from 'react-native-fetch-blob';
 import Moment from 'moment';
 
+import SiteRow from './lib/components/site/row';
 
 class SiteManager {
 
@@ -278,15 +279,6 @@ class HomePage extends Component {
     });
   }
 
-  renderNotifications(site) {
-    if(site.unreadNotifications) {
-      return (
-        <View style={styles.notifications}>
-          <Text style={styles.blueNotification}>{site.unreadNotifications}</Text>
-        </View>
-      );
-    }
-  }
   render() {
     return (
       <View style={styles.container}>
@@ -313,26 +305,8 @@ class HomePage extends Component {
             />
           }
           renderRow={(rowData) =>
-             <TouchableHighlight
-                onPress={()=>this.props.onVisitSite(rowData)}>
-              <View accessibilityTraits="link" style={styles.row}>
-                <Image style={styles.icon} source={{uri: rowData.icon}} />
-                <View style={styles.info}>
-                  <Text
-                      ellipsizeMode='tail'
-                      numberOfLines={1}
-                      style={styles.url}>
-                    {rowData.url}
-                  </Text>
-                    <Text
-                        ellipsizeMode='tail'
-                        numberOfLines={1}
-                        style={styles.description}>
-                      {rowData.description}
-                    </Text>
-                </View>
-                {this.renderNotifications(rowData)}
-              </View>
+            <TouchableHighlight onPress={()=>this.props.onVisitSite(rowData)}>
+              <SiteRow site={rowData}/>
             </TouchableHighlight>
           }
         />
@@ -347,63 +321,14 @@ const styles = StyleSheet.create({
     height: 40,
     paddingLeft: 10
   },
-  icon: {
-    width: 40,
-    height: 40,
-  },
-  info: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    flex: 1,
-    paddingLeft: 5
-  },
-  descriptionRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flex: 1,
-  },
-  description: {
-    fontSize: 12,
-    color: "#999",
-    flex: 10
-  },
-  spacer: {
-    flex: 10
-  },
   list: {
     flex: 10
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingBottom: 20,
-    marginBottom: 21,
-    borderBottomColor: '#ddd',
-    borderBottomWidth: StyleSheet.hairlineWidth
   },
   container: {
     flex: 1,
     padding: 10,
     justifyContent: 'flex-start',
     backgroundColor: '#FFFAFF',
-  },
-  notifications: {
-    paddingLeft: 5
-  },
-  blueNotification: {
-    justifyContent: 'flex-end',
-    backgroundColor: "#6CF",
-    paddingTop: 4,
-    paddingBottom: 4,
-    paddingLeft: 6,
-    paddingRight: 6,
-    fontSize: 11,
-    fontWeight: 'bold',
-    borderRadius: 8,
-    color: "#FFF",
-  },
-  greenNotification: {
-    color: "#FFF"
   },
   statusLine: {
     color: "#777",
