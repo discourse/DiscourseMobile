@@ -8,6 +8,8 @@
   "dependencies": {
     "react": "15.2.1",
     "react-native": "0.31.0",
-    "react-native-fetch-blob": "^0.8.2"
+    "react-native-cookies": "^1.0.2",
+    "react-native-fetch-blob": "^0.8.2",
+    "undefined": "^0.1.0"
   }
 }

@@ -20,11 +20,13 @@ import {
   TouchableHighlight,
   Navigator,
   ListView,
-  WebView
+  WebView,
+  RefreshControl
 } from 'react-native';
 
 import CookieManager from 'react-native-cookies';
 import FetchBlob from 'react-native-fetch-blob';
+import Moment from 'moment';
 
 
 class SiteManager {
@@ -65,13 +67,43 @@ class SiteManager {
     });
   }
 
+  refreshSites() {
+    let sites = this.sites.splice(0);
+
+
+    return new Promise((resolve,reject)=>{
+      if (sites.length === 0) {
+        resolve();
+      }
+
+      let site = sites.pop();
+      let somethingChanged = false;
+
+      let processSite = (site) => {
+        site.refreshNotificationCounts().then((changed) => {
+          somethingChanged = somethingChanged || change;
+          let s = sites.pop();
+          if (s) { processSite(s); }
+          else {
+            if (somethingChanged) {
+              this.save();
+            }
+            resolve(somethingChanged);
+          }
+        });
+      };
+
+      processSite(site);
+    });
+  }
+
   _onChange() {
     this._subscribers.forEach((sub) => sub());
   }
 }
 
 class Site {
-  static FIELDS = ['title', 'description', 'icon', 'url'];
+  static FIELDS = ['authToken', 'title', 'description', 'icon', 'url', 'unreadNotifications'];
 
   static fromURL(url, callback) {
     return FetchBlob.fetch('GET', url)
@@ -102,13 +134,33 @@ class Site {
     }
   }
 
-  updateAuthCookie(){
+  updateAuthCookie(done){
     CookieManager.get(this.url, (err, res) => {
-      console.log('Got cookies for url', res);
+      this.authToken = res && res["_t"];
+      done();
     });
   }
 
   refreshNotificationCounts(){
+    return new Promise((resolve,reject) => {
+      if(!this.authToken) { return resolve(false); }
+
+      FetchBlob.fetch('GET', this.url + "/session/current.json")
+         .then(resp=>{
+           currentUser = resp.json().current_user;
+
+           let changed = false;
+           if (this.unreadNotifications !== currentUser.unread_notifications) {
+             this.unreadNotifications = currentUser.unread_notifications;
+             changed = true;
+           }
+
+           resolve(changed);
+
+          }).catch(()=>{
+           resolve(false);
+         });
+    });
   }
 
   toJSON(){
@@ -131,6 +183,13 @@ class DiscourseMobile extends Component {
   }
 
   checkAuthCookie(navigator, site) {
+    let oldToken = site.authToken;
+    site.updateAuthCookie(()=>{
+      if (oldToken !== site.authToken) {
+        this._siteManager.save();
+        console.warn("Auth token changed to" + site.authToken);
+      }
+    });
   }
 
   render() {
@@ -172,7 +231,9 @@ class HomePage extends Component {
     this._dataSource = this._dataSource.cloneWithRows(this.props.siteManager.sites);
 
     this.state = {
-      dataSource: this._dataSource
+      dataSource: this._dataSource,
+      isRefreshing: false,
+      refreshMessage: ""
     }
 
     this._onChangeSites = () => this.onChangeSites();
@@ -195,9 +256,29 @@ class HomePage extends Component {
     Site.fromURL(term).then(site=>this.props.siteManager.add(site));
   }
 
+  _onRefresh() {
+    this.setState({isRefreshing: true});
+    this.props.siteManager.refreshSites()
+      .then(()=>{
+      this.setState({
+        isRefreshing: false,
+        refreshMessage: "Last updated: " + Moment().format("LT")
+      })
+    });
+  }
+
+  renderNotifications(site) {
+    if(site.unreadNotifications) {
+      return (
+        <View style={styles.notifications}>
+          <Text style={styles.blueNotification}>{site.unreadNotifications}</Text>
+        </View>
+      );
+    }
+  }
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <TextInput
           style={styles.term}
           placeholder="Add Site"
@@ -211,23 +292,40 @@ class HomePage extends Component {
         />
         <ListView
           dataSource={this.state.dataSource}
+          enableEmptySections={true}
+          styles={styles.list}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.isRefreshing}
+              onRefresh={()=>this._onRefresh()}
+              title="Loading..."
+            />
+          }
           renderRow={(rowData) =>
              <TouchableHighlight
                 onPress={()=>this.props.onVisitSite(rowData)}>
               <View accessibilityTraits="link" style={styles.row}>
-                <Image style={styles.icon} source={{uri: rowData.icon}} style={{width: 40, height: 40}} />
+                <Image style={styles.icon} source={{uri: rowData.icon}} />
                 <View style={styles.info}>
-                  <Text>
-                    {rowData.description}
-                  </Text>
-                  <Text>
+                  <Text
+                      ellipsizeMode='tail'
+                      numberOfLines={1}
+                      style={styles.url}>
                     {rowData.url}
                   </Text>
+                    <Text
+                        ellipsizeMode='tail'
+                        numberOfLines={1}
+                        style={styles.description}>
+                      {rowData.description}
+                    </Text>
                 </View>
+                {this.renderNotifications(rowData)}
               </View>
             </TouchableHighlight>
           }
         />
+        <Text style={styles.statusLine}>{this.state.refreshMessage}</Text>
       </View>
     );
   }
@@ -239,33 +337,67 @@ const styles = StyleSheet.create({
     paddingLeft: 10
   },
   icon: {
+    width: 40,
+    height: 40,
   },
   info: {
-    paddingLeft: 10,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    flex: 1,
+    paddingLeft: 5
+  },
+  descriptionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flex: 1,
+  },
+  description: {
+    fontSize: 12,
+    color: "#999",
+    flex: 10
+  },
+  spacer: {
+    flex: 10
+  },
+  list: {
+    flex: 10
   },
   row: {
     flex: 1,
     flexDirection: 'row',
-    paddingLeft: 10,
-    paddingBottom: 20
+    paddingBottom: 20,
+    marginBottom: 21,
+    borderBottomColor: '#ddd',
+    borderBottomWidth: StyleSheet.hairlineWidth
   },
   container: {
-    paddingTop: 22,
     flex: 1,
+    padding: 10,
     justifyContent: 'flex-start',
-    alignItems: 'center',
     backgroundColor: '#FFFAFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  notifications: {
+    paddingLeft: 5
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  blueNotification: {
+    justifyContent: 'flex-end',
+    backgroundColor: "#6CF",
+    paddingTop: 4,
+    paddingBottom: 4,
+    paddingLeft: 6,
+    paddingRight: 6,
+    fontSize: 11,
+    fontWeight: 'bold',
+    borderRadius: 8,
+    color: "#FFF",
   },
+  greenNotification: {
+    color: "#FFF"
+  },
+  statusLine: {
+    color: "#777",
+    fontSize: 10
+  }
 });
 
 AppRegistry.registerComponent('DiscourseMobile', () => DiscourseMobile);
