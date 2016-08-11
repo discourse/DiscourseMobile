@@ -59,7 +59,7 @@ class SiteManager {
   load() {
     AsyncStorage.getItem('@Discourse.sites').then((json) => {
       if (json) {
-        this.sites = JSON.parse(json);
+        this.sites = JSON.parse(json).map(obj=>new Site(obj));
         this._onChange()
       }
     });
@@ -71,8 +71,35 @@ class SiteManager {
 }
 
 class Site {
-  save(){
-    this._siteManager.save();
+  static FIELDS = ['title', 'description', 'icon', 'url'];
+
+  static fromURL(url, callback) {
+    return FetchBlob.fetch('GET', url)
+      .then(resp=>Site.parseSite(resp.text(), url))
+      .catch((e)=>alert(url + " not found! " + e))
+  }
+
+  static parseSite(body,url) {
+    var titleRegex = /<title>(.*)<\/title>/gi;
+    var title = titleRegex.exec(body)[1];
+
+    var descriptionRegex = /<meta name="description" content="([^"]*)">/;
+    var description = descriptionRegex.exec(body)[1];
+
+    var iconRegex = /<link rel="apple-touch-icon"[^>]*href="([^"]*)">/;
+    var icon = iconRegex.exec(body)[1];
+
+    if (icon && icon[0] === "/") {
+      icon = url + icon;
+    }
+
+    return new Site({title, description, icon, url});
+  }
+
+  constructor(props) {
+    if(props) {
+      Site.FIELDS.forEach(prop=>{this[prop]=props[prop];});
+    }
   }
 
   updateAuthCookie(){
@@ -83,6 +110,13 @@ class Site {
 
   refreshNotificationCounts(){
   }
+
+  toJSON(){
+    let obj = {};
+    Site.FIELDS.forEach(prop=>{obj[prop]=this[prop];});
+    return obj;
+  }
+
 }
 
 class DiscourseMobile extends Component {
@@ -156,24 +190,9 @@ class HomePage extends Component {
     })
   }
 
-  parseSite(body,url) {
-    var titleRegex = /<title>(.*)<\/title>/gi;
-    var title = titleRegex.exec(body)[1];
-
-    var descriptionRegex = /<meta name="description" content="([^"]*)">/;
-    var description = descriptionRegex.exec(body)[1];
-
-    var iconRegex = /<link rel="apple-touch-icon"[^>]*href="([^"]*)">/;
-    var icon = iconRegex.exec(body)[1];
-
-    this.props.siteManager.add({title, description, icon, url});
-
-  }
 
   doSearch(term) {
-    FetchBlob.fetch('GET', term)
-      .then((resp)=>this.parseSite(resp.text(), term))
-      .catch((e)=>alert(term + " not found! " + e))
+    Site.fromURL(term).then(site=>this.props.siteManager.add(site));
   }
 
   render() {
@@ -185,6 +204,7 @@ class HomePage extends Component {
           returnKeyType="search"
           keyboardType="url"
           autoCapitalize="none"
+          autoCorrect={false}
           onChangeText={(search) => this.setState({search})}
           onSubmitEditing={()=>this.doSearch(this.state.search)}
 
