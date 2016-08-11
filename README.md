@@ -13,12 +13,11 @@ react-native run-ios
 
 ### Using Storybook
 
-In three separate terminals:
+In two separate terminals:
 
 ```
-npm run
-npm storybook
-npm storybook-ios
+npm run storybook
+npm run storybook-ios
 ```
 
 and then `open http://localhost:9001`
