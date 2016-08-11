@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start"
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "storybook": "storybook start -p 9001",
+    "storybook-ios": "storybook run-ios -a DiscourseMobileStorybook -i org.reactjs.native.example.DiscourseMobileStorybook"
   },
   "dependencies": {
     "react": "15.2.1",
@@ -11,5 +13,8 @@
     "react-native-cookies": "^1.0.2",
     "react-native-fetch-blob": "^0.8.2",
     "undefined": "^0.1.0"
+  },
+  "devDependencies": {
+    "@kadira/react-native-storybook": "^1.12.3"
   }
 }
