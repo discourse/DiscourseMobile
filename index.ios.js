@@ -17,6 +17,7 @@ import {
   TextInput,
   Image,
   AsyncStorage,
+  TouchableOpacity,
   TouchableHighlight,
   Navigator,
   ListView,
@@ -199,24 +200,74 @@ class DiscourseMobile extends Component {
     return (
       <Navigator
         initialRoute={{ title: 'Discourse', index: 0 }}
+
+        style={{flex: 1, paddingTop: 40}}
+
+        navigationBar={
+          <Navigator.NavigationBar
+            style={{flex: 1}}
+            routeMapper={{
+               LeftButton: (route, navigator, index, navState) =>
+                {
+                  if (index === 0) { return null; }
+                  return (
+                    <TouchableHighlight onPress={() => navigator.pop()}>
+                      <Text>back</Text>
+                    </TouchableHighlight>);
+                },
+               RightButton: (route, navigator, index, navState) =>
+                 { return null; },
+               Title: (route, navigator, index, navState) =>
+                 { return (<Text>{route.title}</Text>); },
+            }}
+          />
+        }
+
         renderScene={(route, navigator) => {
             if(route.index == 0) {
               return <HomePage title={route.title}
+                        style={{flex: 1}}
                         siteManager={this._siteManager}
                         onVisitSite={(site)=> this.openUrl(navigator, site)}
               />
             } else if(route.index == 1) {
-              return <WebView source={{uri: route.site.url}}
-                              onLoadEnd={() =>
-                                this.checkAuthCookie(navigator, route.site)}
-              />
+              return (
+                <WebViewScene
+                    style={{flex: 1}}
+                    title={route.site.url}
+                    uri={route.site.url}
+                    onLoadEnd={()=>{
+                        this.checkAuthCookie(navigator, route.site)
+                      }
+                    }
+                    onBack={()=>alert("back")}
+                />
+              );
             }
           }
         }
-        style={{paddingTop: 20}}
       />
     );
   }
+}
+
+class WebViewScene extends Component {
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    onBack: PropTypes.func.isRequired,
+    onLoadEnd: PropTypes.func.isRequired,
+    uri: PropTypes.string.isRequired
+  }
+
+  render() {
+    return (
+        <WebView
+            source={{uri: this.props.uri}}
+            onLoadEnd={this.props.onLoadEnd}
+        />
+    );
+  }
+
 }
 
 
@@ -304,10 +355,10 @@ class HomePage extends Component {
               title="Loading..."
             />
           }
-          renderRow={(rowData) =>
-            <TouchableHighlight onPress={()=>this.props.onVisitSite(rowData)}>
-              <SiteRow site={rowData}/>
-            </TouchableHighlight>
+          renderRow={(site) =>
+            <TouchableOpacity onPress={()=>this.props.onVisitSite(site)}>
+              <SiteRow site={site}/>
+            </TouchableOpacity>
           }
         />
         <Text style={styles.statusLine}>{this.state.refreshMessage}</Text>
