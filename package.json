@@ -8,10 +8,12 @@
     "storybook-ios": "storybook run-ios -a DiscourseMobileStorybook -i org.reactjs.native.example.DiscourseMobileStorybook"
   },
   "dependencies": {
+    "node-rsa": "^0.4.0",
     "react": "15.2.1",
     "react-native": "^0.31",
     "react-native-cookies": "^1.0.2",
-    "react-native-fetch-blob": "^0.8.2"
+    "react-native-fetch-blob": "^0.8.2",
+    "react-native-safari-view": "^1.0.1"
   },
   "devDependencies": {
     "@kadira/react-native-storybook": "^1.12.3"
