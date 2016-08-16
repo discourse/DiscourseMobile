@@ -28,6 +28,8 @@ import {
 import CookieManager from 'react-native-cookies';
 import FetchBlob from 'react-native-fetch-blob';
 import Moment from 'moment';
+import SafariView from 'react-native-safari-view';
+// import NodeRSA from 'node-rsa'
 
 import SiteRow from './lib/components/site/row';
 
@@ -183,7 +185,8 @@ class DiscourseMobile extends Component {
   }
 
   openUrl(navigator, site) {
-    navigator.push({title: site.url, index: 1, site: site});
+    // navigator.push({title: site.url, index: 1, site: site});
+    SafariView.show({url: site.url});
   }
 
   checkAuthCookie(navigator, site) {
