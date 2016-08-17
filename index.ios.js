@@ -26,10 +26,9 @@ import {
 } from 'react-native';
 
 import CookieManager from 'react-native-cookies';
-import FetchBlob from 'react-native-fetch-blob';
 import Moment from 'moment';
 import SafariView from 'react-native-safari-view';
-import Swipeout from 'react-native-swipeout';
+import FetchBlob from 'react-native-fetch-blob';
 
 // broken ... no crypto module
 // import NodeRSA from 'node-rsa'
@@ -48,6 +47,15 @@ class SiteManager {
     this.sites.push(site);
     this.save();
     this._onChange();
+  }
+
+  remove(site) {
+    let index = this.sites.indexOf(site);
+    if (index >= 0) {
+      this.sites.splice(index,1);
+      this.save();
+      this._onChange()
+    }
   }
 
   subscribe(callback) {
@@ -112,28 +120,59 @@ class SiteManager {
 class Site {
   static FIELDS = ['authToken', 'title', 'description', 'icon', 'url', 'unreadNotifications'];
 
-  static fromURL(url, callback) {
-    return FetchBlob.fetch('GET', url)
-      .then(resp=>Site.parseSite(resp.text(), url))
-      .catch((e)=>alert(url + " not found! " + e))
-  }
+  static fromTerm(term) {
+    let withProtocol = [];
+    let url = "";
 
-  static parseSite(body,url) {
-    var titleRegex = /<title>(.*)<\/title>/gi;
-    var title = titleRegex.exec(body)[1];
-
-    var descriptionRegex = /<meta name="description" content="([^"]*)">/;
-    var description = descriptionRegex.exec(body)[1];
-
-    var iconRegex = /<link rel="apple-touch-icon"[^>]*href="([^"]*)">/;
-    var icon = iconRegex.exec(body)[1];
-
-    if (icon && icon[0] === "/") {
-      icon = url + icon;
+    term = term.trim();
+    while (term.endsWith("/")) {
+      term = term.slice(0, term.length-1);
     }
 
-    return new Site({title, description, icon, url});
+    if (!term.match(/^https?:\/\//)){
+      url = "http://" + term;
+    } else {
+      url = term;
+    }
+
+    return Site.fromURL(url, term);
   }
+
+  static fromURL(url, term) {
+
+
+    let req = new Request(url + "/user-api-key/new", {
+      method: 'HEAD'
+    });
+
+    return fetch(req)
+      .then((r)=>{
+        if (r.status !== 200) {
+          alert("Sorry, " + term + " does not support mobile APIs, have owner upgrade Discourse to latest!")
+          return;
+        }
+
+        // correct url in case we had a redirect
+        let split = r.url.split("/")
+        url = split[0] + "//" + split[2];
+
+        return fetch(url + "/site/basic-info.json")
+                 .then(r => r.json());
+
+      })
+      .then(info=>{
+        return new Site({
+          url: url,
+          title: info.title,
+          description: info.description,
+          icon: info.apple_touch_icon_url
+        });
+      })
+      .catch(e=>{
+        alert(term + " was not found!")
+      });
+  }
+
 
   constructor(props) {
     if(props) {
@@ -322,7 +361,12 @@ class HomePage extends Component {
 
 
   doSearch(term) {
-    Site.fromURL(term).then(site=>this.props.siteManager.add(site));
+    Site.fromTerm(term)
+      .then(site => {
+        if (site) {
+          this.props.siteManager.add(site);
+        }
+      });
   }
 
   _onRefresh() {
@@ -362,11 +406,7 @@ class HomePage extends Component {
             />
           }
           renderRow={(site) =>
-            <Swipeout right={{text: 'Remove'}}>
-              <TouchableOpacity onPress={()=>this.props.onVisitSite(site)}>
-                <SiteRow site={site}/>
-              </TouchableOpacity>
-            </Swipeout>
+            <SiteRow site={site} onClick={()=>this.props.onVisitSite(site)} onDelete={()=>this.props.siteManager.remove(site)}/>
           }
         />
         <Text style={styles.statusLine}>{this.state.refreshMessage}</Text>
