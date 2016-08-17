@@ -25,15 +25,13 @@ import {
   RefreshControl
 } from 'react-native';
 
-import CookieManager from 'react-native-cookies';
 import Moment from 'moment';
 import SafariView from 'react-native-safari-view';
 import FetchBlob from 'react-native-fetch-blob';
-
-// broken ... no crypto module
-// import NodeRSA from 'node-rsa'
-
 import SiteRow from './lib/components/site/row';
+import RSAKeyPair from 'keypair';
+import DeviceInfo from 'react-native-device-info';
+import randomBytes from 'react-native-randombytes';
 
 class SiteManager {
 
@@ -41,6 +39,7 @@ class SiteManager {
     this._subscribers = [];
     this.sites = [];
     this.load();
+    this.ensureRSAKeys();
   }
 
   add(site) {
@@ -71,6 +70,17 @@ class SiteManager {
 
   save() {
     AsyncStorage.setItem('@Discourse.sites', JSON.stringify(this.sites));
+  }
+
+  ensureRSAKeys() {
+    AsyncStorage.getItem('@Discourse.rsaKeys').then((json) => {
+      if (json) {
+        this.rsaKeys = JSON.parse(json);
+      } else {
+        this.rsaKeys = RSAKeyPair();
+        AsyncStorage.setItem('@Discourse.rsaKeys', JSON.stringify(this.rsaKeys));
+      }
+    });
   }
 
   load() {
@@ -110,6 +120,61 @@ class SiteManager {
 
       processSite(site);
     });
+  }
+
+
+  serializeParams(obj) {
+
+    return Object.keys(obj)
+                 .map(k => `${encodeURIComponent(k)}=${encodeURIComponent([obj[k]])}`)
+                .join("&");
+  }
+
+  getClientId() {
+    return new Promise(resolve=>{
+      if (this.clientId) {
+        resolve(this.clientId);
+      } else {
+        randomBytes(32, (err, bytes) => {
+          this.clientId = bytes.toString('hex');
+          resolve(this.clientId);
+        });
+      }
+    });
+  }
+
+  generateNonce() {
+    return new Promise(resolve=>{
+      randomBytes(16, (err, bytes) => {
+        this._nonce = bytes.toString('hex');
+        resolve(this._nonce);
+      });
+    });
+  }
+
+  generateAuthURL(site) {
+
+    let clientId;
+
+    return this.getClientId()
+      .then(cid => {
+        clientId = cid;
+        return this.generateNonce();
+      })
+      .then(nonce => {
+         let params = {
+          access: 'rp',
+          client_id: clientId,
+          nonce: nonce,
+          push_url: 'https://api.discourse.org/api/ios_notify',
+          auth_redirect: 'https://api.discourse.org/api/auth_redirect',
+          application_name: "Discourse - " + DeviceInfo.getDeviceName(),
+          public_key: this.rsaKeys.public
+        };
+
+        return `${site.url}/user-api-key/new?${this.serializeParams(params)}`;
+      });
+
   }
 
   _onChange() {
@@ -180,13 +245,6 @@ class Site {
     }
   }
 
-  updateAuthCookie(done){
-    CookieManager.get(this.url, (err, res) => {
-      this.authToken = res && res["_t"];
-      done();
-    });
-  }
-
   refreshNotificationCounts(){
     return new Promise((resolve,reject) => {
 
@@ -227,18 +285,13 @@ class DiscourseMobile extends Component {
   }
 
   openUrl(navigator, site) {
-    // navigator.push({title: site.url, index: 1, site: site});
-    SafariView.show({url: site.url});
-  }
 
-  checkAuthCookie(navigator, site) {
-    let oldToken = site.authToken;
-    site.updateAuthCookie(()=>{
-      if (oldToken !== site.authToken) {
-        this._siteManager.save();
-        console.warn("Auth token changed to" + site.authToken);
-      }
-    });
+    this._siteManager
+      .generateAuthURL(site)
+      .then(url => {
+        //console.warn(url);
+        SafariView.show({url});
+      });
   }
 
   render() {
