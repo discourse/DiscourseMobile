@@ -296,78 +296,12 @@ class DiscourseMobile extends Component {
 
   render() {
     return (
-      <Navigator
-        initialRoute={{ title: 'Discourse', index: 0 }}
+      <HomePage siteManager={this._siteManager}
+                onVisitSite={(site)=> this.openUrl(navigator, site)} />
 
-        style={{flex: 1, paddingTop: 40}}
-
-        navigationBar={
-          <Navigator.NavigationBar
-            style={{flex: 1}}
-            routeMapper={{
-               LeftButton: (route, navigator, index, navState) =>
-                {
-                  if (index === 0) { return null; }
-                  return (
-                    <TouchableHighlight onPress={() => navigator.pop()}>
-                      <Text>back</Text>
-                    </TouchableHighlight>);
-                },
-               RightButton: (route, navigator, index, navState) =>
-                 { return null; },
-               Title: (route, navigator, index, navState) =>
-                 { return (<Text>{route.title}</Text>); },
-            }}
-          />
-        }
-
-        renderScene={(route, navigator) => {
-            if(route.index == 0) {
-              return <HomePage title={route.title}
-                        style={{flex: 1}}
-                        siteManager={this._siteManager}
-                        onVisitSite={(site)=> this.openUrl(navigator, site)}
-              />
-            } else if(route.index == 1) {
-              return (
-                <WebViewScene
-                    style={{flex: 1}}
-                    title={route.site.url}
-                    uri={route.site.url}
-                    onLoadEnd={()=>{
-                        this.checkAuthCookie(navigator, route.site)
-                      }
-                    }
-                    onBack={()=>alert("back")}
-                />
-              );
-            }
-          }
-        }
-      />
     );
   }
 }
-
-class WebViewScene extends Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    onBack: PropTypes.func.isRequired,
-    onLoadEnd: PropTypes.func.isRequired,
-    uri: PropTypes.string.isRequired
-  }
-
-  render() {
-    return (
-        <WebView
-            source={{uri: this.props.uri}}
-            onLoadEnd={this.props.onLoadEnd}
-        />
-    );
-  }
-
-}
-
 
 class HomePage extends Component {
   static propTypes = {
@@ -471,7 +405,8 @@ class HomePage extends Component {
 const styles = StyleSheet.create({
   term: {
     height: 40,
-    paddingLeft: 10
+    paddingLeft: 10,
+    marginBottom: 20
   },
   list: {
     flex: 10
@@ -479,6 +414,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    paddingTop: 30,
     justifyContent: 'flex-start',
     backgroundColor: '#FFFAFF',
   },
