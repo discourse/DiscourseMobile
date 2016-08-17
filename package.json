@@ -15,7 +15,7 @@
     "react-native-cookies": "^1.0.2",
     "react-native-fetch-blob": "^0.8.2",
     "react-native-safari-view": "^1.0.1",
-    "react-native-swipeout": "^2.0.12"
+    "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git"
   },
   "devDependencies": {
     "@kadira/react-native-storybook": "^1.12.3"
