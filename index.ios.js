@@ -29,6 +29,9 @@ import CookieManager from 'react-native-cookies';
 import FetchBlob from 'react-native-fetch-blob';
 import Moment from 'moment';
 import SafariView from 'react-native-safari-view';
+import Swipeout from 'react-native-swipeout';
+
+// broken ... no crypto module
 // import NodeRSA from 'node-rsa'
 
 import SiteRow from './lib/components/site/row';
@@ -359,9 +362,11 @@ class HomePage extends Component {
             />
           }
           renderRow={(site) =>
-            <TouchableOpacity onPress={()=>this.props.onVisitSite(site)}>
-              <SiteRow site={site}/>
-            </TouchableOpacity>
+            <Swipeout right={{text: 'Remove'}}>
+              <TouchableOpacity onPress={()=>this.props.onVisitSite(site)}>
+                <SiteRow site={site}/>
+              </TouchableOpacity>
+            </Swipeout>
           }
         />
         <Text style={styles.statusLine}>{this.state.refreshMessage}</Text>
