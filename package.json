@@ -8,12 +8,12 @@
     "storybook-ios": "storybook run-ios -a DiscourseMobileStorybook -i org.reactjs.native.example.DiscourseMobileStorybook"
   },
   "dependencies": {
-    "crypto": "0.0.3",
-    "node-rsa": "^0.4.0",
+    "keypair": "^1.0.0",
     "react": "15.2.1",
     "react-native": "^0.31",
-    "react-native-cookies": "^1.0.2",
+    "react-native-device-info": "^0.9.4",
     "react-native-fetch-blob": "^0.8.2",
+    "react-native-randombytes": "^1.0.1",
     "react-native-safari-view": "^1.0.1",
     "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git"
   },
