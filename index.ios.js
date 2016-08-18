@@ -22,7 +22,9 @@ import {
   Navigator,
   ListView,
   WebView,
-  RefreshControl
+  RefreshControl,
+  PushNotificationIOS,
+  Linking
 } from 'react-native';
 
 import Moment from 'moment';
@@ -32,6 +34,7 @@ import SiteRow from './lib/components/site/row';
 import RSAKeyPair from 'keypair';
 import DeviceInfo from 'react-native-device-info';
 import randomBytes from 'react-native-randombytes';
+import JSEncrypt from './lib/jsencrypt';
 
 class SiteManager {
 
@@ -92,6 +95,16 @@ class SiteManager {
     });
   }
 
+  totalUnread() {
+    let count = 0;
+    this.sites.forEach((site)=>{
+      if (site.authToken) {
+        count += (site.unreadNotifications || 0) + (site.unreadPrivateMessages || 0);
+      }
+    });
+    return count;
+  }
+
   refreshSites() {
     let sites = this.sites.slice(0);
 
@@ -113,6 +126,11 @@ class SiteManager {
             if (somethingChanged) {
               this.save();
             }
+            PushNotificationIOS.checkPermissions(p => {
+              if (p.badge) {
+                PushNotificationIOS.setApplicationIconBadgeNumber(this.totalUnread());
+              }
+            });
             resolve(somethingChanged);
           }
         });
@@ -143,13 +161,31 @@ class SiteManager {
     });
   }
 
-  generateNonce() {
+  generateNonce(site) {
     return new Promise(resolve=>{
       randomBytes(16, (err, bytes) => {
         this._nonce = bytes.toString('hex');
+        this._nonceSite = site;
         resolve(this._nonce);
       });
     });
+  }
+
+  handleAuthPayload(payload) {
+    let crypt = new JSEncrypt();
+
+    crypt.setKey(this.rsaKeys.private);
+    let decrypted = JSON.parse(crypt.decrypt(payload));
+
+    if (decrypted.nonce !== this._nonce) {
+      alert("We were not expecting this reply, please try again!");
+      return;
+    }
+
+    this._nonceSite.authToken = decrypted.key;
+    this.save();
+    this._onChange();
+
   }
 
   generateAuthURL(site) {
@@ -159,7 +195,7 @@ class SiteManager {
     return this.getClientId()
       .then(cid => {
         clientId = cid;
-        return this.generateNonce();
+        return this.generateNonce(site);
       })
       .then(nonce => {
          let params = {
@@ -167,7 +203,7 @@ class SiteManager {
           client_id: clientId,
           nonce: nonce,
           push_url: 'https://api.discourse.org/api/ios_notify',
-          auth_redirect: 'https://api.discourse.org/api/auth_redirect',
+          auth_redirect: 'discourse://auth_redirect',
           application_name: "Discourse - " + DeviceInfo.getDeviceName(),
           public_key: this.rsaKeys.public
         };
@@ -183,7 +219,7 @@ class SiteManager {
 }
 
 class Site {
-  static FIELDS = ['authToken', 'title', 'description', 'icon', 'url', 'unreadNotifications'];
+  static FIELDS = ['authToken', 'title', 'description', 'icon', 'url', 'unreadNotifications', 'unreadPrivateMessages'];
 
   static fromTerm(term) {
     let withProtocol = [];
@@ -245,14 +281,25 @@ class Site {
     }
   }
 
+  jsonApi(path) {
+    return fetch(this.url + path, {
+      method: 'GET',
+      headers: {
+        'User-Api-Key': this.authToken,
+        'Content-Type': 'application/json'
+      },
+      mode: 'no-cors'
+    }).then(r => r.json())
+  }
+
   refreshNotificationCounts(){
     return new Promise((resolve,reject) => {
 
       if(!this.authToken) { resolve(false);  return;}
 
-      FetchBlob.fetch('GET', this.url + "/session/current.json")
-         .then(resp=>{
-           currentUser = resp.json().current_user;
+      this.jsonApi("/session/current.json")
+         .then(json =>{
+           currentUser = json.current_user;
 
            let changed = false;
            if (this.unreadNotifications !== currentUser.unread_notifications) {
@@ -260,10 +307,15 @@ class Site {
              changed = true;
            }
 
+           if (this.unreadPrivateMessages !== currentUser.unread_private_messages) {
+             this.unreadPrivateMessages = currentUser.unread_private_messages;
+             changed = true;
+           }
+
            resolve(changed);
 
-          }).catch((e)=>{
-           console.log(e);
+          }).catch(e=>{
+           console.warn(e);
            resolve(false);
          });
     });
@@ -282,19 +334,38 @@ class DiscourseMobile extends Component {
   constructor(props) {
     super(props);
     this._siteManager = new SiteManager();
+
+    this._handleOpenUrl = (event) => {
+      let split = event.url.split("payload=");
+      if (split.length === 2) {
+        this._siteManager.handleAuthPayload(decodeURIComponent(split[1]));
+      }
+    }
+  }
+
+  componentDidMount() {
+    Linking.addEventListener('url', this._handleOpenUrl);
+  }
+
+  componentWillUnmount() {
+    Linking.removeEventListener('url', this._handleOpenUrl);
   }
 
   openUrl(navigator, site) {
+    if (site.authToken) {
+      SafariView.show({url: site.url});
+      return;
+    }
 
     this._siteManager
       .generateAuthURL(site)
       .then(url => {
-        //console.warn(url);
-        SafariView.show({url});
+        Linking.openURL(url);
       });
   }
 
   render() {
+    PushNotificationIOS.requestPermissions({"alert": true, "badge": true});
     return (
       <HomePage siteManager={this._siteManager}
                 onVisitSite={(site)=> this.openUrl(navigator, site)} />
