@@ -73,6 +73,12 @@ class SiteManager {
 
   save() {
     AsyncStorage.setItem('@Discourse.sites', JSON.stringify(this.sites));
+
+    PushNotificationIOS.checkPermissions(p => {
+      if (p.badge) {
+        PushNotificationIOS.setApplicationIconBadgeNumber(this.totalUnread());
+      }
+    });
   }
 
   ensureRSAKeys() {
@@ -126,11 +132,6 @@ class SiteManager {
             if (somethingChanged) {
               this.save();
             }
-            PushNotificationIOS.checkPermissions(p => {
-              if (p.badge) {
-                PushNotificationIOS.setApplicationIconBadgeNumber(this.totalUnread());
-              }
-            });
             resolve(somethingChanged);
           }
         });
@@ -183,8 +184,11 @@ class SiteManager {
     }
 
     this._nonceSite.authToken = decrypted.key;
-    this.save();
-    this._onChange();
+    this._nonceSite.refreshNotificationCounts()
+        .then(()=>{
+          this.save();
+          this._onChange();
+        });
 
   }
 
@@ -384,7 +388,9 @@ class HomePage extends Component {
     super(props);
 
 
-    this._dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this._dataSource = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1.toJSON() !== r2.toJSON()
+    });
     this._dataSource = this._dataSource.cloneWithRows(this.props.siteManager.sites);
 
     this.state = {
