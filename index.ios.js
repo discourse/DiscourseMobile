@@ -151,7 +151,7 @@ class SiteManager {
   }
 
   registerClientId(id) {
-    this.getClientId.then(existing => {
+    this.getClientId().then(existing => {
       if (existing !== id) {
         this.clientId = id;
         AsyncStorage.setItem('@ClientId', this.clientId);
