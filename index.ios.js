@@ -24,13 +24,16 @@ import {
   WebView,
   RefreshControl,
   PushNotificationIOS,
-  Linking
+  Linking,
+  StatusBar,
+  Alert
 } from 'react-native';
 
 import Moment from 'moment';
 import SafariView from 'react-native-safari-view';
 import FetchBlob from 'react-native-fetch-blob';
 import SiteRow from './lib/components/site/row';
+import Header from './lib/components/home/header';
 import RSAKeyPair from 'keypair';
 import DeviceInfo from 'react-native-device-info';
 import randomBytes from 'react-native-randombytes';
@@ -596,12 +599,11 @@ class DiscourseMobile extends Component {
 class HomePage extends Component {
   static propTypes = {
     onVisitSite: PropTypes.func.isRequired,
-    siteManager: PropTypes.object.isRequired,
+    siteManager: PropTypes.object.isRequired
   }
 
   constructor(props) {
     super(props);
-
 
     this._dataSource = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1.toJSON() !== r2.toJSON()
@@ -611,7 +613,7 @@ class HomePage extends Component {
     this.state = {
       dataSource: this._dataSource,
       isRefreshing: false,
-      refreshMessage: ""
+      lastRefreshTime: null
     }
 
     this._onChangeSites = () => this.onChangeSites();
@@ -619,7 +621,6 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-
     this.refreshSites({ui: false, fast: false});
 
     this.refresher = setInterval(()=>{
@@ -639,7 +640,6 @@ class HomePage extends Component {
     })
   }
 
-
   doSearch(term) {
     Site.fromTerm(term)
       .then(site => {
@@ -658,12 +658,11 @@ class HomePage extends Component {
 
     this.props.siteManager.refreshSites({fast: opts.fast})
       .then(()=>{
-
         this.refreshing = false;
 
         this.setState({
           isRefreshing: false,
-          refreshMessage: "Last updated: " + Moment().format("LT")
+          lastRefreshTime: Moment().format("LT")
         })
     });
   }
@@ -671,17 +670,10 @@ class HomePage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.term}
-          placeholder="Add Site"
-          returnKeyType="search"
-          keyboardType="url"
-          autoCapitalize="none"
-          autoCorrect={false}
-          onChangeText={(search) => this.setState({search})}
-          onSubmitEditing={()=>this.doSearch(this.state.search)}
-
-        />
+        <StatusBar barStyle="light-content"/>
+        <Header
+          onDidSubmitTerm={(term)=>this.doSearch(term)}
+          lastRefreshTime={this.state.lastRefreshTime} />
         <ListView
           dataSource={this.state.dataSource}
           enableEmptySections={true}
@@ -697,7 +689,6 @@ class HomePage extends Component {
             <SiteRow site={site} onClick={()=>this.props.onVisitSite(site)} onDelete={()=>this.props.siteManager.remove(site)}/>
           }
         />
-        <Text style={styles.statusLine}>{this.state.refreshMessage}</Text>
       </View>
     );
   }
@@ -714,14 +705,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 10,
-    paddingTop: 30,
     justifyContent: 'flex-start',
-    backgroundColor: '#FFFAFF',
-  },
-  statusLine: {
-    color: "#777",
-    fontSize: 10
+    backgroundColor: '#fff',
   }
 });
 
