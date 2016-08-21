@@ -39,11 +39,12 @@
 		D034C77E1D5C784F000C9ACD /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		D034C77F1D5C784F000C9ACD /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		D034C7801D5C784F000C9ACD /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
-		D034C7811D5C784F000C9ACD /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB777E3476649C4A1ADC7B4 /* libRNFetchBlob.a */; };
-		D034C7821D5C784F000C9ACD /* libRNCookieManagerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8BE79D3B51C450E85018C21 /* libRNCookieManagerIOS.a */; };
 		D034C7841D5C784F000C9ACD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		D034C7851D5C784F000C9ACD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
-		D70696B74AB544EB90CE354D /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB777E3476649C4A1ADC7B4 /* libRNFetchBlob.a */; };
+		D0D701201D6A26CE009B339B /* libSafariViewManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2260988B1D6302AA001A0518 /* libSafariViewManager.a */; };
+		D0D701211D6A26D2009B339B /* libRNRandomBytes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 226098A91D640511001A0518 /* libRNRandomBytes.a */; };
+		D0D701221D6A26DA009B339B /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 226098C71D644444001A0518 /* libRNDeviceInfo.a */; };
+		D0D701231D6A2742009B339B /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 226098D11D655C00001A0518 /* libRCTPushNotification.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -152,13 +153,6 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
-		D034C7701D5C7839000C9ACD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2763DA0567004E8DA2AC7B48 /* RNFetchBlob.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A15C300E1CD25C330074CB35;
-			remoteInfo = RNFetchBlob;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -184,14 +178,11 @@
 		2084424E16BE4B72A25D79DC /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		226098CB1D6465BA001A0518 /* DiscourseMobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = DiscourseMobile.entitlements; path = DiscourseMobile/DiscourseMobile.entitlements; sourceTree = "<group>"; };
 		226098CC1D655C00001A0518 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
-		2763DA0567004E8DA2AC7B48 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		3CB836B0207247C4B1101787 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		76A135053ED34536866B9648 /* RNRandomBytes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNRandomBytes.xcodeproj; path = "../node_modules/react-native-randombytes/RNRandomBytes.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A0BF5DB7779C4511BA7B3DE7 /* libRNRandomBytes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNRandomBytes.a; sourceTree = "<group>"; };
-		AEB777E3476649C4A1ADC7B4 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
-		B8BE79D3B51C450E85018C21 /* libRNCookieManagerIOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCookieManagerIOS.a; sourceTree = "<group>"; };
 		D034C78A1D5C784F000C9ACD /* DiscourseMobileStorybook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiscourseMobileStorybook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6D7BA47C5954DA383E4DF4A /* SafariViewManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SafariViewManager.xcodeproj; path = "../node_modules/react-native-safari-view/SafariViewManager.xcodeproj"; sourceTree = "<group>"; };
 		F996349405C34010996EE336 /* libSafariViewManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariViewManager.a; sourceTree = "<group>"; };
@@ -221,7 +212,6 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				D70696B74AB544EB90CE354D /* libRNFetchBlob.a in Frameworks */,
 				29A5744DA0BC49DF86270373 /* libSafariViewManager.a in Frameworks */,
 				3F3396FE2D5F49BFB1189C9B /* libRNRandomBytes.a in Frameworks */,
 				5A9B9D17F302472BBBD88186 /* libRNDeviceInfo.a in Frameworks */,
@@ -232,6 +222,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0D701231D6A2742009B339B /* libRCTPushNotification.a in Frameworks */,
+				D0D701221D6A26DA009B339B /* libRNDeviceInfo.a in Frameworks */,
+				D0D701211D6A26D2009B339B /* libRNRandomBytes.a in Frameworks */,
+				D0D701201D6A26CE009B339B /* libSafariViewManager.a in Frameworks */,
 				D034C7771D5C784F000C9ACD /* libReact.a in Frameworks */,
 				D034C7781D5C784F000C9ACD /* libRCTActionSheet.a in Frameworks */,
 				D034C7791D5C784F000C9ACD /* libRCTGeolocation.a in Frameworks */,
@@ -242,8 +236,6 @@
 				D034C77E1D5C784F000C9ACD /* libRCTText.a in Frameworks */,
 				D034C77F1D5C784F000C9ACD /* libRCTVibration.a in Frameworks */,
 				D034C7801D5C784F000C9ACD /* libRCTWebSocket.a in Frameworks */,
-				D034C7811D5C784F000C9ACD /* libRNFetchBlob.a in Frameworks */,
-				D034C7821D5C784F000C9ACD /* libRNCookieManagerIOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,7 +392,6 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
-				2763DA0567004E8DA2AC7B48 /* RNFetchBlob.xcodeproj */,
 				E6D7BA47C5954DA383E4DF4A /* SafariViewManager.xcodeproj */,
 				76A135053ED34536866B9648 /* RNRandomBytes.xcodeproj */,
 				3CB836B0207247C4B1101787 /* RNDeviceInfo.xcodeproj */,
@@ -434,14 +425,6 @@
 				13B07F961A680F5B00A75B9A /* DiscourseMobile.app */,
 				00E356EE1AD99517003FC87E /* DiscourseMobileTests.xctest */,
 				D034C78A1D5C784F000C9ACD /* DiscourseMobileStorybook.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		D034C75E1D5C7839000C9ACD /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D034C7711D5C7839000C9ACD /* libRNFetchBlob.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -590,10 +573,6 @@
 					ProjectRef = 3CB836B0207247C4B1101787 /* RNDeviceInfo.xcodeproj */;
 				},
 				{
-					ProductGroup = D034C75E1D5C7839000C9ACD /* Products */;
-					ProjectRef = 2763DA0567004E8DA2AC7B48 /* RNFetchBlob.xcodeproj */;
-				},
-				{
 					ProductGroup = 226098991D640511001A0518 /* Products */;
 					ProjectRef = 76A135053ED34536866B9648 /* RNRandomBytes.xcodeproj */;
 				},
@@ -605,8 +584,8 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* DiscourseMobile */,
-				00E356ED1AD99517003FC87E /* DiscourseMobileTests */,
 				D034C7721D5C784F000C9ACD /* DiscourseMobileStorybook */,
+				00E356ED1AD99517003FC87E /* DiscourseMobileTests */,
 			);
 		};
 /* End PBXProject section */
@@ -708,13 +687,6 @@
 			fileType = archive.ar;
 			path = libRCTText.a;
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D034C7711D5C7839000C9ACD /* libRNFetchBlob.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNFetchBlob.a;
-			remoteRef = D034C7701D5C7839000C9ACD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -836,6 +808,15 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
+					"$(SRCROOT)/../node_modules/react-native-safari-view",
+					"$(SRCROOT)/../node_modules/react-native-randombytes",
+					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+				);
 				INFOPLIST_FILE = DiscourseMobileTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -857,6 +838,15 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
+					"$(SRCROOT)/../node_modules/react-native-safari-view",
+					"$(SRCROOT)/../node_modules/react-native-randombytes",
+					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+				);
 				INFOPLIST_FILE = DiscourseMobileTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -883,13 +873,11 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
-					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 				);
 				INFOPLIST_FILE = DiscourseMobile/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -918,13 +906,11 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
-					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 				);
 				INFOPLIST_FILE = DiscourseMobile/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1054,11 +1040,11 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
-					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 				);
 				INFOPLIST_FILE = DiscourseMobileStorybook.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1073,6 +1059,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.discourse.DiscourseMobileStorybook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1086,11 +1073,11 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
-					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 				);
 				INFOPLIST_FILE = DiscourseMobileStorybook.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1105,6 +1092,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.discourse.DiscourseMobileStorybook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

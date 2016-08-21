@@ -5,9 +5,9 @@ import { View } from 'react-native';
 
 import { storiesOf } from '@kadira/react-native-storybook';
 
-import SiteRow from '../lib/components/site/row';
+import SiteRow from '../js/components/site/row';
 
-storiesOf('Site’s row')
+storiesOf('Site/Row')
   .addDecorator((story) => (
     <View style={{marginTop: 100, marginLeft: 5, marginRight: 5}}>{story()}</View>
   ))

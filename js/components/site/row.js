@@ -1,22 +1,23 @@
-'use strict';
+/**
+ * @flow
+ */
 
 import React from 'react';
 import {
-  StyleSheet,
-  View,
-  Text,
   Image,
-  TouchableOpacity
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 import Swipeout from 'react-native-swipeout';
 
 class Row extends React.Component {
-
   renderUnread(site) {
     if (site.unreadNotifications) {
       return (
-          <Text style={styles.blueNotification}>{site.unreadNotifications}</Text>
+        <Text style={styles.blueNotification}>{site.unreadNotifications}</Text>
       );
     }
   }
@@ -24,7 +25,7 @@ class Row extends React.Component {
   renderUnreadPM(site) {
     if (site.unreadPrivateMessages) {
       return (
-          <Text style={styles.greenNotification}>{site.unreadPrivateMessages}</Text>
+        <Text style={styles.greenNotification}>{site.unreadPrivateMessages}</Text>
       );
     }
   }
@@ -60,7 +61,6 @@ class Row extends React.Component {
         counts.push("unread (" + site.totalUnread + ")");
       }
     }
-
 
     if (counts.length > 0) {
       return (

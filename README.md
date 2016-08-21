@@ -7,7 +7,10 @@ Native iOS and Android app for Discourse
 
 ```
 npm init
+
+// https://facebook.github.io/react-native/docs/getting-started.html
 react-native run-ios
+react-native run-android
 ```
 
 
