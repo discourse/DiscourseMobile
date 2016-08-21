@@ -5,7 +5,7 @@ import { View } from 'react-native';
 
 import { storiesOf } from '@kadira/react-native-storybook';
 
-import Header from '../lib/components/home/header';
+import HomeHeader from '../js/components/home/header';
 
 storiesOf('Home/Header')
   .addDecorator((story) => (
@@ -16,5 +16,5 @@ storiesOf('Home/Header')
       lastRefreshTime:'4:05'
     };
 
-    return <Header lastRefreshTime={options.lastRefreshTime} />;
+    return <HomeHeader lastRefreshTime={options.lastRefreshTime} />;
   })
