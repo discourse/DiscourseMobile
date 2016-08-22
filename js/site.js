@@ -3,6 +3,7 @@
  */
 
 import randomBytes from 'react-native-randombytes';
+import _ from 'lodash';
 
 class Site {
   static FIELDS = [
@@ -162,8 +163,21 @@ class Site {
         this.channels['__seq'] = 0;
       } else if (message.channel === notificationChannel) {
         rval.notifications = true;
+      } else if (["/new", "/latest", "/unread/" + this.userId].indexOf(message.channel) > -1) {
+        let payload = message.data.payload;
+        if (payload.archetype !== "private_message") {
+          this.trackingState["t" + payload.topic_id] = payload;
+          this.updateTotals();
+          rval.totals = true;
+        }
+      } else if (message.channel === "/recover" || message.channel === "/delete") {
+        let existing = this.trackingState["t" + message.data.payload.topic_id];
+        if (existing) {
+          existing.deleted = (message.channel === "/delete");
+        }
+      } else if (message.channel === "/delete") {
       } else {
-        // TODO update unread/new
+        console.log(message);
       }
     });
 
@@ -180,19 +194,25 @@ class Site {
             .then(info => {
 
           let channels = {
-            '/latest': -1,
+            '/delete': -1,
+            '/recover': -1,
             '/new': -1,
-            '/unread': -1,
+            '/latest': -1,
             '__seq': 1
           };
+
           channels[`/notification/${info.userId}`] = -1;
+          channels[`/unread/${info.userId}`] = -1;
 
           this.messageBus(channels).then(r => {
             this.processMessages(r);
 
             this.jsonApi(`/users/${info.username}/topic-tracking-state.json`)
               .then(trackingState => {
-                this.trackingState = trackingState;
+                this.trackingState = {};
+                trackingState.forEach(state => {
+                  this.trackingState["t" + state.topic_id] = state;
+                });
                 resolve();
               });
           });
@@ -219,7 +239,8 @@ class Site {
     let unread = 0;
     let newTopics = 0;
 
-    this.trackingState.forEach(t => {
+    _.each(this.trackingState, t => {
+
       if (!t.deleted && t.archetype !== "private_message") {
         if (this.isNew(t)) {
           newTopics++;

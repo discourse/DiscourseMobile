@@ -169,12 +169,12 @@ const styles = StyleSheet.create({
   greenNotification: {
     alignSelf: 'flex-start',
     backgroundColor: "#01a84c",
-    padding: 8,
+    padding: 6,
     marginLeft: 6,
     marginBottom: 6,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
-    borderRadius: 2,
+    borderRadius: 8,
     color: "#FFF"
   },
   counts: {

@@ -105,6 +105,13 @@ class SiteManager {
         return;
       }
 
+      if (opts.ui === false && this._lastRefresh && (new Date() - this._lastRefresh) < 10000) {
+        resolve(false);
+        return;
+      }
+
+      this._lastRefresh = new Date();
+
       let site = sites.pop();
       let somethingChanged = false;
 

@@ -9,14 +9,16 @@ import React, {
 import {
   Linking,
   Platform,
-  PushNotificationIOS
+  PushNotificationIOS,
+  AppState
 } from 'react-native';
 
+import SiteManager from './site_manager';
 import SafariView from 'react-native-safari-view';
 import HomePage from './components/home/page';
-import SiteManager from './site_manager';
 
 class DiscourseMobile extends Component {
+
   constructor(props) {
     super(props);
     this._siteManager = new SiteManager();
@@ -28,6 +30,12 @@ class DiscourseMobile extends Component {
       }
     }
 
+    this._handleAppStateChange = () => {
+      if (AppState.currentState === "active") {
+        this._siteManager.refreshSites({ui: false, fast: true});
+      }
+    };
+
     if(Platform.OS === 'ios') {
       PushNotificationIOS.addEventListener('register', (s)=>{
         this._siteManager.registerClientId(s);
@@ -37,10 +45,12 @@ class DiscourseMobile extends Component {
 
   componentDidMount() {
     Linking.addEventListener('url', this._handleOpenUrl);
+    AppState.addEventListener('change', this._handleAppStateChange);
   }
 
   componentWillUnmount() {
     Linking.removeEventListener('url', this._handleOpenUrl);
+    AppState.addEventListener('change', this._handleAppStateChange);
   }
 
   openUrl(navigator, site) {
