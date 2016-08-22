@@ -164,7 +164,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     borderRadius: 8,
-    color: "#FFF"
+    color: "#FFF",
+    overflow: 'hidden'
   },
   greenNotification: {
     alignSelf: 'flex-start',
@@ -175,7 +176,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     borderRadius: 8,
-    color: "#FFF"
+    color: "#FFF",
+    overflow: 'hidden'
   },
   counts: {
     marginTop: 6
