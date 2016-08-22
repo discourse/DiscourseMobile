@@ -3,8 +3,6 @@ package com.discoursemobile;
 import com.facebook.react.ReactActivity;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.bitgo.randombytes.RandomBytesPackage;
-import com.psykar.cookiemanager.CookieManagerPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
 
 public class MainActivity extends ReactActivity {
 
