@@ -133,6 +133,7 @@ class SiteManager {
             if (somethingChanged) {
               this.save();
             }
+            this._onRefresh();
             resolve({changed: somethingChanged, alerts: alerts});
           }
         });
@@ -236,8 +237,12 @@ class SiteManager {
       });
   }
 
+  _onRefresh() {
+    this._subscribers.forEach((sub) => sub({event: "refresh"}));
+  }
+
   _onChange() {
-    this._subscribers.forEach((sub) => sub());
+    this._subscribers.forEach((sub) => sub({event: "change"}));
   }
 }
 

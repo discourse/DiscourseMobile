@@ -41,7 +41,7 @@ class HomePage extends Component {
       lastRefreshTime: null
     }
 
-    this._onChangeSites = () => this.onChangeSites();
+    this._onChangeSites = (e) => this.onChangeSites(e);
     this.props.siteManager.subscribe(this._onChangeSites);
   }
 
@@ -58,11 +58,20 @@ class HomePage extends Component {
     clearInterval(this.refresher);
   }
 
-  onChangeSites() {
-    this._dataSource = this._dataSource.cloneWithRows(this.props.siteManager.sites);
-    this.setState({
-      dataSource: this._dataSource
-    })
+  onChangeSites(e) {
+
+    if (e.event === "change") {
+      this._dataSource = this._dataSource.cloneWithRows(this.props.siteManager.sites);
+      this.setState({
+        dataSource: this._dataSource
+      })
+    }
+
+    if (e.event === "refresh") {
+      this.setState({
+        lastRefreshTime: Moment().format("LT")
+      });
+    }
   }
 
   doSearch(term) {
@@ -86,8 +95,7 @@ class HomePage extends Component {
         this.refreshing = false;
 
         this.setState({
-          isRefreshing: false,
-          lastRefreshTime: Moment().format("LT")
+          isRefreshing: false
         })
     });
   }
