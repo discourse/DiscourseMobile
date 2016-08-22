@@ -1,4 +1,6 @@
-'use strict';
+/**
+ * @flow
+ */
 
 import React, {
   Component,
@@ -15,7 +17,7 @@ import {
   View
 } from 'react-native';
 
-class Header extends Component {
+class HomeHeader extends Component {
   static propTypes = {
     onDidSubmitTerm: PropTypes.func.isRequired,
     lastRefreshTime: PropTypes.string
@@ -152,4 +154,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Header;
+export default HomeHeader;
