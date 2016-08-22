@@ -113,6 +113,11 @@ class SiteManager {
       this._lastRefresh = new Date();
 
       let site = sites.pop();
+
+      if (opts.ui) {
+        site.resetBus();
+      }
+
       let somethingChanged = false;
 
       let processSite = (site) => {

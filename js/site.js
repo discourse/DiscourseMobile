@@ -154,6 +154,9 @@ class Site {
 
     messages.forEach(message => {
 
+      console.info("processing incoming message on " + this.url);
+      console.log(message);
+
       if (this.channels) {
         this.channels[message.channel] = message.message_id;
       }
@@ -184,6 +187,13 @@ class Site {
     return rval;
   }
 
+  resetBus() {
+    this.userId = null;
+    this.username = null;
+    this.trackingState = null;
+    this.channels = null;
+  }
+
   initBus(){
     return new Promise(resolve => {
       if (this.channels) {
@@ -202,6 +212,7 @@ class Site {
           };
 
           channels[`/notification/${info.userId}`] = -1;
+          channels[`/notification-alert/${info.userId}`] = -1;
           channels[`/unread/${info.userId}`] = -1;
 
           this.messageBus(channels).then(r => {
@@ -259,6 +270,7 @@ class Site {
   }
 
   checkBus() {
+    console.info(new Date() + " Checking Message Bus on " + this.url);
     return this.messageBus(this.channels).then(messages => this.processMessages(messages));
   }
 
