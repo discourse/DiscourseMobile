@@ -147,10 +147,12 @@ class Site {
   processMessages(messages) {
     let rval = {
       notifications: false,
-      totals: false
+      totals: false,
+      alerts: []
     };
 
     let notificationChannel = `/notification/${this.userId}`;
+    let alertChannel = `/notification-alert/${this.userId}`;
 
     messages.forEach(message => {
 
@@ -178,9 +180,9 @@ class Site {
         if (existing) {
           existing.deleted = (message.channel === "/delete");
         }
-      } else if (message.channel === "/delete") {
-      } else {
-        console.log(message);
+      } else if (message.channel === alertChannel) {
+        message.data.url = this.url + message.data.post_url;
+        rval.alerts.push(message.data);
       }
     });
 
@@ -274,13 +276,13 @@ class Site {
     return this.messageBus(this.channels).then(messages => this.processMessages(messages));
   }
 
-  refreshNotificationCounts(opts){
+  refresh(opts){
 
     opts = opts || {};
 
     return new Promise((resolve,reject) => {
 
-      if(!this.authToken) { resolve(false);  return;}
+      if(!this.authToken) { resolve({changed: false});  return;}
 
       this.initBus().then(() => {
 
@@ -288,9 +290,11 @@ class Site {
           this.checkBus()
               .then(changes => {
                  if (changes.notifications) {
-                   this.refreshNotificationCounts({fast: false}).then(result => resolve(result));
+                   this.refresh({fast: false}).then(result => {
+                     resolve({changed: result.changed, alerts: changes.alerts});
+                   });
                  } else {
-                   resolve(this.updateTotals());
+                   resolve({changed: this.updateTotals(), alerts: changes.alerts});
                  }
               });
 
@@ -318,7 +322,7 @@ class Site {
                changed = true;
              }
 
-             resolve(changed);
+             resolve({changed});
 
             }).catch(e=>{
              console.warn(e);

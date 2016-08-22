@@ -24,6 +24,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		226098D21D655CC9001A0518 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 226098D11D655C00001A0518 /* libRCTPushNotification.a */; };
 		22738F881D6A8AD000EA24C3 /* TSBackgroundFetch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22738F871D6A8ACF00EA24C3 /* TSBackgroundFetch.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		22EA5AB71D6AE38B00783349 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22EA5AB61D6AE38B00783349 /* RNBackgroundFetch+AppDelegate.m */; };
 		29A5744DA0BC49DF86270373 /* libSafariViewManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F996349405C34010996EE336 /* libSafariViewManager.a */; };
 		3F3396FE2D5F49BFB1189C9B /* libRNRandomBytes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BF5DB7779C4511BA7B3DE7 /* libRNRandomBytes.a */; };
 		5A9B9D17F302472BBBD88186 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2084424E16BE4B72A25D79DC /* libRNDeviceInfo.a */; };
@@ -189,6 +190,7 @@
 		226098CC1D655C00001A0518 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		22738F851D6A8A9000EA24C3 /* Source */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Source; path = ../..; sourceTree = "<group>"; };
 		22738F871D6A8ACF00EA24C3 /* TSBackgroundFetch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TSBackgroundFetch.framework; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/TSBackgroundFetch.framework"; sourceTree = "<group>"; };
+		22EA5AB61D6AE38B00783349 /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
 		3CB836B0207247C4B1101787 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		5A69516B25D34D89B1D9CD50 /* libRNBackgroundFetch.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBackgroundFetch.a; sourceTree = "<group>"; };
 		76A135053ED34536866B9648 /* RNRandomBytes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNRandomBytes.xcodeproj; path = "../node_modules/react-native-randombytes/RNRandomBytes.xcodeproj"; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 		13B07FAE1A68108700A75B9A /* DiscourseMobile */ = {
 			isa = PBXGroup;
 			children = (
+				22EA5AB61D6AE38B00783349 /* RNBackgroundFetch+AppDelegate.m */,
 				226098CB1D6465BA001A0518 /* DiscourseMobile.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -803,6 +806,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22EA5AB71D6AE38B00783349 /* RNBackgroundFetch+AppDelegate.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
