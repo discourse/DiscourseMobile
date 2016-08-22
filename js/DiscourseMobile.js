@@ -16,6 +16,7 @@ import {
 import SiteManager from './site_manager';
 import SafariView from 'react-native-safari-view';
 import HomePage from './components/home/page';
+import BackgroundFetch from 'react-native-background-fetch';
 
 class DiscourseMobile extends Component {
 
@@ -32,13 +33,30 @@ class DiscourseMobile extends Component {
 
     this._handleAppStateChange = () => {
       if (AppState.currentState === "active") {
-        this._siteManager.refreshSites({ui: false, fast: true});
+        this._siteManager.refreshSites({ui: false, fast: true}).then(()=>{});
       }
     };
 
     if(Platform.OS === 'ios') {
       PushNotificationIOS.addEventListener('register', (s)=>{
         this._siteManager.registerClientId(s);
+      });
+
+      BackgroundFetch.configure({stopOnTerminate: false}, () => {
+        console.log("Background fetch Called!");
+
+        this._siteManager.refreshSites({ui: false, fast: true})
+          .then((state)=>{
+            if (state.alerts) {
+              state.alerts.forEach((a)=>{
+                PushNotificationIOS.presentLocalNotification({
+                  alertBody: a.excerpt,
+                  userInfo: {url: a.url}
+                });
+              });
+            }
+            BackgroundFetch.finish();
+          });
       });
     }
   }

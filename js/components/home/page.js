@@ -81,7 +81,7 @@ class HomePage extends Component {
       this.setState({isRefreshing: true});
     }
 
-    this.props.siteManager.refreshSites({fast: opts.fast})
+    this.props.siteManager.refreshSites(opts)
       .then(()=>{
         this.refreshing = false;
 

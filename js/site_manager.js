@@ -101,12 +101,12 @@ class SiteManager {
 
     return new Promise((resolve,reject)=>{
       if (sites.length === 0) {
-        resolve(false);
+        resolve({changed: false});
         return;
       }
 
       if (opts.ui === false && this._lastRefresh && (new Date() - this._lastRefresh) < 10000) {
-        resolve(false);
+        resolve({changed: false});
         return;
       }
 
@@ -119,17 +119,21 @@ class SiteManager {
       }
 
       let somethingChanged = false;
+      let alerts = [];
 
       let processSite = (site) => {
-        site.refreshNotificationCounts(opts).then((changed) => {
-          somethingChanged = somethingChanged || changed;
+        site.refresh(opts).then((state) => {
+          somethingChanged = somethingChanged || state.changed;
+          if (state.alerts) {
+            alerts = alerts.concat(state.alerts);
+          }
           let s = sites.pop();
           if (s) { processSite(s); }
           else {
             if (somethingChanged) {
               this.save();
             }
-            resolve(somethingChanged);
+            resolve({changed: somethingChanged, alerts: alerts});
           }
         });
       };
@@ -202,7 +206,7 @@ class SiteManager {
     }
 
     this._nonceSite.authToken = decrypted.key;
-    this._nonceSite.refreshNotificationCounts()
+    this._nonceSite.refresh()
         .then(()=>{
           this.save();
           this._onChange();
