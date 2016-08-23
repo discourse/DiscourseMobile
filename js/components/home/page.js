@@ -15,7 +15,9 @@ import {
   View
 } from 'react-native';
 
+import Dimensions from 'Dimensions';
 import Moment from 'moment';
+import { Bar } from 'react-native-progress';
 
 import Site from '../../site';
 import SiteRow from '../site/row';
@@ -36,6 +38,7 @@ class HomePage extends Component {
     this._dataSource = this._dataSource.cloneWithRows(this.props.siteManager.sites);
 
     this.state = {
+      addSiteProgress: 0,
       dataSource: this._dataSource,
       isRefreshing: false,
       lastRefreshTime: null
@@ -73,11 +76,19 @@ class HomePage extends Component {
   }
 
   doSearch(term) {
+    this.setState({addSiteProgress: 0.2})
     Site.fromTerm(term)
       .then(site => {
+        this.setState({addSiteProgress: 1})
+
         if (site) {
           this.props.siteManager.add(site);
         }
+
+        setTimeout(
+          ()=>{ this.setState({addSiteProgress: 0}) },
+          250
+        );
       });
   }
 
@@ -105,6 +116,13 @@ class HomePage extends Component {
         <HomeHeader
           onDidSubmitTerm={(term)=>this.doSearch(term)}
           lastRefreshTime={this.state.lastRefreshTime} />
+        <Bar
+          color='#f0ea89'
+          borderWidth={0}
+          borderRadius={0}
+          height={this.state.addSiteProgress == 0 ? 0 : 6}
+          progress={this.state.addSiteProgress}
+          width={Dimensions.get('window').width} />
         <ListView
           dataSource={this.state.dataSource}
           enableEmptySections={true}
