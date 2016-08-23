@@ -46,11 +46,9 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    this.refreshSites({ui: false, fast: false});
-
     this.refresher = setInterval(()=>{
       this.refreshSites({ui: false, fast: true});
-    }, 1000*60);
+    }, 1000*11);
   }
 
   componentWillUnmount() {
