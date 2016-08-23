@@ -103,6 +103,7 @@ class HomeHeader extends Component {
         <View style={this.termContainerStyle()}>
           <TextInput
             ref='Input'
+            clearButtonMode='while-editing'
             autoCapitalize='none'
             autoCorrect={false}
             onSubmitEditing={(event)=>this.handleSubmitTerm(event.nativeEvent.text)}
