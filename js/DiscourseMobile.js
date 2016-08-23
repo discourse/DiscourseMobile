@@ -40,7 +40,7 @@ class DiscourseMobile extends Component {
 
       if (AppState.currentState === "active") {
         this._siteManager.exitBackground();
-        this._siteManager.refreshSites({ui: false, fast: true}).then(()=>{});
+        this._siteManager.refreshSites({ui: false, fast: true});
       }
     };
 

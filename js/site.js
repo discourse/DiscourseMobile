@@ -187,7 +187,12 @@ class Site {
       } else if (["/new", "/latest", "/unread/" + this.userId].indexOf(message.channel) > -1) {
         let payload = message.data.payload;
         if (payload.archetype !== "private_message") {
-          this.trackingState["t" + payload.topic_id] = payload;
+          let existing = this.trackingState["t" + payload.topic_id];
+          if (existing) {
+            this.trackingState["t" + payload.topic_id] = _.merge(existing, payload);
+          } else {
+            this.trackingState["t" + payload.topic_id] = payload;
+          }
           this.updateTotals();
           rval.totals = true;
         }

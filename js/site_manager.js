@@ -87,7 +87,9 @@ class SiteManager {
     AsyncStorage.getItem('@Discourse.sites').then((json) => {
       if (json) {
         this.sites = JSON.parse(json).map(obj=>new Site(obj));
-        this._onChange()
+        this.refreshSites({ui: false, fast: true}).then(()=>{
+          this._onChange()
+        });
       }
     });
   }
