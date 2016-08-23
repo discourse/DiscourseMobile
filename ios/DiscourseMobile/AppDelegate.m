@@ -13,6 +13,8 @@
 #import "RCTRootView.h"
 #import "RCTLinkingManager.h"
 #import "RCTPushNotificationManager.h"
+#import <TSBackgroundFetch/TSBackgroundFetch.h>
+#import "RCTLog.h"
 
 
 @implementation AppDelegate
@@ -56,6 +58,10 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  // TODO We don't need full release debugging forever, but for now it helps
+  RCTSetLogThreshold(RCTLogLevelInfo - 1);
+  
   return YES;
 }
 
@@ -82,6 +88,13 @@
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
   NSLog(@"%@", error);
+}
+
+-(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+  NSLog(@"RNBackgroundFetch AppDelegate received fetch event");
+  TSBackgroundFetch *fetchManager = [TSBackgroundFetch sharedInstance];
+  [fetchManager performFetchWithCompletionHandler:completionHandler];
 }
 
 @end

@@ -80,7 +80,7 @@ class Site {
   }
 
   jsonApi(path, method, data) {
-    //console.log("calling: " + path);
+    console.log("calling: " + path);
 
     method = method || 'GET';
     let options = {
@@ -98,27 +98,34 @@ class Site {
       options['body'] = JSON.stringify(data);
     }
 
-    return fetch(this.url + path, options).then(r => {
-      if (r.status === 403) {
-        // access denied user logged out or key revoked
-        this.authToken = null;
-        this.userId = null;
-        this.username = null;
-        return {current_user: {}};
-      }
-      return r.json();
-    })
+    return fetch(this.url + path, options)
+      .then(r => {
+        if (r.status === 403) {
+          // access denied user logged out or key revoked
+          this.authToken = null;
+          this.userId = null;
+          this.username = null;
+          throw "User was logged off!"
+        } else if (r.status === 200) {
+          return r.json();
+        } else {
+          throw "Failed to make API request Response was " + r.status;
+        }
+      });
   }
 
   getUserInfo() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       if (this.userId && this.username) {
+        console.log("we have user id and user name");
         resolve({userId: this.userId, username: this.username});
       } else {
-
         this.jsonApi("/session/current.json")
           .then(json =>{
             resolve({userId: json.current_user.id, username: json.current_user.username});
+          })
+          .catch(err => {
+            reject(err);
           });
       }
     });
@@ -166,6 +173,8 @@ class Site {
       if (message.channel === "/__status") {
         this.channels = message.data;
         this.channels['__seq'] = 0;
+        // we have to get notifications now cause we may have an incorrect number
+        rval.notifications = true
       } else if (message.channel === notificationChannel) {
         rval.notifications = true;
       } else if (["/new", "/latest", "/unread/" + this.userId].indexOf(message.channel) > -1) {
@@ -197,9 +206,9 @@ class Site {
   }
 
   initBus(){
-    return new Promise(resolve => {
+    return new Promise((resolve,reject) => {
       if (this.channels) {
-        resolve();
+        resolve({wasReady: true});
       } else {
 
         this.getUserInfo()
@@ -226,12 +235,23 @@ class Site {
                 trackingState.forEach(state => {
                   this.trackingState["t" + state.topic_id] = state;
                 });
-                resolve();
+                resolve({wasReady: false});
+              })
+              .catch(e => {
+                console.log("failed to get tracking state " + e);
+                reject(e);
               });
+          })
+          .catch(e => {
+            console.log("failed to poll message bus " + e);
+            reject(e);
           });
 
+        })
+        .catch(e => {
+          console.log("get user info failed " + e);
+          reject(e);
         });
-
       }
     });
   }
@@ -273,6 +293,7 @@ class Site {
 
   checkBus() {
     console.info(new Date() + " Checking Message Bus on " + this.url);
+    // alert("check bus " + this.url + " nid: " + this.channels['/notification/' + this.userId] + " uid:" + this.userId);
     return this.messageBus(this.channels).then(messages => this.processMessages(messages));
   }
 
@@ -284,18 +305,28 @@ class Site {
 
       if(!this.authToken) { resolve({changed: false});  return;}
 
-      this.initBus().then(() => {
+      this.initBus().then((busState) => {
 
-        if (opts.fast) {
+        if (opts.fast || !busState.wasReady) {
           this.checkBus()
               .then(changes => {
-                 if (changes.notifications) {
+                 console.log("changes detected on " + this.url)
+                 console.log(changes);
+
+                 if (changes.notifications || !busState.wasReady) {
+                   this.updateTotals();
+
                    this.refresh({fast: false}).then(result => {
-                     resolve({changed: result.changed, alerts: changes.alerts});
+                     resolve({changed: true, alerts: changes.alerts});
                    });
+
                  } else {
                    resolve({changed: this.updateTotals(), alerts: changes.alerts});
                  }
+              })
+              .catch(e => {
+                console.log("failed to check bus " + e);
+                reject(e);
               });
 
           return;
@@ -326,9 +357,10 @@ class Site {
 
             }).catch(e=>{
              console.warn(e);
-             resolve(false);
+             reject(e);
            });
-      });
+      })
+      .catch(e => reject(e));
     });
   }
 

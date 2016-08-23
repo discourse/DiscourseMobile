@@ -42,28 +42,38 @@ class DiscourseMobile extends Component {
         this._siteManager.registerClientId(s);
       });
 
-      BackgroundFetch.configure({stopOnTerminate: false}, () => {
-        console.log("Background fetch Called!");
-
-        this._siteManager.refreshSites({ui: false, fast: true})
-          .then((state)=>{
-            if (state.alerts) {
-              state.alerts.forEach((a)=>{
-                PushNotificationIOS.presentLocalNotification({
-                  alertBody: a.excerpt,
-                  userInfo: {url: a.url}
-                });
-              });
-            }
-            BackgroundFetch.finish();
-          });
-      });
     }
   }
 
   componentDidMount() {
     Linking.addEventListener('url', this._handleOpenUrl);
     AppState.addEventListener('change', this._handleAppStateChange);
+
+
+    BackgroundFetch.configure({stopOnTerminate: false}, () => {
+
+      console.log("Background fetch Called!");
+
+      this._siteManager.refreshSites({ui: false, fast: true})
+        .then((state)=>{
+
+          console.log("Finished refreshing sites in BG fetch!");
+
+          if (state.alerts) {
+
+            console.log("Got " + state.alerts.length + " in BG fetch");
+
+            state.alerts.forEach((a)=>{
+              PushNotificationIOS.presentLocalNotification({
+                alertBody: a.excerpt,
+                userInfo: {url: a.url}
+              });
+            });
+          }
+
+          BackgroundFetch.finish();
+        });
+    });
   }
 
   componentWillUnmount() {
