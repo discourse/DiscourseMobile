@@ -98,8 +98,15 @@ class Site {
       options['body'] = JSON.stringify(data);
     }
 
+    if (this._background) {
+      return new Promise((resolve, reject) => reject("In background mode aborting start request!"));
+    }
+
     return fetch(this.url + path, options)
       .then(r => {
+        if (this._background) {
+          throw "In Background mode aborting request!";
+        }
         if (r.status === 403) {
           // access denied user logged out or key revoked
           this.authToken = null;
@@ -362,6 +369,14 @@ class Site {
       })
       .catch(e => reject(e));
     });
+  }
+
+  enterBackground() {
+    this._background = true;
+  }
+
+  exitBackground() {
+    this._background = false;
   }
 
   toJSON(){
