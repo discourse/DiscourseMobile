@@ -102,29 +102,58 @@ class SiteManager {
     return count;
   }
 
+  enterBackground() {
+    this._background = true;
+    this.sites.forEach(s=>s.enterBackground());
+  }
+
+  exitBackground() {
+    this._background = false;
+    this.sites.forEach(s=>s.exitBackground());
+  }
+
   refreshSites(opts) {
     let sites = this.sites.slice(0);
     opts = opts || {};
 
+    let bgRefresh = opts.background === true;
+
+    console.log("refresh sites was called on " + sites.length + " sites!");
+
     return new Promise((resolve,reject)=>{
+
+      if (this._background && !opts.background) {
+        console.log("skip refresh cause app is in background!");
+        resolve({changed: false});
+        return;
+      }
+
       if (sites.length === 0) {
+        console.log("no sites defined nothing to refresh!");
         resolve({changed: false});
         return;
       }
 
-      if (opts.ui === false && this._lastBGRefresh && (new Date() - this._lastBGRefresh) < 10000) {
+      let refreshDelta = this._lastRefreshStart && (new Date() - this._lastRefreshStart);
+
+      if (opts.ui === false && this._lastRefreshStart && refreshDelta < 10000) {
+        console.log("bg refresh skipped cause it is already running!");
         resolve({changed: false});
         return;
       }
 
-      if (this.refreshing) {
-        resolve({changed: false});
+      if (this.refreshing && refreshDelta < 60000) {
         console.log("not refreshing cause already refreshing!");
+        resolve({changed: false});
         return;
+      }
+
+      if (this.refreshing && refreshDeleta >= 60000) {
+        console.log("WARNING: a previous refresh went missing, resetting cause 1 minute is too long");
       }
 
       this.refreshing = true;
-      this._lastBGRefresh = new Date();
+      this._lastRefreshStart = new Date();
 
       let site = sites.pop();
 
@@ -138,8 +167,17 @@ class SiteManager {
           site.resetBus();
         }
 
+        if (opts.background) {
+          site.exitBackground();
+        }
+
         site.refresh(opts)
             .then((state) => {
+
+              if (this._background) {
+                site.enterBackground();
+              }
+
               somethingChanged = somethingChanged || state.changed;
               if (state.alerts) {
                 alerts = alerts.concat(state.alerts);
@@ -152,7 +190,7 @@ class SiteManager {
             })
             .finally(() => {
               let s = sites.pop();
-              if (s) { processSite(s); }
+              if (s && (bgRefresh || !this._background)) { processSite(s); }
               else {
                 if (somethingChanged) {
                   this.save();

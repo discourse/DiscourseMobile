@@ -32,7 +32,14 @@ class DiscourseMobile extends Component {
     }
 
     this._handleAppStateChange = () => {
+      console.log("Detected appstate change " + AppState.currentState);
+
+      if (AppState.currentState === "inactive") {
+        this._siteManager.enterBackground();
+      }
+
       if (AppState.currentState === "active") {
+        this._siteManager.exitBackground();
         this._siteManager.refreshSites({ui: false, fast: true}).then(()=>{});
       }
     };
@@ -50,11 +57,11 @@ class DiscourseMobile extends Component {
     AppState.addEventListener('change', this._handleAppStateChange);
 
 
-    BackgroundFetch.configure({stopOnTerminate: false}, () => {
+    let doRefresh = () => {
 
       console.log("Background fetch Called!");
 
-      this._siteManager.refreshSites({ui: false, fast: true})
+      this._siteManager.refreshSites({ui: false, fast: true, background: true})
         .then((state)=>{
 
           console.log("Finished refreshing sites in BG fetch!");
@@ -71,8 +78,33 @@ class DiscourseMobile extends Component {
             });
           }
 
-          BackgroundFetch.finish();
-        });
+        })
+      .finally(() => {
+        BackgroundFetch.finish();
+      });
+    };
+
+    BackgroundFetch.configure({stopOnTerminate: false}, ()=>{
+      let waited = 0;
+
+      let waitTillDone = ()=> {
+        waited++;
+
+        if (this._siteManager.refreshing && waited < 50) {
+          // up to 5 seconds to abort
+          this.setTimeout(waitTillDone, 100);
+        } else if (this._siteManager.refreshing) {
+          // something is messed
+          console.log("WARNING: forcing a refresh here cause bg is messed up");
+          this._siteManager.refreshing = false;
+          doRefresh();
+        } else {
+          doRefresh();
+        }
+      }
+
+      waitTillDone();
+
     });
   }
 
