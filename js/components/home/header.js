@@ -65,10 +65,21 @@ class HomeHeader extends Component {
     this.props.onDidSubmitTerm(term);
   }
 
+  termStyle() {
+    return {
+      flex:1,
+      marginTop: 6,
+      marginBottom: 6,
+      marginLeft: 12,
+      marginRight: 12,
+      height: this.state.expanded ? 36 : 0
+    };
+  }
+
   termContainerStyle() {
     return {
       backgroundColor: '#e9e9e9',
-      height: this.state.expanded ? 45 : 0
+      height: this.state.expanded ? 48 : 0
     };
   }
 
@@ -96,7 +107,7 @@ class HomeHeader extends Component {
             autoCorrect={false}
             onSubmitEditing={(event)=>this.handleSubmitTerm(event.nativeEvent.text)}
             placeholder="meta.discourse.org"
-            style={styles.term}
+            style={this.termStyle()}
             onChangeText={(text) => this.setState({text})}
             value={this.state.text}
           />
@@ -115,10 +126,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'nowrap'
-  },
-  term: {
-    flex:1,
-    margin:12
   },
   icon: {
     resizeMode: 'contain',

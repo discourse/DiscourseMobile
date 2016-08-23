@@ -56,56 +56,57 @@ class DiscourseMobile extends Component {
     Linking.addEventListener('url', this._handleOpenUrl);
     AppState.addEventListener('change', this._handleAppStateChange);
 
+    if(Platform.OS === 'ios') {
+      let doRefresh = () => {
 
-    let doRefresh = () => {
+        console.log("Background fetch Called!");
 
-      console.log("Background fetch Called!");
+        this._siteManager.refreshSites({ui: false, fast: true, background: true})
+          .then((state)=>{
 
-      this._siteManager.refreshSites({ui: false, fast: true, background: true})
-        .then((state)=>{
+            console.log("Finished refreshing sites in BG fetch!");
 
-          console.log("Finished refreshing sites in BG fetch!");
+            if (state.alerts) {
 
-          if (state.alerts) {
+              console.log("Got " + state.alerts.length + " in BG fetch");
 
-            console.log("Got " + state.alerts.length + " in BG fetch");
-
-            state.alerts.forEach((a)=>{
-              PushNotificationIOS.presentLocalNotification({
-                alertBody: a.excerpt,
-                userInfo: {url: a.url}
+              state.alerts.forEach((a)=>{
+                PushNotificationIOS.presentLocalNotification({
+                  alertBody: a.excerpt,
+                  userInfo: {url: a.url}
+                });
               });
-            });
-          }
+            }
 
-        })
-      .finally(() => {
-        BackgroundFetch.finish();
+          })
+        .finally(() => {
+          BackgroundFetch.finish();
+        });
+      };
+
+      BackgroundFetch.configure({stopOnTerminate: false}, ()=>{
+        let waited = 0;
+
+        let waitTillDone = ()=> {
+          waited++;
+
+          if (this._siteManager.refreshing && waited < 50) {
+            // up to 5 seconds to abort
+            this.setTimeout(waitTillDone, 100);
+          } else if (this._siteManager.refreshing) {
+            // something is messed
+            console.log("WARNING: forcing a refresh here cause bg is messed up");
+            this._siteManager.refreshing = false;
+            doRefresh();
+          } else {
+            doRefresh();
+          }
+        }
+
+        waitTillDone();
+
       });
     };
-
-    BackgroundFetch.configure({stopOnTerminate: false}, ()=>{
-      let waited = 0;
-
-      let waitTillDone = ()=> {
-        waited++;
-
-        if (this._siteManager.refreshing && waited < 50) {
-          // up to 5 seconds to abort
-          this.setTimeout(waitTillDone, 100);
-        } else if (this._siteManager.refreshing) {
-          // something is messed
-          console.log("WARNING: forcing a refresh here cause bg is messed up");
-          this._siteManager.refreshing = false;
-          doRefresh();
-        } else {
-          doRefresh();
-        }
-      }
-
-      waitTillDone();
-
-    });
   }
 
   componentWillUnmount() {

@@ -2,7 +2,6 @@ package com.discoursemobile;
 
 import com.facebook.react.ReactActivity;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.bitgo.randombytes.RandomBytesPackage;
 
 public class MainActivity extends ReactActivity {
 

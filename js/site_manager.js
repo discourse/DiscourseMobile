@@ -16,8 +16,9 @@ import {
 import Site from './site';
 import RSAKeyPair from 'keypair';
 import DeviceInfo from 'react-native-device-info';
-import randomBytes from 'react-native-randombytes';
+import RandomBytesGenerator from './random_bytes_generator';
 import JSEncrypt from './../lib/jsencrypt';
+import _ from 'lodash';
 
 class SiteManager {
   constructor() {
@@ -242,8 +243,8 @@ class SiteManager {
             this.clientId = clientId;
             resolve(clientId);
           } else {
-            randomBytes(32, (err, bytes) => {
-              this.clientId = bytes.toString('hex');
+            RandomBytesGenerator.generateHex(32).then((hex) => {
+              this.clientId = hex;
               AsyncStorage.setItem('@ClientId', this.clientId);
               resolve(this.clientId);
             });
@@ -255,8 +256,8 @@ class SiteManager {
 
   generateNonce(site) {
     return new Promise(resolve=>{
-      randomBytes(16, (err, bytes) => {
-        this._nonce = bytes.toString('hex');
+      RandomBytesGenerator.generateHex(16).then((hex) => {
+        this._nonce = hex;
         this._nonceSite = site;
         resolve(this._nonce);
       });
@@ -291,13 +292,18 @@ class SiteManager {
         return this.generateNonce(site);
       })
       .then(nonce => {
-         let params = {
+        let deviceName = "UndefinedDeviceName";
+        if(!_.isUndefined(DeviceInfo.deviceName)) {
+          deviceName = DeviceInfo.getDeviceName();
+        }
+
+        let params = {
           access: 'rp',
           client_id: clientId,
           nonce: nonce,
           push_url: 'https://api.discourse.org/api/ios_notify',
           auth_redirect: 'discourse://auth_redirect',
-          application_name: "Discourse - " + DeviceInfo.getDeviceName(),
+          application_name: "Discourse - " + deviceName,
           public_key: this.rsaKeys.public
         };
 
