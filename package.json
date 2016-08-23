@@ -18,7 +18,8 @@
     "react-native-ecc": "^1.2.2",
     "react-native-randombytes": "^1.0.1",
     "react-native-safari-view": "^1.0.1",
-    "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git"
+    "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
+    "sjcl": "^1.0.3"
   },
   "devDependencies": {
     "@kadira/react-native-storybook": "^1.12.3"

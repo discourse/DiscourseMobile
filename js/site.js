@@ -2,7 +2,8 @@
  * @flow
  */
 
-import randomBytes from 'react-native-randombytes';
+import RandomBytesGenerator from './random_bytes_generator';
+
 import _ from 'lodash';
 
 class Site {
@@ -143,8 +144,8 @@ class Site {
       if (this.messageBusId) {
         resolve(this.messageBusId);
       } else {
-        randomBytes(16, (err, bytes) => {
-          this.messageBusId = bytes.toString('hex');
+        RandomBytesGenerator.generateHex(16).then((hex) => {
+          this.messageBusId = hex;
           resolve(this.messageBusId);
         });
       }
