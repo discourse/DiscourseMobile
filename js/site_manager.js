@@ -24,6 +24,13 @@ class SiteManager {
     this._subscribers = [];
     this.sites = [];
     this.load();
+
+    AsyncStorage.getItem('@Discourse.lastRefresh').then(date => {
+      if (date) {
+        this._onRefresh(new Date(date));
+      }
+    });
+
     this.ensureRSAKeys();
   }
 
@@ -105,38 +112,59 @@ class SiteManager {
         return;
       }
 
-      if (opts.ui === false && this._lastRefresh && (new Date() - this._lastRefresh) < 10000) {
+      if (opts.ui === false && this._lastBGRefresh && (new Date() - this._lastBGRefresh) < 10000) {
         resolve({changed: false});
         return;
       }
 
-      this._lastRefresh = new Date();
+      if (this.refreshing) {
+        resolve({changed: false});
+        console.log("not refreshing cause already refreshing!");
+        return;
+      }
+
+      this.refreshing = true;
+      this._lastBGRefresh = new Date();
 
       let site = sites.pop();
 
-      if (opts.ui) {
-        site.resetBus();
-      }
 
       let somethingChanged = false;
       let alerts = [];
 
       let processSite = (site) => {
-        site.refresh(opts).then((state) => {
-          somethingChanged = somethingChanged || state.changed;
-          if (state.alerts) {
-            alerts = alerts.concat(state.alerts);
-          }
-          let s = sites.pop();
-          if (s) { processSite(s); }
-          else {
-            if (somethingChanged) {
-              this.save();
-            }
-            this._onRefresh();
-            resolve({changed: somethingChanged, alerts: alerts});
-          }
-        });
+
+        if (opts.ui) {
+          site.resetBus();
+        }
+
+        site.refresh(opts)
+            .then((state) => {
+              somethingChanged = somethingChanged || state.changed;
+              if (state.alerts) {
+                alerts = alerts.concat(state.alerts);
+              }
+            })
+            .catch((e)=>{
+              console.log("failed to refresh " + site.url);
+              // maybe we were logged out ... something is odd
+              somethingChanged = true;
+            })
+            .finally(() => {
+              let s = sites.pop();
+              if (s) { processSite(s); }
+              else {
+                if (somethingChanged) {
+                  this.save();
+                }
+                this.lastRefresh = new Date();
+                AsyncStorage.setItem("@Discourse.lastRefresh", this.lastRefresh.toJSON());
+                this._onRefresh();
+                this.refreshing = false;
+                resolve({changed: somethingChanged, alerts: alerts});
+              }
+            });
+
       };
 
       processSite(site);

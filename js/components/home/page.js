@@ -69,7 +69,7 @@ class HomePage extends Component {
 
     if (e.event === "refresh") {
       this.setState({
-        lastRefreshTime: Moment().format("LT")
+        lastRefreshTime: Moment(this.props.siteManager.lastRefresh).format("LT")
       });
     }
   }
