@@ -297,9 +297,12 @@ class SiteManager {
         return this.generateNonce(site);
       })
       .then(nonce => {
-        let deviceName = "UndefinedDeviceName";
-        if(!_.isUndefined(DeviceInfo.deviceName)) {
+        let deviceName = "Unknown Mobile Device";
+
+        try {
           deviceName = DeviceInfo.getDeviceName();
+        } catch(e){
+          // on android maybe this can fail?
         }
 
         let params = {

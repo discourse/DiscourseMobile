@@ -25,6 +25,8 @@ class DiscourseMobile extends Component {
     this._siteManager = new SiteManager();
 
     this._handleOpenUrl = (event) => {
+      console.log("handling incoming url");
+      console.log(event);
       let split = event.url.split("payload=");
       if (split.length === 2) {
         this._siteManager.handleAuthPayload(decodeURIComponent(split[1]));
@@ -45,11 +47,33 @@ class DiscourseMobile extends Component {
     };
 
     if(Platform.OS === 'ios') {
+
+      PushNotificationIOS.addEventListener('notification', (e) => this._handleRemoteNotification(e));
+      PushNotificationIOS.addEventListener('localNotification', (e) => this._handleLocalNotification(e));
+
       PushNotificationIOS.addEventListener('register', (s)=>{
         this._siteManager.registerClientId(s);
       });
 
     }
+  }
+
+  _handleLocalNotification(e) {
+    console.log("got local notification");
+    console.log(e);
+  }
+
+  _handleRemoteNotification(e) {
+    console.log("got remote notification");
+    console.log(e);
+    if (e._data && e._data.AppState === "inactive" && e._data.discourse_url) {
+      console.log("open safari view");
+      SafariView.show({url: e._data.discourse_url});
+    }
+
+    // TODO if we are active we should try to notify user somehow that a notification
+    // just landed .. tricky thing though is that safari view may be showing so we have
+    // no way of presenting anything to the user in that case
   }
 
   componentDidMount() {
@@ -77,10 +101,18 @@ class DiscourseMobile extends Component {
                 });
               });
             }
-
           })
         .finally(() => {
-          BackgroundFetch.finish();
+          PushNotificationIOS.checkPermissions(p => {
+            if (p.badge) {
+              let total = this._siteManager.totalUnread();
+              console.log("Setting badge to " + total);
+              PushNotificationIOS.setApplicationIconBadgeNumber(total);
+            }
+            console.log("Calling finish on background fetch in 1 second");
+            // give it one more second just in case stuff is comitting etc
+            setTimeout(BackgroundFetch.finish, 1000);
+          });
         });
       };
 
