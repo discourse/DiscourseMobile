@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D034C7721D5C784F000C9ACD"
-               BuildableName = "DiscourseMobileStorybook.app"
-               BlueprintName = "DiscourseMobileStorybook"
-               ReferencedContainer = "container:DiscourseMobile.xcodeproj">
+               BuildableName = "Discourse.app"
+               BlueprintName = "DiscourseStorybook"
+               ReferencedContainer = "container:Discourse.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D034C7721D5C784F000C9ACD"
-            BuildableName = "DiscourseMobileStorybook.app"
-            BlueprintName = "DiscourseMobileStorybook"
-            ReferencedContainer = "container:DiscourseMobile.xcodeproj">
+            BuildableName = "Discourse.app"
+            BlueprintName = "DiscourseStorybook"
+            ReferencedContainer = "container:Discourse.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D034C7721D5C784F000C9ACD"
-            BuildableName = "DiscourseMobileStorybook.app"
-            BlueprintName = "DiscourseMobileStorybook"
-            ReferencedContainer = "container:DiscourseMobile.xcodeproj">
+            BuildableName = "Discourse.app"
+            BlueprintName = "DiscourseStorybook"
+            ReferencedContainer = "container:Discourse.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D034C7721D5C784F000C9ACD"
-            BuildableName = "DiscourseMobileStorybook.app"
-            BlueprintName = "DiscourseMobileStorybook"
-            ReferencedContainer = "container:DiscourseMobile.xcodeproj">
+            BuildableName = "Discourse.app"
+            BlueprintName = "DiscourseStorybook"
+            ReferencedContainer = "container:Discourse.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -110,6 +110,8 @@ class HomePage extends Component {
   }
 
   render() {
+    // laft 500 on refresh control so it does not render incorrectly when
+    // not refreshing
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content"/>
@@ -129,6 +131,7 @@ class HomePage extends Component {
           styles={styles.list}
           refreshControl={
             <RefreshControl
+              style={{left: 500}}
               refreshing={this.state.isRefreshing}
               onRefresh={()=>this.refreshSites({ui: true, fast: false})}
               title="Loading..."

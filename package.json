@@ -6,7 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "storybook": "storybook start -p 9001",
     "storybook-ios": "storybook run-ios -a DiscourseMobileStorybook -i org.discourse.DiscourseMobileStorybook",
-    "clean-ios": "cd ios && xcodebuild -scheme DiscourseMobile -destination 'platform=iOS Simulator,name=iPhone 6' clean"
+    "clean-ios": "cd ios && xcodebuild -scheme Discourse -destination 'platform=iOS Simulator,name=iPhone 6' clean"
   },
   "dependencies": {
     "keypair": "^1.0.0",

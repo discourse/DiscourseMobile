@@ -83,16 +83,29 @@ class HomeHeader extends Component {
     };
   }
 
+  renderLastUpdate() {
+    if (this.props.lastRefreshTime && this.props.lastRefreshTime.length > 0) {
+      return (
+        <View style={styles.leftContainer}>
+          <Text style={styles.lastUpdatedTextTitle}>Last updated</Text>
+          <Text style={styles.lastUpdatedTextSubtitle}>
+            {this.props.lastRefreshTime}
+          </Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.leftContainer}></View>
+      );
+    }
+  }
+
   render() {
     return (
       <View>
         <View style={styles.header}>
-          <View style={styles.leftContainer}>
-            <Text style={styles.lastUpdatedTextTitle}>Last updated</Text>
-            <Text style={styles.lastUpdatedTextSubtitle}>
-              {this.props.lastRefreshTime}
-            </Text>
-          </View>
+
+          {this.renderLastUpdate()}
 
           <Image style={styles.icon} source={require('../../../img/nav-icon-gray.png')} />
 
