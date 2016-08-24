@@ -61,9 +61,7 @@ class SiteManager {
     }
   }
 
-  save() {
-    AsyncStorage.setItem('@Discourse.sites', JSON.stringify(this.sites));
-
+  updateUnreadBadge() {
     if(Platform.OS === 'ios') {
       PushNotificationIOS.checkPermissions(p => {
         if (p.badge) {
@@ -73,12 +71,19 @@ class SiteManager {
     }
   }
 
+  save() {
+    AsyncStorage.setItem('@Discourse.sites', JSON.stringify(this.sites));
+    this.updateUnreadBadge();
+  }
+
   ensureRSAKeys() {
     AsyncStorage.getItem('@Discourse.rsaKeys').then((json) => {
       if (json) {
         this.rsaKeys = JSON.parse(json);
       } else {
+        console.log("Generating RSA keys");
         this.rsaKeys = RSAKeyPair();
+        console.log("Generated RSA keys");
         AsyncStorage.setItem('@Discourse.rsaKeys', JSON.stringify(this.rsaKeys));
       }
     });

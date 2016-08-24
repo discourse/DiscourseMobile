@@ -171,12 +171,12 @@
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
 		00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTNetwork.xcodeproj; path = "../node_modules/react-native/Libraries/Network/RCTNetwork.xcodeproj"; sourceTree = "<group>"; };
 		00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* DiscourseMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiscourseMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* DiscourseMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = DiscourseMobileTests.xctest; path = Discourse.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* DiscourseMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiscourseMobileTests.m; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* DiscourseMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiscourseMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* DiscourseMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = DiscourseMobile.app; path = Discourse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = DiscourseMobile/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = DiscourseMobile/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -187,7 +187,6 @@
 		2084424E16BE4B72A25D79DC /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		226098CB1D6465BA001A0518 /* DiscourseMobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = DiscourseMobile.entitlements; path = DiscourseMobile/DiscourseMobile.entitlements; sourceTree = "<group>"; };
 		226098CC1D655C00001A0518 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
-		22738F851D6A8A9000EA24C3 /* Source */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Source; path = ../..; sourceTree = "<group>"; };
 		22738F871D6A8ACF00EA24C3 /* TSBackgroundFetch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TSBackgroundFetch.framework; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/TSBackgroundFetch.framework"; sourceTree = "<group>"; };
 		3CB836B0207247C4B1101787 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		5A69516B25D34D89B1D9CD50 /* libRNBackgroundFetch.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBackgroundFetch.a; sourceTree = "<group>"; };
@@ -196,7 +195,7 @@
 		7F030CBA386342FB97F56182 /* RNBackgroundFetch.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBackgroundFetch.xcodeproj; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A0BF5DB7779C4511BA7B3DE7 /* libRNRandomBytes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNRandomBytes.a; sourceTree = "<group>"; };
-		D034C78A1D5C784F000C9ACD /* DiscourseMobileStorybook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiscourseMobileStorybook.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D034C78A1D5C784F000C9ACD /* Discourse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Discourse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6D7BA47C5954DA383E4DF4A /* SafariViewManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SafariViewManager.xcodeproj; path = "../node_modules/react-native-safari-view/SafariViewManager.xcodeproj"; sourceTree = "<group>"; };
 		F996349405C34010996EE336 /* libSafariViewManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariViewManager.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -435,7 +434,6 @@
 			isa = PBXGroup;
 			children = (
 				22738F871D6A8ACF00EA24C3 /* TSBackgroundFetch.framework */,
-				22738F851D6A8A9000EA24C3 /* Source */,
 				13B07FAE1A68108700A75B9A /* DiscourseMobile */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* DiscourseMobileTests */,
@@ -450,7 +448,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* DiscourseMobile.app */,
 				00E356EE1AD99517003FC87E /* DiscourseMobileTests.xctest */,
-				D034C78A1D5C784F000C9ACD /* DiscourseMobileStorybook.app */,
+				D034C78A1D5C784F000C9ACD /* Discourse.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -458,9 +456,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* DiscourseMobileTests */ = {
+		00E356ED1AD99517003FC87E /* DiscourseTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "DiscourseMobileTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "DiscourseTests" */;
 			buildPhases = (
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
@@ -471,14 +469,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = DiscourseMobileTests;
+			name = DiscourseTests;
 			productName = DiscourseMobileTests;
 			productReference = 00E356EE1AD99517003FC87E /* DiscourseMobileTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* DiscourseMobile */ = {
+		13B07F861A680F5B00A75B9A /* Discourse */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DiscourseMobile" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Discourse" */;
 			buildPhases = (
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -489,14 +487,14 @@
 			);
 			dependencies = (
 			);
-			name = DiscourseMobile;
+			name = Discourse;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* DiscourseMobile.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D034C7721D5C784F000C9ACD /* DiscourseMobileStorybook */ = {
+		D034C7721D5C784F000C9ACD /* DiscourseStorybook */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D034C7871D5C784F000C9ACD /* Build configuration list for PBXNativeTarget "DiscourseMobileStorybook" */;
+			buildConfigurationList = D034C7871D5C784F000C9ACD /* Build configuration list for PBXNativeTarget "DiscourseStorybook" */;
 			buildPhases = (
 				D034C7731D5C784F000C9ACD /* Sources */,
 				D034C7761D5C784F000C9ACD /* Frameworks */,
@@ -507,9 +505,9 @@
 			);
 			dependencies = (
 			);
-			name = DiscourseMobileStorybook;
+			name = DiscourseStorybook;
 			productName = "Hello World";
-			productReference = D034C78A1D5C784F000C9ACD /* DiscourseMobileStorybook.app */;
+			productReference = D034C78A1D5C784F000C9ACD /* Discourse.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -541,7 +539,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "DiscourseMobile" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Discourse" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -616,9 +614,9 @@
 			);
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* DiscourseMobile */,
-				D034C7721D5C784F000C9ACD /* DiscourseMobileStorybook */,
-				00E356ED1AD99517003FC87E /* DiscourseMobileTests */,
+				13B07F861A680F5B00A75B9A /* Discourse */,
+				D034C7721D5C784F000C9ACD /* DiscourseStorybook */,
+				00E356ED1AD99517003FC87E /* DiscourseTests */,
 			);
 		};
 /* End PBXProject section */
@@ -822,7 +820,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* DiscourseMobile */;
+			target = 13B07F861A680F5B00A75B9A /* Discourse */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -870,8 +868,8 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DiscourseMobile.app/DiscourseMobile";
+				PRODUCT_NAME = Discourse;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Discourse.app/Discourse";
 			};
 			name = Debug;
 		};
@@ -902,8 +900,8 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DiscourseMobile.app/DiscourseMobile";
+				PRODUCT_NAME = Discourse;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Discourse.app/Discourse";
 			};
 			name = Release;
 		};
@@ -939,7 +937,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.discourse.DiscourseMobile;
-				PRODUCT_NAME = DiscourseMobile;
+				PRODUCT_NAME = Discourse;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -975,7 +973,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.discourse.DiscourseMobile;
-				PRODUCT_NAME = DiscourseMobile;
+				PRODUCT_NAME = Discourse;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1114,7 +1112,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.discourse.DiscourseMobileStorybook;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Discourse;
 			};
 			name = Debug;
 		};
@@ -1149,14 +1147,14 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.discourse.DiscourseMobileStorybook;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Discourse;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "DiscourseMobileTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "DiscourseTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -1165,7 +1163,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DiscourseMobile" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Discourse" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -1174,7 +1172,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "DiscourseMobile" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Discourse" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
@@ -1183,7 +1181,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D034C7871D5C784F000C9ACD /* Build configuration list for PBXNativeTarget "DiscourseMobileStorybook" */ = {
+		D034C7871D5C784F000C9ACD /* Build configuration list for PBXNativeTarget "DiscourseStorybook" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D034C7881D5C784F000C9ACD /* Debug */,
