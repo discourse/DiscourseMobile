@@ -75,11 +75,34 @@
 {
   [RCTPushNotificationManager didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
-// Required for the notification event.
+
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+  
+  NSMutableDictionary *notification = [NSMutableDictionary dictionaryWithDictionary: userInfo];
+  
+  NSString *state = nil;
+  
+  if(application.applicationState == UIApplicationStateInactive) {
+    state = @"inactive";
+  } else if(application.applicationState == UIApplicationStateBackground){
+    state = @"background";
+  } else {
+    state = @"foreground";
+  }
+  
+  [notification setObject: state forKey: @"AppState"];
+  
+  [RCTPushNotificationManager didReceiveRemoteNotification:notification];
+  
+   completionHandler(UIBackgroundFetchResultNoData);
+}
+
+/*
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification
 {
-  [RCTPushNotificationManager didReceiveRemoteNotification:notification];
 }
+*/
+
 // Required for the localNotification event.
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
@@ -89,6 +112,20 @@
 {
   NSLog(@"%@", error);
 }
+
+// Add support for push notification actions (optional)
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forLocalNotification:(nonnull UILocalNotification *)notification withResponseInfo:(nonnull NSDictionary *)responseInfo completionHandler:(nonnull void (^)())completionHandler
+{
+  NSLog(@"got local notification!");
+  completionHandler();
+}
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
+{
+  NSLog(@"HANDLE ACTION!!! got remote notification ");
+  completionHandler();
+}
+
+
 
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
