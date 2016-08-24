@@ -109,22 +109,21 @@ class DiscourseMobile extends Component {
               console.log("Setting badge to " + total);
               PushNotificationIOS.setApplicationIconBadgeNumber(total);
             }
-            console.log("Calling finish on background fetch in 1 second");
-            // give it one more second just in case stuff is comitting etc
-            setTimeout(BackgroundFetch.finish, 1000);
+
+            console.log("finishing up background fetch");
+            setTimeout(BackgroundFetch.finish,0);
           });
         });
       };
 
       BackgroundFetch.configure({stopOnTerminate: false}, ()=>{
-        let waited = 0;
+        let started = new Date();
 
         let waitTillDone = ()=> {
-          waited++;
 
-          if (this._siteManager.refreshing && waited < 50) {
+          if (this._siteManager.refreshing && ((new Date() - started) > 5000)) {
             // up to 5 seconds to abort
-            this.setTimeout(waitTillDone, 100);
+            this.setTimeout(waitTillDone, 0);
           } else if (this._siteManager.refreshing) {
             // something is messed
             console.log("WARNING: forcing a refresh here cause bg is messed up");
@@ -135,6 +134,7 @@ class DiscourseMobile extends Component {
           }
         }
 
+        // try a tight loop for 5 seconds to free up site manager
         waitTillDone();
 
       });
