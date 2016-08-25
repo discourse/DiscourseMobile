@@ -237,7 +237,7 @@ class Site {
 
   initBus(){
     return new Promise((resolve,reject) => {
-      if (this.channels) {
+      if (this.channels && this.trackingState && this.userId && this.username) {
         resolve({wasReady: true});
       } else {
 
