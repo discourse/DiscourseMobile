@@ -11,9 +11,9 @@
   "dependencies": {
     "keypair": "^1.0.0",
     "lodash": "^4.15.0",
-    "react": "15.2.1",
-    "react-native": "^0.31",
     "moment": "^2.14.1",
+    "react": "15.3.1",
+    "react-native": "0.32.0",
     "react-native-background-fetch": "^0.1.0",
     "react-native-device-info": "^0.9.4",
     "react-native-ecc": "^1.2.2",
@@ -24,6 +24,6 @@
     "react-native-progress": "^3.0.1"
   },
   "devDependencies": {
-    "@kadira/react-native-storybook": "^1.12.3"
+    "@kadira/react-native-storybook": "^1.12.6"
   }
 }
