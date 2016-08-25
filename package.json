@@ -1,11 +1,11 @@
 {
-  "name": "DiscourseMobile",
+  "name": "Discourse",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "storybook": "storybook start -p 9001",
-    "storybook-ios": "storybook run-ios -a DiscourseMobileStorybook -i org.discourse.DiscourseMobileStorybook",
+    "storybook-ios": "storybook run-ios -a DiscourseStorybook -i org.discourse.DiscourseStorybook",
     "clean-ios": "cd ios && xcodebuild -scheme Discourse -destination 'platform=iOS Simulator,name=iPhone 6' clean"
   },
   "dependencies": {
