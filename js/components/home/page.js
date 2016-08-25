@@ -114,7 +114,7 @@ class HomePage extends Component {
     // not refreshing
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="light-content"/>
+        <StatusBar />
         <HomeHeader
           onDidSubmitTerm={(term)=>this.doSearch(term)}
           lastRefreshTime={this.state.lastRefreshTime} />
