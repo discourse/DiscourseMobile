@@ -72,7 +72,7 @@ class SiteManager {
   }
 
   save() {
-    AsyncStorage.setItem('@Discourse.sites', JSON.stringify(this.sites));
+    AsyncStorage.setItem('@Discourse.sites', JSON.stringify(this.sites)).done();
     this.updateUnreadBadge();
   }
 
@@ -93,11 +93,12 @@ class SiteManager {
     AsyncStorage.getItem('@Discourse.sites').then((json) => {
       if (json) {
         this.sites = JSON.parse(json).map(obj=>new Site(obj));
+        this._onChange();
         this.refreshSites({ui: false, fast: true}).then(()=>{
-          this._onChange()
-        });
+          this._onChange();
+        }).done();
       }
-    });
+    }).done();
   }
 
   totalUnread() {
@@ -156,20 +157,18 @@ class SiteManager {
         return;
       }
 
-      if (this.refreshing && refreshDeleta >= 60000) {
+      if (this.refreshing && refreshDelta >= 60000) {
         console.log("WARNING: a previous refresh went missing, resetting cause 1 minute is too long");
       }
 
       this.refreshing = true;
       this._lastRefreshStart = new Date();
 
-      let site = sites.pop();
-
-
+      let processedSites = 0;
       let somethingChanged = false;
       let alerts = [];
 
-      let processSite = (site) => {
+      sites.forEach(site => {
 
         if (opts.ui) {
           site.resetBus();
@@ -182,10 +181,6 @@ class SiteManager {
         site.refresh(opts)
             .then((state) => {
 
-              if (this._background) {
-                site.enterBackground();
-              }
-
               somethingChanged = somethingChanged || state.changed;
               if (state.alerts) {
                 alerts = alerts.concat(state.alerts);
@@ -193,27 +188,33 @@ class SiteManager {
             })
             .catch((e)=>{
               console.log("failed to refresh " + site.url);
+              console.log(e);
               // maybe we were logged out ... something is odd
               somethingChanged = true;
             })
             .finally(() => {
-              let s = sites.pop();
-              if (s && (bgRefresh || !this._background)) { processSite(s); }
-              else {
+
+              if (this._background) {
+                site.enterBackground();
+              }
+
+              processedSites++;
+
+              if (processedSites === sites.length) {
                 if (somethingChanged) {
                   this.save();
                 }
                 this.lastRefresh = new Date();
-                AsyncStorage.setItem("@Discourse.lastRefresh", this.lastRefresh.toJSON());
+                AsyncStorage.setItem("@Discourse.lastRefresh", this.lastRefresh.toJSON()).done();
                 this._onRefresh();
                 this.refreshing = false;
                 resolve({changed: somethingChanged, alerts: alerts});
               }
-            });
+            })
+            .done();
 
-      };
+      });
 
-      processSite(site);
     });
   }
 
@@ -281,10 +282,13 @@ class SiteManager {
     }
 
     this._nonceSite.authToken = decrypted.key;
+
     this._nonceSite.refresh()
         .then(()=>{
-          this.save();
           this._onChange();
+        })
+        .catch((e)=>{
+          console.log("Failed to refresh " + this._nonceSite.url  + " " + e);
         });
   }
 

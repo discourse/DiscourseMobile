@@ -61,6 +61,10 @@ class DiscourseMobile extends Component {
   _handleLocalNotification(e) {
     console.log("got local notification");
     console.log(e);
+    if (AppState.currentState !== "active" && e._data && e._data.discourse_url) {
+      console.log("open safari view");
+      SafariView.show({url: e._data.discourse_url});
+    }
   }
 
   _handleRemoteNotification(e) {
@@ -93,12 +97,18 @@ class DiscourseMobile extends Component {
             if (state.alerts) {
 
               console.log("Got " + state.alerts.length + " in BG fetch");
+              // TODO if site supports push notifications we should skip this
 
               state.alerts.forEach((a)=>{
-                PushNotificationIOS.presentLocalNotification({
-                  alertBody: a.excerpt,
-                  userInfo: {url: a.url}
-                });
+                if (a.excerpt) {
+                  let excerpt = a.username + ": "  + a.excerpt;
+                  excerpt = excerpt.substr(0,250);
+
+                  PushNotificationIOS.presentLocalNotification({
+                    alertBody: excerpt,
+                    userInfo: {discourse_url: a.url}
+                  });
+                }
               });
             }
           })
@@ -117,25 +127,14 @@ class DiscourseMobile extends Component {
       };
 
       BackgroundFetch.configure({stopOnTerminate: false}, ()=>{
-        let started = new Date();
 
-        let waitTillDone = ()=> {
-
-          if (this._siteManager.refreshing && ((new Date() - started) > 5000)) {
-            // up to 5 seconds to abort
-            this.setTimeout(waitTillDone, 0);
-          } else if (this._siteManager.refreshing) {
-            // something is messed
-            console.log("WARNING: forcing a refresh here cause bg is messed up");
-            this._siteManager.refreshing = false;
-            doRefresh();
-          } else {
-            doRefresh();
-          }
+        if (this._siteManager.refreshing) {
+          // assume prviously aborted and force allow a refresh
+          console.log("WARNING: forcing refresh cause _siteManager was stuck refreshing");
+          this._siteManager.refreshing = false;
         }
 
-        // try a tight loop for 5 seconds to free up site manager
-        waitTillDone();
+        doRefresh();
 
       });
     };

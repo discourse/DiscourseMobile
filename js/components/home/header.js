@@ -134,12 +134,14 @@ class HomeHeader extends Component {
 const styles = StyleSheet.create({
   header: {
     paddingTop: 25,
-    paddingBottom: 5,
-    backgroundColor: 'black',
+    paddingBottom: 10,
+    backgroundColor: '#f3f3f3',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    flexWrap: 'nowrap'
+    flexWrap: 'nowrap',
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee"
   },
   icon: {
     resizeMode: 'contain',
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   rightButton: {
-    backgroundColor: '#2b3234',
+    backgroundColor: '#666',
     padding: 8,
     borderRadius: 2,
     fontWeight: "700",

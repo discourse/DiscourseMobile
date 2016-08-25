@@ -1,8 +1,12 @@
+'use strict';
+
 /**
  * @flow
  */
 
 import RandomBytesGenerator from './random_bytes_generator';
+
+const fetch = require('./../lib/fetch');
 
 import _ from 'lodash';
 
@@ -56,8 +60,7 @@ class Site {
         let split = r.url.split("/")
         url = split[0] + "//" + split[2];
 
-        return fetch(url + "/site/basic-info.json")
-                 .then(r => r.json());
+        return fetch(url + "/site/basic-info.json").then(r => r.json());
 
       })
       .then(info=>{
@@ -103,7 +106,8 @@ class Site {
       return new Promise((resolve, reject) => reject("In background mode aborting start request!"));
     }
 
-    return fetch(this.url + path, options)
+    return new Promise((resolve, reject) => {
+      fetch(this.url + path, options, this)
       .then(r => {
         if (this._background) {
           throw "In Background mode aborting request!";
@@ -113,13 +117,15 @@ class Site {
           this.authToken = null;
           this.userId = null;
           this.username = null;
-          throw "User was logged off!"
+          reject("User was logged off!");
         } else if (r.status === 200) {
-          return r.json();
+          r.json().then(r => resolve(r)).catch(e=>{reject(e)});
         } else {
-          throw "Failed to make API request Response was " + r.status;
+          reject("Failed to make API request Response was " + r.status);
         }
-      });
+      })
+      .catch(e=>{reject(e)}).done();
+    });
   }
 
   getUserInfo() {
@@ -134,7 +140,7 @@ class Site {
           })
           .catch(err => {
             reject(err);
-          });
+          }).done();
       }
     });
   }
@@ -147,7 +153,7 @@ class Site {
         RandomBytesGenerator.generateHex(16).then((hex) => {
           this.messageBusId = hex;
           resolve(this.messageBusId);
-        });
+        }).done();
       }
     });
   }
@@ -184,7 +190,18 @@ class Site {
         // we have to get notifications now cause we may have an incorrect number
         rval.notifications = true
       } else if (message.channel === notificationChannel) {
-        rval.notifications = true;
+
+        if (this.unreadNotifications !== message.data.unread_notifications) {
+          this.unreadNotifications = message.data.unread_notifications
+          rval.notifications = true;
+        }
+
+        if (this.unreadPrivateMessages !== message.data.unread_private_messages) {
+          this.unread_private_messages = message.data.unread_private_messages
+          rval.notifications = true;
+        }
+
+
       } else if (["/new", "/latest", "/unread/" + this.userId].indexOf(message.channel) > -1) {
         let payload = message.data.payload;
         if (payload.archetype !== "private_message") {
@@ -253,18 +270,18 @@ class Site {
               .catch(e => {
                 console.log("failed to get tracking state " + e);
                 reject(e);
-              });
+              }).done();
           })
           .catch(e => {
             console.log("failed to poll message bus " + e);
             reject(e);
-          });
+          }).done();
 
         })
         .catch(e => {
           console.log("get user info failed " + e);
           reject(e);
-        });
+        }).done();
       }
     });
   }
@@ -326,15 +343,18 @@ class Site {
                  console.log("changes detected on " + this.url)
                  console.log(changes);
 
-                 if (changes.notifications || !busState.wasReady) {
+                 if (!busState.wasReady) {
                    this.updateTotals();
 
-                   this.refresh({fast: false}).then(result => {
-                     resolve({changed: true, alerts: changes.alerts});
-                   });
+                   this.refresh({fast: false})
+                       .then(result => {
+                         resolve({changed: true, alerts: changes.alerts});
+                       })
+                       .catch(e => reject(e))
+                       .done();
 
                  } else {
-                   resolve({changed: this.updateTotals(), alerts: changes.alerts});
+                   resolve({changed: this.updateTotals() || changes.notifications, alerts: changes.alerts});
                  }
               })
               .catch(e => {
@@ -347,7 +367,7 @@ class Site {
 
         this.jsonApi("/session/current.json")
            .then(json =>{
-             currentUser = json.current_user;
+             let currentUser = json.current_user;
 
              let changed = (this.userId !== currentUser.id) || (this.username !== currentUser.username);
 
@@ -368,21 +388,27 @@ class Site {
 
              resolve({changed});
 
-            }).catch(e=>{
-             console.warn(e);
-             reject(e);
+            })
+            .catch(e=>{
+              console.warn(e);
+              reject(e);
            });
       })
-      .catch(e => reject(e));
+      .catch(e => {
+        reject(e);
+      });
     });
   }
 
   enterBackground() {
     this._background = true;
+    fetch.abort(this);
+    fetch.setTimeout(5000);
   }
 
   exitBackground() {
     this._background = false;
+    fetch.setTimeout(10000);
   }
 
   toJSON(){
