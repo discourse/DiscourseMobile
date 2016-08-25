@@ -18,7 +18,7 @@ import SafariView from 'react-native-safari-view';
 import HomePage from './components/home/page';
 import BackgroundFetch from 'react-native-background-fetch';
 
-class DiscourseMobile extends Component {
+class Discourse extends Component {
 
   constructor(props) {
     super(props);
@@ -171,4 +171,4 @@ class DiscourseMobile extends Component {
   }
 }
 
-export default DiscourseMobile;
+export default Discourse;

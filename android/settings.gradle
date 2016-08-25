@@ -1,4 +1,4 @@
-rootProject.name = 'DiscourseMobile'
+rootProject.name = 'Discourse'
 
 include ':app'
 include ':react-native-device-info'

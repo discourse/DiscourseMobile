@@ -8,4 +8,4 @@ configure(() => {
 }, module);
 
 const StorybookUI = getStorybookUI({port: 9001, host: 'localhost'});
-AppRegistry.registerComponent('DiscourseMobile', () => StorybookUI);
+AppRegistry.registerComponent('Discourse', () => StorybookUI);

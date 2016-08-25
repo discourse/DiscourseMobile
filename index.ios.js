@@ -6,6 +6,6 @@ import {
   AppRegistry
 } from 'react-native';
 
-import DiscourseMobile from './js/DiscourseMobile';
+import Discourse from './js/Discourse';
 
-AppRegistry.registerComponent('DiscourseMobile', () => DiscourseMobile);
+AppRegistry.registerComponent('Discourse', () => Discourse);
