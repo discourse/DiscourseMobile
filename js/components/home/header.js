@@ -8,8 +8,9 @@ import React, {
 } from 'react';
 
 import {
+  Animated,
+  Easing,
   Image,
-  LayoutAnimation,
   StyleSheet,
   TextInput,
   Text,
@@ -38,24 +39,36 @@ class HomeHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      termContainerHeight: new Animated.Value(0),
       text: "",
       expanded: false
     };
   }
 
-  componentWillMount() {
-    LayoutAnimation.spring();
+  termContainerAnimatedHeight() {
+    return this.state.termContainerHeight.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 48],
+    });
   }
 
   hideTermInput() {
     this.refs.Input.blur();
-    LayoutAnimation.spring();
+    Animated.timing(this.state.termContainerHeight, {
+      easing: Easing.inOut(Easing.ease),
+      duration: 250,
+      toValue: 0
+    }).start();
     this.setState({expanded: false});
   }
 
   showTermInput() {
     this.refs.Input.focus();
-    LayoutAnimation.spring();
+    Animated.timing(this.state.termContainerHeight, {
+      easing: Easing.inOut(Easing.ease),
+      duration: 250,
+      toValue: 1
+    }).start();
     this.setState({expanded: true});
   }
 
@@ -63,24 +76,6 @@ class HomeHeader extends Component {
     this.hideTermInput();
     this.setState({text: ""});
     this.props.onDidSubmitTerm(term);
-  }
-
-  termStyle() {
-    return {
-      flex:1,
-      marginTop: 6,
-      marginBottom: 6,
-      marginLeft: 12,
-      marginRight: 12,
-      height: this.state.expanded ? 36 : 0
-    };
-  }
-
-  termContainerStyle() {
-    return {
-      backgroundColor: '#e9e9e9',
-      height: this.state.expanded ? 48 : 0
-    };
   }
 
   renderLastUpdate() {
@@ -113,19 +108,21 @@ class HomeHeader extends Component {
             {this.renderRightButton()}
           </View>
         </View>
-        <View style={this.termContainerStyle()}>
-          <TextInput
-            ref='Input'
-            clearButtonMode='while-editing'
-            autoCapitalize='none'
-            autoCorrect={false}
-            onSubmitEditing={(event)=>this.handleSubmitTerm(event.nativeEvent.text)}
-            placeholder="meta.discourse.org"
-            style={this.termStyle()}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state.text}
-          />
-        </View>
+        <Animated.View style={{height: this.termContainerAnimatedHeight()}}>
+          <View style={styles.termContainer}>
+            <TextInput
+              ref='Input'
+              clearButtonMode='while-editing'
+              autoCapitalize='none'
+              autoCorrect={false}
+              onSubmitEditing={(event)=>this.handleSubmitTerm(event.nativeEvent.text)}
+              placeholder="meta.discourse.org"
+              style={styles.term}
+              onChangeText={(text) => this.setState({text})}
+              value={this.state.text}
+            />
+          </View>
+        </Animated.View>
       </View>
     );
   }
@@ -150,6 +147,18 @@ const styles = StyleSheet.create({
   leftContainer: {
     flex: 2,
     marginLeft: 5
+  },
+  term: {
+    flex:1,
+    marginTop: 6,
+    marginBottom: 6,
+    marginLeft: 12,
+    marginRight: 12,
+    height: 36
+  },
+  termContainer: {
+    backgroundColor: '#e9e9e9',
+    height: 48
   },
   lastUpdatedTextTitle: {
     color: '#9c9b9d',
