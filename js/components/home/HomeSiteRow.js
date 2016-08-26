@@ -1,6 +1,5 @@
-/**
- * @flow
- */
+/* @flow */
+'use strict'
 
 import React from 'react';
 import {
@@ -13,7 +12,7 @@ import {
 
 import Swipeout from 'react-native-swipeout';
 
-class Row extends React.Component {
+class HomeSiteRow extends React.Component {
   renderUnread(site) {
     if (site.unreadNotifications) {
       return (
@@ -188,4 +187,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Row;
+export default HomeSiteRow;

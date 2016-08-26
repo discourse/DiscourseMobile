@@ -1,6 +1,5 @@
-/**
- * @flow
- */
+/* @flow */
+'use strict'
 
 import React, {
   Component,
