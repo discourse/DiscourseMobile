@@ -22,7 +22,8 @@ class Site {
     'totalUnread',
     'totalNew',
     'userId',
-    'username'
+    'username',
+    'hasPush'
   ];
 
   static fromTerm(term) {
@@ -84,7 +85,7 @@ class Site {
   }
 
   jsonApi(path, method, data) {
-    console.log("calling: " + path);
+    console.log("calling: " + this.url + path);
 
     method = method || 'GET';
     let options = {
@@ -136,6 +137,10 @@ class Site {
       } else {
         this.jsonApi("/session/current.json")
           .then(json =>{
+
+            this.userId = json.current_user.id;
+            this.username = json.current_user.username;
+
             resolve({userId: json.current_user.id, username: json.current_user.username});
           })
           .catch(err => {
@@ -197,7 +202,7 @@ class Site {
         }
 
         if (this.unreadPrivateMessages !== message.data.unread_private_messages) {
-          this.unread_private_messages = message.data.unread_private_messages
+          this.unreadPrivateMessages = message.data.unread_private_messages
           rval.notifications = true;
         }
 
@@ -221,6 +226,7 @@ class Site {
         }
       } else if (message.channel === alertChannel) {
         message.data.url = this.url + message.data.post_url;
+        message.site = this;
         rval.alerts.push(message.data);
       }
     });
@@ -237,7 +243,7 @@ class Site {
 
   initBus(){
     return new Promise((resolve,reject) => {
-      if (this.channels && this.trackingState && this.userId && this.username) {
+      if (this.channels && this.trackingState) {
         resolve({wasReady: true});
       } else {
 

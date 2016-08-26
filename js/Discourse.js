@@ -104,10 +104,12 @@ class Discourse extends Component {
                   let excerpt = a.username + ": "  + a.excerpt;
                   excerpt = excerpt.substr(0,250);
 
-                  PushNotificationIOS.presentLocalNotification({
-                    alertBody: excerpt,
-                    userInfo: {discourse_url: a.url}
-                  });
+                  if (!a.site.hasPush) {
+                    PushNotificationIOS.presentLocalNotification({
+                      alertBody: excerpt,
+                      userInfo: {discourse_url: a.url}
+                    });
+                  }
                 }
               });
             }

@@ -282,6 +282,7 @@ class SiteManager {
     }
 
     this._nonceSite.authToken = decrypted.key;
+    this._nonceSite.hasPush = decrypted.access.indexOf("p") > -1;
 
     this._nonceSite.refresh()
         .then(()=>{
@@ -313,7 +314,7 @@ class SiteManager {
           access: 'rp',
           client_id: clientId,
           nonce: nonce,
-          push_url: 'https://api.discourse.org/api/ios_notify',
+          push_url: 'https://api.discourse.org/api/publish_ios',
           auth_redirect: 'discourse://auth_redirect',
           application_name: "Discourse - " + deviceName,
           public_key: this.rsaKeys.public
