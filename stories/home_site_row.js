@@ -1,13 +1,12 @@
-'use strict';
+/* @flow */
+'use strict'
 
 import React from 'react';
 import { View } from 'react-native';
-
 import { storiesOf } from '@kadira/react-native-storybook';
+import HomeSiteRow from '../js/components/home/HomeSiteRow';
 
-import SiteRow from '../js/components/site/row';
-
-storiesOf('Site/Row')
+storiesOf('HomeSiteRow')
   .addDecorator((story) => (
     <View style={{marginTop: 100, marginLeft: 5, marginRight: 5}}>{story()}</View>
   ))
@@ -20,7 +19,7 @@ storiesOf('Site/Row')
       unreadNotifications:null,
       url:"https://meta.discourse.org"
     };
-    return <SiteRow site={site}/>;
+    return <HomeSiteRow site={site}/>;
   })
   .add('With unread notifications', () => {
     const site = {
@@ -31,5 +30,5 @@ storiesOf('Site/Row')
       unreadNotifications:10,
       url:"https://meta.discourse.org",
     };
-    return <SiteRow site={site}/>;
+    return <HomeSiteRow site={site}/>;
   })

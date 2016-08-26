@@ -1,14 +1,10 @@
-'use strict';
-
-/**
- * @flow
- */
-
-import RandomBytesGenerator from './random_bytes_generator';
-
-const fetch = require('./../lib/fetch');
+/* @flow */
+'use strict'
 
 import _ from 'lodash';
+import RandomBytesGenerator from './utils/random_bytes_generator';
+
+const fetch = require('./../lib/fetch');
 
 class Site {
   static FIELDS = [

@@ -1,6 +1,5 @@
-/**
- * @flow
- */
+/* @flow */
+'use strict'
 
 import React, {
   Component,
@@ -16,7 +15,7 @@ import {
 import Site from './site';
 import RSAKeyPair from 'keypair';
 import DeviceInfo from 'react-native-device-info';
-import RandomBytesGenerator from './random_bytes_generator';
+import RandomBytesGenerator from './utils/random_bytes_generator';
 import JSEncrypt from './../lib/jsencrypt';
 import _ from 'lodash';
 

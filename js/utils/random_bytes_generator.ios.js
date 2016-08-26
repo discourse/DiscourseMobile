@@ -1,6 +1,5 @@
-/**
- * @flow
- */
+/* @flow */
+'use strict'
 
 import randomBytes from 'react-native-randombytes';
 

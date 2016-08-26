@@ -1,25 +1,23 @@
-/**
- * @flow
- */
+/* @flow */
+'use strict'
 
 import React, {
   Component
 } from 'react';
 
 import {
+  AppState,
   Linking,
   Platform,
-  PushNotificationIOS,
-  AppState
+  PushNotificationIOS
 } from 'react-native';
 
 import SiteManager from './site_manager';
 import SafariView from 'react-native-safari-view';
-import HomePage from './components/home/page';
+import HomeScreen from './components/home/HomeScreen';
 import BackgroundFetch from 'react-native-background-fetch';
 
 class Discourse extends Component {
-
   constructor(props) {
     super(props);
     this._siteManager = new SiteManager();
@@ -167,7 +165,7 @@ class Discourse extends Component {
     }
 
     return (
-      <HomePage
+      <HomeScreen
         siteManager={this._siteManager}
         onVisitSite={(site)=> this.openUrl(navigator, site)} />
     );

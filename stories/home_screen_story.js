@@ -1,14 +1,13 @@
-'use strict';
+/* @flow */
+'use strict'
 
 import React from 'react';
 import { View } from 'react-native';
-
 import { storiesOf } from '@kadira/react-native-storybook';
-
-import HomePage from '../js/components/home/page';
+import HomeScreen from '../js/components/home/HomeScreen';
 import SiteManager from '../js/site_manager';
 
-storiesOf('Home/Page')
+storiesOf('HomeScreen')
   .addDecorator((story) => (
     <View>{story()}</View>
   ))
@@ -16,7 +15,7 @@ storiesOf('Home/Page')
     const siteManager = new SiteManager();
 
     return (
-      <HomePage
+      <HomeScreen
         onVisitSite={(site)=> console.log(site)}
         siteManager={siteManager} />
     );

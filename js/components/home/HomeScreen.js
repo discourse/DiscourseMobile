@@ -1,6 +1,5 @@
-/**
- * @flow
- */
+/* @flow */
+'use strict'
 
 import React, {
   Component,
@@ -20,10 +19,10 @@ import Moment from 'moment';
 import { Bar } from 'react-native-progress';
 
 import Site from '../../site';
-import SiteRow from '../site/row';
-import HomeHeader from './header';
+import HomeSiteRow from './HomeSiteRow';
+import HomeHeader from './HomeHeader';
 
-class HomePage extends Component {
+class HomeScreen extends Component {
   static propTypes = {
     onVisitSite: PropTypes.func.isRequired,
     siteManager: PropTypes.object.isRequired
@@ -138,7 +137,7 @@ class HomePage extends Component {
             />
           }
           renderRow={(site) =>
-            <SiteRow site={site} onClick={()=>this.props.onVisitSite(site)} onDelete={()=>this.props.siteManager.remove(site)}/>
+            <HomeSiteRow site={site} onClick={()=>this.props.onVisitSite(site)} onDelete={()=>this.props.siteManager.remove(site)}/>
           }
         />
       </View>
@@ -162,4 +161,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HomePage;
+export default HomeScreen;
