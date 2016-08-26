@@ -108,7 +108,7 @@ class HomeHeader extends Component {
             {this.renderRightButton()}
           </View>
         </View>
-        <Animated.View style={{height: this.termContainerAnimatedHeight()}}>
+        <Animated.View style={{overflow: 'hidden', height: this.termContainerAnimatedHeight()}}>
           <View style={styles.termContainer}>
             <TextInput
               ref='Input'
