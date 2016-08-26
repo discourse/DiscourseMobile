@@ -11,6 +11,7 @@ import {
   RefreshControl,
   StatusBar,
   StyleSheet,
+  Text,
   View
 } from 'react-native';
 
@@ -108,22 +109,18 @@ class HomeScreen extends Component {
     });
   }
 
-  render() {
-    // laft 500 on refresh control so it does not render incorrectly when
-    // not refreshing
-    return (
-      <View style={styles.container}>
-        <StatusBar />
-        <HomeHeader
-          onDidSubmitTerm={(term)=>this.doSearch(term)}
-          lastRefreshTime={this.state.lastRefreshTime} />
-        <Bar
-          color='#f0ea89'
-          borderWidth={0}
-          borderRadius={0}
-          height={this.state.addSiteProgress == 0 ? 0 : 6}
-          progress={this.state.addSiteProgress}
-          width={Dimensions.get('window').width} />
+  renderSites() {
+    if(this.props.siteManager.sites.length == 0 && this.state.lastRefreshTime) {
+      return (
+        <Text style={{textAlign: 'center', padding: 12}}>
+          You don’t have any sites yet.
+          Discourse notifier can keep track
+          of your notifications across sites.
+          Tap `Add` to track your first site.
+        </Text>
+      )
+    } else {
+      return (
         <ListView
           dataSource={this.state.dataSource}
           enableEmptySections={true}
@@ -140,6 +137,27 @@ class HomeScreen extends Component {
             <HomeSiteRow site={site} onClick={()=>this.props.onVisitSite(site)} onDelete={()=>this.props.siteManager.remove(site)}/>
           }
         />
+      )
+    }
+  }
+
+  render() {
+    // laft 500 on refresh control so it does not render incorrectly when
+    // not refreshing
+    return (
+      <View style={styles.container}>
+        <StatusBar />
+        <HomeHeader
+          onDidSubmitTerm={(term)=>this.doSearch(term)}
+          lastRefreshTime={this.state.lastRefreshTime} />
+        <Bar
+          color='#f0ea89'
+          borderWidth={0}
+          borderRadius={0}
+          height={this.state.addSiteProgress == 0 ? 0 : 6}
+          progress={this.state.addSiteProgress}
+          width={Dimensions.get('window').width} />
+        {this.renderSites()}
       </View>
     );
   }
