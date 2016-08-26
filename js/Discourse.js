@@ -29,6 +29,7 @@ class Discourse extends Component {
       console.log(event);
       let split = event.url.split("payload=");
       if (split.length === 2) {
+        SafariView.dismiss();
         this._siteManager.handleAuthPayload(decodeURIComponent(split[1]));
       }
     }
@@ -156,7 +157,7 @@ class Discourse extends Component {
     this._siteManager
       .generateAuthURL(site)
       .then(url => {
-        Linking.openURL(url);
+        SafariView.show({url});
       });
   }
 
