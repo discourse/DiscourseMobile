@@ -76,7 +76,7 @@ class HomePage extends Component {
   }
 
   doSearch(term) {
-    this.setState({addSiteProgress: 0.2})
+    this.setState({addSiteProgress: Math.random() * 0.4})
     Site.fromTerm(term)
       .then(site => {
         this.setState({addSiteProgress: 1})
