@@ -1,23 +1,23 @@
 /* @flow */
 'use strict'
 
-import React from 'react';
+import React from 'react'
 import {
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
-} from 'react-native';
+} from 'react-native'
 
-import Swipeout from 'react-native-swipeout';
+import Swipeout from 'react-native-swipeout'
 
 class HomeSiteRow extends React.Component {
   renderUnread(site) {
     if (site.unreadNotifications) {
       return (
         <Text style={styles.blueNotification}>{site.unreadNotifications}</Text>
-      );
+      )
     }
   }
 
@@ -25,7 +25,7 @@ class HomeSiteRow extends React.Component {
     if (site.unreadPrivateMessages) {
       return (
         <Text style={styles.greenNotification}>{site.unreadPrivateMessages}</Text>
-      );
+      )
     }
   }
 
@@ -36,7 +36,7 @@ class HomeSiteRow extends React.Component {
           {this.renderUnreadPM(site)}
           {this.renderUnread(site)}
         </View>
-      );
+      )
     }
   }
 
@@ -46,18 +46,18 @@ class HomeSiteRow extends React.Component {
         <View style={styles.notifications}>
           <Text style={styles.connect}>connect</Text>
         </View>
-      );
+      )
     }
   }
 
   renderCounts(site) {
-    var counts = [];
+    var counts = []
     if (site.authToken) {
       if (site.totalNew > 0) {
-        counts.push("new (" + site.totalNew + ")");
+        counts.push('new (' + site.totalNew + ')')
       }
       if (site.totalUnread > 0) {
-        counts.push("unread (" + site.totalUnread + ")");
+        counts.push('unread (' + site.totalUnread + ')')
       }
     }
 
@@ -66,12 +66,12 @@ class HomeSiteRow extends React.Component {
         <View style={styles.counts}>
           <Text style={styles.countsText}>{counts.join('  ')}</Text>
         </View>
-      );
+      )
     }
   }
 
   render() {
-    const site = this.props.site;
+    const site = this.props.site
 
     return (
       <Swipeout
@@ -86,13 +86,13 @@ class HomeSiteRow extends React.Component {
             <Image style={styles.icon} source={{uri: site.icon}} />
             <View style={styles.info}>
               <Text
-                  ellipsizeMode='tail'
+                  ellipsizeMode="tail"
                   numberOfLines={1}
                   style={styles.url}>
                 {site.url}
               </Text>
               <Text
-                  ellipsizeMode='tail'
+                  ellipsizeMode="tail"
                   numberOfLines={2}
                   style={styles.description}>
                 {site.description}
@@ -104,7 +104,7 @@ class HomeSiteRow extends React.Component {
           </View>
         </TouchableOpacity>
       </Swipeout>
-    );
+    )
   }
 }
 
@@ -129,12 +129,12 @@ const styles = StyleSheet.create({
   },
   url: {
     fontSize: 14,
-    color: "black",
-    fontWeight: "500"
+    color: 'black',
+    fontWeight: '500'
   },
   description: {
     fontSize: 14,
-    color: "#999",
+    color: '#999',
     flex: 10
   },
   notifications: {
@@ -144,38 +144,38 @@ const styles = StyleSheet.create({
   },
   connect: {
     alignSelf: 'flex-start',
-    backgroundColor: "#499",
+    backgroundColor: '#499',
     padding: 6,
     marginLeft: 6,
     marginBottom: 6,
     fontSize: 14,
     fontWeight: 'bold',
     borderRadius: 2,
-    color: "#FFF",
+    color: '#FFF',
     overflow: 'hidden'
   },
   blueNotification: {
     alignSelf: 'flex-start',
-    backgroundColor: "#6CF",
+    backgroundColor: '#6CF',
     padding: 6,
     marginLeft: 6,
     marginBottom: 6,
     fontSize: 14,
     fontWeight: 'bold',
     borderRadius: 8,
-    color: "#FFF",
+    color: '#FFF',
     overflow: 'hidden'
   },
   greenNotification: {
     alignSelf: 'flex-start',
-    backgroundColor: "#01a84c",
+    backgroundColor: '#01a84c',
     padding: 6,
     marginLeft: 6,
     marginBottom: 6,
     fontSize: 14,
     fontWeight: 'bold',
     borderRadius: 8,
-    color: "#FFF",
+    color: '#FFF',
     overflow: 'hidden'
   },
   counts: {
@@ -185,6 +185,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#999'
   }
-});
+})
 
-export default HomeSiteRow;
+export default HomeSiteRow
