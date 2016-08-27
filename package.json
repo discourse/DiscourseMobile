@@ -6,7 +6,8 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "storybook": "storybook start -p 9001",
     "storybook-ios": "storybook run-ios -a DiscourseStorybook -i org.discourse.DiscourseStorybook",
-    "clean-ios": "cd ios && xcodebuild -scheme Discourse -destination 'platform=iOS Simulator,name=iPhone 6' clean"
+    "clean-ios": "cd ios && xcodebuild -scheme Discourse -destination 'platform=iOS Simulator,name=iPhone 6' clean",
+    "lint": "eslint ./js"
   },
   "dependencies": {
     "keypair": "^1.0.0",
@@ -24,6 +25,11 @@
     "react-native-progress": "^3.0.1"
   },
   "devDependencies": {
+    "babel-eslint": "^6.0.0",
+    "babel-polyfill": "^6.13.0",
+    "babel-preset-react-native": "^1.9.0",
+    "eslint": "^2.5.3",
+    "eslint-plugin-react": "^4.2.1",
     "@kadira/react-native-storybook": "^1.12.6"
   }
 }

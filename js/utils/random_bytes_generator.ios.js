@@ -1,16 +1,16 @@
 /* @flow */
 'use strict'
 
-import randomBytes from 'react-native-randombytes';
+import randomBytes from 'react-native-randombytes'
 
 class RandomBytesGenerator {
-  static generateHex(count) {
+  static generateHex(size) {
     return new Promise(resolve=>{
-      randomBytes(count, (err, bytes) => {
-        resolve(bytes.toString('hex'));
-      });
+      randomBytes(size, (_, bytes) => {
+        resolve(bytes.toString('hex'))
+      })
     })
   }
 }
 
-export default RandomBytesGenerator;
+export default RandomBytesGenerator
