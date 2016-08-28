@@ -193,11 +193,21 @@ class SiteManager {
               processedSites++
 
               if (processedSites === sites.length) {
-                if (somethingChanged) {
+
+                // Don't save stuff in the background
+                if (somethingChanged && !this._background) {
                   this.save()
+                } else if (somethingChanged) {
+                  this._onChange();
                 }
+
+
                 this.lastRefresh = new Date()
-                AsyncStorage.setItem('@Discourse.lastRefresh', this.lastRefresh.toJSON()).done()
+
+                if (!this._background) {
+                  AsyncStorage.setItem('@Discourse.lastRefresh', this.lastRefresh.toJSON()).done()
+                }
+
                 this._onRefresh()
                 this.refreshing = false
                 resolve({changed: somethingChanged, alerts: alerts})
