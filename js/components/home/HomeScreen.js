@@ -8,7 +8,6 @@ import {
   RefreshControl,
   StatusBar,
   StyleSheet,
-  Text,
   View
 } from 'react-native'
 
@@ -19,6 +18,8 @@ import { Bar } from 'react-native-progress'
 import Site from '../../site'
 import HomeSiteRow from './HomeSiteRow'
 import HomeHeader from './HomeHeader'
+import HomeTermBar from './HomeTermBar'
+import HomeOnBoardingView from './HomeOnBoardingView'
 
 class HomeScreen extends React.Component {
   static propTypes = {
@@ -36,6 +37,7 @@ class HomeScreen extends React.Component {
 
     this.state = {
       addSiteProgress: 0,
+      displayTermBar: false,
       dataSource: this._dataSource,
       isRefreshing: false,
       lastRefreshTime: null
@@ -73,7 +75,11 @@ class HomeScreen extends React.Component {
   }
 
   doSearch(term) {
-    this.setState({addSiteProgress: Math.random() * 0.4})
+    this.setState({
+      displayTermBar: false,
+      addSiteProgress: Math.random() * 0.4
+    })
+
     Site.fromTerm(term)
       .then(site => {
         this.setState({addSiteProgress: 1})
@@ -106,15 +112,19 @@ class HomeScreen extends React.Component {
     })
   }
 
+  shouldDisplayOnBoarding() {
+    return this.props.siteManager.sites.length === 0
+            && this.state.lastRefreshTime
+            && !this.refreshing
+            && this.state.addSiteProgress === 0
+            && !this.state.displayTermBar
+  }
+
   renderSites() {
-    if (this.props.siteManager.sites.length === 0 && this.state.lastRefreshTime) {
+    if (this.shouldDisplayOnBoarding()) {
       return (
-        <Text style={{textAlign: 'center', padding: 12}}>
-          You don’t have any sites yet.
-          Discourse notifier can keep track
-          of your notifications across sites.
-          Tap `Add` to track your first site.
-        </Text>
+        <HomeOnBoardingView
+          onDidPressAddSite={()=>this.setState({displayTermBar: true})} />
       )
     } else {
       return (
@@ -145,8 +155,12 @@ class HomeScreen extends React.Component {
       <View style={styles.container}>
         <StatusBar />
         <HomeHeader
-          onDidSubmitTerm={(term)=>this.doSearch(term)}
+          addMode={!this.state.displayTermBar}
+          onDidPressAddSite={()=>this.setState({displayTermBar: !this.state.displayTermBar})}
           lastRefreshTime={this.state.lastRefreshTime} />
+        <HomeTermBar
+          onDidSubmitTerm={(term)=>this.doSearch(term)}
+          expanded={this.state.displayTermBar} />
         <Bar
           color="#f0ea89"
           borderWidth={0}
