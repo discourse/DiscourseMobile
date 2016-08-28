@@ -63,6 +63,8 @@ class HomeTermBar extends React.Component {
     else {
       this.hideTermInput()
     }
+
+    this.setState({expanded: props.expanded})
   }
 
   render() {
