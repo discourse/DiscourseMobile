@@ -35,19 +35,19 @@ class HomeTermBar extends React.Component {
 
   hideTermInput() {
     this.refs.Input.blur()
-    Animated.timing(this.state.termContainerHeight, {
-      easing: Easing.inOut(Easing.ease),
-      duration: 250,
-      toValue: 0
-    }).start()
+    this.animateTermInputToValue(0)
   }
 
   showTermInput() {
     this.refs.Input.focus()
+    this.animateTermInputToValue(1)
+  }
+
+  animateTermInputToValue(value) {
     Animated.timing(this.state.termContainerHeight, {
       easing: Easing.inOut(Easing.ease),
       duration: 250,
-      toValue: 1
+      toValue: value
     }).start()
   }
 
@@ -93,11 +93,9 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     marginLeft: 12,
     marginRight: 12,
-    height: 36
   },
   termContainer: {
     backgroundColor: '#e9e9e9',
-    height: 48,
     overflow: 'hidden'
   }
 })
