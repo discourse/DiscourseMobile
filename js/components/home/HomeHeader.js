@@ -103,13 +103,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   rightButton: {
-    backgroundColor: '#666',
+    backgroundColor: '#DDD',
     padding: 8,
     borderRadius: 2,
     fontWeight: '700',
     fontSize: 14,
     textAlign: 'center',
-    color: 'white'
+    color: '#616161'
   }
 })
 

@@ -18,11 +18,12 @@
     "react-native-background-fetch": "^0.1.0",
     "react-native-device-info": "^0.9.4",
     "react-native-ecc": "^1.2.2",
+    "react-native-fetch-blob": "^0.9.3",
+    "react-native-progress": "^3.0.1",
     "react-native-randombytes": "^1.0.1",
-    "react-native-safari-view": "^1.0.1",
+    "react-native-safari-view": "git+https://github.com/samsaffron/react-native-safari-view.git",
     "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
-    "sjcl": "^1.0.3",
-    "react-native-progress": "^3.0.1"
+    "sjcl": "^1.0.3"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",

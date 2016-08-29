@@ -8,7 +8,9 @@ import {
 import _ from 'lodash'
 import RandomBytesGenerator from './utils/random_bytes_generator'
 
-const fetch = require('./../lib/fetch')
+// const fetch = require('./../lib/fetch')
+//
+import RNFetchBlob from 'react-native-fetch-blob'
 
 class Site {
   static FIELDS = [
@@ -81,25 +83,22 @@ class Site {
     if (props) {
       Site.FIELDS.forEach(prop=>{this[prop] = props[prop]})
     }
+    this._timeout = 10000
   }
 
   jsonApi(path, method, data) {
     console.log(`calling: ${this.url}${path}`)
 
     method = method || 'GET'
-    let options = {
-      method: method,
-      headers: {
-        'User-Api-Key': this.authToken,
-        'User-Agent': 'Discourse IOS App / 1.0',
-        'Content-Type': 'application/json',
-        'Dont-Chunk': 'true'
-      },
-      mode: 'no-cors',
+    let headers = {
+      'User-Api-Key': this.authToken,
+      'User-Agent': 'Discourse IOS App / 1.0',
+      'Content-Type': 'application/json',
+      'Dont-Chunk': 'true'
     }
 
     if (data) {
-      options.body = JSON.stringify(data)
+      data = JSON.stringify(data)
     }
 
     if (this._background) {
@@ -107,24 +106,30 @@ class Site {
     }
 
     return new Promise((resolve, reject) => {
-      fetch(this.url + path, options, this)
-      .then(r1 => {
+
+      let config = RNFetchBlob.config({timeout: this._timeout})
+      this._currentFetch = config.fetch(method, this.url + path, headers, data)
+      this._currentFetch.then(r1 => {
         if (this._background) {
           throw 'In Background mode aborting request!'
         }
-        if (r1.status === 403) {
+        resolve(r1.json())
+      })
+      .catch((e,statusCode)=>{
+       if(statusCode === 403) {
           // access denied user logged out or key revoked
           this.authToken = null
           this.userId = null
           this.username = null
           reject('User was logged off!')
-        } else if (r1.status === 200) {
-          r1.json().then(r2 => resolve(r2)).catch(e=>{reject(e)})
-        } else {
-          reject(`Failed to make API request Response was ${r1.status}`)
+          return
         }
+        reject(e)
       })
-      .catch(e=>{reject(e)}).done()
+      .finally(()=>{
+        this._currentFetch = undefined
+      })
+      .done()
     })
   }
 
@@ -410,13 +415,18 @@ class Site {
 
   enterBackground() {
     this._background = true
-    fetch.abort(this)
-    fetch.setTimeout(5000)
+    if (this._currentFetch && this._currentFetch.cancel) {
+      this._currentFetch.cancel((e) =>{
+        console.log("Failed to cancel request")
+        console.log(e)
+      })
+    }
+    this._timeout = 5000
   }
 
   exitBackground() {
     this._background = false
-    fetch.setTimeout(10000)
+    this._timeout = 10000
   }
 
   toJSON() {
