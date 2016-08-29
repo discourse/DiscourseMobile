@@ -225,7 +225,7 @@ class Site {
         }
       } else if (message.channel === alertChannel) {
         message.data.url = this.url + message.data.post_url
-        message.site = this
+        message.data.site = this
         rval.alerts.push(message.data)
       }
     })
