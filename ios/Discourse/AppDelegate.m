@@ -130,3 +130,5 @@
   TSBackgroundFetch *fetchManager = [TSBackgroundFetch sharedInstance];
   [fetchManager performFetchWithCompletionHandler:completionHandler];
 }
+
+@end
