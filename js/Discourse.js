@@ -45,6 +45,15 @@ class Discourse extends React.Component {
 
     if (Platform.OS === 'ios') {
 
+      SafariView.addEventListener('onShow', ()=>{
+        this._siteManager.refreshInterval(60000)
+      })
+
+      SafariView.addEventListener('onDismiss', ()=>{
+        this._siteManager.refreshInterval(15000)
+        this._siteManager.refreshSites({ui: false, fast: true})
+      })
+
       PushNotificationIOS.addEventListener('notification', (e) => this._handleRemoteNotification(e))
       PushNotificationIOS.addEventListener('localNotification', (e) => this._handleLocalNotification(e))
 

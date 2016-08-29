@@ -29,6 +29,21 @@ class SiteManager {
     this.ensureRSAKeys()
   }
 
+  refreshInterval(interval) {
+    if (this._refresher) {
+      clearInterval(this._refresher)
+      this._refresher = null;
+    }
+
+    this._refreshInterval = interval;
+
+    if (interval > 0) {
+      this._refresher = setInterval(()=>{
+        this.refreshSites({ui: false, fast: true})
+      }, interval)
+    }
+  }
+
   add(site) {
     this.sites.push(site)
     this.save()
@@ -106,13 +121,22 @@ class SiteManager {
   }
 
   enterBackground() {
+    if (this._refresher) {
+      clearInterval(this._refresher)
+      this._refresher = null
+    }
     this._background = true
     this.sites.forEach(s=>s.enterBackground())
+
   }
 
   exitBackground() {
     this._background = false
     this.sites.forEach(s=>s.exitBackground())
+    this.refreshInterval(this._refreshInterval)
+    // in case UI did not pick up changes
+    this._onChange()
+    this._onRefresh()
   }
 
   refreshSites(opts) {

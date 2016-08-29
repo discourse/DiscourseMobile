@@ -48,14 +48,11 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.refresher = setInterval(()=>{
-      this.refreshSites({ui: false, fast: true})
-    }, 1000 * 11)
+    this.props.siteManager.refreshInterval(15000)
   }
 
   componentWillUnmount() {
     this.props.siteManager.unsubscribe(this._onChangeSites)
-    clearInterval(this.refresher)
   }
 
   onChangeSites(e) {
