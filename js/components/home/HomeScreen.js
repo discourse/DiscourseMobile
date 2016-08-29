@@ -8,7 +8,8 @@ import {
   RefreshControl,
   StatusBar,
   StyleSheet,
-  View
+  View,
+  Text
 } from 'react-native'
 
 import Dimensions from 'Dimensions'
@@ -167,6 +168,38 @@ class HomeScreen extends React.Component {
           width={Dimensions.get('window').width} />
         {this.renderSites()}
       </View>
+    )
+  }
+}
+
+
+// <DebugRow siteManager={this.props.siteManager}/>
+class DebugRow extends React.Component {
+  constructor(props) {
+
+    super(props)
+
+    this.state = {
+      firstFetch: this.props.siteManager.firstFetch,
+      lastFetch: this.props.siteManager.lastFetch,
+      fetchCount: this.props.siteManager.fetchCount
+    }
+    this.props.siteManager.subscribe(()=>{
+      this.setState({
+        firstFetch: this.props.siteManager.firstFetch,
+        lastFetch: this.props.siteManager.lastFetch,
+        fetchCount: this.props.siteManager.fetchCount
+      })
+    })
+  }
+
+  render() {
+    return(
+    <View>
+       <Text>First Fetch: {Moment(this.state.firstFetch).fromNow()}</Text>
+       <Text>Last Fetch: {Moment(this.state.lastFetch).fromNow()}</Text>
+       <Text>Count: {this.state.fetchCount}</Text>
+    </View>
     )
   }
 }

@@ -20,6 +20,10 @@ class SiteManager {
     this.sites = []
     this.load()
 
+    this.firstFetch = new Date()
+    this.lastFetch = new Date()
+    this.fetchCount = 0
+
     AsyncStorage.getItem('@Discourse.lastRefresh').then(date => {
       if (date) {
         this._onRefresh(new Date(date))
@@ -140,6 +144,12 @@ class SiteManager {
   }
 
   refreshSites(opts) {
+
+    if (opts.background) {
+      this.lastFetch = new Date()
+      this.fetchCount++
+    }
+
     let sites = this.sites.slice(0)
     opts = opts || {}
 
