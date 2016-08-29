@@ -90,18 +90,20 @@ class Discourse extends React.Component {
           .then((state)=>{
 
             console.log('Finished refreshing sites in BG fetch!')
+            console.log(state)
 
             if (state.alerts) {
 
-              console.log('Got ' + state.alerts.length + ' in BG fetch')
-              // TODO if site supports push notifications we should skip this
+              console.log('Got ' + state.alerts.length + ' alert in BG fetch')
 
-              state.alerts.forEach((a)=>{
+              state.alerts.forEach((a) => {
+
                 if (a.excerpt) {
                   let excerpt = a.username + ': '  + a.excerpt
                   excerpt = excerpt.substr(0,250)
 
                   if (!a.site.hasPush) {
+                    console.log("publishing local notifications for " + a.site.url)
                     PushNotificationIOS.presentLocalNotification({
                       alertBody: excerpt,
                       userInfo: {discourse_url: a.url}
@@ -111,6 +113,10 @@ class Discourse extends React.Component {
               })
             }
           })
+        .catch((e) => {
+          console.log("WARN: failed in bg fetch")
+          console.log(e)
+        })
         .finally(() => {
           PushNotificationIOS.checkPermissions(p => {
             if (p.badge) {
