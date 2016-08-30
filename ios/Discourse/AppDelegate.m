@@ -76,6 +76,8 @@
   [RCTPushNotificationManager didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
+-(void)applicationDidEnterBackground:(UIApplication *)application {
+}
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
   
   NSMutableDictionary *notification = [NSMutableDictionary dictionaryWithDictionary: userInfo];
@@ -112,7 +114,21 @@
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
   NSLog(@"RNBackgroundFetch AppDelegate received fetch event");
-  [RNBackgroundFetch gotBackgroundFetch:completionHandler];
+  
+  UIBackgroundTaskIdentifier bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
+    NSLog(@"RNBackgroundFetch execution expired!");
+    completionHandler(UIBackgroundTaskInvalid);
+    [application endBackgroundTask:bgTask];
+  }];
+  
+  void (^wrappedCompletionHandler) (UIBackgroundFetchResult);
+  wrappedCompletionHandler = ^(UIBackgroundFetchResult result){
+    NSLog(@"RNBackgroundFetch completing fetch");
+    completionHandler(result);
+    [application endBackgroundTask:bgTask];
+  };
+  
+  [RNBackgroundFetch gotBackgroundFetch:wrappedCompletionHandler];
   
 }
 
