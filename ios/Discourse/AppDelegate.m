@@ -13,7 +13,7 @@
 #import "RCTRootView.h"
 #import "RCTLinkingManager.h"
 #import "RCTPushNotificationManager.h"
-#import <TSBackgroundFetch/TSBackgroundFetch.h>
+#import "RNBackgroundFetch.h"
 #import "RCTLog.h"
 
 
@@ -41,6 +41,9 @@
   
   // TODO We don't need full release debugging forever, but for now it helps
   RCTSetLogThreshold(RCTLogLevelInfo - 1);
+  
+  // config BG fetch
+  [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
   
   return YES;
 }
@@ -94,11 +97,6 @@
   completionHandler(UIBackgroundFetchResultNoData);
 }
 
-/*
- - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification
- {
- }
- */
 
 // Required for the localNotification event.
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
@@ -110,25 +108,12 @@
   NSLog(@"%@", error);
 }
 
-// Add support for push notification actions (optional)
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forLocalNotification:(nonnull UILocalNotification *)notification withResponseInfo:(nonnull NSDictionary *)responseInfo completionHandler:(nonnull void (^)())completionHandler
-{
-  NSLog(@"got local notification!");
-  completionHandler();
-}
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
-{
-  NSLog(@"HANDLE ACTION!!! got remote notification ");
-  completionHandler();
-}
-
-
 
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
   NSLog(@"RNBackgroundFetch AppDelegate received fetch event");
-  TSBackgroundFetch *fetchManager = [TSBackgroundFetch sharedInstance];
-  [fetchManager performFetchWithCompletionHandler:completionHandler];
+  [RNBackgroundFetch gotBackgroundFetch:completionHandler];
+  
 }
 
 @end
