@@ -135,12 +135,14 @@ class Discourse extends React.Component {
             }
 
             console.log('finishing up background fetch')
-            setTimeout(BackgroundFetch.finish,0)
+            BackgroundFetch.done(true)
           })
         })
       }
 
-      BackgroundFetch.configure({stopOnTerminate: false}, ()=>{
+
+
+      BackgroundFetch.addEventListener("backgroundFetch", ()=>{
 
         if (this._siteManager.refreshing) {
           // assume prviously aborted and force allow a refresh
@@ -149,8 +151,7 @@ class Discourse extends React.Component {
         }
 
         doRefresh()
-
-      })
+      });
     }
   }
 

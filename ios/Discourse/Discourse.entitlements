@@ -7,5 +7,7 @@
 		<string>applinks:api.discourse.org</string>
 		<string>activitycontinuation:api.discourse.org</string>
 	</array>
+	<key>com.apple.developer.icloud-container-identifiers</key>
+	<array/>
 </dict>
 </plist>
