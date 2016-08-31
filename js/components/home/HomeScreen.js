@@ -165,7 +165,8 @@ class HomeScreen extends React.Component {
           color="#f0ea89"
           borderWidth={0}
           borderRadius={0}
-          height={this.state.addSiteProgress === 0 ? 0 : 6}
+          style={{top: -5}}
+          height={this.state.addSiteProgress === 0 ? 0 : 5}
           progress={this.state.addSiteProgress}
           width={Dimensions.get('window').width} />
         {this.renderSites()}
