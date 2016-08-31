@@ -10,6 +10,7 @@ import {
 
 import Site from './site'
 import RSAKeyPair from 'keypair'
+import RNKeyPair from 'react-native-key-pair'
 import DeviceInfo from 'react-native-device-info'
 import RandomBytesGenerator from './utils/random_bytes_generator'
 import JSEncrypt from './../lib/jsencrypt'
@@ -29,8 +30,6 @@ class SiteManager {
         this._onRefresh(new Date(date))
       }
     })
-
-    this.ensureRSAKeys()
   }
 
   refreshInterval(interval) {
@@ -90,15 +89,26 @@ class SiteManager {
   }
 
   ensureRSAKeys() {
-    AsyncStorage.getItem('@Discourse.rsaKeys').then((json) => {
-      if (json) {
-        this.rsaKeys = JSON.parse(json)
-      } else {
-        console.log('Generating RSA keys')
-        this.rsaKeys = RSAKeyPair()
-        console.log('Generated RSA keys')
-        AsyncStorage.setItem('@Discourse.rsaKeys', JSON.stringify(this.rsaKeys))
+    return new Promise((resolve,reject)=> {
+      if (this.rsaKeys) {
+        resolve()
+        return
       }
+
+      AsyncStorage.getItem('@Discourse.rsaKeys').then((json) => {
+        if (json) {
+          this.rsaKeys = JSON.parse(json)
+          resolve()
+        } else {
+          console.log('Generating RSA keys')
+          RNKeyPair.generate((pair)=>{
+            this.rsaKeys = pair
+            resolve()
+            console.log('Generated RSA keys')
+            AsyncStorage.setItem('@Discourse.rsaKeys', JSON.stringify(this.rsaKeys))
+          })
+        }
+      })
     })
   }
 
@@ -332,7 +342,8 @@ class SiteManager {
   generateAuthURL(site) {
     let clientId
 
-    return this.getClientId()
+    return this.ensureRSAKeys().then(()=>
+      this.getClientId()
       .then(cid => {
         clientId = cid
         return this.generateNonce(site)
@@ -358,6 +369,7 @@ class SiteManager {
 
         return `${site.url}/user-api-key/new?${this.serializeParams(params)}`
       })
+    )
   }
 
   _onRefresh() {
