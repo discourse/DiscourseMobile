@@ -205,17 +205,11 @@ class DebugRow extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  term: {
-    height: 40,
-    paddingLeft: 10,
-    marginBottom: 20
-  },
   list: {
-    flex: 10
+    flex: 1
   },
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
     backgroundColor: '#fff',
   }
 })
