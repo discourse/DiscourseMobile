@@ -23,6 +23,7 @@
     "react-native-randombytes": "^1.0.1",
     "react-native-safari-view": "git+https://github.com/samsaffron/react-native-safari-view.git",
     "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
+    "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair.git",
     "sjcl": "^1.0.3"
   },
   "devDependencies": {

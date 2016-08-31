@@ -1,6 +1,7 @@
 package com.discourse;
 
 import com.facebook.react.ReactActivity;
+import com.reactlibrary.RNKeyPairPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 
 public class MainActivity extends ReactActivity {
