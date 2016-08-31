@@ -135,11 +135,13 @@ class HomeScreen extends React.Component {
               style={{left: 500}}
               refreshing={this.state.isRefreshing}
               onRefresh={()=>this.refreshSites({ui: true, fast: false})}
-              title="Loading..."
-            />
+              title="Loading..." />
           }
           renderRow={(site) =>
-            <HomeSiteRow site={site} onClick={()=>this.props.onVisitSite(site)} onDelete={()=>this.props.siteManager.remove(site)}/>
+            <HomeSiteRow
+              site={site}
+              onClick={()=>this.props.onVisitSite(site)}
+              onDelete={()=>this.props.siteManager.remove(site)} />
           }
         />
       )
@@ -176,7 +178,6 @@ class HomeScreen extends React.Component {
 // <DebugRow siteManager={this.props.siteManager}/>
 class DebugRow extends React.Component {
   constructor(props) {
-
     super(props)
 
     this.state = {
@@ -184,6 +185,7 @@ class DebugRow extends React.Component {
       lastFetch: this.props.siteManager.lastFetch,
       fetchCount: this.props.siteManager.fetchCount
     }
+
     this.props.siteManager.subscribe(()=>{
       this.setState({
         firstFetch: this.props.siteManager.firstFetch,
@@ -194,12 +196,12 @@ class DebugRow extends React.Component {
   }
 
   render() {
-    return(
-    <View>
-       <Text>First Fetch: {Moment(this.state.firstFetch).fromNow()}</Text>
-       <Text>Last Fetch: {Moment(this.state.lastFetch).fromNow()}</Text>
-       <Text>Count: {this.state.fetchCount}</Text>
-    </View>
+    return (
+      <View>
+         <Text>First Fetch: {Moment(this.state.firstFetch).fromNow()}</Text>
+         <Text>Last Fetch: {Moment(this.state.lastFetch).fromNow()}</Text>
+         <Text>Count: {this.state.fetchCount}</Text>
+      </View>
     )
   }
 }
