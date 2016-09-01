@@ -28,11 +28,11 @@ class HomeHeader extends React.Component {
     this.setState({addMode: props.addMode})
   }
 
-  renderRightButton() {
+  renderActionButton() {
     let text = this.state.addMode ? 'Add' : 'Cancel'
     return (
       <TouchableOpacity onPress={()=>this.props.onDidPressAddSite()}>
-        <Text style={styles.rightButton}>{text}</Text>
+        <Text style={styles.actionButton}>{text}</Text>
       </TouchableOpacity>
     )
   }
@@ -57,10 +57,11 @@ class HomeHeader extends React.Component {
   render() {
     return (
       <View style={styles.header}>
-        {this.renderLastUpdate()}
+        <View style={styles.leftContainer}>
+          {this.renderActionButton()}
+        </View>
         <Image style={styles.icon} source={require('../../../img/nav-icon-gray.png')} />
         <View style={styles.rightContainer}>
-          {this.renderRightButton()}
         </View>
       </View>
     )
@@ -70,7 +71,7 @@ class HomeHeader extends React.Component {
 const styles = StyleSheet.create({
   header: {
     paddingTop: 25,
-    paddingBottom: 10,
+    paddingBottom: 5,
     backgroundColor: '#f3f3f3',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -84,8 +85,9 @@ const styles = StyleSheet.create({
     height: 40
   },
   leftContainer: {
+    marginLeft: 10,
     flex: 2,
-    marginLeft: 5
+    height: 30,
   },
   lastUpdatedTextTitle: {
     color: '#9c9b9d',
@@ -97,19 +99,18 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   rightContainer: {
+    marginRight: 10,
     flex: 2,
-    marginRight: 5,
     flexDirection: 'row',
     justifyContent: 'flex-end'
   },
-  rightButton: {
-    backgroundColor: '#DDD',
-    padding: 8,
-    borderRadius: 2,
+  actionButton: {
+    overflow: 'hidden',
     fontWeight: '700',
     fontSize: 14,
-    textAlign: 'center',
-    color: '#616161'
+    textAlign: 'left',
+    color: '#616161',
+    lineHeight: 30
   }
 })
 

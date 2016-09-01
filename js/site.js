@@ -8,8 +8,7 @@ import {
 import _ from 'lodash'
 import RandomBytesGenerator from './utils/random_bytes_generator'
 
-// const fetch = require('./../lib/fetch')
-//
+const fetch = require('./../lib/fetch')
 import RNFetchBlob from 'react-native-fetch-blob'
 
 class Site {
@@ -52,8 +51,14 @@ class Site {
 
     return fetch(req)
       .then((userApiKeyResponse)=>{
-        if (userApiKeyResponse.status !== 200) {
+        if (userApiKeyResponse.status === 404) {
           Alert.alert(`Sorry, ${term} does not support mobile APIs, have owner upgrade Discourse to latest!`)
+          throw("bad api")
+          return
+        }
+
+        if (userApiKeyResponse.status !== 200) {
+          throw("bad url")
           return
         }
 
@@ -74,7 +79,9 @@ class Site {
       })
       .catch(e=>{
         console.log(e)
-        Alert.alert(`${term} was not found!`)
+        if (e !== "bad api") {
+          Alert.alert(`${term} was not found!`)
+        }
       })
   }
 
