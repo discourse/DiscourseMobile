@@ -27,7 +27,8 @@ class SiteManager {
 
     AsyncStorage.getItem('@Discourse.lastRefresh').then(date => {
       if (date) {
-        this._onRefresh(new Date(date))
+        this.lastRefresh = new Date(date)
+        this._onRefresh
       }
     })
   }
@@ -214,6 +215,8 @@ class SiteManager {
           site.exitBackground()
         }
 
+        let errors = 0
+
         site.refresh(opts)
             .then((state) => {
 
@@ -227,6 +230,7 @@ class SiteManager {
               console.log(e)
               // maybe we were logged out ... something is odd
               somethingChanged = true
+              errors++
             })
             .finally(() => {
 
@@ -246,9 +250,11 @@ class SiteManager {
                 }
 
 
-                this.lastRefresh = new Date()
+                if (errors < sites.length) {
+                  this.lastRefresh = new Date()
+                }
 
-                if (!this._background) {
+                if (!this._background && this.lastRefresh) {
                   AsyncStorage.setItem('@Discourse.lastRefresh', this.lastRefresh.toJSON()).done()
                 }
 

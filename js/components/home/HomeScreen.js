@@ -170,13 +170,13 @@ class HomeScreen extends React.Component {
           progress={this.state.addSiteProgress}
           width={Dimensions.get('window').width} />
         {this.renderSites()}
+        <DebugRow siteManager={this.props.siteManager}/>
       </View>
     )
   }
 }
 
 
-// <DebugRow siteManager={this.props.siteManager}/>
 class DebugRow extends React.Component {
   constructor(props) {
     super(props)
@@ -184,30 +184,35 @@ class DebugRow extends React.Component {
     this.state = {
       firstFetch: this.props.siteManager.firstFetch,
       lastFetch: this.props.siteManager.lastFetch,
-      fetchCount: this.props.siteManager.fetchCount
+      fetchCount: this.props.siteManager.fetchCount,
+      lastRefresh: this.props.siteManager.lastRefresh
     }
 
     this.props.siteManager.subscribe(()=>{
       this.setState({
         firstFetch: this.props.siteManager.firstFetch,
         lastFetch: this.props.siteManager.lastFetch,
-        fetchCount: this.props.siteManager.fetchCount
+        fetchCount: this.props.siteManager.fetchCount,
+        lastRefresh: this.props.siteManager.lastRefresh
       })
     })
   }
 
   render() {
     return (
-      <View>
-         <Text>First Fetch: {Moment(this.state.firstFetch).fromNow()}</Text>
-         <Text>Last Fetch: {Moment(this.state.lastFetch).fromNow()}</Text>
-         <Text>Count: {this.state.fetchCount}</Text>
+      <View style={{padding: 5}}>
+         <Text style={styles.debug}>Last Updated: {Moment(this.state.lastRefresh).format('h:mmA')}</Text>
+         <Text style={styles.debug}>Background fetch stats (first/last/count): {Moment(this.state.firstFetch).format('h:mmA')}/{Moment(this.state.lastFetch).format('h:mmA')}/{this.state.fetchCount}</Text>
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  debug: {
+    color: '#777',
+    fontSize: 10
+  },
   list: {
     flex: 1
   },
