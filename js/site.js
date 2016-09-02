@@ -1,14 +1,10 @@
 /* @flow */
 'use strict'
 
-import {
-  Alert
-} from 'react-native'
-
 import _ from 'lodash'
-import RandomBytesGenerator from './utils/random_bytes_generator'
 
 const fetch = require('./../lib/fetch')
+import RandomBytesGenerator from './utils/random_bytes_generator'
 import RNFetchBlob from 'react-native-fetch-blob'
 
 class Site {
@@ -52,7 +48,6 @@ class Site {
     return fetch(req)
       .then((userApiKeyResponse)=>{
         if (userApiKeyResponse.status === 404) {
-          Alert.alert(`Sorry, ${term} does not support mobile APIs, have owner upgrade Discourse to latest!`)
           throw("bad api")
           return
         }
@@ -76,12 +71,6 @@ class Site {
           description: info.description,
           icon: info.apple_touch_icon_url
         })
-      })
-      .catch(e=>{
-        console.log(e)
-        if (e !== "bad api") {
-          Alert.alert(`${term} was not found!`)
-        }
       })
   }
 

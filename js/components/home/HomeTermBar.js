@@ -52,8 +52,13 @@ class HomeTermBar extends React.Component {
   }
 
   handleSubmitTerm(term) {
-    this.setState({text: ''})
     this.props.onDidSubmitTerm(term)
+      .then(()=>{
+        this.setState({text: ''})
+      })
+      .catch(e=>{
+        this.showTermInput()
+      });
   }
 
   componentWillReceiveProps(props) {
