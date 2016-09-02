@@ -16,7 +16,7 @@ class HomeSiteRow extends React.Component {
   renderUnread(site) {
     if (site.unreadNotifications) {
       return (
-        <Text style={styles.blueNotification}>{site.unreadNotifications}</Text>
+        <Text style={[styles.notification,styles.blue]}>{site.unreadNotifications}</Text>
       )
     }
   }
@@ -24,15 +24,28 @@ class HomeSiteRow extends React.Component {
   renderUnreadPM(site) {
     if (site.unreadPrivateMessages) {
       return (
-        <Text style={styles.greenNotification}>{site.unreadPrivateMessages}</Text>
+        <Text style={[styles.notification,styles.green]}>{site.unreadPrivateMessages}</Text>
+      )
+    }
+  }
+
+  renderFlags(site) {
+    if (site.isStaff && (site.flagCount > 0 || site.queueCount > 0)) {
+      return (
+        <Text style={[styles.notification,styles.red]}>{site.flagCount}</Text>
       )
     }
   }
 
   renderNotifications(site) {
-    if (site.authToken && (site.unreadNotifications || site.unreadPrivateMessages )) {
+    if (site.authToken && (
+          site.unreadNotifications ||
+          site.unreadPrivateMessages ||
+          (site.isStaff && site.flagCount > 0)
+       )) {
       return (
         <View style={styles.notifications}>
+          {this.renderFlags(site)}
           {this.renderUnreadPM(site)}
           {this.renderUnread(site)}
         </View>
@@ -154,9 +167,8 @@ const styles = StyleSheet.create({
     color: '#FFF',
     overflow: 'hidden'
   },
-  blueNotification: {
+  notification: {
     alignSelf: 'flex-start',
-    backgroundColor: '#6CF',
     padding: 6,
     marginLeft: 6,
     marginBottom: 6,
@@ -166,17 +178,14 @@ const styles = StyleSheet.create({
     color: '#FFF',
     overflow: 'hidden'
   },
-  greenNotification: {
-    alignSelf: 'flex-start',
+  blue: {
+    backgroundColor: '#6CF',
+  },
+  green: {
     backgroundColor: '#01a84c',
-    padding: 6,
-    marginLeft: 6,
-    marginBottom: 6,
-    fontSize: 14,
-    fontWeight: 'bold',
-    borderRadius: 8,
-    color: '#FFF',
-    overflow: 'hidden'
+  },
+  red: {
+    backgroundColor: '#e45735',
   },
   counts: {
     marginTop: 6
