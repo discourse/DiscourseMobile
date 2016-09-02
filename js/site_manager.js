@@ -57,7 +57,11 @@ class SiteManager {
   remove(site) {
     let index = this.sites.indexOf(site)
     if (index >= 0) {
-      this.sites.splice(index,1)
+      let site = this.sites.splice(index,1)[0]
+      site.revokeApiKey()
+          .catch(e => {
+            console.log("Failed to revoke API Key " + e)
+          })
       this.save()
       this._onChange()
     }
