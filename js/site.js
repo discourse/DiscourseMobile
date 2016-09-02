@@ -133,6 +133,10 @@ class Site {
     })
   }
 
+  revokeApiKey() {
+    return this.jsonApi('/user-api-key/revoke', 'POST')
+  }
+
   getUserInfo() {
     return new Promise((resolve, reject) => {
       if (this.userId && this.username) {
@@ -239,6 +243,7 @@ class Site {
         }
       } else if (message.channel === '/queue_counts') {
         if (this.queueCount !== message.data.post_queue_new_count) {
+          // yes this is weird, we have some real coupled code here
           this.flagCount -= ((this.queueCount || 0) - message.data.post_queue_new_count)
           this.queueCount = message.data.post_queue_new_count
           rval.notifications = true
