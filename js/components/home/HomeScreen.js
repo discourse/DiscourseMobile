@@ -78,7 +78,7 @@ class HomeScreen extends React.Component {
       addSiteProgress: Math.random() * 0.4
     })
 
-    Site.fromTerm(term)
+    return Site.fromTerm(term)
       .then(site => {
         this.setState({addSiteProgress: 1})
 
@@ -90,6 +90,16 @@ class HomeScreen extends React.Component {
           ()=>{ this.setState({addSiteProgress: 0}) },
           250
         )
+      })
+      .catch(e=>{
+        if (e === "bad api") {
+          alert(`Sorry, ${term} does not support mobile APIs, have owner upgrade Discourse to latest!`)
+        } else {
+          alert(`${term} was not found!`)
+        }
+        this.setState({addSiteProgress: 0})
+        console.log("throwing")
+        throw "failure";
       })
   }
 
