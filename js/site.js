@@ -16,11 +16,14 @@ class Site {
     'url',
     'unreadNotifications',
     'unreadPrivateMessages',
+    'flagCount',
+    'queueCount',
     'totalUnread',
     'totalNew',
     'userId',
     'username',
-    'hasPush'
+    'hasPush',
+    'isStaff'
   ]
 
   static fromTerm(term) {
@@ -117,6 +120,7 @@ class Site {
           this.authToken = null
           this.userId = null
           this.username = null
+          this.isStaff = null
           reject('User was logged off!')
           return
         }
@@ -133,15 +137,20 @@ class Site {
     return new Promise((resolve, reject) => {
       if (this.userId && this.username) {
         console.log('we have user id and user name')
-        resolve({userId: this.userId, username: this.username})
+        resolve({userId: this.userId, username: this.username, isStaff: this.isStaff})
       } else {
         this.jsonApi('/session/current.json')
           .then(json =>{
 
             this.userId = json.current_user.id
             this.username = json.current_user.username
+            this.isStaff = !!(json.current_user.admin || json.current_user.moderator)
 
-            resolve({userId: json.current_user.id, username: json.current_user.username})
+            resolve({
+              userId: this.userId,
+              username: this.username,
+              isStaff: this.isStaff
+            })
           })
           .catch(err => {
             reject(err)
@@ -206,7 +215,6 @@ class Site {
           rval.notifications = true
         }
 
-
       } else if (['/new', '/latest', '/unread/' + this.userId].indexOf(message.channel) > -1) {
         let payload = message.data.payload
         if (payload.archetype !== 'private_message') {
@@ -224,6 +232,17 @@ class Site {
         if (existing) {
           existing.deleted = (message.channel === '/delete')
         }
+      } else if (message.channel === '/flagged_counts') {
+        if (this.flagCount !== message.data.total) {
+          this.flagCount = message.data.total
+          rval.notifications = true
+        }
+      } else if (message.channel === '/queue_counts') {
+        if (this.queueCount !== message.data.post_queue_new_count) {
+          this.flagCount -= ((this.queueCount || 0) - message.data.post_queue_new_count)
+          this.queueCount = message.data.post_queue_new_count
+          rval.notifications = true
+        }
       } else if (message.channel === alertChannel) {
         message.data.url = this.url + message.data.post_url
         message.data.site = this
@@ -237,6 +256,7 @@ class Site {
   resetBus() {
     this.userId = null
     this.username = null
+    this.isStaff = null
     this.trackingState = null
     this.channels = null
   }
@@ -256,6 +276,11 @@ class Site {
             '/new': -1,
             '/latest': -1,
             '__seq': 1
+          }
+
+          if (info.isStaff) {
+            channels['/queue_counts'] = -1
+            channels['/flagged_counts'] = -1
           }
 
           channels[`/notification/${info.userId}`] = -1
@@ -329,7 +354,6 @@ class Site {
 
   checkBus() {
     console.info(`${new Date()} Checking Message Bus on ${this.url}`)
-    // alert('check bus ' + this.url + ' nid: ' + this.channels['/notification/' + this.userId] + ' uid:' + this.userId)
     return this.messageBus(this.channels).then(messages => this.processMessages(messages))
   }
 
@@ -378,12 +402,15 @@ class Site {
            .then(json =>{
              let currentUser = json.current_user
 
-             let changed = (this.userId !== currentUser.id) || (this.username !== currentUser.username)
+             let changed = (this.userId !== currentUser.id) ||
+                           (this.username !== currentUser.username) ||
+                           (this.isStaff !== !!(currentUser.admin || currentUser.moderator))
 
              changed = changed || this.updateTotals()
 
              this.userId = currentUser.id
              this.username = currentUser.username
+             this.isStaff = !!(currentUser.admin || currentUser.moderator)
 
              if (this.unreadNotifications !== currentUser.unread_notifications) {
                this.unreadNotifications = currentUser.unread_notifications
@@ -393,6 +420,21 @@ class Site {
              if (this.unreadPrivateMessages !== currentUser.unread_private_messages) {
                this.unreadPrivateMessages = currentUser.unread_private_messages
                changed = true
+             }
+
+             if (this.isStaff) {
+
+               let newFlagCount = currentUser.post_queue_new_count
+               if (newFlagCount !== this.flagCount) {
+                  this.flagCount = newFlagCount
+                  changed = true
+               }
+
+               let newQueueCount = currentUser.post_queue_new_count
+               if (newQueueCount !== this.queueCount) {
+                  this.queueCount = newQueueCount
+                  changed = true
+               }
              }
 
              resolve({changed})
