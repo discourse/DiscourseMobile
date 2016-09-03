@@ -41,3 +41,6 @@ android/app/libs
 android/keystores/debug.keystore
 
 *.swp
+
+ios/Discourse.app.dSym.zip
+ios/fastlane/report.xml
