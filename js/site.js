@@ -114,8 +114,8 @@ class Site {
         }
         resolve(r1.json())
       })
-      .catch((e,statusCode)=>{
-       if(statusCode === 403) {
+      .catch((e)=>{
+       if(e.message.match(/403$/)) {
           // access denied user logged out or key revoked
           this.authToken = null
           this.userId = null
