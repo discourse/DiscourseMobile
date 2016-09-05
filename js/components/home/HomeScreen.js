@@ -75,13 +75,15 @@ class HomeScreen extends React.Component {
 
   doSearch(term) {
     this.setState({
-      displayTermBar: false,
       addSiteProgress: Math.random() * 0.4
     })
 
     return Site.fromTerm(term)
       .then(site => {
-        this.setState({addSiteProgress: 1})
+        this.setState({
+          displayTermBar: false,
+          addSiteProgress: 1
+        })
 
         if (site) {
           this.props.siteManager.add(site)
