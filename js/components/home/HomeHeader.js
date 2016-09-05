@@ -4,12 +4,15 @@
 import React from 'react'
 
 import {
+  Dimensions,
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from 'react-native'
+
+import Orientation from 'react-native-orientation'
 
 class HomeHeader extends React.Component {
   static propTypes = {
@@ -20,8 +23,21 @@ class HomeHeader extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      addMode: props.addMode || true
+      addMode: props.addMode || true,
+      layoutWidth: Dimensions.get('window').width
     }
+  }
+
+  _orientationDidChange(orientation) {
+    this.setState({layoutWidth: Dimensions.get('window').width})
+  }
+
+  componentDidMount() {
+    Orientation.addOrientationListener(this._orientationDidChange.bind(this))
+  }
+
+  componentWillUnmount() {
+    Orientation.removeOrientationListener(this._orientationDidChange.bind(this))
   }
 
   componentWillReceiveProps(props) {
@@ -56,7 +72,7 @@ class HomeHeader extends React.Component {
 
   render() {
     return (
-      <View style={styles.header}>
+      <View style={[styles.header, {width: this.state.layoutWidth}]}>
         <View style={styles.leftContainer}>
           {this.renderActionButton()}
         </View>
