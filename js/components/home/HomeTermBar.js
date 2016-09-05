@@ -77,6 +77,7 @@ class HomeTermBar extends React.Component {
       <Animated.View style={[styles.termContainer, {height: this.termContainerAnimatedHeight()}]}>
         <TextInput
           ref="Input"
+          keyboardType="url"
           clearButtonMode="while-editing"
           autoCapitalize="none"
           autoCorrect={false}
