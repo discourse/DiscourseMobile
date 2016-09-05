@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "storybook": "storybook start -p 9001",
-    "storybook-ios": "storybook run-ios -a DiscourseStorybook -i org.discourse.DiscourseStorybook",
     "clean-ios": "cd ios && xcodebuild -scheme Discourse -destination 'platform=iOS Simulator,name=iPhone 6' clean",
-    "lint": "eslint ./js"
+    "lint": "eslint ./js",
+    "storybook-ios": "storybook start -p 7007"
   },
   "dependencies": {
     "keypair": "^1.0.0",
@@ -33,6 +32,6 @@
     "babel-preset-react-native": "^1.9.0",
     "eslint": "^2.5.3",
     "eslint-plugin-react": "^4.2.1",
-    "@kadira/react-native-storybook": "^1.12.6"
+    "@kadira/react-native-storybook": "^2.0.0"
   }
 }
