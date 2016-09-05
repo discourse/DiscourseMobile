@@ -141,13 +141,13 @@ const styles = StyleSheet.create({
     paddingLeft: 12
   },
   url: {
-    fontSize: 14,
-    color: 'black',
-    fontWeight: '500'
+    fontSize: 16,
+    color: '#222',
+    fontWeight: 'normal'
   },
   description: {
     fontSize: 14,
-    color: '#999',
+    color: '#919191',
     flex: 10
   },
   notifications: {
@@ -157,13 +157,12 @@ const styles = StyleSheet.create({
   },
   connect: {
     alignSelf: 'flex-start',
-    backgroundColor: '#499',
+    backgroundColor: '#08c',
     padding: 6,
     marginLeft: 6,
     marginBottom: 6,
     fontSize: 14,
-    fontWeight: 'bold',
-    borderRadius: 2,
+    fontWeight: '500',
     color: '#FFF',
     overflow: 'hidden'
   },
@@ -174,12 +173,11 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     fontSize: 14,
     fontWeight: 'bold',
-    borderRadius: 8,
     color: '#FFF',
     overflow: 'hidden'
   },
   blue: {
-    backgroundColor: '#6CF',
+    backgroundColor: '#0aadff',
   },
   green: {
     backgroundColor: '#01a84c',
@@ -191,8 +189,8 @@ const styles = StyleSheet.create({
     marginTop: 6
   },
   countsText: {
-    fontSize: 12,
-    color: '#999'
+    fontSize: 14,
+    color: '#0aadff'
   }
 })
 

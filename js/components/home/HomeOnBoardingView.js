@@ -27,7 +27,7 @@ class HomeOnBoardingView extends React.Component {
         <View style={styles.button}>
           <TouchableOpacity onPress={()=>this.props.onDidPressAddSite()}>
             <Text style={styles.buttonText}>
-              Add your first site
+              + Add your first site
             </Text>
           </TouchableOpacity>
         </View>
@@ -47,11 +47,10 @@ const styles = StyleSheet.create({
     padding: 12
   },
   buttonText: {
-    backgroundColor: '#499',
+    backgroundColor: '#e9e9e9',
     fontSize: 14,
-    fontWeight: 'bold',
-    borderRadius: 2,
-    color: 'white',
+    fontWeight: '500',
+    color: '#222',
     padding: 6
   }
 })
