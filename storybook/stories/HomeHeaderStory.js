@@ -4,16 +4,12 @@
 import React from 'react';
 import { View } from 'react-native';
 import { storiesOf } from '@kadira/react-native-storybook';
-import HomeHeader from '../js/components/home/HomeHeader';
+import HomeHeader from '../../js/components/home/HomeHeader';
 
 storiesOf('HomeHeader')
   .addDecorator((story) => (
-    <View>{story()}</View>
+    <View style={{marginTop: 20}}>{story()}</View>
   ))
   .add('Default', () => {
-    const options = {
-      lastRefreshTime:'4:05'
-    };
-
-    return <HomeHeader lastRefreshTime={options.lastRefreshTime} />;
+    return <HomeHeader onDidPressAddSite={()=>console.warn("Did press add site")}/>
   })

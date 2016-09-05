@@ -19,8 +19,8 @@ react-native run-android
 In two separate terminals:
 
 ```
-npm run storybook
 npm run storybook-ios
+react-native run-ios
 ```
 
-and then `open http://localhost:9001`
+and then `open http://localhost:7007`

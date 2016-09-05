@@ -2,10 +2,8 @@ import { AppRegistry } from 'react-native';
 import { getStorybookUI, configure } from '@kadira/react-native-storybook';
 
 configure(() => {
-  require('./stories/home_page_story');
-  require('./stories/home_header_story');
-  require('./stories/site_row_story');
+  require('./stories');
 }, module);
 
-const StorybookUI = getStorybookUI({port: 9001, host: 'localhost'});
+const StorybookUI = getStorybookUI({port: 7007, host: 'localhost'});
 AppRegistry.registerComponent('Discourse', () => StorybookUI);
