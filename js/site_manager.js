@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 
 import Site from './site'
-import RSAKeyPair from 'keypair'
 import RNKeyPair from 'react-native-key-pair'
 import DeviceInfo from 'react-native-device-info'
 import RandomBytesGenerator from './utils/random_bytes_generator'
@@ -36,10 +35,10 @@ class SiteManager {
   refreshInterval(interval) {
     if (this._refresher) {
       clearInterval(this._refresher)
-      this._refresher = null;
+      this._refresher = null
     }
 
-    this._refreshInterval = interval;
+    this._refreshInterval = interval
 
     if (interval > 0) {
       this._refresher = setInterval(()=>{
@@ -60,7 +59,7 @@ class SiteManager {
       let site = this.sites.splice(index,1)[0]
       site.revokeApiKey()
           .catch(e => {
-            console.log("Failed to revoke API Key " + e)
+            console.log(`Failed to revoke API Key ${e}`)
           })
       this.save()
       this._onChange()
@@ -250,7 +249,7 @@ class SiteManager {
                 if (somethingChanged && !this._background) {
                   this.save()
                 } else if (somethingChanged) {
-                  this._onChange();
+                  this._onChange()
                 }
 
 

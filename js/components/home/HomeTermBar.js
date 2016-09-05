@@ -58,7 +58,7 @@ class HomeTermBar extends React.Component {
       })
       .catch(e=>{
         this.showTermInput()
-      });
+      })
   }
 
   componentWillReceiveProps(props) {
