@@ -53,23 +53,6 @@ class HomeHeader extends React.Component {
     )
   }
 
-  renderLastUpdate() {
-    if (this.props.lastRefreshTime && this.props.lastRefreshTime.length > 0) {
-      return (
-        <View style={styles.leftContainer}>
-          <Text style={styles.lastUpdatedTextTitle}>Last updated</Text>
-          <Text style={styles.lastUpdatedTextSubtitle}>
-            {this.props.lastRefreshTime}
-          </Text>
-        </View>
-      )
-    } else {
-      return (
-        <View style={styles.leftContainer}/>
-      )
-    }
-  }
-
   render() {
     return (
       <View style={[styles.header, {width: this.state.layoutWidth}]}>
@@ -77,8 +60,7 @@ class HomeHeader extends React.Component {
           {this.renderActionButton()}
         </View>
         <Image style={styles.icon} source={require('../../../img/nav-icon-gray.png')} />
-        <View style={styles.rightContainer}>
-        </View>
+        <View style={{flex:2}} />
       </View>
     )
   }
@@ -104,21 +86,6 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     flex: 2,
     height: 30,
-  },
-  lastUpdatedTextTitle: {
-    color: '#9c9b9d',
-    fontWeight: '600',
-    fontSize: 12
-  },
-  lastUpdatedTextSubtitle: {
-    color: '#9c9b9d',
-    fontSize: 12
-  },
-  rightContainer: {
-    marginRight: 0,
-    flex: 2,
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
   },
   actionButton: {
     paddingLeft: 10,
