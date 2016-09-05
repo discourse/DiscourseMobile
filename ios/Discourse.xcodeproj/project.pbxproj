@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -47,6 +46,7 @@
 		D0D701231D6A2742009B339B /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 226098D11D655C00001A0518 /* libRCTPushNotification.a */; };
 		D0FE2F6D1D6F5CEA00D0311B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		D0FE2F6E1D6F5CEE00D0311B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		C7CCCEEFEF8E4A30832E08A1 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F71B0726DBC499D847BC1FE /* libRCTOrientation.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -228,6 +228,8 @@
 		F6E87A458033411889BDB827 /* libRNKeyPair.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNKeyPair.a; sourceTree = "<group>"; };
 		F996349405C34010996EE336 /* libSafariViewManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariViewManager.a; sourceTree = "<group>"; };
 		FF91D95385EB4958B3EB1F16 /* RNKeyPair.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNKeyPair.xcodeproj; path = "../node_modules/react-native-key-pair/ios/RNKeyPair.xcodeproj"; sourceTree = "<group>"; };
+		EBF39BD1B8C840229E648D7A /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; name = "RCTOrientation.xcodeproj"; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		0F71B0726DBC499D847BC1FE /* libRCTOrientation.a */ = {isa = PBXFileReference; name = "libRCTOrientation.a"; path = "libRCTOrientation.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +262,7 @@
 				68E8682ED5DB43089FF9F95E /* libRNBackgroundFetch.a in Frameworks */,
 				5C0A3CBB073A44C09CBB007A /* libRNFetchBlob.a in Frameworks */,
 				822FFE325D9644C4A73266AC /* libRNKeyPair.a in Frameworks */,
+				C7CCCEEFEF8E4A30832E08A1 /* libRCTOrientation.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,6 +469,7 @@
 				162FACB736B842DF9498AEE4 /* RNBackgroundFetch.xcodeproj */,
 				4B79D987F06E411DA4302BA3 /* SafariViewManager.xcodeproj */,
 				FF91D95385EB4958B3EB1F16 /* RNKeyPair.xcodeproj */,
+				EBF39BD1B8C840229E648D7A /* RCTOrientation.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -933,6 +937,7 @@
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../node_modules/react-native-key-pair/ios",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				INFOPLIST_FILE = DiscourseTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
@@ -945,6 +950,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/Discourse\"",
 					"\"$(SRCROOT)/Discourse\"",
 					"\"$(SRCROOT)/Discourse\"",
 				);
@@ -973,6 +979,7 @@
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../node_modules/react-native-key-pair/ios",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				INFOPLIST_FILE = DiscourseTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
@@ -985,6 +992,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/Discourse\"",
 					"\"$(SRCROOT)/Discourse\"",
 					"\"$(SRCROOT)/Discourse\"",
 				);
@@ -1018,6 +1026,7 @@
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../node_modules/react-native-key-pair/ios",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				INFOPLIST_FILE = Discourse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1025,6 +1034,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"\"$(SRCROOT)/Discourse\"",
 					"\"$(SRCROOT)/Discourse\"",
 					"\"$(SRCROOT)/Discourse\"",
 				);
@@ -1062,6 +1072,7 @@
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../node_modules/react-native-key-pair/ios",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				INFOPLIST_FILE = Discourse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1069,6 +1080,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"\"$(SRCROOT)/Discourse\"",
 					"\"$(SRCROOT)/Discourse\"",
 					"\"$(SRCROOT)/Discourse\"",
 				);
@@ -1133,6 +1145,7 @@
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../node_modules/react-native-key-pair/ios",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1184,6 +1197,7 @@
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../node_modules/react-native-key-pair/ios",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -1217,6 +1231,7 @@
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../node_modules/react-native-key-pair/ios",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				INFOPLIST_FILE = DiscourseStorybook.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1226,6 +1241,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/Discourse\"",
 					"\"$(SRCROOT)/Discourse\"",
 					"\"$(SRCROOT)/Discourse\"",
 				);
@@ -1259,6 +1275,7 @@
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 					"$(SRCROOT)/../node_modules/react-native-key-pair/ios",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				INFOPLIST_FILE = DiscourseStorybook.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1268,6 +1285,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/Discourse\"",
 					"\"$(SRCROOT)/Discourse\"",
 					"\"$(SRCROOT)/Discourse\"",
 				);

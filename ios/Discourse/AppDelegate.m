@@ -15,7 +15,7 @@
 #import "RCTPushNotificationManager.h"
 #import "RNBackgroundFetch.h"
 #import "RCTLog.h"
-
+#import "Orientation.h"
 
 @implementation AppDelegate
 
@@ -23,28 +23,28 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-  
+
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-  
-  
+
+
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"Discourse"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-  
+
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  
+
   // TODO We don't need full release debugging forever, but for now it helps
   RCTSetLogThreshold(RCTLogLevelInfo - 1);
-  
+
   // config BG fetch
   [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-  
+
   return YES;
 }
 
@@ -79,11 +79,11 @@
 -(void)applicationDidEnterBackground:(UIApplication *)application {
 }
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-  
+
   NSMutableDictionary *notification = [NSMutableDictionary dictionaryWithDictionary: userInfo];
-  
+
   NSString *state = nil;
-  
+
   if(application.applicationState == UIApplicationStateInactive) {
     state = @"inactive";
   } else if(application.applicationState == UIApplicationStateBackground){
@@ -91,11 +91,11 @@
   } else {
     state = @"foreground";
   }
-  
+
   [notification setObject: state forKey: @"AppState"];
-  
+
   [RCTPushNotificationManager didReceiveRemoteNotification:notification];
-  
+
   completionHandler(UIBackgroundFetchResultNoData);
 }
 
@@ -114,22 +114,26 @@
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
   NSLog(@"RNBackgroundFetch AppDelegate received fetch event");
-  
+
   UIBackgroundTaskIdentifier bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
     NSLog(@"RNBackgroundFetch execution expired!");
     completionHandler(UIBackgroundTaskInvalid);
     [application endBackgroundTask:bgTask];
   }];
-  
+
   void (^wrappedCompletionHandler) (UIBackgroundFetchResult);
   wrappedCompletionHandler = ^(UIBackgroundFetchResult result){
     NSLog(@"RNBackgroundFetch completing fetch");
     completionHandler(result);
     [application endBackgroundTask:bgTask];
   };
-  
+
   [RNBackgroundFetch gotBackgroundFetch:wrappedCompletionHandler];
-  
+
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
 }
 
 @end
