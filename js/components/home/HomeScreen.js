@@ -4,6 +4,7 @@
 import React from 'react'
 
 import {
+  Alert,
   ListView,
   RefreshControl,
   StatusBar,
@@ -92,14 +93,14 @@ class HomeScreen extends React.Component {
         )
       })
       .catch(e=>{
-        if (e === "bad api") {
-          alert(`Sorry, ${term} does not support mobile APIs, have owner upgrade Discourse to latest!`)
+        if (e === 'bad api') {
+          Alert.alert(`Sorry, ${term} does not support mobile APIs, have owner upgrade Discourse to latest!`)
         } else {
-          alert(`${term} was not found!`)
+          Alert.alert(`${term} was not found!`)
         }
         this.setState({addSiteProgress: 0})
-        console.log("throwing")
-        throw "failure";
+        console.log('throwing')
+        throw 'failure'
       })
   }
 

@@ -112,7 +112,7 @@ class Discourse extends React.Component {
                   excerpt = excerpt.substr(0,250)
 
                   if (!a.site.hasPush) {
-                    console.log("publishing local notifications for " + a.site.url)
+                    console.log(`publishing local notifications for ${a.site.url}`)
                     PushNotificationIOS.presentLocalNotification({
                       alertBody: excerpt,
                       userInfo: {discourse_url: a.url}
@@ -123,7 +123,7 @@ class Discourse extends React.Component {
             }
           })
         .catch((e) => {
-          console.log("WARN: failed in bg fetch")
+          console.log('WARN: failed in bg fetch')
           console.log(e)
         })
         .finally(() => {
@@ -142,7 +142,7 @@ class Discourse extends React.Component {
 
 
 
-      BackgroundFetch.addEventListener("backgroundFetch", ()=>{
+      BackgroundFetch.addEventListener('backgroundFetch', ()=>{
 
         if (this._siteManager.refreshing) {
           // assume prviously aborted and force allow a refresh
@@ -151,7 +151,7 @@ class Discourse extends React.Component {
         }
 
         doRefresh()
-      });
+      })
     }
   }
 

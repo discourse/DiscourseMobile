@@ -51,12 +51,12 @@ class Site {
     return fetch(req)
       .then((userApiKeyResponse)=>{
         if (userApiKeyResponse.status === 404) {
-          throw("bad api")
+          throw 'bad api'
           return
         }
 
         if (userApiKeyResponse.status !== 200) {
-          throw("bad url")
+          throw 'bad url'
           return
         }
 
@@ -115,7 +115,7 @@ class Site {
         resolve(r1.json())
       })
       .catch((e)=>{
-       if(e.message.match(/403$/)) {
+       if (e.message.match(/403$/)) {
           // access denied user logged out or key revoked
           this.authToken = null
           this.userId = null
@@ -460,7 +460,7 @@ class Site {
     this._background = true
     if (this._currentFetch && this._currentFetch.cancel) {
       this._currentFetch.cancel((e) =>{
-        console.log("Failed to cancel request")
+        console.log('Failed to cancel request')
         console.log(e)
       })
     }
