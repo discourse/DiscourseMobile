@@ -89,6 +89,7 @@ class HomeSiteRow extends React.Component {
     return (
       <Swipeout
                 backgroundColor={'#FFF'}
+                scroll={(scrollEnabled)=>this.props.onSwipe(scrollEnabled)}
                 right={[{
                     text: 'Remove',
                     backgroundColor: '#ee512a',
