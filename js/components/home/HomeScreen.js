@@ -167,8 +167,7 @@ class HomeScreen extends React.Component {
         <StatusBar />
         <HomeHeader
           addMode={!this.state.displayTermBar}
-          onDidPressAddSite={()=>this.setState({displayTermBar: !this.state.displayTermBar})}
-          lastRefreshTime={this.state.lastRefreshTime} />
+          onDidPressAddSite={()=>this.setState({displayTermBar: !this.state.displayTermBar})} />
         <HomeTermBar
           onDidSubmitTerm={(term)=>this.doSearch(term)}
           expanded={this.state.displayTermBar} />

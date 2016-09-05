@@ -16,8 +16,7 @@ import Orientation from 'react-native-orientation'
 
 class HomeHeader extends React.Component {
   static propTypes = {
-    onDidPressAddSite: React.PropTypes.func.isRequired,
-    lastRefreshTime: React.PropTypes.string
+    onDidPressAddSite: React.PropTypes.func.isRequired
   }
 
   constructor(props) {
