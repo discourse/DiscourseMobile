@@ -42,7 +42,8 @@ class HomeScreen extends React.Component {
       displayTermBar: false,
       dataSource: this._dataSource,
       isRefreshing: false,
-      lastRefreshTime: null
+      lastRefreshTime: null,
+      scrollEnabled: true
     }
 
     this._onChangeSites = (e) => this.onChangeSites(e)
@@ -141,6 +142,7 @@ class HomeScreen extends React.Component {
       return (
         <ListView
           dataSource={this.state.dataSource}
+          scrollEnabled={this.state.scrollEnabled}
           enableEmptySections={true}
           styles={styles.list}
           refreshControl={
@@ -153,6 +155,7 @@ class HomeScreen extends React.Component {
           renderRow={(site) =>
             <HomeSiteRow
               site={site}
+              onSwipe={(scrollEnabled)=>this.setState({scrollEnabled: scrollEnabled})}
               onClick={()=>this.props.onVisitSite(site)}
               onDelete={()=>this.props.siteManager.remove(site)} />
           }
