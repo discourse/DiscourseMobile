@@ -78,6 +78,7 @@ class HomeTermBar extends React.Component {
         <TextInput
           ref="Input"
           keyboardType="url"
+          returnKeyType="done"
           clearButtonMode="while-editing"
           autoCapitalize="none"
           autoCorrect={false}
