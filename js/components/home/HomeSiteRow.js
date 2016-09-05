@@ -102,7 +102,7 @@ class HomeSiteRow extends React.Component {
                   ellipsizeMode="tail"
                   numberOfLines={1}
                   style={styles.url}>
-                {site.url}
+                {site.url.replace(/^https?:\/\//, '')}
               </Text>
               <Text
                   ellipsizeMode="tail"
