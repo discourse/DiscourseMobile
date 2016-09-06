@@ -19,9 +19,8 @@ class HomeOnBoardingView extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
-          You don’t have any sites yet.
-          Discourse notifier can keep track
-          of your notifications across sites.
+          You don’t have any sites yet.{"\n"}
+          Discourse notifier can keep track of your notifications across sites.
         </Text>
 
         <View style={styles.button}>
@@ -39,19 +38,21 @@ class HomeOnBoardingView extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   text: {
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center',
-    padding: 12
+    padding: 24,
+    marginBottom: 12
   },
   buttonText: {
     backgroundColor: '#e9e9e9',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '500',
     color: '#222',
-    padding: 6
+    padding: 8
   }
 })
 
