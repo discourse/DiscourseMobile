@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -22,7 +21,6 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		226098D21D655CC9001A0518 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 226098D11D655C00001A0518 /* libRCTPushNotification.a */; };
 		29A5744DA0BC49DF86270373 /* libSafariViewManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F996349405C34010996EE336 /* libSafariViewManager.a */; };
-		3F3396FE2D5F49BFB1189C9B /* libRNRandomBytes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BF5DB7779C4511BA7B3DE7 /* libRNRandomBytes.a */; };
 		5A9B9D17F302472BBBD88186 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2084424E16BE4B72A25D79DC /* libRNDeviceInfo.a */; };
 		5C0A3CBB073A44C09CBB007A /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F9BFDE798044BC9A4314C2 /* libRNFetchBlob.a */; };
 		68E8682ED5DB43089FF9F95E /* libRNBackgroundFetch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A69516B25D34D89B1D9CD50 /* libRNBackgroundFetch.a */; };
@@ -103,13 +101,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = SafariViewManager;
-		};
-		226098A81D640511001A0518 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 76A135053ED34536866B9648 /* RNRandomBytes.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 73EEC9391BFE4B1D00D468EB;
-			remoteInfo = RNRandomBytes;
 		};
 		226098C61D644444001A0518 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -211,10 +202,8 @@
 		4B79D987F06E411DA4302BA3 /* SafariViewManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SafariViewManager.xcodeproj; path = "../node_modules/react-native-safari-view/SafariViewManager.xcodeproj"; sourceTree = "<group>"; };
 		5A69516B25D34D89B1D9CD50 /* libRNBackgroundFetch.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBackgroundFetch.a; sourceTree = "<group>"; };
 		68A82F74408F4712896AD569 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
-		76A135053ED34536866B9648 /* RNRandomBytes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNRandomBytes.xcodeproj; path = "../node_modules/react-native-randombytes/RNRandomBytes.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		A0BF5DB7779C4511BA7B3DE7 /* libRNRandomBytes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNRandomBytes.a; sourceTree = "<group>"; };
 		A3F9BFDE798044BC9A4314C2 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		EBF39BD1B8C840229E648D7A /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTOrientation.xcodeproj; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; };
 		F6E87A458033411889BDB827 /* libRNKeyPair.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNKeyPair.a; sourceTree = "<group>"; };
@@ -247,7 +236,6 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				29A5744DA0BC49DF86270373 /* libSafariViewManager.a in Frameworks */,
-				3F3396FE2D5F49BFB1189C9B /* libRNRandomBytes.a in Frameworks */,
 				5A9B9D17F302472BBBD88186 /* libRNDeviceInfo.a in Frameworks */,
 				68E8682ED5DB43089FF9F95E /* libRNBackgroundFetch.a in Frameworks */,
 				5C0A3CBB073A44C09CBB007A /* libRNFetchBlob.a in Frameworks */,
@@ -363,14 +351,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		226098991D640511001A0518 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				226098A91D640511001A0518 /* libRNRandomBytes.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		226098B91D644444001A0518 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -433,7 +413,6 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
-				76A135053ED34536866B9648 /* RNRandomBytes.xcodeproj */,
 				3CB836B0207247C4B1101787 /* RNDeviceInfo.xcodeproj */,
 				68A82F74408F4712896AD569 /* RNFetchBlob.xcodeproj */,
 				162FACB736B842DF9498AEE4 /* RNBackgroundFetch.xcodeproj */,
@@ -630,10 +609,6 @@
 					ProjectRef = FF91D95385EB4958B3EB1F16 /* RNKeyPair.xcodeproj */;
 				},
 				{
-					ProductGroup = 226098991D640511001A0518 /* Products */;
-					ProjectRef = 76A135053ED34536866B9648 /* RNRandomBytes.xcodeproj */;
-				},
-				{
 					ProductGroup = 2219FD811D75354000A906CE /* Products */;
 					ProjectRef = 4B79D987F06E411DA4302BA3 /* SafariViewManager.xcodeproj */;
 				},
@@ -708,13 +683,6 @@
 			fileType = archive.ar;
 			path = libSafariViewManager.a;
 			remoteRef = 2219FD941D75354100A906CE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		226098A91D640511001A0518 /* libRNRandomBytes.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNRandomBytes.a;
-			remoteRef = 226098A81D640511001A0518 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		226098C71D644444001A0518 /* libRNDeviceInfo.a */ = {
@@ -866,7 +834,6 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
-					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch/**",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
@@ -887,9 +854,6 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/Discourse\"",
-					"\"$(SRCROOT)/Discourse\"",
-					"\"$(SRCROOT)/Discourse\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Discourse;
@@ -908,7 +872,6 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
-					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch/**",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
@@ -929,9 +892,6 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/Discourse\"",
-					"\"$(SRCROOT)/Discourse\"",
-					"\"$(SRCROOT)/Discourse\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Discourse;
@@ -953,7 +913,6 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
-					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch/**",
@@ -971,9 +930,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"\"$(SRCROOT)/Discourse\"",
-					"\"$(SRCROOT)/Discourse\"",
-					"\"$(SRCROOT)/Discourse\"",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -999,7 +955,6 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
-					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch/**",
@@ -1017,9 +972,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"\"$(SRCROOT)/Discourse\"",
-					"\"$(SRCROOT)/Discourse\"",
-					"\"$(SRCROOT)/Discourse\"",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1074,7 +1026,6 @@
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
-					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch/**",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
@@ -1126,7 +1077,6 @@
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
-					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch/**",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
