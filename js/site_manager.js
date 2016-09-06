@@ -133,6 +133,9 @@ class SiteManager {
     this.sites.forEach((site)=>{
       if (site.authToken) {
         count += (site.unreadNotifications || 0) + (site.unreadPrivateMessages || 0)
+        if (site.isStaff) {
+          count += (site.flagCount || 0)
+        }
       }
     })
     return count
