@@ -8,7 +8,6 @@ class Browser extends React.Component {
   constructor(props) {
     super(props)
 
-    alert(this.props.url)
     this.state = {
       url: this.props.url
     }
