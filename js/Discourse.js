@@ -14,6 +14,7 @@ import SiteManager from './site_manager'
 import SafariView from 'react-native-safari-view'
 import HomeScreen from './components/home/HomeScreen'
 import BackgroundFetch from 'react-native-background-fetch'
+import Browser from './components/Browser.js'
 
 class Discourse extends React.Component {
   constructor(props) {
@@ -178,11 +179,17 @@ class Discourse extends React.Component {
       PushNotificationIOS.requestPermissions({'alert': true, 'badge': true})
     }
 
-    return (
-      <HomeScreen
-        siteManager={this._siteManager}
-        onVisitSite={(site)=> this.openUrl(navigator, site)} />
-    )
+    if (this.state.currentUrl) {
+      return (
+          <Browser url={this.state.currentUrl} />
+      )
+    } else {
+      return (
+        <HomeScreen
+          siteManager={this._siteManager}
+          onVisitSite={(site)=> this.openUrl(navigator, site)} />
+      )
+    }
   }
 }
 
