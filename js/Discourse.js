@@ -20,6 +20,7 @@ class Discourse extends React.Component {
   constructor(props) {
     super(props)
     this._siteManager = new SiteManager()
+    this.state = {}
 
     this._handleOpenUrl = (event) => {
       console.log('handling incoming url')
@@ -161,17 +162,25 @@ class Discourse extends React.Component {
     AppState.addEventListener('change', this._handleAppStateChange)
   }
 
-  openUrl(navigator, site) {
+  openUrl(site) {
     if (site.authToken) {
-      SafariView.show({url: site.url})
+      this.visitUrl(site.url)
       return
     }
 
     this._siteManager
       .generateAuthURL(site)
       .then(url => {
-        SafariView.show({url})
+        this.visitUrl(url)
       })
+  }
+
+  visitUrl(url) {
+    if (Platform.OS === 'ios') {
+      SafariView.show({url})
+    } else {
+      this.setState({currentUrl: url})
+    }
   }
 
   render() {
@@ -187,7 +196,7 @@ class Discourse extends React.Component {
       return (
         <HomeScreen
           siteManager={this._siteManager}
-          onVisitSite={(site)=> this.openUrl(navigator, site)} />
+          onVisitSite={(site)=> this.openUrl(site)} />
       )
     }
   }
