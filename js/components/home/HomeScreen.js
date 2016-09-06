@@ -102,7 +102,6 @@ class HomeScreen extends React.Component {
           Alert.alert(`${term} was not found!`)
         }
         this.setState({addSiteProgress: 0})
-        console.log('throwing')
         throw 'failure'
       })
   }

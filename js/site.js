@@ -4,8 +4,8 @@
 import _ from 'lodash'
 
 const fetch = require('./../lib/fetch')
-import RandomBytesGenerator from './utils/random_bytes_generator'
 import RNFetchBlob from 'react-native-fetch-blob'
+import randomBytes from './../lib/random-bytes'
 
 class Site {
   static FIELDS = [
@@ -168,10 +168,8 @@ class Site {
       if (this.messageBusId) {
         resolve(this.messageBusId)
       } else {
-        RandomBytesGenerator.generateHex(16).then((hex) => {
-          this.messageBusId = hex
-          resolve(this.messageBusId)
-        }).done()
+        this.messageBusId = randomBytes(16)
+        resolve(this.messageBusId)
       }
     })
   }

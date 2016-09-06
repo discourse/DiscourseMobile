@@ -11,8 +11,8 @@ import {
 import Site from './site'
 import RNKeyPair from 'react-native-key-pair'
 import DeviceInfo from 'react-native-device-info'
-import RandomBytesGenerator from './utils/random_bytes_generator'
 import JSEncrypt from './../lib/jsencrypt'
+import randomBytes from './../lib/random-bytes'
 
 class SiteManager {
   constructor() {
@@ -294,6 +294,7 @@ class SiteManager {
     })
   }
 
+
   getClientId() {
     return new Promise(resolve=>{
       if (this.clientId) {
@@ -304,11 +305,8 @@ class SiteManager {
             this.clientId = clientId
             resolve(clientId)
           } else {
-            RandomBytesGenerator.generateHex(32).then((hex) => {
-              this.clientId = hex
-              AsyncStorage.setItem('@ClientId', this.clientId)
-              resolve(this.clientId)
-            })
+            this.clientId = randomBytes(32)
+            AsyncStorage.setItem('@ClientId', this.clientId)
           }
         })
       }
@@ -317,11 +315,9 @@ class SiteManager {
 
   generateNonce(site) {
     return new Promise(resolve=>{
-      RandomBytesGenerator.generateHex(16).then((hex) => {
-        this._nonce = hex
-        this._nonceSite = site
-        resolve(this._nonce)
-      })
+      this._nonce = randomBytes(16)
+      this._nonceSite = site
+      resolve(this._nonce)
     })
   }
 
