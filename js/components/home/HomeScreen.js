@@ -125,7 +125,6 @@ class HomeScreen extends React.Component {
 
   shouldDisplayOnBoarding() {
     return this.props.siteManager.sites.length === 0
-            && this.state.lastRefreshTime
             && !this.refreshing
             && this.state.addSiteProgress === 0
             && !this.state.displayTermBar
