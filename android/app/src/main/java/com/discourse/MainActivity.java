@@ -3,9 +3,7 @@ package com.discourse;
 import android.content.Intent;
 import android.content.res.Configuration;
 import com.facebook.react.ReactActivity;
-import com.github.yamill.orientation.OrientationPackage;
-import com.reactlibrary.RNKeyPairPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
+
 
 public class MainActivity extends ReactActivity {
 

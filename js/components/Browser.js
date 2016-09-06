@@ -1,13 +1,27 @@
 'use strict'
 
-import { WebView } from 'react-native'
+import { View,WebView,Text } from 'react-native'
+import React from 'react'
 
 class Browser extends React.Component {
 
+  constructor(props) {
+    super(props)
+
+    alert(this.props.url)
+    this.state = {
+      url: this.props.url
+    }
+  }
+
   render() {
-    <WebView source={{uri: this.state.url}} />
+    return (
+      <View style={{flex: 1}}>
+        <WebView source={{uri: this.state.url}} />
+      </View>
+    )
   }
 
 }
 
-export default Discourse
+export default Browser
