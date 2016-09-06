@@ -27,7 +27,7 @@ class Discourse extends React.Component {
       console.log(event)
       let split = event.url.split('payload=')
       if (split.length === 2) {
-        SafariView.dismiss()
+        this.closeBrowser()
         this._siteManager.handleAuthPayload(decodeURIComponent(split[1]))
       }
     }
@@ -180,6 +180,14 @@ class Discourse extends React.Component {
       SafariView.show({url})
     } else {
       this.setState({currentUrl: url})
+    }
+  }
+
+  closeBrowser() {
+    if (Platform.OS === 'ios') {
+      SafariView.dismiss()
+    } else {
+      this.setState({currentUrl: null})
     }
   }
 
