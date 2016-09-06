@@ -13,6 +13,7 @@ import RNKeyPair from 'react-native-key-pair'
 import DeviceInfo from 'react-native-device-info'
 import JSEncrypt from './../lib/jsencrypt'
 import randomBytes from './../lib/random-bytes'
+import BackgroundJob from './../lib/background-job'
 
 class SiteManager {
   constructor() {
@@ -141,13 +142,64 @@ class SiteManager {
     return count
   }
 
+  waitFor(duration, check) {
+    let start = new Date()
+
+    return new Promise((resolve, reject)=>{
+      let interval = setInterval(()=>{
+        if (check()) {
+          clearInterval(interval)
+          resolve()
+          return
+        }
+        if ((new Date() - start) > duration) {
+          clearInterval(interval)
+          reject()
+          return
+        }
+      }, 10)
+    })
+  }
+
   enterBackground() {
+    let enterBg = (id)=>{
+      if (id) {
+        BackgroundJob.finish(id)
+      }
+      this._background = true
+      this.sites.forEach(s=>s.enterBackground())
+    }
+
     if (this._refresher) {
       clearInterval(this._refresher)
       this._refresher = null
     }
-    this._background = true
-    this.sites.forEach(s=>s.enterBackground())
+
+    if (this.refreshing) {
+      // let it finish
+      BackgroundJob.start()
+        .then(id=>{
+          this.waitFor(20000, ()=>!this.refreshing)
+              .finally(()=>{
+                enterBg(id)
+              });
+
+        })
+        .catch(()=>{
+          // not implemented on android yet
+          enterBg()
+        })
+    } else {
+      BackgroundJob.start()
+        .then(id=>{
+          this.refreshSites({ui: false})
+            .finally(()=>enterBg(id))
+        })
+        .catch(()=>{
+          // android fallback
+          enterBg()
+        })
+    }
 
   }
 
@@ -189,7 +241,7 @@ class SiteManager {
       let refreshDelta = this._lastRefreshStart && (new Date() - this._lastRefreshStart)
 
       if (opts.ui === false && this._lastRefreshStart && refreshDelta < 10000) {
-        console.log('bg refresh skipped cause it is already running!')
+        console.log('bg refresh skipped cause it ran in last 10 seconds!')
         resolve({changed: false})
         return
       }

@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -20,6 +21,7 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		226098D21D655CC9001A0518 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 226098D11D655C00001A0518 /* libRCTPushNotification.a */; };
+		22728C5A1D7E44F100FB7227 /* RNBackgroundJob.m in Sources */ = {isa = PBXBuildFile; fileRef = 22728C591D7E44F100FB7227 /* RNBackgroundJob.m */; };
 		29A5744DA0BC49DF86270373 /* libSafariViewManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F996349405C34010996EE336 /* libSafariViewManager.a */; };
 		5A9B9D17F302472BBBD88186 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2084424E16BE4B72A25D79DC /* libRNDeviceInfo.a */; };
 		5C0A3CBB073A44C09CBB007A /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F9BFDE798044BC9A4314C2 /* libRNFetchBlob.a */; };
@@ -198,6 +200,8 @@
 		2084424E16BE4B72A25D79DC /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		226098CB1D6465BA001A0518 /* Discourse.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Discourse.entitlements; path = Discourse/Discourse.entitlements; sourceTree = "<group>"; };
 		226098CC1D655C00001A0518 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
+		22728C591D7E44F100FB7227 /* RNBackgroundJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNBackgroundJob.m; sourceTree = "<group>"; };
+		22728C6D1D7E450D00FB7227 /* RNBackgroundJob.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNBackgroundJob.h; sourceTree = "<group>"; };
 		3CB836B0207247C4B1101787 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		4B79D987F06E411DA4302BA3 /* SafariViewManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SafariViewManager.xcodeproj; path = "../node_modules/react-native-safari-view/SafariViewManager.xcodeproj"; sourceTree = "<group>"; };
 		5A69516B25D34D89B1D9CD50 /* libRNBackgroundFetch.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBackgroundFetch.a; sourceTree = "<group>"; };
@@ -331,6 +335,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				22728C591D7E44F100FB7227 /* RNBackgroundJob.m */,
+				22728C6D1D7E450D00FB7227 /* RNBackgroundJob.h */,
 			);
 			name = Discourse;
 			sourceTree = "<group>";
@@ -792,6 +798,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22728C5A1D7E44F100FB7227 /* RNBackgroundJob.m in Sources */,
 				D0FE2F6E1D6F5CEE00D0311B /* main.m in Sources */,
 				D0FE2F6D1D6F5CEA00D0311B /* AppDelegate.m in Sources */,
 			);
