@@ -198,7 +198,7 @@ class Discourse extends React.Component {
 
     if (this.state.currentUrl) {
       return (
-          <Browser url={this.state.currentUrl} />
+          <Browser done={()=>{this.closeBrowser()}} url={this.state.currentUrl} />
       )
     } else {
       return (
