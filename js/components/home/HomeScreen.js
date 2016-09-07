@@ -16,6 +16,7 @@ import {
 import Dimensions from 'Dimensions'
 import Moment from 'moment'
 import { Bar } from 'react-native-progress'
+import SortableListView from 'react-native-sortable-listview'
 
 import Site from '../../site'
 import HomeSiteRow from './HomeSiteRow'
@@ -32,15 +33,10 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props)
 
-    this._dataSource = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1.toJSON() !== r2.toJSON()
-    })
-    this._dataSource = this._dataSource.cloneWithRows(this.props.siteManager.sites)
-
     this.state = {
       addSiteProgress: 0,
       displayTermBar: false,
-      dataSource: this._dataSource,
+      data: this.props.siteManager.toObject(),
       isRefreshing: false,
       lastRefreshTime: null,
       scrollEnabled: true
@@ -60,15 +56,8 @@ class HomeScreen extends React.Component {
 
   onChangeSites(e) {
     if (e.event === 'change') {
-      this._dataSource = this._dataSource.cloneWithRows(this.props.siteManager.sites)
       this.setState({
-        dataSource: this._dataSource
-      })
-    }
-
-    if (e.event === 'refresh') {
-      this.setState({
-        lastRefreshTime: Moment(this.props.siteManager.lastRefresh).format('LT')
+        data: this.props.siteManager.toObject()
       })
     }
   }
@@ -124,6 +113,7 @@ class HomeScreen extends React.Component {
   shouldDisplayOnBoarding() {
     return this.props.siteManager.sites.length === 0
             && !this.refreshing
+            && !this.state.isRefreshing
             && this.state.addSiteProgress === 0
             && !this.state.displayTermBar
   }
@@ -136,11 +126,21 @@ class HomeScreen extends React.Component {
       )
     } else {
       return (
-        <ListView
-          dataSource={this.state.dataSource}
+        <SortableListView
+          data={this.state.data}
+          order={Object.keys(this.state.data)}
           scrollEnabled={this.state.scrollEnabled}
           enableEmptySections={true}
           styles={styles.list}
+          rowHasChanged={(r1, r2)=> {
+            // TODO: r2 returns as an Object instead of a Site
+            // casting Site shouldn't be needed
+            return new Site(r1).toJSON() != new Site(r2).toJSON()
+          }}
+          onRowMoved={(e)=> {
+            this.props.siteManager.updateOrder(e.from, e.to)
+            this.forceUpdate()
+          }}
           refreshControl={
             <RefreshControl
               style={{left: 500}}

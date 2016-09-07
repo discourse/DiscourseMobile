@@ -67,6 +67,12 @@ class SiteManager {
     }
   }
 
+  updateOrder(from, to) {
+    this.sites.splice(to, 0, this.sites.splice(from, 1)[0])
+    this.save()
+    this._onChange()
+  }
+
   subscribe(callback) {
     this._subscribers.push(callback)
   }
@@ -430,6 +436,12 @@ class SiteManager {
         return `${site.url}/user-api-key/new?${this.serializeParams(params)}`
       })
     )
+  }
+
+  toObject() {
+    let object = {}
+    this.sites.forEach((site)=>{object[site.url] = site})
+    return object
   }
 
   _onRefresh() {

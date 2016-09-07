@@ -6,7 +6,7 @@ import {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  TouchableHighlight,
   View
 } from 'react-native'
 
@@ -95,7 +95,7 @@ class HomeSiteRow extends React.Component {
                     backgroundColor: '#ee512a',
                     onPress: this.props.onDelete
                 }]}>
-        <TouchableOpacity onPress={()=>this.props.onClick()}>
+        <TouchableHighlight underlayColor={'#f3f3f3'} onPress={()=>this.props.onClick()} {...this.props.sortHandlers}>
           <View accessibilityTraits="link" style={styles.row}>
             <Image style={styles.icon} source={{uri: site.icon}} />
             <View style={styles.info}>
@@ -116,7 +116,7 @@ class HomeSiteRow extends React.Component {
             {this.renderShouldLogin(site)}
             {this.renderNotifications(site)}
           </View>
-        </TouchableOpacity>
+        </TouchableHighlight>
       </Swipeout>
     )
   }
@@ -154,7 +154,6 @@ const styles = StyleSheet.create({
   notifications: {
     paddingLeft: 12,
     flexDirection: 'row',
-    backgroundColor: 'white'
   },
   connect: {
     alignSelf: 'flex-start',
