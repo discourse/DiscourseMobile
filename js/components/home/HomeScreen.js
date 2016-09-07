@@ -47,10 +47,10 @@ class HomeScreen extends React.Component {
     }
 
     this._onChangeSites = (e) => this.onChangeSites(e)
-    this.props.siteManager.subscribe(this._onChangeSites)
   }
 
   componentDidMount() {
+    this.props.siteManager.subscribe(this._onChangeSites)
     this.props.siteManager.refreshInterval(15000)
   }
 
@@ -59,7 +59,6 @@ class HomeScreen extends React.Component {
   }
 
   onChangeSites(e) {
-
     if (e.event === 'change') {
       this._dataSource = this._dataSource.cloneWithRows(this.props.siteManager.sites)
       this.setState({
@@ -116,7 +115,6 @@ class HomeScreen extends React.Component {
     this.props.siteManager.refreshSites(opts)
       .then(()=>{
         this.refreshing = false
-
         this.setState({
           isRefreshing: false
         })
@@ -191,6 +189,23 @@ class HomeScreen extends React.Component {
 
 
 class DebugRow extends React.Component {
+  componentDidMount() {
+    this._subscription = ()=> {
+      this.setState({
+        firstFetch: this.props.siteManager.firstFetch,
+        lastFetch: this.props.siteManager.lastFetch,
+        fetchCount: this.props.siteManager.fetchCount,
+        lastRefresh: this.props.siteManager.lastRefresh
+      })
+    }
+    this.props.siteManager.subscribe(this._subscription)
+  }
+
+  componentWillUnmount() {
+    this.props.siteManager.unsubscribe(this._subscription)
+    this._subscription = null
+  }
+
   constructor(props) {
     super(props)
 
@@ -201,14 +216,6 @@ class DebugRow extends React.Component {
       lastRefresh: this.props.siteManager.lastRefresh
     }
 
-    this.props.siteManager.subscribe(()=>{
-      this.setState({
-        firstFetch: this.props.siteManager.firstFetch,
-        lastFetch: this.props.siteManager.lastFetch,
-        fetchCount: this.props.siteManager.fetchCount,
-        lastRefresh: this.props.siteManager.lastRefresh
-      })
-    })
   }
 
   render() {
