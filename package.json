@@ -25,7 +25,7 @@
     "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
     "sjcl": "^1.0.3",
     "react-native-sortable-listview": "^0.1.1",
-    "react-native-webview-crosswalk": "git+https://github.com/samsaffron/react-native-webview-crosswalk.git""
+    "react-native-webview-crosswalk": "git+https://github.com/samsaffron/react-native-webview-crosswalk.git"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",
