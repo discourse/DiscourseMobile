@@ -75,6 +75,9 @@ class HomeScreen extends React.Component {
         })
 
         if (site) {
+          if (this.props.siteManager.exists(site)) {
+            throw "dupe site"
+          }
           this.props.siteManager.add(site)
         }
 
@@ -84,7 +87,9 @@ class HomeScreen extends React.Component {
         )
       })
       .catch(e=>{
-        if (e === 'bad api') {
+        if ( e === 'dupe site') {
+          Alert.alert(`${term} already exists`)
+        } else if (e === 'bad api') {
           Alert.alert(`Sorry, ${term} does not support mobile APIs, have owner upgrade Discourse to latest!`)
         } else {
           Alert.alert(`${term} was not found!`)

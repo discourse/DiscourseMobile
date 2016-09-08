@@ -1,6 +1,8 @@
 /* @flow */
 'use strict'
 
+import _ from 'lodash'
+
 import {
   Alert,
   AsyncStorage,
@@ -46,6 +48,10 @@ class SiteManager {
         this.refreshSites({ui: false, fast: true})
       }, interval)
     }
+  }
+
+  exists(site) {
+    return !!_.find(this.sites, {url: site.url})
   }
 
   add(site) {
