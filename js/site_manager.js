@@ -198,7 +198,7 @@ class SiteManager {
     } else {
       BackgroundJob.start()
         .then(id=>{
-          this.refreshSites({ui: false})
+          this.refreshSites({ui: false, background: true, forceRefresh: true})
             .finally(()=>enterBg(id))
         })
         .catch(()=>{
@@ -246,7 +246,10 @@ class SiteManager {
 
       let refreshDelta = this._lastRefreshStart && (new Date() - this._lastRefreshStart)
 
-      if (opts.ui === false && this._lastRefreshStart && refreshDelta < 10000) {
+      if (!(opts.forceRefresh === true) &&
+          (opts.ui === false) &&
+          this._lastRefreshStart &&
+          (refreshDelta < 10000)) {
         console.log('bg refresh skipped cause it ran in last 10 seconds!')
         resolve({changed: false})
         return
