@@ -12,42 +12,33 @@ import {
 
 import Swipeout from 'react-native-swipeout'
 
+class Notification extends React.Component {
+
+  render() {
+    if (this.props.count > 0) {
+      return (
+        <View style={styles.notificationWrapper}>
+          <View style={[styles.notificationNumber,
+                       {backgroundColor: this.props.color}]}>
+            <Text style={styles.notificationNumberText}>{this.props.count}</Text>
+          </View>
+        </View>
+      )
+    } else {
+      return null
+    }
+  }
+}
+
 class HomeSiteRow extends React.Component {
-  renderUnread(site) {
-    if (site.unreadNotifications) {
-      return (
-        <Text style={[styles.notification,styles.blue]}>{site.unreadNotifications}</Text>
-      )
-    }
-  }
-
-  renderUnreadPM(site) {
-    if (site.unreadPrivateMessages) {
-      return (
-        <Text style={[styles.notification,styles.green]}>{site.unreadPrivateMessages}</Text>
-      )
-    }
-  }
-
-  renderFlags(site) {
-    if (site.isStaff && (site.flagCount > 0 || site.queueCount > 0)) {
-      return (
-        <Text style={[styles.notification,styles.red]}>{site.flagCount}</Text>
-      )
-    }
-  }
 
   renderNotifications(site) {
-    if (site.authToken && (
-          site.unreadNotifications ||
-          site.unreadPrivateMessages ||
-          (site.isStaff && site.flagCount > 0)
-       )) {
+    if (site.authToken) {
       return (
         <View style={styles.notifications}>
-          {this.renderFlags(site)}
-          {this.renderUnreadPM(site)}
-          {this.renderUnread(site)}
+          <Notification color={"#e45735"} count={site.flagCount}/>
+          <Notification color={"#01a84c"} count={site.unreadPrivateMessages}/>
+          <Notification color={"#0aadff"} count={site.unreadNotifications}/>
         </View>
       )
     }
@@ -166,25 +157,25 @@ const styles = StyleSheet.create({
     color: '#FFF',
     overflow: 'hidden'
   },
-  notification: {
+  notificationWrapper: {
     alignSelf: 'flex-start',
-    padding: 6,
     marginLeft: 6,
     marginBottom: 6,
-    fontSize: 14,
-    fontWeight: 'bold',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  notificationNumber: {
+    padding: 6,
+    borderRadius: 6,
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  notificationNumberText: {
     color: '#FFF',
-    overflow: 'hidden',
-    borderRadius: 6
-  },
-  blue: {
-    backgroundColor: '#0aadff',
-  },
-  green: {
-    backgroundColor: '#01a84c',
-  },
-  red: {
-    backgroundColor: '#e45735',
+    fontSize: 14,
+    fontWeight: 'bold'
   },
   counts: {
     marginTop: 6
