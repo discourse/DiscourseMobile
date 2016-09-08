@@ -1,6 +1,8 @@
 package com.discourse;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
@@ -11,11 +13,12 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.RNKeyPair.RNKeyPairPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.jordansexton.react.crosswalk.webview.CrosswalkWebViewPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -29,7 +32,8 @@ public class MainApplication extends Application implements ReactApplication {
               new RNFetchBlobPackage(),
               new MainReactPackage(),
               new RNKeyPairPackage(),
-              new RNDeviceInfo()
+              new RNDeviceInfo(),
+              new CrosswalkWebViewPackage()
       );
     }
   };

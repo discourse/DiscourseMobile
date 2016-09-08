@@ -23,15 +23,16 @@
           android:label="@string/app_name"
           android:launchMode="singleTask"
           android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
-        <intent-filter>
+          <intent-filter>
             <action android:name="android.intent.action.MAIN" />
-            <action android:name="android.intent.action.VIEW" />
             <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
             <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <data android:scheme="discourse" android:host="auth_redirect" />
-        </intent-filter>
+          </intent-filter>
+          <intent-filter>
+              <category android:name="android.intent.category.DEFAULT" />
+              <action android:name="android.intent.action.VIEW" />
+              <data android:scheme="discourse" android:host="auth_redirect" />
+          </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
