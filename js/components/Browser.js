@@ -1,7 +1,8 @@
 'use strict'
 
-import { View,WebView,Text,BackAndroid } from 'react-native'
+import { StatusBar, View,WebView,Text,BackAndroid } from 'react-native'
 import React from 'react'
+import CrosswalkWebView from 'react-native-webview-crosswalk'
 
 class Browser extends React.Component {
 
@@ -50,15 +51,16 @@ class Browser extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        <WebView
+        <CrosswalkWebView
+          style={{flex: 1}}
           ref="webview"
-          source={{uri: this.state.url}}
+          url={this.props.url}
+          url1={"https://meta.discourse.org"}
           onNavigationStateChange={this.onNavigationStateChange}
           />
       </View>
     )
   }
-
 }
 
 export default Browser
