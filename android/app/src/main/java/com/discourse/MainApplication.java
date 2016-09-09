@@ -6,6 +6,7 @@ import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -31,6 +32,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
       return Arrays.<ReactPackage>asList(
               new RNFetchBlobPackage(),
               new MainReactPackage(),
+            new VectorIconsPackage(),
               new RNKeyPairPackage(),
               new RNDeviceInfo(),
               new CrosswalkWebViewPackage()
