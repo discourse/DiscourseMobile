@@ -120,9 +120,9 @@ class SiteManager {
           console.log('Generating RSA keys')
           RNKeyPair.generate((pair)=>{
             this.rsaKeys = pair
-            resolve()
             console.log('Generated RSA keys')
             AsyncStorage.setItem('@Discourse.rsaKeys', JSON.stringify(this.rsaKeys))
+            resolve()
           })
         }
       })
