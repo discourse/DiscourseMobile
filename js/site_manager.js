@@ -318,7 +318,13 @@ class SiteManager {
                 // Don't save stuff in the background
                 if (somethingChanged && !this._background) {
                   this.save()
-                } else if (somethingChanged) {
+                }
+
+                if (somethingChanged && this._background) {
+                  this.updateUnreadBadge()
+                }
+
+                if (somethingChanged) {
                   this._onChange()
                 }
 
