@@ -7,14 +7,16 @@ import {
   AppState,
   Linking,
   Platform,
-  PushNotificationIOS
+  PushNotificationIOS,
+  NativeModules
 } from 'react-native'
+
+const ChromeCustomTab = NativeModules.ChromeCustomTab
 
 import SiteManager from './site_manager'
 import SafariView from 'react-native-safari-view'
 import HomeScreen from './components/home/HomeScreen'
 import BackgroundFetch from 'react-native-background-fetch'
-import Browser from './components/Browser.js'
 
 class Discourse extends React.Component {
   constructor(props) {
@@ -179,7 +181,9 @@ class Discourse extends React.Component {
     if (Platform.OS === 'ios') {
       SafariView.show({url})
     } else {
-      this.setState({currentUrl: url})
+      ChromeCustomTab.show(url)
+        .then(()=>{})
+        .catch((e)=>{alert(e)})
     }
   }
 
@@ -187,7 +191,7 @@ class Discourse extends React.Component {
     if (Platform.OS === 'ios') {
       SafariView.dismiss()
     } else {
-      this.setState({currentUrl: null})
+      // TODO decide if we need this for android
     }
   }
 
@@ -196,17 +200,11 @@ class Discourse extends React.Component {
       PushNotificationIOS.requestPermissions({'alert': true, 'badge': true})
     }
 
-    if (this.state.currentUrl) {
-      return (
-          <Browser done={()=>{this.closeBrowser()}} url={this.state.currentUrl} />
-      )
-    } else {
-      return (
-        <HomeScreen
-          siteManager={this._siteManager}
-          onVisitSite={(site)=> this.openUrl(site)} />
-      )
-    }
+    return (
+      <HomeScreen
+        siteManager={this._siteManager}
+        onVisitSite={(site)=> this.openUrl(site)} />
+    )
   }
 }
 

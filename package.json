@@ -24,8 +24,7 @@
     "react-native-safari-view": "git+https://github.com/samsaffron/react-native-safari-view.git",
     "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
     "sjcl": "^1.0.3",
-    "react-native-sortable-listview": "^0.1.1",
-    "react-native-webview-crosswalk": "git+https://github.com/samsaffron/react-native-webview-crosswalk.git"
+    "react-native-sortable-listview": "^0.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",

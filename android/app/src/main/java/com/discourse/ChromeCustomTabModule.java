@@ -27,11 +27,18 @@ public class ChromeCustomTabModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void navigate(String location, Promise promise) {
+    public void show(String location, Promise promise) {
         final Intent serviceIntent = new Intent("android.support.customtabs.action.CustomTabsService")
                 .setPackage("com.android.chrome");
 
-        if (serviceIntent == null) {
+        final Activity activity = getCurrentActivity();
+
+        if (activity == null) {
+            promise.resolve(false);
+            return;
+        }
+
+        if (serviceIntent == null || activity.getPackageManager().resolveService(serviceIntent, 0) == null) {
             promise.reject(new JSApplicationIllegalArgumentException("chrome not installed"));
         } else {
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
@@ -39,7 +46,6 @@ public class ChromeCustomTabModule extends ReactContextBaseJavaModule {
             customTabsIntent.intent.setPackage("com.android.chrome");
             Uri url = Uri.parse(location);
             if (url != null) {
-                final Activity activity = getCurrentActivity();
                 if (activity != null) {
                     customTabsIntent.launchUrl(activity, url);
                     promise.resolve(true);
