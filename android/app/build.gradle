@@ -132,9 +132,9 @@ dependencies {
     compile project(':react-native-key-pair')
     compile project(':react-native-fetch-blob')
     compile project(':react-native-device-info')
-    compile project(':CrosswalkWebView')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
+    compile 'com.android.support:customtabs:23.0.1'
     compile "com.facebook.react:react-native:+"  // From node_modules
 
 }
