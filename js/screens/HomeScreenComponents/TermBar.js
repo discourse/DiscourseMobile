@@ -11,7 +11,7 @@ import {
   View
 } from 'react-native'
 
-class HomeTermBar extends React.Component {
+class TermBar extends React.Component {
   static propTypes = {
     expanded: React.PropTypes.bool.isRequired,
     onDidSubmitTerm: React.PropTypes.func.isRequired
@@ -107,4 +107,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default HomeTermBar
+export default TermBar

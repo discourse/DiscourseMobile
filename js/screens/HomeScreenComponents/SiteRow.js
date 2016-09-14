@@ -13,7 +13,6 @@ import {
 import Swipeout from 'react-native-swipeout'
 
 class Notification extends React.Component {
-
   render() {
     if (this.props.count > 0) {
       return (
@@ -30,8 +29,7 @@ class Notification extends React.Component {
   }
 }
 
-class HomeSiteRow extends React.Component {
-
+class SiteRow extends React.Component {
   renderNotifications(site) {
     if (site.authToken) {
       return (
@@ -79,14 +77,14 @@ class HomeSiteRow extends React.Component {
 
     return (
       <Swipeout
-                backgroundColor={'#FFF'}
-                scroll={(scrollEnabled)=>this.props.onSwipe(scrollEnabled)}
-                right={[{
-                    text: 'Remove',
-                    backgroundColor: '#ee512a',
-                    onPress: this.props.onDelete
-                }]}>
-        <TouchableHighlight underlayColor={'#f3f3f3'} onPress={()=>this.props.onClick()} {...this.props.sortHandlers}>
+        backgroundColor={'#FFF'}
+        scroll={(scrollEnabled)=>this.props.onSwipe(scrollEnabled)}
+        right={[{
+            text: 'Remove',
+            backgroundColor: '#ee512a',
+            onPress: this.props.onDelete
+        }]}>
+        <TouchableHighlight underlayColor={'#ffffa6'} onPress={()=>this.props.onClick()} {...this.props.sortHandlers}>
           <View accessibilityTraits="link" style={styles.row}>
             <Image style={styles.icon} source={{uri: site.icon}} />
             <View style={styles.info}>
@@ -186,4 +184,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default HomeSiteRow
+export default SiteRow
