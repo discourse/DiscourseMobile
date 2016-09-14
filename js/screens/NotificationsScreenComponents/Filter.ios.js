@@ -11,6 +11,11 @@ import {
 import colors from '../../colors'
 
 class Filter extends React.Component {
+  static propTypes = {
+    onChange: React.PropTypes.func.isRequired,
+    selectedIndex: React.PropTypes.number.isRequired
+  }
+
   render() {
     return (
       <View style={styles.container}>
