@@ -2,11 +2,11 @@
 'use strict'
 
 import NotificationRow from './NotificationRow'
-import NotificationsNavigationBar from './NotificationsNavigationBar'
+import NavigationBar from './NavigationBar'
 import Filter from './Filter'
 
 module.exports = {
   Row: NotificationRow,
   Filter: Filter,
-  NavigationBar: NotificationsNavigationBar
+  NavigationBar: NavigationBar
 }
