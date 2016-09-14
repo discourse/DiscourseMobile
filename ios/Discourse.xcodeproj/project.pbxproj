@@ -31,7 +31,6 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		84E32EE6D02A4BC6BE47EEF5 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A01B54512B844D58735C60D /* libRNVectorIcons.a */; };
 		8AE4AE593C1C41D0AACD4868 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56D2AABFA5BD41FB8DD050CA /* FontAwesome.ttf */; };
-		C7CCCEEFEF8E4A30832E08A1 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F71B0726DBC499D847BC1FE /* libRCTOrientation.a */; };
 		D0B9D5E61D89687100D54E62 /* nav-icon-gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B9D5E51D89687100D54E62 /* nav-icon-gray@3x.png */; };
 		D0FE2F6D1D6F5CEA00D0311B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		D0FE2F6E1D6F5CEE00D0311B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -197,7 +196,6 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* DiscourseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiscourseTests.m; sourceTree = "<group>"; };
 		0BE631481BC54AEDB434F50A /* libRNECC.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNECC.a; sourceTree = "<group>"; };
-		0F71B0726DBC499D847BC1FE /* libRCTOrientation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTOrientation.a; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Discourse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Discourse.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -260,7 +258,6 @@
 				5A9B9D17F302472BBBD88186 /* libRNDeviceInfo.a in Frameworks */,
 				5C0A3CBB073A44C09CBB007A /* libRNFetchBlob.a in Frameworks */,
 				822FFE325D9644C4A73266AC /* libRNKeyPair.a in Frameworks */,
-				C7CCCEEFEF8E4A30832E08A1 /* libRCTOrientation.a in Frameworks */,
 				2DC1D89CEDF74F62B515F966 /* libRNECC.a in Frameworks */,
 				84E32EE6D02A4BC6BE47EEF5 /* libRNVectorIcons.a in Frameworks */,
 			);
