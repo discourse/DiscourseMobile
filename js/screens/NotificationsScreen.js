@@ -4,6 +4,7 @@
 import React from 'react'
 
 import {
+  Alert,
   AsyncStorage,
   InteractionManager,
   Linking,
@@ -89,7 +90,7 @@ class NotificationsScreen extends React.Component {
       } else {
         ChromeCustomTab.show(url)
           .then(()=>{})
-          .catch((e)=>{alert(e)})
+          .catch((e)=>{ Alert.alert(e) })
       }
     }
   }
@@ -187,7 +188,7 @@ class NotificationsScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors['grayBackground']
+    backgroundColor: colors.grayBackground
   },
   notificationsList: {
     flex: 1

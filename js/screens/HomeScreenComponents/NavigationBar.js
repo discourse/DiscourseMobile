@@ -44,7 +44,7 @@ class NavigationBar extends React.Component {
         underlayColor={'white'}
         style={styles.button}
         onPress={callback}>
-          <Icon name={iconName} size={20} color={colors['grayUI']} />
+          <Icon name={iconName} size={20} color={colors.grayUI} />
       </TouchableHighlight>
     )
   }
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   separator: {
-    backgroundColor: colors['grayBackground'],
+    backgroundColor: colors.grayBackground,
     bottom: 0,
     height: 1,
     left: 0,
