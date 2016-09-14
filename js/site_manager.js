@@ -440,11 +440,14 @@ class SiteManager {
           // on android maybe this can fail?
         }
 
+        let basePushUrl = "https://api.discourse.org"
+        //let basePushUrl = "http://l.discourse:3000"
+
         let params = {
           access: 'rp',
           client_id: clientId,
           nonce: nonce,
-          push_url: 'https://api.discourse.org/api/publish_ios',
+          push_url: basePushUrl + '/api/publish_' + Platform.OS,
           auth_redirect: 'discourse://auth_redirect',
           application_name: 'Discourse - ' + deviceName,
           public_key: this.rsaKeys.public
