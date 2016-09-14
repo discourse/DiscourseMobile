@@ -7,12 +7,16 @@ import {
   Alert,
   AppState,
   Linking,
+  NativeModules,
   Platform,
   PushNotificationIOS,
   RefreshControl,
   StyleSheet,
   View
 } from 'react-native'
+
+const ChromeCustomTab = NativeModules.ChromeCustomTab
+const AndroidToken = NativeModules.AndroidToken
 
 import SortableListView from 'react-native-sortable-listview'
 import SafariView from 'react-native-safari-view'
@@ -63,6 +67,12 @@ class HomeScreen extends React.Component {
       }
     }
 
+    if (Platform.OS === 'android') {
+      AndroidToken.GetInstanceId(id=>{
+        this._siteManager.registerClientId(id)
+      })
+    }
+
     if (Platform.OS === 'ios') {
       SafariView.addEventListener('onShow', () => {
         this._siteManager.refreshInterval(60000)
@@ -79,6 +89,10 @@ class HomeScreen extends React.Component {
       PushNotificationIOS.addEventListener('register', (s) => {
         this._siteManager.registerClientId(s)
       })
+    }
+
+    if (this.props.url) {
+      this.visitUrl(this.props.url)
     }
   }
 
@@ -121,7 +135,13 @@ class HomeScreen extends React.Component {
     if (Platform.OS === 'ios') {
       SafariView.show({url})
     } else {
-      this.setState({currentUrl: url})
+      if (this.props.simulator) {
+        Linking.openURL(url)
+      } else {
+        ChromeCustomTab.show(url)
+          .then(()=>{})
+          .catch((e)=>{alert(e)})
+      }
     }
   }
 
@@ -129,7 +149,7 @@ class HomeScreen extends React.Component {
     if (Platform.OS === 'ios') {
       SafariView.dismiss()
     } else {
-      this.setState({currentUrl: null})
+      // TODO decide if we need this for android, probably not, its just a hack
     }
   }
 
@@ -332,31 +352,24 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    // laft 500 on refresh control so it does not render incorrectly when
+    // left 500 on refresh control so it does not render incorrectly when
     // not refreshing
-    if (this.state.currentUrl) {
-      return (
-        <Browser done={()=>{this.closeBrowser()}} url={this.state.currentUrl} />
-      )
-    }
-    else {
-      return (
-        <View style={styles.container}>
-          <Components.NavigationBar
-            leftButtonIconName={this.state.displayTermBar ? 'close' : 'plus'}
-            onDidPressLeftButton={() => this.onDidPressLeftButton()}
-            onDidPressRightButton={() => this.onDidPressRighButton()}
-          />
-          <ProgressBar progress={this.state.addSiteProgress} />
-          <Components.TermBar
-            onDidSubmitTerm={(term)=>this.doSearch(term)}
-            expanded={this.state.displayTermBar}
-          />
-          {this.renderSites()}
-          <Components.DebugRow siteManager={this._siteManager} />
-        </View>
-      )
-    }
+    return (
+      <View style={styles.container}>
+        <Components.NavigationBar
+          leftButtonIconName={this.state.displayTermBar ? 'close' : 'plus'}
+          onDidPressLeftButton={() => this.onDidPressLeftButton()}
+          onDidPressRightButton={() => this.onDidPressRighButton()}
+        />
+        <ProgressBar progress={this.state.addSiteProgress} />
+        <Components.TermBar
+          onDidSubmitTerm={(term)=>this.doSearch(term)}
+          expanded={this.state.displayTermBar}
+        />
+        {this.renderSites()}
+        <Components.DebugRow siteManager={this._siteManager} />
+      </View>
+    )
   }
 }
 
