@@ -2,19 +2,22 @@
 'use strict'
 
 import React from 'react'
+
 import {
   SegmentedControlIOS,
   View
 } from 'react-native'
 
+import colors from '../../colors'
+
 class Filter extends React.Component {
   render() {
     return (
-      <View style={{backgroundColor: 'white', flex:1}}>
+      <View style={styles.container}>
         <SegmentedControlIOS
           values={['Replies', 'All']}
-          tintColor={'#919191'}
-          style={{margin: 12}}
+          tintColor={colors['grayUI']}
+          style={styles.segmentedControl}
           selectedIndex={this.props.selectedIndex}
           onChange={(event) => {
             this.props.onChange(event.nativeEvent.selectedSegmentIndex)
@@ -22,6 +25,16 @@ class Filter extends React.Component {
         />
       </View>
     )
+  }
+}
+
+const styles = {
+  container: {
+    backgroundColor: 'white',
+    flex:1
+  },
+  segmentedControl: {
+    margin: 12
   }
 }
 

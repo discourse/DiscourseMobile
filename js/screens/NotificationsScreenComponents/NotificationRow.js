@@ -2,6 +2,7 @@
 'use strict'
 
 import React from 'react'
+
 import {
   Image,
   StyleSheet,
@@ -21,11 +22,11 @@ class NotificationRow extends React.Component {
         style={[styles.contentView, this._backgroundColor()]}
         underlayColor={'#ffffa6'}
         onPress={()=>this.props.onClick()}>
-        <View style={styles.container}>
-          {this._iconForNotification(this.props.notification)}
-          {this._textForNotification(this.props.notification)}
-          <Image style={styles.siteIcon} source={{uri: this.props.site.icon}} />
-        </View>
+          <View style={styles.container}>
+            {this._iconForNotification(this.props.notification)}
+            {this._textForNotification(this.props.notification)}
+            <Image style={styles.siteIcon} source={{uri: this.props.site.icon}} />
+          </View>
       </TouchableHighlight>
     )
   }

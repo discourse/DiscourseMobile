@@ -13,23 +13,31 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import colors from '../../colors'
+
 class NavigationBar extends React.Component {
+  static propTypes = {
+    onDidPressRightButton: React.PropTypes.func
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.leftContainer} />
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Notifications</Text>
+          <Text style={styles.title}>
+            Notifications
+          </Text>
         </View>
         <View style={styles.rightContainer}>
           <TouchableHighlight
             underlayColor={'white'}
             style={styles.button}
             onPress={this.props.onDidPressRightButton}>
-            <Icon name="close" size={20} color="#919191" />
+            <Icon name="close" size={20} color={colors['grayUI']} />
           </TouchableHighlight>
         </View>
-        <View style={styles.separator}/>
+        <View style={styles.separator} />
       </View>
     )
   }
@@ -64,10 +72,10 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#f5f8fa'
+    backgroundColor: colors['grayBackground']
   },
   title: {
-    color: '#919191',
+    color: colors['grayUI'],
     fontSize: 16
   },
   button: {

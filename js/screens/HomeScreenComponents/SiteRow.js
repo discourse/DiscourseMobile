@@ -2,6 +2,7 @@
 'use strict'
 
 import React from 'react'
+
 import {
   Image,
   StyleSheet,
@@ -12,37 +13,62 @@ import {
 
 import Swipeout from 'react-native-swipeout'
 
-class Notification extends React.Component {
-  render() {
-    if (this.props.count > 0) {
-      return (
-        <View style={styles.notificationWrapper}>
-          <View style={[styles.notificationNumber,
-                       {backgroundColor: this.props.color}]}>
-            <Text style={styles.notificationNumberText}>{this.props.count}</Text>
-          </View>
-        </View>
-      )
-    } else {
-      return null
-    }
-  }
-}
+import colors from '../../colors'
+import Notification from './Notification'
 
 class SiteRow extends React.Component {
-  renderNotifications(site) {
+  render() {
+    return (
+      <Swipeout
+        backgroundColor={'white'}
+        scroll={(scrollEnabled) => this.props.onSwipe(scrollEnabled)}
+        right={[{
+          text: 'Remove',
+          backgroundColor: colors['redDanger'],
+          onPress: this.props.onDelete
+        }]}>
+        <TouchableHighlight
+          underlayColor={colors['yellowUIFeedback']}
+          onPress={()=>this.props.onClick()}
+          {...this.props.sortHandlers}>
+            <View accessibilityTraits="link" style={styles.row}>
+              <Image style={styles.icon} source={{uri: this.props.site.icon}} />
+              <View style={styles.info}>
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={styles.url}>
+                    {this.props.site.url.replace(/^https?:\/\//, '')}
+                </Text>
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={2}
+                  style={styles.description}>
+                    {this.props.site.description}
+                </Text>
+                {this._renderCounts(this.props.site)}
+              </View>
+              {this._renderShouldLogin(this.props.site)}
+              {this._renderNotifications(this.props.site)}
+            </View>
+        </TouchableHighlight>
+      </Swipeout>
+    )
+  }
+
+  _renderNotifications(site) {
     if (site.authToken) {
       return (
         <View style={styles.notifications}>
-          <Notification color={"#e45735"} count={site.flagCount}/>
-          <Notification color={"#01a84c"} count={site.unreadPrivateMessages}/>
-          <Notification color={"#0aadff"} count={site.unreadNotifications}/>
+          <Notification color={colors['redDanger']} count={site.flagCount}/>
+          <Notification color={colors['greenPrivateUnread']} count={site.unreadPrivateMessages}/>
+          <Notification color={colors['blueUnread']} count={site.unreadNotifications}/>
         </View>
       )
     }
   }
 
-  renderShouldLogin(site) {
+  _renderShouldLogin(site) {
     if (!site.authToken) {
       return (
         <View style={styles.notifications}>
@@ -52,7 +78,7 @@ class SiteRow extends React.Component {
     }
   }
 
-  renderCounts(site) {
+  _renderCounts(site) {
     var counts = []
     if (site.authToken) {
       if (site.totalNew > 0) {
@@ -66,121 +92,65 @@ class SiteRow extends React.Component {
     if (counts.length > 0) {
       return (
         <View style={styles.counts}>
-          <Text style={styles.countsText}>{counts.join('  ')}</Text>
+          <Text style={styles.countsText}>
+            {counts.join('  ')}
+          </Text>
         </View>
       )
     }
-  }
-
-  render() {
-    const site = this.props.site
-
-    return (
-      <Swipeout
-        backgroundColor={'#FFF'}
-        scroll={(scrollEnabled)=>this.props.onSwipe(scrollEnabled)}
-        right={[{
-            text: 'Remove',
-            backgroundColor: '#ee512a',
-            onPress: this.props.onDelete
-        }]}>
-        <TouchableHighlight underlayColor={'#ffffa6'} onPress={()=>this.props.onClick()} {...this.props.sortHandlers}>
-          <View accessibilityTraits="link" style={styles.row}>
-            <Image style={styles.icon} source={{uri: site.icon}} />
-            <View style={styles.info}>
-              <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                  style={styles.url}>
-                {site.url.replace(/^https?:\/\//, '')}
-              </Text>
-              <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={2}
-                  style={styles.description}>
-                {site.description}
-              </Text>
-              {this.renderCounts(site)}
-            </View>
-            {this.renderShouldLogin(site)}
-            {this.renderNotifications(site)}
-          </View>
-        </TouchableHighlight>
-      </Swipeout>
-    )
   }
 }
 
 const styles = StyleSheet.create({
   row: {
+    borderBottomColor: colors['grayBorder'],
+    borderBottomWidth: StyleSheet.hairlineWidth,
     flex: 1,
     flexDirection: 'row',
-    padding: 12,
-    borderBottomColor: '#ddd',
-    borderBottomWidth: StyleSheet.hairlineWidth
+    padding: 12
   },
   icon: {
-    width: 40,
+    alignSelf: 'center',
     height: 40,
-    alignSelf: 'center'
+    width: 40
   },
   info: {
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    flex: 1,
     paddingLeft: 12
   },
   url: {
+    color: colors['grayTitle'],
     fontSize: 16,
-    color: '#222',
     fontWeight: 'normal'
   },
   description: {
-    fontSize: 14,
-    color: '#919191',
-    flex: 10
+    color: colors['graySubtitle'],
+    flex: 10,
+    fontSize: 14
   },
   notifications: {
-    paddingLeft: 12,
     flexDirection: 'row',
+    paddingLeft: 12
   },
   connect: {
     alignSelf: 'flex-start',
-    backgroundColor: '#08c',
-    padding: 6,
-    marginLeft: 6,
-    marginBottom: 6,
+    backgroundColor: colors['blueCallToAction'],
+    color: 'white',
     fontSize: 14,
     fontWeight: '500',
-    color: '#FFF',
-    overflow: 'hidden'
-  },
-  notificationWrapper: {
-    alignSelf: 'flex-start',
     marginLeft: 6,
     marginBottom: 6,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  notificationNumber: {
-    padding: 6,
-    borderRadius: 6,
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'center'
-  },
-  notificationNumberText: {
-    color: '#FFF',
-    fontSize: 14,
-    fontWeight: 'bold'
+    overflow: 'hidden',
+    padding: 6
   },
   counts: {
     marginTop: 6
   },
   countsText: {
-    fontSize: 14,
-    color: '#0aadff'
+    color: colors['blueUnread'],
+    fontSize: 14
   }
 })
 
