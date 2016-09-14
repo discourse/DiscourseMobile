@@ -21,7 +21,6 @@
     "react-native-sortable-listview": "^0.1.1",
     "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
     "react-native-vector-icons": "^2.1.0",
-    "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
     "react-native-sortable-listview": "^0.1.1"
   },
   "devDependencies": {
