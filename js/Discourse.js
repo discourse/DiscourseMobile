@@ -17,7 +17,7 @@ const AndroidToken = NativeModules.AndroidToken
 import SiteManager from './site_manager'
 import SafariView from 'react-native-safari-view'
 import HomeScreen from './components/home/HomeScreen'
-import BackgroundFetch from 'react-native-background-fetch'
+import BackgroundFetch from '../lib/background-fetch'
 
 class Discourse extends React.Component {
   constructor(props) {
