@@ -15,7 +15,6 @@
     "react-native": "0.33.0",
     "react-native-device-info": "^0.9.4",
     "react-native-ecc": "^1.2.2",
-    "react-native-fetch-blob": "^0.9.3",
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair.git",
     "react-native-orientation": "^1.17.0",
     "react-native-progress": "^3.0.1",

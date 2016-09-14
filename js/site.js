@@ -1,10 +1,10 @@
 /* @flow */
 'use strict'
 
+import { Platform } from 'react-native'
 import _ from 'lodash'
 
 const fetch = require('./../lib/fetch')
-import RNFetchBlob from 'react-native-fetch-blob'
 import randomBytes from './../lib/random-bytes'
 
 class Site {
@@ -91,7 +91,7 @@ class Site {
     method = method || 'GET'
     let headers = {
       'User-Api-Key': this.authToken,
-      'User-Agent': 'Discourse IOS App / 1.0',
+      'User-Agent': `Discourse ${Platform.OS} App / 1.0`,
       'Content-Type': 'application/json',
       'Dont-Chunk': 'true'
     }
@@ -106,24 +106,34 @@ class Site {
 
     return new Promise((resolve, reject) => {
 
-      let config = RNFetchBlob.config({timeout: this._timeout})
-      this._currentFetch = config.fetch(method, this.url + path, headers, data)
+      let req = new Request(this.url + path, {
+        headers: headers,
+        method: method,
+        body: data
+      })
+      this._currentFetch = fetch(req)
       this._currentFetch.then(r1 => {
         if (this._background) {
           throw 'In Background mode aborting request!'
         }
-        resolve(r1.json())
+        if (r1.status === 200) {
+          return r1.json();
+        } else {
+          if (r1.status === 403) {
+            this.authToken = null
+            this.userId = null
+            this.username = null
+            this.isStaff = null
+            throw 'User was logged off!'
+          } else {
+            throw 'Error during fetch status code:' + r1.stats
+          }
+        }
+      })
+      .then(result=>{
+        resolve(result)
       })
       .catch((e)=>{
-       if (e.message.match(/403$/)) {
-          // access denied user logged out or key revoked
-          this.authToken = null
-          this.userId = null
-          this.username = null
-          this.isStaff = null
-          reject('User was logged off!')
-          return
-        }
         reject(e)
       })
       .finally(()=>{
@@ -456,11 +466,8 @@ class Site {
 
   enterBackground() {
     this._background = true
-    if (this._currentFetch && this._currentFetch.cancel) {
-      this._currentFetch.cancel((e) =>{
-        console.log('Failed to cancel request')
-        console.log(e)
-      })
+    if (this._currentFetch && this._currentFetch.abort) {
+      this._currentFetch.abort()
     }
     this._timeout = 5000
   }
