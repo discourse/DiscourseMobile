@@ -13,7 +13,7 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-class NotificationsNavigationBar extends React.Component {
+class NavigationBar extends React.Component {
   render() {
     return (
       <View style={styles.container}>
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default NotificationsNavigationBar
+export default NavigationBar
