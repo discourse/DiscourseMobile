@@ -13,31 +13,39 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import colors from '../../colors'
+
 class NavigationBar extends React.Component {
+  static propTypes = {
+    onDidPressRightButton: React.PropTypes.func,
+    onDidPressLeftButton: React.PropTypes.func
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.leftContainer}>
-          <TouchableHighlight
-            underlayColor={'white'}
-            style={styles.button}
-            onPress={this.props.onDidPressLeftButton}>
-            <Icon name={this.props.leftButtonIconName} size={20} color="#919191" />
-          </TouchableHighlight>
+          {this._renderButton(this.props.onDidPressLeftButton, this.props.leftButtonIconName)}
         </View>
         <View style={styles.titleContainer}>
           <Image style={styles.icon} source={require('../../../img/nav-icon-gray.png')} />
         </View>
         <View style={styles.rightContainer}>
-          <TouchableHighlight
-            underlayColor={'white'}
-            style={styles.button}
-            onPress={this.props.onDidPressRightButton}>
-            <Icon name="bell" size={20} color="#919191" />
-          </TouchableHighlight>
+          {this._renderButton(this.props.onDidPressRightButton, 'bell')}
         </View>
-        <View style={styles.separator}/>
+        <View style={styles.separator} />
       </View>
+    )
+  }
+
+  _renderButton(callback, iconName) {
+    return (
+      <TouchableHighlight
+        underlayColor={'white'}
+        style={styles.button}
+        onPress={callback}>
+          <Icon name={iconName} size={20} color={colors['grayUI']} />
+      </TouchableHighlight>
     )
   }
 }
@@ -46,32 +54,32 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flexDirection: 'row',
-    paddingTop: Platform.OS === 'ios' ? 20 : 0,
-    height: Platform.OS === 'ios' ? 64 : 55
+    height: Platform.OS === 'ios' ? 64 : 55,
+    paddingTop: Platform.OS === 'ios' ? 20 : 0
   },
   leftContainer: {
     flex: 1,
-    paddingLeft: 4,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingLeft: 4
   },
   rightContainer: {
+    alignItems: 'flex-end',
     flex: 1,
-    paddingRight: 4,
     justifyContent: 'center',
-    alignItems: 'flex-end'
+    paddingRight: 4
   },
   titleContainer: {
+    alignItems: 'center',
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'center'
   },
   separator: {
-    height: 1,
-    position: 'absolute',
+    backgroundColor: colors['grayBackground'],
     bottom: 0,
+    height: 1,
     left: 0,
-    right: 0,
-    backgroundColor: '#f5f8fa'
+    position: 'absolute',
+    right: 0
   },
   button: {
     padding: 8

@@ -19,6 +19,7 @@ class TermBar extends React.Component {
 
   constructor(props) {
     super(props)
+
     this.state = {
       termContainerHeight: new Animated.Value(props.expanded ? 48 : 0),
       text: '',
@@ -29,7 +30,7 @@ class TermBar extends React.Component {
   termContainerAnimatedHeight() {
     return this.state.termContainerHeight.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 48],
+      outputRange: [0, 48]
     })
   }
 
@@ -53,28 +54,22 @@ class TermBar extends React.Component {
 
   handleSubmitTerm(term) {
     this.props.onDidSubmitTerm(term)
-      .then(()=>{
+      .then(() => {
         this.setState({text: ''})
       })
-      .catch(e=>{
+      .catch(error => {
         this.showTermInput()
       })
   }
 
   componentWillReceiveProps(props) {
-    if (props.expanded) {
-      this.showTermInput()
-    }
-    else {
-      this.hideTermInput()
-    }
-
+    props.expanded ? this.showTermInput() : this.hideTermInput()
     this.setState({expanded: props.expanded})
   }
 
   render() {
     return (
-      <Animated.View style={[styles.termContainer, {height: this.termContainerAnimatedHeight()}]}>
+      <Animated.View style={[styles.container, {height: this.termContainerAnimatedHeight()}]}>
         <TextInput
           ref="Input"
           keyboardType="url"
@@ -82,7 +77,7 @@ class TermBar extends React.Component {
           clearButtonMode="while-editing"
           autoCapitalize="none"
           autoCorrect={false}
-          onSubmitEditing={(event)=>this.handleSubmitTerm(event.nativeEvent.text)}
+          onSubmitEditing={(event) => this.handleSubmitTerm(event.nativeEvent.text)}
           placeholder="meta.discourse.org"
           style={styles.term}
           onChangeText={(text) => this.setState({text})}
@@ -101,7 +96,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
   },
-  termContainer: {
+  container: {
     backgroundColor: '#e9e9e9',
     overflow: 'hidden'
   }

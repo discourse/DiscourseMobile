@@ -25,13 +25,9 @@ import Site from '../site'
 import DiscourseApi from '../DiscourseApi'
 import Components from './NotificationsScreenComponents'
 import ProgressBar from '../ProgressBar'
+import colors from '../colors'
 
 class NotificationsScreen extends React.Component {
-  static navigatorStyle = {
-    navBarNoBorder: true,
-    navBarButtonColor: '#919191'
-  }
-
   constructor(props) {
     super(props)
 
@@ -59,9 +55,7 @@ class NotificationsScreen extends React.Component {
     if (this.state.renderPlaceholderOnly) {
       return (
         <View style={styles.container}>
-          <Components.NavigationBar
-            onDidPressRightButton={() => this._onDidPressRightButton()}
-          />
+          <Components.NavigationBar onDidPressRightButton={() => {}} />
         </View>
       )
     }
@@ -77,7 +71,8 @@ class NotificationsScreen extends React.Component {
           dataSource={this.state.dataSource}
           renderHeader={() => this._renderListHeader()}
           renderRow={(rowData) => this._renderListRow(rowData)}
-          style={styles.notificationsList} />
+          style={styles.notificationsList}
+        />
       </View>
     )
   }
@@ -192,7 +187,7 @@ class NotificationsScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f8fa'
+    backgroundColor: colors['grayBackground']
   },
   notificationsList: {
     flex: 1

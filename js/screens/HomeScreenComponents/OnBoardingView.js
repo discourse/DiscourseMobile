@@ -10,6 +10,8 @@ import {
   View
 } from 'react-native'
 
+import colors from '../../colors'
+
 class OnBoardingView extends React.Component {
   static propTypes = {
     onDidPressAddSite: React.PropTypes.func.isRequired
@@ -24,7 +26,7 @@ class OnBoardingView extends React.Component {
         </Text>
 
         <View style={styles.button}>
-          <TouchableOpacity onPress={()=>this.props.onDidPressAddSite()}>
+          <TouchableOpacity onPress={() => this.props.onDidPressAddSite()}>
             <Text style={styles.buttonText}>
               + Add your first site
             </Text>
@@ -37,22 +39,22 @@ class OnBoardingView extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    flex: 1,
+    justifyContent: 'center'
   },
   text: {
     fontSize: 16,
-    textAlign: 'center',
+    marginBottom: 12,
     padding: 24,
-    marginBottom: 12
+    textAlign: 'center'
   },
   buttonText: {
-    backgroundColor: '#e9e9e9',
+    backgroundColor: colors['blueCallToAction'],
+    color: 'white',
     fontSize: 16,
     fontWeight: '500',
-    color: '#222',
     padding: 8
   }
 })
