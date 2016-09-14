@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   buttonText: {
-    backgroundColor: colors['blueCallToAction'],
+    backgroundColor: colors.blueCallToAction,
     color: 'white',
     fontSize: 16,
     fontWeight: '500',

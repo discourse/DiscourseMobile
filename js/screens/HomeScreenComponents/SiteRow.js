@@ -24,11 +24,11 @@ class SiteRow extends React.Component {
         scroll={(scrollEnabled) => this.props.onSwipe(scrollEnabled)}
         right={[{
           text: 'Remove',
-          backgroundColor: colors['redDanger'],
+          backgroundColor: colors.redDanger,
           onPress: this.props.onDelete
         }]}>
         <TouchableHighlight
-          underlayColor={colors['yellowUIFeedback']}
+          underlayColor={colors.yellowUIFeedback}
           onPress={()=>this.props.onClick()}
           {...this.props.sortHandlers}>
             <View accessibilityTraits="link" style={styles.row}>
@@ -60,9 +60,9 @@ class SiteRow extends React.Component {
     if (site.authToken) {
       return (
         <View style={styles.notifications}>
-          <Notification color={colors['redDanger']} count={site.flagCount}/>
-          <Notification color={colors['greenPrivateUnread']} count={site.unreadPrivateMessages}/>
-          <Notification color={colors['blueUnread']} count={site.unreadNotifications}/>
+          <Notification color={colors.redDanger} count={site.flagCount}/>
+          <Notification color={colors.greenPrivateUnread} count={site.unreadPrivateMessages}/>
+          <Notification color={colors.blueUnread} count={site.unreadNotifications}/>
         </View>
       )
     }
@@ -103,7 +103,7 @@ class SiteRow extends React.Component {
 
 const styles = StyleSheet.create({
   row: {
-    borderBottomColor: colors['grayBorder'],
+    borderBottomColor: colors.grayBorder,
     borderBottomWidth: StyleSheet.hairlineWidth,
     flex: 1,
     flexDirection: 'row',
@@ -121,12 +121,12 @@ const styles = StyleSheet.create({
     paddingLeft: 12
   },
   url: {
-    color: colors['grayTitle'],
+    color: colors.grayTitle,
     fontSize: 16,
     fontWeight: 'normal'
   },
   description: {
-    color: colors['graySubtitle'],
+    color: colors.graySubtitle,
     flex: 10,
     fontSize: 14
   },
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   },
   connect: {
     alignSelf: 'flex-start',
-    backgroundColor: colors['blueCallToAction'],
+    backgroundColor: colors.blueCallToAction,
     color: 'white',
     fontSize: 14,
     fontWeight: '500',
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     marginTop: 6
   },
   countsText: {
-    color: colors['blueUnread'],
+    color: colors.blueUnread,
     fontSize: 14
   }
 })

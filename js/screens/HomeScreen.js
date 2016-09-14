@@ -140,7 +140,7 @@ class HomeScreen extends React.Component {
       } else {
         ChromeCustomTab.show(url)
           .then(()=>{})
-          .catch((e)=>{alert(e)})
+          .catch((e)=>{ Alert.alert(e) })
       }
     }
   }

@@ -16,7 +16,7 @@ class Filter extends React.Component {
       <View style={styles.container}>
         <SegmentedControlIOS
           values={['Replies', 'All']}
-          tintColor={colors['grayUI']}
+          tintColor={colors.grayUI}
           style={styles.segmentedControl}
           selectedIndex={this.props.selectedIndex}
           onChange={(event) => {
