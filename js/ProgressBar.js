@@ -14,7 +14,7 @@ class ProgressBar extends React.Component {
         borderWidth={0}
         borderRadius={0}
         style={{position:'absolute', zIndex: 10}}
-        height={this.props.progress === 0 ? 0 : 5}
+        height={this.props.progress === 0 ? 0 : 3}
         progress={this.props.progress}
         width={Dimensions.get('window').width}
       />
