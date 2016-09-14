@@ -32,7 +32,8 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
               new MainReactPackage(),
               new RNKeyPairPackage(),
               new RNDeviceInfo(),
-              new ChromeCustomTabPackage()
+              new ChromeCustomTabPackage(),
+              new AndroidTokenPackage()
       );
     }
   };

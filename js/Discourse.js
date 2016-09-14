@@ -12,6 +12,7 @@ import {
 } from 'react-native'
 
 const ChromeCustomTab = NativeModules.ChromeCustomTab
+const AndroidToken = NativeModules.AndroidToken
 
 import SiteManager from './site_manager'
 import SafariView from 'react-native-safari-view'
@@ -47,6 +48,12 @@ class Discourse extends React.Component {
       }
     }
 
+    if (Platform.OS === 'android') {
+       AndroidToken.GetInstanceId(id=>{
+         this._siteManager.registerClientId(id)
+       })
+    }
+
     if (Platform.OS === 'ios') {
 
       SafariView.addEventListener('onShow', ()=>{
@@ -65,6 +72,10 @@ class Discourse extends React.Component {
         this._siteManager.registerClientId(s)
       })
 
+    }
+
+    if (this.props.url) {
+      this.visitUrl(this.props.url);
     }
   }
 
@@ -181,9 +192,13 @@ class Discourse extends React.Component {
     if (Platform.OS === 'ios') {
       SafariView.show({url})
     } else {
-      ChromeCustomTab.show(url)
-        .then(()=>{})
-        .catch((e)=>{alert(e)})
+      if (this.props.simulator) {
+        Linking.openURL(url)
+      } else {
+        ChromeCustomTab.show(url)
+          .then(()=>{})
+          .catch((e)=>{alert(e)})
+      }
     }
   }
 
@@ -191,7 +206,7 @@ class Discourse extends React.Component {
     if (Platform.OS === 'ios') {
       SafariView.dismiss()
     } else {
-      // TODO decide if we need this for android
+      // TODO decide if we need this for android, probably not, its just a hack
     }
   }
 
