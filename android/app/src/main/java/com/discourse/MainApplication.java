@@ -14,7 +14,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.RNKeyPair.RNKeyPairPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.jordansexton.react.crosswalk.webview.CrosswalkWebViewPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +34,8 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
             new VectorIconsPackage(),
               new RNKeyPairPackage(),
               new RNDeviceInfo(),
-              new CrosswalkWebViewPackage()
+              new ChromeCustomTabPackage(),
+              new AndroidTokenPackage()
       );
     }
   };

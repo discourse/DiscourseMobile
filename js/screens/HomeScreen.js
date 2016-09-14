@@ -6,27 +6,20 @@ import React from 'react'
 import {
   Alert,
   AppState,
-  ListView,
   Linking,
   Platform,
   PushNotificationIOS,
   RefreshControl,
-  StatusBar,
   StyleSheet,
-  View,
-  Text,
-  TouchableHighlight
+  View
 } from 'react-native'
 
-import Moment from 'moment'
 import SortableListView from 'react-native-sortable-listview'
 import SafariView from 'react-native-safari-view'
-import BackgroundFetch from 'react-native-background-fetch'
+import BackgroundFetch from '../../lib/background-fetch'
 
-import DiscourseApi from '../DiscourseApi'
 import SiteManager from '../site_manager'
 import Site from '../site'
-import Browser from '../Browser.js'
 import Components from './HomeScreenComponents'
 import ProgressBar from '../ProgressBar'
 
@@ -303,7 +296,7 @@ class HomeScreen extends React.Component {
           rowHasChanged={(r1, r2)=> {
             // TODO: r2 returns as an Object instead of a Site
             // casting Site shouldn't be needed
-            return new Site(r1).toJSON() != new Site(r2).toJSON()
+            return new Site(r1).toJSON() !== new Site(r2).toJSON()
           }}
           onRowMoved={(e)=> {
             this._siteManager.updateOrder(e.from, e.to)
@@ -315,7 +308,7 @@ class HomeScreen extends React.Component {
               refreshing={this.state.isRefreshing}
               onRefresh={()=>this.refreshSites({ui: true, fast: false})}
               title="Loading..."
-              titleColor='#919191'
+              titleColor="#919191"
             />
           }
           renderRow={(site) =>

@@ -8,8 +8,7 @@ import {
   InteractionManager,
   ListView,
   StyleSheet,
-  View,
-  Text
+  View
 } from 'react-native'
 
 

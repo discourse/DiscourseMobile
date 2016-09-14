@@ -23,8 +23,6 @@ class DiscourseUtils {
   }
 
   static iconNameForNotification(notification) {
-    let icon
-
     switch (notification.notification_type) {
       case 1:
         return 'at'

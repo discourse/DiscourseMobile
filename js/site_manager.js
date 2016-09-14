@@ -70,6 +70,7 @@ class SiteManager {
           })
       this.save()
       this._onChange()
+      this.updateUnreadBadge()
     }
   }
 
@@ -194,8 +195,7 @@ class SiteManager {
           this.waitFor(20000, ()=>!this.refreshing)
               .finally(()=>{
                 enterBg(id)
-              });
-
+              })
         })
         .catch(()=>{
           // not implemented on android yet
@@ -318,7 +318,13 @@ class SiteManager {
                 // Don't save stuff in the background
                 if (somethingChanged && !this._background) {
                   this.save()
-                } else if (somethingChanged) {
+                }
+
+                if (somethingChanged && this._background) {
+                  this.updateUnreadBadge()
+                }
+
+                if (somethingChanged) {
                   this._onChange()
                 }
 
@@ -377,6 +383,7 @@ class SiteManager {
           } else {
             this.clientId = randomBytes(32)
             AsyncStorage.setItem('@ClientId', this.clientId)
+            resolve(clientId)
           }
         })
       }
@@ -432,11 +439,14 @@ class SiteManager {
           // on android maybe this can fail?
         }
 
+        let basePushUrl = 'https://api.discourse.org'
+        //let basePushUrl = "http://l.discourse:3000"
+
         let params = {
           access: 'rp',
           client_id: clientId,
           nonce: nonce,
-          push_url: 'https://api.discourse.org/api/publish_ios',
+          push_url: basePushUrl + '/api/publish_' + Platform.OS,
           auth_redirect: 'discourse://auth_redirect',
           application_name: 'Discourse - ' + deviceName,
           public_key: this.rsaKeys.public

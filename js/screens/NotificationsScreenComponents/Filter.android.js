@@ -9,7 +9,7 @@ import {
 class Filter extends React.Component {
   render() {
     return (
-      <View></View>
+      <View/>
     )
   }
 }

@@ -9,15 +9,12 @@
     "storybook-ios": "storybook start -p 7007"
   },
   "dependencies": {
-    "keypair": "^1.0.0",
     "lodash": "^4.15.0",
     "moment": "^2.14.1",
     "react": "15.3.1",
     "react-native": "0.33.0",
-    "react-native-background-fetch": "git+https://github.com/samsaffron/react-native-background-fetch.git",
     "react-native-device-info": "^0.9.4",
     "react-native-ecc": "^1.2.2",
-    "react-native-fetch-blob": "^0.9.3",
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair.git",
     "react-native-orientation": "^1.17.0",
     "react-native-progress": "^3.0.1",
@@ -25,7 +22,8 @@
     "react-native-sortable-listview": "^0.1.1",
     "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
     "react-native-vector-icons": "^2.1.0",
-    "react-native-webview-crosswalk": "git+https://github.com/samsaffron/react-native-webview-crosswalk.git"
+    "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
+    "react-native-sortable-listview": "^0.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",
