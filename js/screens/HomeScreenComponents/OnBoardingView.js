@@ -10,7 +10,7 @@ import {
   View
 } from 'react-native'
 
-class HomeOnBoardingView extends React.Component {
+class OnBoardingView extends React.Component {
   static propTypes = {
     onDidPressAddSite: React.PropTypes.func.isRequired
   }
@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
   },
   text: {
     fontSize: 16,
@@ -56,4 +57,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default HomeOnBoardingView
+export default OnBoardingView

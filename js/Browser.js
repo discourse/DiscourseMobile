@@ -1,11 +1,10 @@
 'use strict'
 
-import { StatusBar, View,WebView,Text,BackAndroid } from 'react-native'
+import { View, BackAndroid } from 'react-native'
 import React from 'react'
 import CrosswalkWebView from 'react-native-webview-crosswalk'
 
 class Browser extends React.Component {
-
   constructor(props) {
     super(props)
 
@@ -40,13 +39,12 @@ class Browser extends React.Component {
       url: navState.url,
       status: navState.title,
       loading: navState.loading
-    });
-  };
-
-  get webView() {
-    return this.refs["webview"]
+    })
   }
 
+  get webView() {
+    return this.refs.webview
+  }
 
   render() {
     return (
