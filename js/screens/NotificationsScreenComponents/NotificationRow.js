@@ -22,9 +22,9 @@ class NotificationRow extends React.Component {
         underlayColor={'#ffffa6'}
         onPress={()=>this.props.onClick()}>
         <View style={styles.container}>
-          <Image style={styles.icon} source={{uri: this.props.site.icon}} />
           {this._iconForNotification(this.props.notification)}
           {this._textForNotification(this.props.notification)}
+          <Image style={styles.siteIcon} source={{uri: this.props.site.icon}} />
         </View>
       </TouchableHighlight>
     )
@@ -32,32 +32,38 @@ class NotificationRow extends React.Component {
 
   _iconForNotification(notification) {
     let name = DiscourseUtils.iconNameForNotification(notification)
-    return <Icon style={styles.notificationType} name={name} size={14} color="#919191" />
+    return <Icon style={styles.notificationIcon} name={name} size={14} color="#919191" />
   }
 
   _textForNotification(notification) {
+    let innerText
+
     switch (notification.notification_type) {
       case 1:
       case 6:
       case 9:
-        return (
-          <Text style={styles.notificationAuthor}>
+        innerText = (
+          <Text>
             {this.props.notification.data.display_username}
             <Text style={styles.notificationText}>
               {' '}{this.props.notification.data.topic_title}
             </Text>
           </Text>
         )
+        break
       case 12:
-        return (
+        innerText = (
           <Text style={styles.notificationText}>
             {' '}{this.props.notification.data.badge_name}
           </Text>
         )
+        break
       default:
         console.log('Couldn’t generate text for notification', notification)
-        return <Text>Unknown</Text>
+        innerText = <Text>Unknown</Text>
     }
+
+    return <Text style={styles.textContainer}>{innerText}</Text>
   }
 
   _backgroundColor() {
@@ -75,30 +81,29 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ddd',
     borderBottomWidth: StyleSheet.hairlineWidth
   },
-  notificationAuthor: {
+  textContainer: {
     flex: 1,
     flexDirection: 'column',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    fontSize: 14
   },
   notificationText: {
     color: '#08c',
-    flexDirection: 'column',
-    alignSelf: 'center'
   },
   container: {
     flex: 1,
     flexDirection: 'row',
     margin: 12
   },
-  icon: {
+  siteIcon: {
     width: 25,
     height: 25,
-    marginRight: 12,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginLeft: 12
   },
-  notificationType: {
-    marginRight: 4,
-    alignSelf: 'center'
+  notificationIcon: {
+    alignSelf: 'center',
+    marginRight: 12
   }
 })
 
