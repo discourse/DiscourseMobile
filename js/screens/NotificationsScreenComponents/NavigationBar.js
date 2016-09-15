@@ -13,6 +13,7 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import ProgressBar from '../../ProgressBar'
 import colors from '../../colors'
 
 class NavigationBar extends React.Component {
@@ -23,6 +24,7 @@ class NavigationBar extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer} />
         <View style={styles.titleContainer}>
           <Text style={styles.title}>
