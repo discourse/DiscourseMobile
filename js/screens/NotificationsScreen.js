@@ -17,9 +17,7 @@ import {
 import _ from 'lodash'
 
 import DiscourseUtils from '../DiscourseUtils'
-import NotificationsStore from '../stores/NotificationsStore'
 import Site from '../site'
-import DiscourseApi from '../DiscourseApi'
 import Components from './NotificationsScreenComponents'
 import ProgressBar from '../ProgressBar'
 import colors from '../colors'
@@ -78,9 +76,8 @@ class NotificationsScreen extends React.Component {
   }
 
   _openNotificationForSite(notification, site) {
-    NotificationsStore.markAsRead(notification)
+    // TODO mark as read
     let url = DiscourseUtils.endpointForSiteNotification(site, notification)
-
     this.props.openUrl(url)
   }
 
@@ -97,17 +94,6 @@ class NotificationsScreen extends React.Component {
     )
   }
 
-  _filterNotificationsOnTypes(notifications, types) {
-    if (!_.isUndefined(types)) {
-      return _.filter(notifications, function(notification) {
-        return _.includes(types, notification.notification.notification_type)
-      })
-    }
-    else {
-      return notifications
-    }
-  }
-
   _renderListHeader() {
     return (
       <Components.Filter
@@ -122,55 +108,20 @@ class NotificationsScreen extends React.Component {
   }
 
   _fetchNotifications(notificationTypes) {
-    NotificationsStore.shouldRefresh().then((shouldRefresh) => {
-      if (shouldRefresh) {
-        this.setState({progress: Math.random() * 0.4})
-        AsyncStorage.getItem('@Discourse.sites').then((jsonSites) => {
-          if (jsonSites) {
-            let objects = []
-            let sites = JSON.parse(jsonSites).map(obj=>new Site(obj))
-            let connectedSites = _.filter(sites, function(s) { return !_.isUndefined(s.authToken) })
 
-            let promises = _.map(connectedSites, (site) => {
-              return DiscourseApi.getNotifications(site)
-            })
+    this.setState({progress: Math.random() * 0.4})
 
-            Promise.all(promises).then((responses) => {
-              _.each(responses, (response, index) => {
-                if ('notifications' in response) {
-                  let site = connectedSites[index]
-                  _.each(response.notifications, (notification) => {
-                    objects.push({notification: notification, site: site})
-                  })
-                }
-              })
-
-              let orderedNotifications = _.orderBy(objects, ['notification.created_at'], ['desc'])
-              NotificationsStore.saveNotifications(orderedNotifications)
-
-              let notifications = this._filterNotificationsOnTypes(orderedNotifications, notificationTypes)
-
-              this.setState({
-                progress: 1,
-                dataSource: this.state.dataSource.cloneWithRows(notifications)
-              })
-
-              setTimeout(
-                ()=>{ this.setState({progress: 0}) },
-                500
-              )
-            })
-          }
-        }).done()
-      } else {
-        NotificationsStore.getAll().then((objects) => {
-          let notifications = this._filterNotificationsOnTypes(objects, notificationTypes)
-          this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(notifications)
-          })
+    this.props.siteManager.notifications(notificationTypes)
+        .then(notifications => {
+                setTimeout(()=>{
+                  this.setState({progress: 0})
+                },400)
+                this.setState({
+                  dataSource: this.state.dataSource.cloneWithRows(notifications),
+                  progress: 1
+                })
         })
-      }
-    })
+
   }
 }
 

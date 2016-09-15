@@ -457,6 +457,30 @@ class SiteManager {
     )
   }
 
+  notifications(types) {
+    return new Promise((resolve)=>{
+      let promises = []
+      this.sites.forEach(site=>{
+         promises.push(
+           site.notifications(types)
+             .then(notifications=>{
+                return notifications.map(n=>{return {notification: n, site: site}})
+              })
+         )
+      })
+
+      Promise.all(promises)
+          .then((results) => {
+             resolve(
+               _.chain(results)
+                  .flatten()
+                  .orderBy(['notification.created_at'], ['desc'])
+                  .value()
+              )
+          }).done()
+    })
+  }
+
   toObject() {
     let object = {}
     this.sites.forEach((site)=>{object[site.url] = site})
