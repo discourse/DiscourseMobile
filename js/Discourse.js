@@ -7,16 +7,45 @@ import {
   Navigator,
   Platform,
   PushNotificationIOS,
-  StyleSheet
+  StyleSheet,
+  NativeModules
 } from 'react-native'
 
 import Screens from './screens'
+import SiteManager from './site_manager'
+import SafariView from 'react-native-safari-view'
+
+const ChromeCustomTab = NativeModules.ChromeCustomTab
 
 if (Platform.OS === 'ios') {
   PushNotificationIOS.requestPermissions({'alert': true, 'badge': true})
 }
 
 class Discourse extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this._siteManager = new SiteManager()
+
+    if (this.props.url) {
+      this.openUrl(this.props.url)
+    }
+  }
+
+  openUrl(url) {
+    if (Platform.OS === 'ios') {
+      SafariView.show({url})
+    } else {
+      if (this.props.simulator) {
+        Linking.openURL(url)
+      } else {
+        ChromeCustomTab.show(url)
+          .then(()=>{})
+          .catch((e)=>{ Alert.alert(e) })
+      }
+    }
+  }
+
   render() {
     return (
       <Navigator
@@ -33,9 +62,15 @@ class Discourse extends React.Component {
         renderScene={(route, navigator) => {
           switch (route.identifier) {
             case 'NotificationsScreen':
-              return <Screens.Notifications navigator={navigator}/>
+              return (<Screens.Notifications
+                        openUrl={this.openUrl}
+                        navigator={navigator}
+                        siteManager={this._siteManager}/>)
             default:
-              return <Screens.Home navigator={navigator}/>
+              return (<Screens.Home
+                        openUrl={this.openUrl}
+                        navigator={navigator}
+                        siteManager={this._siteManager}/>)
           }
         }}
       />
