@@ -15,7 +15,6 @@ import {
   View
 } from 'react-native'
 
-const ChromeCustomTab = NativeModules.ChromeCustomTab
 const AndroidToken = NativeModules.AndroidToken
 
 import SortableListView from 'react-native-sortable-listview'
@@ -31,7 +30,7 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props)
 
-    this._siteManager = new SiteManager()
+    this._siteManager = this.props.siteManager
 
     this.state = {
       addSiteProgress: 0,
@@ -91,9 +90,6 @@ class HomeScreen extends React.Component {
       })
     }
 
-    if (this.props.url) {
-      this.visitUrl(this.props.url)
-    }
   }
 
   _handleLocalNotification(e) {
@@ -118,32 +114,19 @@ class HomeScreen extends React.Component {
     // no way of presenting anything to the user in that case
   }
 
-  openUrl(site) {
+  visitSite(site) {
     if (site.authToken) {
-      this.visitUrl(site.url)
+      this.props.openUrl(site.url)
       return
     }
 
     this._siteManager
       .generateAuthURL(site)
       .then(url => {
-        this.visitUrl(url)
+        this.props.openUrl(url)
       })
   }
 
-  visitUrl(url) {
-    if (Platform.OS === 'ios') {
-      SafariView.show({url})
-    } else {
-      if (this.props.simulator) {
-        Linking.openURL(url)
-      } else {
-        ChromeCustomTab.show(url)
-          .then(()=>{})
-          .catch((e)=>{ Alert.alert(e) })
-      }
-    }
-  }
 
   closeBrowser() {
     if (Platform.OS === 'ios') {
@@ -335,7 +318,7 @@ class HomeScreen extends React.Component {
             <Components.SiteRow
               site={site}
               onSwipe={(scrollEnabled)=>this.setState({scrollEnabled: scrollEnabled})}
-              onClick={()=>this.openUrl(site)}
+              onClick={()=>this.visitSite(site)}
               onDelete={()=>this._siteManager.remove(site)} />
           }
         />

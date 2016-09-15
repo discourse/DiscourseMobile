@@ -7,7 +7,6 @@ import {
   Alert,
   AsyncStorage,
   InteractionManager,
-  Linking,
   ListView,
   NativeModules,
   Platform,
@@ -15,10 +14,7 @@ import {
   View
 } from 'react-native'
 
-const ChromeCustomTab = NativeModules.ChromeCustomTab
-
 import _ from 'lodash'
-import SafariView from 'react-native-safari-view'
 
 import DiscourseUtils from '../DiscourseUtils'
 import NotificationsStore from '../stores/NotificationsStore'
@@ -85,17 +81,7 @@ class NotificationsScreen extends React.Component {
     NotificationsStore.markAsRead(notification)
     let url = DiscourseUtils.endpointForSiteNotification(site, notification)
 
-    if (Platform.OS === 'ios') {
-      SafariView.show({url})
-    } else {
-      if (this.props.simulator) {
-        Linking.openURL(url)
-      } else {
-        ChromeCustomTab.show(url)
-          .then(()=>{})
-          .catch((e)=>{ Alert.alert(e) })
-      }
-    }
+    this.props.openUrl(url)
   }
 
   _onDidPressRightButton() {
