@@ -126,7 +126,7 @@ class Site {
             this.isStaff = null
             throw 'User was logged off!'
           } else {
-            throw 'Error during fetch status code:' + r1.stats
+            throw 'Error during fetch status code:' + r1.status
           }
         }
       })
@@ -495,6 +495,23 @@ class Site {
   }
 
   notifications(types) {
+
+    if (this._loadingNotifications) {
+
+      // avoid double json
+      return new Promise(resolve => {
+        let retries = 100
+        let interval = setInterval(()=>{
+          retries--;
+          if (retries === 0 || this._notifications) {
+            clearInterval(interval)
+            this.notifications(types).then((n)=>{resolve(n)}).done()
+          }
+        },50)
+      })
+    }
+
+
     return new Promise(resolve => {
       if (!this.authToken) {
         resolve([])
@@ -512,6 +529,7 @@ class Site {
         return
       }
 
+      this._loadingNotifications = true
       this.jsonApi('/notifications.json?recent=true&limit=25&silent=true')
           .then(results=>{
             this._notifications = (results && results.notifications) || []
@@ -524,6 +542,7 @@ class Site {
             console.log("failed to fetch notifications " + e)
             resolve([])
           })
+          .finally(()=>{this._loadingNotifications = false})
           .done()
     })
   }

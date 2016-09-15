@@ -40,13 +40,24 @@ class NotificationsScreen extends React.Component {
   }
 
   componentDidMount() {
+
+    this._onSiteChange = ()=>{
+      this.refresh()
+    }
+
+    this.props.siteManager.subscribe(this._onSiteChange)
+
     InteractionManager.runAfterInteractions(() => {
       this.setState({renderPlaceholderOnly: false})
     })
   }
 
+  componentWillUnmount() {
+    this.props.siteManager.unsubscribe(this._onSiteChange)
+  }
+
   componentWillMount() {
-    this._fetchNotifications(NotificationsScreen.replyTypes)
+    this.refresh()
   }
 
   render() {
@@ -94,14 +105,17 @@ class NotificationsScreen extends React.Component {
     )
   }
 
+  refresh(){
+    let types = this.state.selectedIndex === 0 ? NotificationsScreen.replyTypes : undefined
+    this._fetchNotifications(types)
+  }
+
   _renderListHeader() {
     return (
       <Components.Filter
         selectedIndex={this.state.selectedIndex}
         onChange={(index) => {
-          let types = index === 0 ? NotificationsScreen.replyTypes : undefined
-          this._fetchNotifications(types)
-          this.setState({selectedIndex: index})
+          this.setState({selectedIndex: index}, ()=>{this.refresh()})
         }}
       />
     )
