@@ -24,7 +24,6 @@ import BackgroundFetch from '../../lib/background-fetch'
 import SiteManager from '../site_manager'
 import Site from '../site'
 import Components from './HomeScreenComponents'
-import ProgressBar from '../ProgressBar'
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -349,8 +348,8 @@ class HomeScreen extends React.Component {
           leftButtonIconName={this.state.displayTermBar ? 'close' : 'plus'}
           onDidPressLeftButton={() => this.onDidPressLeftButton()}
           onDidPressRightButton={() => this.onDidPressRighButton()}
+          progress={this.state.addSiteProgress}
         />
-        <ProgressBar progress={this.state.addSiteProgress} />
         <Components.TermBar
           onDidSubmitTerm={(term)=>this.doSearch(term)}
           expanded={this.state.displayTermBar}

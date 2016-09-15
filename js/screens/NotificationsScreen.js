@@ -19,7 +19,6 @@ import _ from 'lodash'
 import DiscourseUtils from '../DiscourseUtils'
 import Site from '../site'
 import Components from './NotificationsScreenComponents'
-import ProgressBar from '../ProgressBar'
 import colors from '../colors'
 
 class NotificationsScreen extends React.Component {
@@ -73,8 +72,8 @@ class NotificationsScreen extends React.Component {
       <View style={styles.container}>
         <Components.NavigationBar
           onDidPressRightButton={() => this._onDidPressRightButton()}
+          progress={this.state.progress}
         />
-        <ProgressBar progress={this.state.progress} />
         <ListView
           enableEmptySections={true}
           dataSource={this.state.dataSource}
