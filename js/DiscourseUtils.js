@@ -25,7 +25,7 @@ class DiscourseUtils {
         endpoint = `/t/${notification.slug}/${notification.topic_id}/${notification.post_number}`
         break
       case 12:
-        endpoint = `/badges/${notification.data.badge_id}/basic?username=${notification.data.username}`
+        endpoint = `/badges/${data.badge_id}/basic?username=${data.username}`
         break
       case 16:
         endpoint = `/users/${data.username}/messages/group/${data.group_name}`
