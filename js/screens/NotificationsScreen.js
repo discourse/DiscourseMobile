@@ -29,6 +29,9 @@ import ProgressBar from '../ProgressBar'
 import colors from '../colors'
 
 class NotificationsScreen extends React.Component {
+
+  static replyTypes = [1, 6, 9, 15, 16, 17]
+
   constructor(props) {
     super(props)
 
@@ -49,7 +52,7 @@ class NotificationsScreen extends React.Component {
   }
 
   componentWillMount() {
-    this._fetchNotifications([1, 6, 9])
+    this._fetchNotifications(NotificationsScreen.replyTypes)
   }
 
   render() {
@@ -124,7 +127,7 @@ class NotificationsScreen extends React.Component {
       <Components.Filter
         selectedIndex={this.state.selectedIndex}
         onChange={(index) => {
-          let types = index === 0 ? [1, 6, 9] : undefined
+          let types = index === 0 ? NotificationsScreen.replyTypes : undefined
           this._fetchNotifications(types)
           this.setState({selectedIndex: index})
         }}
