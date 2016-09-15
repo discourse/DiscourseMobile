@@ -4,6 +4,7 @@
 import React from 'react'
 
 import {
+  Alert,
   Navigator,
   Platform,
   PushNotificationIOS,
