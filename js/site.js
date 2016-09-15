@@ -217,6 +217,23 @@ class Site {
         rval.notifications = true
       } else if (message.channel === notificationChannel) {
 
+        // force a refresh on next open
+        if (this._notifications) {
+          // compare most recent notifications
+          let newData = message.data.recent
+
+          let existing = _.chain(this._notifications)
+                          .take(newData.length)
+                          .map(n=>[n.id, n.read])
+                          .value()
+
+          let changed = !_.isEqual(newData,existing)
+          if (changed) {
+            this._notifications = null
+            rval.notifications = true
+          }
+        }
+
         if (this.unreadNotifications !== message.data.unread_notifications) {
           this.unreadNotifications = message.data.unread_notifications
           rval.notifications = true
@@ -475,6 +492,40 @@ class Site {
   exitBackground() {
     this._background = false
     this._timeout = 10000
+  }
+
+  notifications(types) {
+    return new Promise(resolve => {
+      if (!this.authToken) {
+        resolve([])
+        return
+      }
+
+      if (this._notifications) {
+        let filtered = this._notifications
+        if (types) {
+          filtered = _.filter(filtered, notification=>{
+            return _.includes(types, notification.notification_type)
+          })
+        }
+        resolve(filtered)
+        return
+      }
+
+      this.jsonApi('/notifications.json?recent=true&limit=25&silent=true')
+          .then(results=>{
+            this._notifications = (results && results.notifications) || []
+            this.notifications(types)
+                .then(n=>
+                    resolve(n)
+                ).done()
+          })
+          .catch(e=>{
+            console.log("failed to fetch notifications " + e)
+            resolve([])
+          })
+          .done()
+    })
   }
 
   toJSON() {
