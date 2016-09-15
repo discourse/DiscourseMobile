@@ -84,13 +84,13 @@ const styles = {
   },
   buttonText: {
     padding: 16,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '500',
-    color: colors.grayTitle,
+    color: colors.grayUI,
     textAlign: 'center'
   },
   indicator: {
-    backgroundColor: colors.blueCallToAction,
+    backgroundColor: colors.grayUI,
     height: 3,
     position: 'absolute',
     bottom: 0,
