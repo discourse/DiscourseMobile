@@ -38,7 +38,8 @@ class HomeScreen extends React.Component {
       data: this._siteManager.toObject(),
       isRefreshing: false,
       lastRefreshTime: null,
-      scrollEnabled: true
+      scrollEnabled: true,
+      refreshingEnabled: true
     }
 
     this._onChangeSites = (e) => this.onChangeSites(e)
@@ -303,11 +304,16 @@ class HomeScreen extends React.Component {
           }}
           onRowMoved={(e)=> {
             this._siteManager.updateOrder(e.from, e.to)
+            this.setState({refreshingEnabled: true})
             this.forceUpdate()
+          }}
+          onSortingRow={(e) => {
+            this.setState({refreshingEnabled: false})
           }}
           refreshControl={
             <RefreshControl
               style={{left: 500}}
+              enabled={this.state.refreshingEnabled}
               refreshing={this.state.isRefreshing}
               onRefresh={()=>this.refreshSites({ui: true, fast: false})}
               title="Loading..."
