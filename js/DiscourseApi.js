@@ -7,7 +7,7 @@ class DiscourseApi {
       headers: DiscourseApi.buildHeaders(site.authToken)
     }
 
-    return fetch(`${site.url}/notifications.json?recent=true&limit=10`, params)
+    return fetch(`${site.url}/notifications.json?recent=true&limit=25`, params)
       .then((response) => {
         return response.json()
       })

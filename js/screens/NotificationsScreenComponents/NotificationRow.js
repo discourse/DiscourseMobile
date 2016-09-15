@@ -39,13 +39,36 @@ class NotificationRow extends React.Component {
   _textForNotification(notification) {
     let innerText
 
+    let data = this.props.notification.data
+    let displayName = data.display_username
+
+    if (notification.notification_type === 5) {
+      // special logic for multi like
+      if (data.count === 2) {
+        displayName = `${displayName} and ${data.username2}`
+      } else if (data.count > 2) {
+        let other = data.count == 2 ? 'other' : 'others'
+        displayName = `${displayName}, ${data.username2} and ${data.count - 2} ${other}`
+      }
+    }
+
     switch (notification.notification_type) {
       case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
       case 6:
+      case 7:
+      case 8:
       case 9:
+      case 10:
+      case 11:
+      case 13:
+      case 17:
         innerText = (
           <Text>
-            {this.props.notification.data.display_username}
+            {displayName}
             <Text style={styles.notificationText}>
               {' '}{this.props.notification.data.topic_title}
             </Text>
@@ -59,9 +82,17 @@ class NotificationRow extends React.Component {
           </Text>
         )
         break
+      case 16:
+        let messages = data.inbox_count > 1 ? "messages" : "message"
+        innerText = (
+          <Text style={styles.notificationText}>
+            {`${data.inbox_count} ${messages} in your ${data.group_name} inbox`}
+          </Text>
+        )
+        break
       default:
         console.log('Couldn’t generate text for notification', notification)
-        innerText = <Text>Unknown</Text>
+        innerText = <Text>Unmapped type: {notification.notification_type}</Text>
     }
 
     return <Text style={styles.textContainer}>{innerText}</Text>
