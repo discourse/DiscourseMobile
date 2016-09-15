@@ -18,6 +18,7 @@ import colors from '../../colors'
 
 class NavigationBar extends React.Component {
   static propTypes = {
+    rightButtonIconColor: React.PropTypes.string.isRequired,
     onDidPressRightButton: React.PropTypes.func,
     onDidPressLeftButton: React.PropTypes.func
   }
@@ -27,26 +28,26 @@ class NavigationBar extends React.Component {
       <View style={styles.container}>
         <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer}>
-          {this._renderButton(this.props.onDidPressLeftButton, this.props.leftButtonIconName)}
+          {this._renderButton(this.props.onDidPressLeftButton, this.props.leftButtonIconName, colors.grayUI)}
         </View>
         <View style={styles.titleContainer}>
           <Image style={styles.icon} source={require('../../../img/nav-icon-gray.png')} />
         </View>
         <View style={styles.rightContainer}>
-          {this._renderButton(this.props.onDidPressRightButton, 'bell')}
+          {this._renderButton(this.props.onDidPressRightButton, 'bell', this.props.rightButtonIconColor)}
         </View>
         <View style={styles.separator} />
       </View>
     )
   }
 
-  _renderButton(callback, iconName) {
+  _renderButton(callback, iconName, color) {
     return (
       <TouchableHighlight
         underlayColor={'white'}
         style={styles.button}
         onPress={callback}>
-          <Icon name={iconName} size={20} color={colors.grayUI} />
+          <Icon name={iconName} size={20} color={color} />
       </TouchableHighlight>
     )
   }

@@ -24,6 +24,7 @@ import BackgroundFetch from '../../lib/background-fetch'
 import SiteManager from '../site_manager'
 import Site from '../site'
 import Components from './HomeScreenComponents'
+import colors from '../colors'
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -38,7 +39,8 @@ class HomeScreen extends React.Component {
       isRefreshing: false,
       lastRefreshTime: null,
       scrollEnabled: true,
-      refreshingEnabled: true
+      refreshingEnabled: true,
+      rightButtonIconColor: colors.grayUI
     }
 
     this._onChangeSites = (e) => this.onChangeSites(e)
@@ -214,8 +216,12 @@ class HomeScreen extends React.Component {
 
   onChangeSites(e) {
     if (e.event === 'change') {
+      let totalUnread = this._siteManager.totalUnread()
+      let iconColor = totalUnread === 0 ? colors.grayUI : colors.blueUnread
+
       this.setState({
-        data: this._siteManager.toObject()
+        data: this._siteManager.toObject(),
+        rightButtonIconColor: iconColor
       })
     }
   }
@@ -346,6 +352,7 @@ class HomeScreen extends React.Component {
       <View style={styles.container}>
         <Components.NavigationBar
           leftButtonIconName={this.state.displayTermBar ? 'close' : 'plus'}
+          rightButtonIconColor={this.state.rightButtonIconColor}
           onDidPressLeftButton={() => this.onDidPressLeftButton()}
           onDidPressRightButton={() => this.onDidPressRighButton()}
           progress={this.state.addSiteProgress}
