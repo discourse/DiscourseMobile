@@ -11,6 +11,7 @@ import {
   NativeModules,
   Platform,
   StyleSheet,
+  Text,
   View
 } from 'react-native'
 
@@ -74,6 +75,17 @@ class NotificationsScreen extends React.Component {
           onDidPressRightButton={() => this._onDidPressRightButton()}
           progress={this.state.progress}
         />
+        {this._renderList()}
+      </View>
+    )
+  }
+
+  _renderList() {
+    if (this.state.dataSource.getRowCount() === 0) {
+      return <Components.EmptyNotificationsView />
+    }
+    else {
+      return (
         <ListView
           enableEmptySections={true}
           dataSource={this.state.dataSource}
@@ -81,8 +93,8 @@ class NotificationsScreen extends React.Component {
           renderRow={(rowData) => this._renderListRow(rowData)}
           style={styles.notificationsList}
         />
-      </View>
-    )
+      )
+    }
   }
 
   _openNotificationForSite(notification, site) {
