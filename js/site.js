@@ -16,6 +16,7 @@ class Site {
     'url',
     'unreadNotifications',
     'unreadPrivateMessages',
+    'lastSeenNotificationId',
     'flagCount',
     'queueCount',
     'totalUnread',
@@ -23,7 +24,8 @@ class Site {
     'userId',
     'username',
     'hasPush',
-    'isStaff'
+    'isStaff',
+    'hasWrite'
   ]
 
   static fromTerm(term) {
@@ -120,10 +122,7 @@ class Site {
           return r1.json()
         } else {
           if (r1.status === 403) {
-            this.authToken = null
-            this.userId = null
-            this.username = null
-            this.isStaff = null
+            this.logoff()
             throw 'User was logged off!'
           } else {
             throw 'Error during fetch status code:' + r1.status
@@ -141,6 +140,19 @@ class Site {
       })
       .done()
     })
+  }
+
+  logoff() {
+    this.authToken = null
+    this.userId = null
+    this.username = null
+    this.isStaff = null
+  }
+
+  ensureHasWrite() {
+    if (!this.hasWrite) {
+      this.logoff()
+    }
   }
 
   revokeApiKey() {
@@ -216,6 +228,8 @@ class Site {
         // we have to get notifications now cause we may have an incorrect number
         rval.notifications = true
       } else if (message.channel === notificationChannel) {
+
+        this._seenNotificationId = message.data.seen_notification_id
 
         // force a refresh on next open
         if (this._notifications) {
@@ -494,6 +508,17 @@ class Site {
     this._timeout = 10000
   }
 
+  readNotification(notification) {
+    return new Promise((resolve,reject)=>{
+      this.jsonApi('/notifications/read', 'PUT', {id: notification.id})
+        .catch(e=>{
+          reject(e)
+        })
+        .finally(()=>resolve)
+        .done()
+    })
+  }
+
   notifications(types) {
 
     if (this._loadingNotifications) {
@@ -533,6 +558,7 @@ class Site {
       this.jsonApi('/notifications.json?recent=true&limit=25&silent=true')
           .then(results=>{
             this._notifications = (results && results.notifications) || []
+            this._seenNotificationId = results && results.seen_notification_id
             this.notifications(types)
                 .then(n=>
                     resolve(n)

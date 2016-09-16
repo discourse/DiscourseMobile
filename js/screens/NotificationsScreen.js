@@ -23,7 +23,7 @@ import colors from '../colors'
 
 class NotificationsScreen extends React.Component {
 
-  static replyTypes = [1, 6, 9, 15, 16, 17]
+  static replyTypes = [1, 2, 3, 6, 9, 11, 15, 16, 17]
 
   constructor(props) {
     super(props)
@@ -86,7 +86,9 @@ class NotificationsScreen extends React.Component {
   }
 
   _openNotificationForSite(notification, site) {
-    // TODO mark as read
+    site.readNotification(notification).catch((e)=>{
+      console.log("failed to mark notification as read " + e)
+    }).done()
     let url = DiscourseUtils.endpointForSiteNotification(site, notification)
     this.props.openUrl(url)
   }
