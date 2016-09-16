@@ -55,18 +55,6 @@ class HomeScreen extends React.Component {
       }
     }
 
-    this._handleAppStateChange = () => {
-      console.log('Detected appstate change ' + AppState.currentState)
-
-      if (AppState.currentState === 'inactive') {
-        this._siteManager.enterBackground()
-      }
-
-      if (AppState.currentState === 'active') {
-        this._siteManager.exitBackground()
-        this._siteManager.refreshSites({ui: false, fast: true})
-      }
-    }
 
     if (Platform.OS === 'android') {
       AndroidToken.GetInstanceId(id=>{
@@ -140,7 +128,6 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     Linking.addEventListener('url', this._handleOpenUrl)
-    AppState.addEventListener('change', this._handleAppStateChange)
 
     if (Platform.OS === 'ios') {
       let doRefresh = () => {
@@ -209,8 +196,6 @@ class HomeScreen extends React.Component {
 
   componentWillUnmount() {
     Linking.removeEventListener('url', this._handleOpenUrl)
-    AppState.addEventListener('change', this._handleAppStateChange)
-
     this._siteManager.unsubscribe(this._onChangeSites)
   }
 

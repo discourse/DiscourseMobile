@@ -4,6 +4,7 @@
 import React from 'react'
 
 import {
+  AppState,
   Alert,
   Navigator,
   Platform,
@@ -31,6 +32,31 @@ class Discourse extends React.Component {
     if (this.props.url) {
       this.openUrl(this.props.url)
     }
+
+
+    this._handleAppStateChange = () => {
+      console.log('Detected appstate change ' + AppState.currentState)
+
+      if (AppState.currentState === 'inactive') {
+        this._siteManager.enterBackground()
+        if (this._navigator) {
+          this._navigator.popToTop()
+        }
+      }
+
+      if (AppState.currentState === 'active') {
+        this._siteManager.exitBackground()
+        this._siteManager.refreshSites({ui: false, fast: true})
+      }
+    }
+  }
+
+  componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange)
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange)
   }
 
   openUrl(url) {
@@ -61,6 +87,7 @@ class Discourse extends React.Component {
           }
         }}
         renderScene={(route, navigator) => {
+          this._navigator = navigator
           switch (route.identifier) {
             case 'NotificationsScreen':
               return (<Screens.Notifications
