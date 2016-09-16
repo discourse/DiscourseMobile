@@ -519,7 +519,7 @@ class Site {
     })
   }
 
-  notifications(types) {
+  notifications(types, options) {
 
     if (this._loadingNotifications) {
 
@@ -545,9 +545,15 @@ class Site {
 
       if (this._notifications) {
         let filtered = this._notifications
-        if (types) {
+        let onlyNew = options && options.onlyNew
+        if (types || onlyNew) {
           filtered = _.filter(filtered, notification=>{
-            return _.includes(types, notification.notification_type)
+            if (onlyNew) {
+              if (this._seenNotificationId >= notification.id) {
+                return false
+              }
+            }
+            return !types || _.includes(types, notification.notification_type)
           })
         }
         resolve(filtered)
@@ -559,7 +565,7 @@ class Site {
           .then(results=>{
             this._notifications = (results && results.notifications) || []
             this._seenNotificationId = results && results.seen_notification_id
-            this.notifications(types)
+            this.notifications(types, options)
                 .then(n=>
                     resolve(n)
                 ).done()

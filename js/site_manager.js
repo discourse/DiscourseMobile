@@ -463,12 +463,14 @@ class SiteManager {
     )
   }
 
-  notifications(types) {
+  notifications(types, options) {
+    console.log("calling notifications now")
+    debugger
     return new Promise((resolve)=>{
       let promises = []
       this.sites.forEach(site=>{
          promises.push(
-           site.notifications(types)
+           site.notifications(types, options)
              .then(notifications=>{
                 return notifications.map(n=>{return {notification: n, site: site}})
               })

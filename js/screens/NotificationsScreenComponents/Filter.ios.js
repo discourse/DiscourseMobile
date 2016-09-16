@@ -20,7 +20,7 @@ class Filter extends React.Component {
     return (
       <View style={styles.container}>
         <SegmentedControlIOS
-          values={['Replies', 'All']}
+          values={['New', 'Replies', 'All']}
           tintColor={colors.grayUI}
           style={styles.segmentedControl}
           selectedIndex={this.props.selectedIndex}
