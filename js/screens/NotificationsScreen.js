@@ -107,8 +107,8 @@ class NotificationsScreen extends React.Component {
   }
 
   refresh(){
-    let types = this.state.selectedIndex === 0 ? NotificationsScreen.replyTypes : undefined
-    this._fetchNotifications(types)
+    let types = this.state.selectedIndex === 1 ? NotificationsScreen.replyTypes : undefined
+    this._fetchNotifications(types, {onlyNew: this.state.selectedIndex === 0})
   }
 
   _renderListHeader() {
@@ -122,11 +122,11 @@ class NotificationsScreen extends React.Component {
     )
   }
 
-  _fetchNotifications(notificationTypes) {
+  _fetchNotifications(notificationTypes, options) {
 
     this.setState({progress: Math.random() * 0.4})
 
-    this.props.siteManager.notifications(notificationTypes)
+    this.props.siteManager.notifications(notificationTypes, options)
         .then(notifications => {
                 setTimeout(()=>{
                   this.setState({progress: 0})
