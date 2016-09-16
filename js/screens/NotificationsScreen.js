@@ -115,6 +115,7 @@ class NotificationsScreen extends React.Component {
     return (
       <Components.Filter
         selectedIndex={this.state.selectedIndex}
+        tabs={['New', 'Replies', 'All']}
         onChange={(index) => {
           this.setState({selectedIndex: index}, ()=>{this.refresh()})
         }}

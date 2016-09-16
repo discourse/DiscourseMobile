@@ -2,6 +2,7 @@
 'use strict'
 
 import React from 'react'
+
 import {
   Animated,
   Easing,
@@ -12,18 +13,22 @@ import {
 
 import Dimensions from 'Dimensions'
 
+import _ from 'lodash'
+
 import colors from '../../colors'
 
 class Filter extends React.Component {
   static propTypes = {
     onChange: React.PropTypes.func.isRequired,
-    selectedIndex: React.PropTypes.number.isRequired
+    selectedIndex: React.PropTypes.number.isRequired,
+    tabs: React.PropTypes.array
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
+      indicatorWidth: Dimensions.get('window').width / props.tabs.length,
       selectedIndex: new Animated.Value(props.selectedIndex)
     }
   }
@@ -41,31 +46,39 @@ class Filter extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableHighlight
-          underlayColor={colors.grayUI}
-          style={[styles.button]}
-          onPress={() => this.onDidSelect(0)}>
-            <Text style={styles.buttonText}>
-              REPLIES
-            </Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          underlayColor={colors.grayUI}
-          style={[styles.button]}
-          onPress={() => this.onDidSelect(1)}>
-            <Text style={styles.buttonText}>
-              ALL
-            </Text>
-        </TouchableHighlight>
-        <Animated.View style={[styles.indicator, {left:this._indicatorLeftPosition()}]} />
+        {this._renderTabs(this.props.tabs)}
+        <Animated.View
+          style={[
+            styles.indicator,
+            {
+              width: this.state.indicatorWidth,
+              left:this._indicatorLeftPosition()
+            }
+          ]}
+        />
       </View>
     )
+  }
+
+  _renderTabs(tabs) {
+    return _.map(tabs, (tab, tabIndex) => {
+      return (
+        <TouchableHighlight
+          underlayColor={colors.grayUI}
+          style={[styles.button]}
+          onPress={() => this.onDidSelect(tabIndex)}>
+            <Text style={styles.buttonText}>
+              {tab.toUpperCase()}
+            </Text>
+        </TouchableHighlight>
+      )
+    })
   }
 
   _indicatorLeftPosition() {
     return this.state.selectedIndex.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, Dimensions.get('window').width / 2]
+      outputRange: [0, this.state.indicatorWidth]
     })
   }
 }
@@ -93,8 +106,7 @@ const styles = {
     backgroundColor: colors.grayUI,
     height: 3,
     position: 'absolute',
-    bottom: 0,
-    width: Dimensions.get('window').width / 2
+    bottom: 0
   }
 }
 
