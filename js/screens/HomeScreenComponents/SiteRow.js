@@ -20,6 +20,7 @@ class SiteRow extends React.Component {
   render() {
     return (
       <Swipeout
+        sensitivity={2}
         backgroundColor={'white'}
         scroll={(scrollEnabled) => this.props.onSwipe(scrollEnabled)}
         right={[{
