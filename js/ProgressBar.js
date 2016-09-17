@@ -12,7 +12,7 @@ class ProgressBar extends React.Component {
   render() {
     return (
       <Bar
-        color={colors.yellowUIFeedback}
+        color={colors.blueCallToAction}
         borderWidth={0}
         borderRadius={0}
         style={{position:'absolute', bottom: 0, left: 0, zIndex: 10}}
