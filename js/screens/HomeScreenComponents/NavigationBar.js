@@ -4,6 +4,7 @@
 import React from 'react'
 
 import {
+  Animated,
   Image,
   Platform,
   StyleSheet,
@@ -18,9 +19,34 @@ import colors from '../../colors'
 
 class NavigationBar extends React.Component {
   static propTypes = {
+    leftButtonIconRotated: React.PropTypes.bool.isRequired,
     rightButtonIconColor: React.PropTypes.string.isRequired,
-    onDidPressRightButton: React.PropTypes.func,
-    onDidPressLeftButton: React.PropTypes.func
+    onDidPressRightButton: React.PropTypes.func.isRequired,
+    onDidPressLeftButton: React.PropTypes.func.isRequired
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      rotationValue: new Animated.Value(props.leftButtonIconRotated ? 1 : 0)
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.leftButtonIconRotated !== this.props.leftButtonIconRotated ||
+           nextProps.progress !== this.props.progress
+  }
+
+  componentWillReceiveProps(props) {
+    if (this.props.leftButtonIconRotated !== props.leftButtonIconRotated) {
+      Animated.spring(
+        this.state.rotationValue, {
+          toValue: props.leftButtonIconRotated ? 1 : 0,
+          duration: 50
+        }
+      ).start()
+    }
   }
 
   render() {
@@ -28,30 +54,44 @@ class NavigationBar extends React.Component {
       <View style={styles.container}>
         <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer}>
-          {this._renderButton(this.props.onDidPressLeftButton, this.props.leftButtonIconName, colors.grayUI)}
+          <TouchableHighlight
+            underlayColor={'white'}
+            style={[styles.button, {width: 36, height: 36}]}
+            onPress={this.props.onDidPressLeftButton}>
+              <AnimatedIcon
+                name='plus'
+                color={colors.grayUI}
+                size={20}
+                style={[
+                  styles.animatedIcon,
+                  {transform: [{
+                    rotate: this.state.rotationValue.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ['0deg', '225deg']
+                    })
+                  }]}
+                ]}
+              />
+          </TouchableHighlight>
         </View>
         <View style={styles.titleContainer}>
           <Image style={styles.icon} source={require('../../../img/nav-icon-gray.png')} />
         </View>
         <View style={styles.rightContainer}>
-          {this._renderButton(this.props.onDidPressRightButton, 'bell', this.props.rightButtonIconColor)}
+          <TouchableHighlight
+            underlayColor={'white'}
+            style={styles.button}
+            onPress={this.props.onDidPressRightButton}>
+              <Icon name={'bell'} style={{padding: 8}} color={this.props.rightButtonIconColor} size={20} />
+          </TouchableHighlight>
         </View>
         <View style={styles.separator} />
       </View>
     )
   }
-
-  _renderButton(callback, iconName, color) {
-    return (
-      <TouchableHighlight
-        underlayColor={'white'}
-        style={styles.button}
-        onPress={callback}>
-          <Icon name={iconName} size={20} color={color} />
-      </TouchableHighlight>
-    )
-  }
 }
+
+const AnimatedIcon = Animated.createAnimatedComponent(Icon)
 
 const styles = StyleSheet.create({
   container: {
@@ -84,8 +124,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0
   },
-  button: {
-    padding: 8
+  animatedIcon: {
+    backgroundColor: 'transparent',
+    bottom: 0,
+    padding: 8,
+    position: 'absolute'
   }
 })
 
