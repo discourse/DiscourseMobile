@@ -310,7 +310,7 @@ class HomeScreen extends React.Component {
               refreshing={this.state.isRefreshing}
               onRefresh={()=>this.refreshSites({ui: true, fast: false})}
               title="Loading..."
-              titleColor="#919191"
+              titleColor={colors.graySubtitle}
             />
           }
           renderRow={(site) =>
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#f5f8fa'
+    backgroundColor: colors.grayBackground
   }
 })
 
