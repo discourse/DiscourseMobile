@@ -4,21 +4,13 @@
 import React from 'react'
 
 import {
-  Alert,
-  AsyncStorage,
   InteractionManager,
   ListView,
-  NativeModules,
-  Platform,
   StyleSheet,
-  Text,
   View
 } from 'react-native'
 
-import _ from 'lodash'
-
 import DiscourseUtils from '../DiscourseUtils'
-import Site from '../site'
 import Components from './NotificationsScreenComponents'
 import colors from '../colors'
 

@@ -4,13 +4,14 @@
 import React from 'react'
 
 import {
-  AppState,
   Alert,
+  AppState,
+  Linking,
+  NativeModules,
   Navigator,
   Platform,
   PushNotificationIOS,
-  StyleSheet,
-  NativeModules
+  StyleSheet
 } from 'react-native'
 
 import Screens from './screens'
