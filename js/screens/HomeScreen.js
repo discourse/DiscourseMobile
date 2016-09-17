@@ -234,10 +234,9 @@ class HomeScreen extends React.Component {
           this._siteManager.add(site)
         }
 
-        setTimeout(
-          ()=>{ this.setState({addSiteProgress: 0}) },
-          250
-        )
+        setTimeout(() => {
+          this.setState({addSiteProgress: 0})
+        }, 250)
       })
       .catch(e=>{
         console.log(e)
@@ -248,7 +247,7 @@ class HomeScreen extends React.Component {
         } else {
           Alert.alert(`${term} was not found!`)
         }
-        this.setState({addSiteProgress: 0})
+        this.setState({addSiteProgress: 0, displayTermBar: true})
         throw 'failure'
       })
   }
@@ -340,7 +339,7 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Components.NavigationBar
-          leftButtonIconName={this.state.displayTermBar ? 'close' : 'plus'}
+          leftButtonIconRotated={this.state.displayTermBar ? true : false}
           rightButtonIconColor={this.state.rightButtonIconColor}
           onDidPressLeftButton={() => this.onDidPressLeftButton()}
           onDidPressRightButton={() => this.onDidPressRighButton()}
