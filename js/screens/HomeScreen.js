@@ -215,9 +215,7 @@ class HomeScreen extends React.Component {
       return new Promise((resolve, reject) => reject())
     }
 
-    this.setState({
-      addSiteProgress: Math.random() * 0.4
-    })
+    this.setState({addSiteProgress: Math.random() * 0.4})
 
     return Site.fromTerm(term)
       .then(site => {
@@ -232,13 +230,10 @@ class HomeScreen extends React.Component {
           }
           this._siteManager.add(site)
         }
-
-        setTimeout(() => {
-          this.setState({addSiteProgress: 0})
-        }, 250)
       })
       .catch(e=>{
         console.log(e)
+
         if ( e === 'dupe site') {
           Alert.alert(`${term} already exists`)
         } else if (e === 'bad api') {
@@ -246,8 +241,15 @@ class HomeScreen extends React.Component {
         } else {
           Alert.alert(`${term} was not found!`)
         }
-        this.setState({addSiteProgress: 0, displayTermBar: true})
+
+        this.setState({displayTermBar: true})
+
         throw 'failure'
+      })
+      .finally(() => {
+        setTimeout(() => {
+          this.setState({addSiteProgress: 0})
+        }, 1000)
       })
   }
 
