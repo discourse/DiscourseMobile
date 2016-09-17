@@ -21,8 +21,13 @@ class OnBoardingView extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
-          You don’t have any sites yet.{"\n"}
-          Discourse notifier can keep track of your notifications across sites.
+          <Text style={{color: colors.grayTitle}}>
+            You don’t have any sites yet.
+          </Text>
+          {'\n'}
+          <Text style={{color: colors.graySubtitle}}>
+            Discourse notifier can keep track of your notifications across sites.
+          </Text>
         </Text>
 
         <View style={styles.button}>
