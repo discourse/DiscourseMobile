@@ -10,6 +10,7 @@ import colors from './colors'
 
 class ProgressBar extends React.Component {
   render() {
+    console.log("NEW PROGRESS", this.props.progress)
     return (
       <Bar
         color={colors.yellowUIFeedback}

@@ -212,6 +212,10 @@ class HomeScreen extends React.Component {
   }
 
   doSearch(term) {
+    if (term.length === 0) {
+      return new Promise((resolve, reject) => reject())
+    }
+
     this.setState({
       addSiteProgress: Math.random() * 0.4
     })
