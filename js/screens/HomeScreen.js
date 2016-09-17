@@ -21,7 +21,6 @@ import SortableListView from 'react-native-sortable-listview'
 import SafariView from 'react-native-safari-view'
 import BackgroundFetch from '../../lib/background-fetch'
 
-import SiteManager from '../site_manager'
 import Site from '../site'
 import Components from './HomeScreenComponents'
 import colors from '../colors'

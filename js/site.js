@@ -527,7 +527,7 @@ class Site {
       return new Promise(resolve => {
         let retries = 100
         let interval = setInterval(()=>{
-          retries--;
+          retries--
           if (retries === 0 || this._notifications) {
             clearInterval(interval)
             this.notifications(types).then((n)=>{resolve(n)}).done()

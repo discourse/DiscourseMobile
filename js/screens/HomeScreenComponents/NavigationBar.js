@@ -59,7 +59,7 @@ class NavigationBar extends React.Component {
             style={[styles.button, {width: 36, height: 36}]}
             onPress={this.props.onDidPressLeftButton}>
               <AnimatedIcon
-                name='plus'
+                name="plus"
                 color={colors.grayUI}
                 size={20}
                 style={[
