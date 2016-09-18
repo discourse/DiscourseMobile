@@ -94,6 +94,8 @@ class Discourse extends React.Component {
               return (<Screens.Notifications
                         openUrl={this.openUrl}
                         navigator={navigator}
+                        seenNotificationMap={this._seenNotificationMap}
+                        setSeenNotificationMap={(map)=>{this._seenNotificationMap = map}}
                         siteManager={this._siteManager}/>)
             default:
               return (<Screens.Home

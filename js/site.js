@@ -456,6 +456,9 @@ class Site {
              this.username = currentUser.username
              this.isStaff = !!(currentUser.admin || currentUser.moderator)
 
+             // in case of old API fallback
+             this._seenNotificationId = currentUser.seen_notification_id || this._seenNotificationId
+
              if (this.unreadNotifications !== currentUser.unread_notifications) {
                this.unreadNotifications = currentUser.unread_notifications
                changed = true
@@ -519,6 +522,25 @@ class Site {
     })
   }
 
+  getSeenNotificationId() {
+    return new Promise(resolve=>{
+      if (!this.authToken) {
+        resolve()
+        return
+      }
+
+      if(this._seenNotificationId) {
+        resolve(this._seenNotificationId)
+        return
+      }
+
+      this.notifications().then(()=>{
+        resolve(this._seenNotificationId)
+      })
+    })
+  }
+
+
   notifications(types, options) {
 
     if (this._loadingNotifications) {
@@ -536,22 +558,23 @@ class Site {
       })
     }
 
-
     return new Promise(resolve => {
       if (!this.authToken) {
         resolve([])
         return
       }
 
-      if (this._notifications) {
+      let silent = !(options && options.silent === false)
+      // avoid json call when no unread
+      silent = silent || this.unreadNotifications === 0
+
+      if (this._notifications && silent) {
         let filtered = this._notifications
-        let onlyNew = options && options.onlyNew
-        if (types || onlyNew) {
+        let minId = options && options.minId
+        if (types || minId) {
           filtered = _.filter(filtered, notification=>{
-            if (onlyNew) {
-              if (this._seenNotificationId >= notification.id) {
-                return false
-              }
+            if (minId && minId >= notification.id) {
+              return false
             }
             return !types || _.includes(types, notification.notification_type)
           })
@@ -561,11 +584,12 @@ class Site {
       }
 
       this._loadingNotifications = true
-      this.jsonApi('/notifications.json?recent=true&limit=25&silent=true')
+      this.jsonApi('/notifications.json?recent=true&limit=25' + (options && options.silent===false ? "" : "&silent=true"))
           .then(results=>{
+            this._loadingNotifications = false
             this._notifications = (results && results.notifications) || []
             this._seenNotificationId = results && results.seen_notification_id
-            this.notifications(types, options)
+            this.notifications(types, _.merge(options, {silent: true}))
                 .then(n=>
                     resolve(n)
                 ).done()

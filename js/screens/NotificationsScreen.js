@@ -30,31 +30,51 @@ class NotificationsScreen extends React.Component {
         rowHasChanged: (r1, r2) => r1 !== r2
       })
     }
+
+    this._onSiteChange = (e)=>{
+      if (e.event === "change") {
+        this.refresh()
+      }
+    }
+
+
+    if (this.props.seenNotificationMap) {
+      this._seenNotificationMap = this.props.seenNotificationMap
+      this.refresh()
+    } else {
+      this.props.siteManager.getSeenNotificationMap()
+        .then((map)=>{
+          this._seenNotificationMap = map
+          this.props.setSeenNotificationMap(map)
+          this.refresh()
+        }).done()
+    }
+
   }
 
   componentDidMount() {
-
-    this._onSiteChange = ()=>{
-      this.refresh()
-    }
-
-    this.props.siteManager.subscribe(this._onSiteChange)
-
     InteractionManager.runAfterInteractions(() => {
       this.setState({renderPlaceholderOnly: false})
     })
+
+    if (this._notifications) {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(this._notifications),
+      })
+    }
+
+    this.props.siteManager.subscribe(this._onSiteChange)
+    this._mounted = true
+
   }
 
   componentWillUnmount() {
     this.props.siteManager.unsubscribe(this._onSiteChange)
-  }
-
-  componentWillMount() {
-    this.refresh()
+    this._mounted = false
   }
 
   render() {
-    if (this.state.renderPlaceholderOnly) {
+    if (false && this.state.renderPlaceholderOnly) {
       return (
         <View style={styles.container}>
           <Components.NavigationBar onDidPressRightButton={() => {}} />
@@ -75,6 +95,7 @@ class NotificationsScreen extends React.Component {
   }
 
   _renderList() {
+
     let emptyNotificationsView = null
     if (this.state.dataSource.getRowCount() === 0) {
       let text
@@ -136,7 +157,11 @@ class NotificationsScreen extends React.Component {
 
   refresh() {
     let types = this.state.selectedIndex === 1 ? NotificationsScreen.replyTypes : undefined
-    this._fetchNotifications(types, {onlyNew: this.state.selectedIndex === 0})
+    this._fetchNotifications(types, {
+      onlyNew: this.state.selectedIndex === 0,
+      newMap: this._seenNotificationMap,
+      silent: false
+    })
   }
 
   _renderListHeader() {
@@ -152,20 +177,44 @@ class NotificationsScreen extends React.Component {
   }
 
   _fetchNotifications(notificationTypes, options) {
-    this.setState({progress: Math.random() * 0.4})
+
+    if (this._fetching) { return }
+    this._fetching = true
+
+    let progressTimeout
+    if (this._mounted) {
+      progressTimeout = setTimeout(()=>{
+        if (this._mounted && this._fetching) {
+          this.setState({progress: Math.random() * 0.4})
+        }
+      }, 100)
+    }
 
     this.props.siteManager.notifications(notificationTypes, options)
-      .then(notifications => {
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(notifications),
-          progress: 1
+        .then(notifications => {
+                this._notification = notifications
+
+                if (this._mounted) {
+                  if (this.state.progress !== 0) {
+
+                    this.setState({
+                      progress: 1
+                    })
+
+                    setTimeout(()=>{
+                      if (this._mounted) {
+                        this.setState({progress: 0})
+                      }
+                    },400)
+                  }
+
+                  this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(notifications)
+                  })
+                }
         })
-      })
-      .finally(() => {
-        setTimeout(() => {
-          this.setState({progress: 0})
-        }, 1000)
-      })
+        .finally(()=>{this._fetching = false})
+
   }
 }
 
