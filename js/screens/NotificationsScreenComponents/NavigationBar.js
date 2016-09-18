@@ -18,6 +18,7 @@ import colors from '../../colors'
 
 class NavigationBar extends React.Component {
   static propTypes = {
+    onDidPressLeftButton: React.PropTypes.func,
     onDidPressRightButton: React.PropTypes.func
   }
 
@@ -25,22 +26,30 @@ class NavigationBar extends React.Component {
     return (
       <View style={styles.container}>
         <ProgressBar progress={this.props.progress} />
-        <View style={styles.leftContainer} />
+        <View style={styles.leftContainer}>
+          {this._renderButton(this.props.onDidPressLeftButton, 'refresh')}
+        </View>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>
             Notifications
           </Text>
         </View>
         <View style={styles.rightContainer}>
-          <TouchableHighlight
-            underlayColor={'white'}
-            style={styles.button}
-            onPress={this.props.onDidPressRightButton}>
-            <Icon name="close" size={20} color={colors.grayUI} />
-          </TouchableHighlight>
+          {this._renderButton(this.props.onDidPressRightButton, 'close')}
         </View>
         <View style={styles.separator} />
       </View>
+    )
+  }
+
+  _renderButton(callback, iconName) {
+    return (
+      <TouchableHighlight
+        underlayColor={'white'}
+        style={styles.button}
+        onPress={callback}>
+        <Icon name={iconName} size={20} color={colors.grayUI} />
+      </TouchableHighlight>
     )
   }
 }
