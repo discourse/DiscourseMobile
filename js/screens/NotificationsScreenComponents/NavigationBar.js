@@ -23,11 +23,12 @@ class NavigationBar extends React.Component {
   }
 
   render() {
+    // not sure we need a refresh button for now, it live refreshes
+    // {this._renderButton(this.props.onDidPressLeftButton, 'refresh')}
     return (
       <View style={styles.container}>
         <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer}>
-          {this._renderButton(this.props.onDidPressLeftButton, 'refresh')}
         </View>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>

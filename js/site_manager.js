@@ -463,18 +463,45 @@ class SiteManager {
     )
   }
 
+  getSeenNotificationMap() {
+    return new Promise((resolve)=>{
+      let promises = []
+      let results = {}
+
+      this.sites.forEach(site=>{
+         if (site.authToken) {
+           promises.push(
+             site.getSeenNotificationId().then((id)=>
+               results[site.url] = id
+            )
+           )
+         }
+      })
+
+      Promise.all(promises)
+             .then(()=>resolve(results))
+
+    })
+  }
+
   notifications(types, options) {
-    console.log("calling notifications now")
-    debugger
+
     return new Promise((resolve)=>{
       let promises = []
       this.sites.forEach(site=>{
-         promises.push(
-           site.notifications(types, options)
-             .then(notifications=>{
-                return notifications.map(n=>{return {notification: n, site: site}})
-              })
-         )
+
+         let opts = options
+
+         if (opts.onlyNew) {
+            opts = _.merge(_.clone(opts), {minId: opts.newMap[site.url]})
+         }
+
+         let promise = site.notifications(types, opts)
+           .then(notifications=>{
+              return notifications.map(n=>{return {notification: n, site: site}})
+            })
+
+         promises.push(promise)
       })
 
       Promise.all(promises)
