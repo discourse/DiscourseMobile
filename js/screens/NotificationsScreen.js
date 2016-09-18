@@ -21,13 +21,13 @@ class NotificationsScreen extends React.Component {
   constructor(props) {
     super(props)
 
-    let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-
     this.state =  {
       renderPlaceholderOnly: true,
       progress: 0,
       selectedIndex: 0,
-      dataSource: dataSource.cloneWithRows([])
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 !== r2
+      })
     }
   }
 
