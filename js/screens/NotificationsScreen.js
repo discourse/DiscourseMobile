@@ -65,6 +65,7 @@ class NotificationsScreen extends React.Component {
       <View style={styles.container}>
         <Components.NavigationBar
           onDidPressRightButton={() => this._onDidPressRightButton()}
+          onDidPressLeftButton={() => this._onDidPressLeftButton()}
           progress={this.state.progress}
         />
         {this._renderList()}
@@ -97,6 +98,10 @@ class NotificationsScreen extends React.Component {
     this.props.openUrl(url)
   }
 
+  _onDidPressLeftButton() {
+    this.refresh()
+  }
+
   _onDidPressRightButton() {
     this.props.navigator.pop()
   }
@@ -110,7 +115,7 @@ class NotificationsScreen extends React.Component {
     )
   }
 
-  refresh(){
+  refresh() {
     let types = this.state.selectedIndex === 1 ? NotificationsScreen.replyTypes : undefined
     this._fetchNotifications(types, {onlyNew: this.state.selectedIndex === 0})
   }
