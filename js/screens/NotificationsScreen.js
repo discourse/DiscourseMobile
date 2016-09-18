@@ -131,6 +131,14 @@ class NotificationsScreen extends React.Component {
   }
 
   _openNotificationForSite(notification, site) {
+    setTimeout(()=>{
+      InteractionManager.runAfterInteractions(()=>{
+        // simulate behavior on site
+        // when visiting a notification the notification
+        // list is collapsed
+        this.props.navigator.pop()
+      })
+    }, 100)
     site.readNotification(notification).catch((e)=>{
       console.log("failed to mark notification as read " + e)
     }).done()

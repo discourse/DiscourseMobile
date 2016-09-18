@@ -43,6 +43,7 @@ class Discourse extends React.Component {
         if (this._navigator) {
           this._navigator.popToTop()
         }
+        this._seenNotificationMap = null
       }
 
       if (AppState.currentState === 'active') {

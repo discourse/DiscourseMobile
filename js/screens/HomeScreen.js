@@ -201,11 +201,11 @@ class HomeScreen extends React.Component {
   onChangeSites(e) {
     if (e.event === 'change') {
       let totalUnread = this._siteManager.totalUnread()
-      let iconColor = totalUnread === 0 ? colors.grayUI : colors.blueUnread
+      // blue unread is a bit loud and we can see it anyway in the list
+      //let iconColor = totalUnread === 0 ? colors.grayUI : colors.blueUnread
 
       this.setState({
-        data: this._siteManager.toObject(),
-        rightButtonIconColor: iconColor
+        data: this._siteManager.toObject()
       })
     }
   }
