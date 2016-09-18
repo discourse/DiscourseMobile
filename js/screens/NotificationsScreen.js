@@ -7,6 +7,7 @@ import {
   InteractionManager,
   ListView,
   StyleSheet,
+  Text,
   View
 } from 'react-native'
 
@@ -74,11 +75,28 @@ class NotificationsScreen extends React.Component {
   }
 
   _renderList() {
+    let emptyNotificationsView = null
     if (this.state.dataSource.getRowCount() === 0) {
-      return <Components.EmptyNotificationsView />
+      let text
+      switch (this.state.selectedIndex) {
+        case 0:
+          text = "No new notifications."
+          break
+        case 1:
+          text = "No replies."
+          break
+        case 2:
+          text = "No notifications."
+          break
+        default:
+          text = ""
+      }
+
+      emptyNotificationsView = <Components.EmptyNotificationsView text={text} />
     }
-    else {
-      return (
+
+    return (
+      <View style={{flex: 1}}>
         <ListView
           enableEmptySections={true}
           dataSource={this.state.dataSource}
@@ -86,8 +104,9 @@ class NotificationsScreen extends React.Component {
           renderRow={(rowData) => this._renderListRow(rowData)}
           style={styles.notificationsList}
         />
-      )
-    }
+        {emptyNotificationsView}
+      </View>
+    )
   }
 
   _openNotificationForSite(notification, site) {
