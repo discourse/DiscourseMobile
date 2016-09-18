@@ -128,20 +128,20 @@ class NotificationsScreen extends React.Component {
   }
 
   _fetchNotifications(notificationTypes, options) {
-
     this.setState({progress: Math.random() * 0.4})
 
     this.props.siteManager.notifications(notificationTypes, options)
-        .then(notifications => {
-                setTimeout(()=>{
-                  this.setState({progress: 0})
-                },400)
-                this.setState({
-                  dataSource: this.state.dataSource.cloneWithRows(notifications),
-                  progress: 1
-                })
+      .then(notifications => {
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(notifications),
+          progress: 1
         })
-
+      })
+      .finally(() => {
+        setTimeout(() => {
+          this.setState({progress: 0})
+        }, 1000)
+      })
   }
 }
 
