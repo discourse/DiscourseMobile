@@ -64,6 +64,7 @@ class Filter extends React.Component {
     return _.map(tabs, (tab, tabIndex) => {
       return (
         <TouchableHighlight
+          key={tab}
           underlayColor={colors.grayUI}
           style={[styles.button]}
           onPress={() => this.onDidSelect(tabIndex)}>

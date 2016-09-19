@@ -93,14 +93,14 @@ class Discourse extends React.Component {
           switch (route.identifier) {
             case 'NotificationsScreen':
               return (<Screens.Notifications
-                        openUrl={this.openUrl}
+                        openUrl={this.openUrl.bind(this)}
                         navigator={navigator}
                         seenNotificationMap={this._seenNotificationMap}
                         setSeenNotificationMap={(map)=>{this._seenNotificationMap = map}}
                         siteManager={this._siteManager}/>)
             default:
               return (<Screens.Home
-                        openUrl={this.openUrl}
+                        openUrl={this.openUrl.bind(this)}
                         navigator={navigator}
                         siteManager={this._siteManager}/>)
           }
