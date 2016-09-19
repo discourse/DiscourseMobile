@@ -44,3 +44,4 @@ android/keystores/debug.keystore
 
 ios/Discourse.app.dSym.zip
 ios/fastlane/report.xml
+android/app/my-release-key.keystore
