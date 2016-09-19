@@ -23,8 +23,8 @@ class NotificationsScreen extends React.Component {
     super(props)
 
     this.state =  {
-      renderPlaceholderOnly: true,
       progress: 0,
+      renderPlaceholderOnly: true,
       selectedIndex: 0,
       dataSource: new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2
@@ -53,9 +53,6 @@ class NotificationsScreen extends React.Component {
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.setState({renderPlaceholderOnly: false})
-    })
 
     if (this._notifications) {
       this.setState({
@@ -74,7 +71,7 @@ class NotificationsScreen extends React.Component {
   }
 
   render() {
-    if (false && this.state.renderPlaceholderOnly) {
+    if (this.state.renderPlaceholderOnly) {
       return (
         <View style={styles.container}>
           <Components.NavigationBar onDidPressRightButton={() => {}} />
@@ -193,7 +190,9 @@ class NotificationsScreen extends React.Component {
     if (this._mounted) {
       progressTimeout = setTimeout(()=>{
         if (this._mounted && this._fetching) {
-          this.setState({progress: Math.random() * 0.4})
+          this.setState({
+            progress: Math.random() * 0.4
+          })
         }
       }, 100)
     }
@@ -206,7 +205,8 @@ class NotificationsScreen extends React.Component {
                   if (this.state.progress !== 0) {
 
                     this.setState({
-                      progress: 1
+                      progress: 1,
+                      renderPlaceholderOnly: false
                     })
 
                     setTimeout(()=>{
@@ -217,7 +217,8 @@ class NotificationsScreen extends React.Component {
                   }
 
                   this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(notifications)
+                    dataSource: this.state.dataSource.cloneWithRows(notifications),
+                    renderPlaceholderOnly: false
                   })
                 }
         })
