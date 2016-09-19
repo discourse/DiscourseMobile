@@ -63,6 +63,9 @@ class NotificationsScreen extends React.Component {
     this.props.siteManager.subscribe(this._onSiteChange)
     this._mounted = true
 
+    if (this._refreshed) {
+      this.setState({renderPlaceholderOnly: false})
+    }
   }
 
   componentWillUnmount() {
@@ -200,6 +203,7 @@ class NotificationsScreen extends React.Component {
     this.props.siteManager.notifications(notificationTypes, options)
         .then(notifications => {
                 this._notification = notifications
+                this._refreshed = true
 
                 if (this._mounted) {
                   if (this.state.progress !== 0) {
