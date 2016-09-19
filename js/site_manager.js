@@ -133,7 +133,12 @@ class SiteManager {
   load() {
     AsyncStorage.getItem('@Discourse.sites').then((json) => {
       if (json) {
-        this.sites = JSON.parse(json).map(obj=>new Site(obj))
+        this.sites = JSON.parse(json).map(obj=>{
+          let site = new Site(obj)
+          // we require write tokens now
+          site.ensureHasWrite()
+          return site
+        })
         this._onChange()
         this.refreshSites({ui: false, fast: true}).then(()=>{
           this._onChange()
@@ -195,8 +200,7 @@ class SiteManager {
           this.waitFor(20000, ()=>!this.refreshing)
               .finally(()=>{
                 enterBg(id)
-              });
-
+              })
         })
         .catch(()=>{
           // not implemented on android yet
@@ -302,8 +306,9 @@ class SiteManager {
             .catch((e)=>{
               console.log('failed to refresh ' + site.url)
               console.log(e)
-              // maybe we were logged out ... something is odd
-              somethingChanged = true
+              if (e === "User was logged off!") {
+                somethingChanged = true
+              }
               errors++
             })
             .finally(() => {
@@ -412,6 +417,10 @@ class SiteManager {
 
     this._nonceSite.authToken = decrypted.key
     this._nonceSite.hasPush = decrypted.access.indexOf('p') > -1
+    this._nonceSite.hasWrite = decrypted.access.indexOf('w') > -1
+
+    // cause we want to stop rendering connect
+    this._onChange()
 
     this._nonceSite.refresh()
         .then(()=>{
@@ -440,11 +449,11 @@ class SiteManager {
           // on android maybe this can fail?
         }
 
-        let basePushUrl = "https://api.discourse.org"
+        let basePushUrl = 'https://api.discourse.org'
         //let basePushUrl = "http://l.discourse:3000"
 
         let params = {
-          access: 'rp',
+          access: 'rwp',
           client_id: clientId,
           nonce: nonce,
           push_url: basePushUrl + '/api/publish_' + Platform.OS,
@@ -456,6 +465,59 @@ class SiteManager {
         return `${site.url}/user-api-key/new?${this.serializeParams(params)}`
       })
     )
+  }
+
+  getSeenNotificationMap() {
+    return new Promise((resolve)=>{
+      let promises = []
+      let results = {}
+
+      this.sites.forEach(site=>{
+         if (site.authToken) {
+           promises.push(
+             site.getSeenNotificationId().then((id)=>
+               results[site.url] = id
+            )
+           )
+         }
+      })
+
+      Promise.all(promises)
+             .then(()=>resolve(results))
+
+    })
+  }
+
+  notifications(types, options) {
+
+    return new Promise((resolve)=>{
+      let promises = []
+      this.sites.forEach(site=>{
+
+         let opts = options
+
+         if (opts.onlyNew) {
+            opts = _.merge(_.clone(opts), {minId: opts.newMap[site.url]})
+         }
+
+         let promise = site.notifications(types, opts)
+           .then(notifications=>{
+              return notifications.map(n=>{return {notification: n, site: site}})
+            })
+
+         promises.push(promise)
+      })
+
+      Promise.all(promises)
+          .then((results) => {
+             resolve(
+               _.chain(results)
+                  .flatten()
+                  .orderBy(['notification.created_at'], ['desc'])
+                  .value()
+              )
+          }).done()
+    })
   }
 
   toObject() {

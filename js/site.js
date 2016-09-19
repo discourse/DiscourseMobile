@@ -16,6 +16,7 @@ class Site {
     'url',
     'unreadNotifications',
     'unreadPrivateMessages',
+    'lastSeenNotificationId',
     'flagCount',
     'queueCount',
     'totalUnread',
@@ -23,7 +24,8 @@ class Site {
     'userId',
     'username',
     'hasPush',
-    'isStaff'
+    'isStaff',
+    'hasWrite'
   ]
 
   static fromTerm(term) {
@@ -117,16 +119,13 @@ class Site {
           throw 'In Background mode aborting request!'
         }
         if (r1.status === 200) {
-          return r1.json();
+          return r1.json()
         } else {
           if (r1.status === 403) {
-            this.authToken = null
-            this.userId = null
-            this.username = null
-            this.isStaff = null
+            this.logoff()
             throw 'User was logged off!'
           } else {
-            throw 'Error during fetch status code:' + r1.stats
+            throw 'Error during fetch status code:' + r1.status
           }
         }
       })
@@ -141,6 +140,19 @@ class Site {
       })
       .done()
     })
+  }
+
+  logoff() {
+    this.authToken = null
+    this.userId = null
+    this.username = null
+    this.isStaff = null
+  }
+
+  ensureHasWrite() {
+    if (!this.hasWrite) {
+      this.logoff()
+    }
   }
 
   revokeApiKey() {
@@ -216,6 +228,25 @@ class Site {
         // we have to get notifications now cause we may have an incorrect number
         rval.notifications = true
       } else if (message.channel === notificationChannel) {
+
+        this._seenNotificationId = message.data.seen_notification_id
+
+        // force a refresh on next open
+        if (this._notifications) {
+          // compare most recent notifications
+          let newData = message.data.recent
+
+          let existing = _.chain(this._notifications)
+                          .take(newData.length)
+                          .map(n=>[n.id, n.read])
+                          .value()
+
+          let changed = !_.isEqual(newData,existing)
+          if (changed) {
+            this._notifications = null
+            rval.notifications = true
+          }
+        }
 
         if (this.unreadNotifications !== message.data.unread_notifications) {
           this.unreadNotifications = message.data.unread_notifications
@@ -425,6 +456,9 @@ class Site {
              this.username = currentUser.username
              this.isStaff = !!(currentUser.admin || currentUser.moderator)
 
+             // in case of old API fallback
+             this._seenNotificationId = currentUser.seen_notification_id || this._seenNotificationId
+
              if (this.unreadNotifications !== currentUser.unread_notifications) {
                this.unreadNotifications = currentUser.unread_notifications
                changed = true
@@ -475,6 +509,98 @@ class Site {
   exitBackground() {
     this._background = false
     this._timeout = 10000
+  }
+
+  readNotification(notification) {
+    return new Promise((resolve,reject)=>{
+      this.jsonApi('/notifications/read', 'PUT', {id: notification.id})
+        .catch(e=>{
+          reject(e)
+        })
+        .finally(()=>resolve)
+        .done()
+    })
+  }
+
+  getSeenNotificationId() {
+    return new Promise(resolve=>{
+      if (!this.authToken) {
+        resolve()
+        return
+      }
+
+      if(this._seenNotificationId) {
+        resolve(this._seenNotificationId)
+        return
+      }
+
+      this.notifications().then(()=>{
+        resolve(this._seenNotificationId)
+      })
+    })
+  }
+
+
+  notifications(types, options) {
+
+    if (this._loadingNotifications) {
+
+      // avoid double json
+      return new Promise(resolve => {
+        let retries = 100
+        let interval = setInterval(()=>{
+          retries--
+          if (retries === 0 || this._notifications) {
+            clearInterval(interval)
+            this.notifications(types).then((n)=>{resolve(n)}).done()
+          }
+        },50)
+      })
+    }
+
+    return new Promise(resolve => {
+      if (!this.authToken) {
+        resolve([])
+        return
+      }
+
+      let silent = !(options && options.silent === false)
+      // avoid json call when no unread
+      silent = silent || this.unreadNotifications === 0
+
+      if (this._notifications && silent) {
+        let filtered = this._notifications
+        let minId = options && options.minId
+        if (types || minId) {
+          filtered = _.filter(filtered, notification=>{
+            if (minId && minId >= notification.id) {
+              return false
+            }
+            return !types || _.includes(types, notification.notification_type)
+          })
+        }
+        resolve(filtered)
+        return
+      }
+
+      this._loadingNotifications = true
+      this.jsonApi('/notifications.json?recent=true&limit=25' + (options && options.silent===false ? "" : "&silent=true"))
+          .then(results=>{
+            this._loadingNotifications = false
+            this._notifications = (results && results.notifications) || []
+            this._seenNotificationId = results && results.seen_notification_id
+            this.notifications(types, _.merge(options, {silent: true}))
+                .then(n=>
+                    resolve(n)
+                ).done()
+          })
+          .catch(e=>{
+            console.log("failed to fetch notifications " + e)
+            resolve([])
+          })
+          .finally(()=>{this._loadingNotifications = false})
+          .done()
+    })
   }
 
   toJSON() {
