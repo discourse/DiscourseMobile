@@ -306,8 +306,9 @@ class SiteManager {
             .catch((e)=>{
               console.log('failed to refresh ' + site.url)
               console.log(e)
-              // maybe we were logged out ... something is odd
-              somethingChanged = true
+              if (e === "User was logged off!") {
+                somethingChanged = true
+              }
               errors++
             })
             .finally(() => {
@@ -417,6 +418,9 @@ class SiteManager {
     this._nonceSite.authToken = decrypted.key
     this._nonceSite.hasPush = decrypted.access.indexOf('p') > -1
     this._nonceSite.hasWrite = decrypted.access.indexOf('w') > -1
+
+    // cause we want to stop rendering connect
+    this._onChange()
 
     this._nonceSite.refresh()
         .then(()=>{
