@@ -10,7 +10,9 @@ import {
   View
 } from 'react-native'
 
-class HomeOnBoardingView extends React.Component {
+import colors from '../../colors'
+
+class OnBoardingView extends React.Component {
   static propTypes = {
     onDidPressAddSite: React.PropTypes.func.isRequired
   }
@@ -19,12 +21,17 @@ class HomeOnBoardingView extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
-          You don’t have any sites yet.{"\n"}
-          Discourse notifier can keep track of your notifications across sites.
+          <Text style={{color: colors.grayTitle}}>
+            You don’t have any sites yet.
+          </Text>
+          {'\n'}
+          <Text style={{color: colors.graySubtitle}}>
+            Discourse notifier can keep track of your notifications across sites.
+          </Text>
         </Text>
 
         <View style={styles.button}>
-          <TouchableOpacity onPress={()=>this.props.onDidPressAddSite()}>
+          <TouchableOpacity onPress={() => this.props.onDidPressAddSite()}>
             <Text style={styles.buttonText}>
               + Add your first site
             </Text>
@@ -37,23 +44,24 @@ class HomeOnBoardingView extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
+    backgroundColor: 'transparent',
+    flex: 1,
     justifyContent: 'center'
   },
   text: {
     fontSize: 16,
-    textAlign: 'center',
+    marginBottom: 12,
     padding: 24,
-    marginBottom: 12
+    textAlign: 'center'
   },
   buttonText: {
-    backgroundColor: '#e9e9e9',
+    backgroundColor: colors.blueCallToAction,
+    color: 'white',
     fontSize: 16,
     fontWeight: '500',
-    color: '#222',
     padding: 8
   }
 })
 
-export default HomeOnBoardingView
+export default OnBoardingView
