@@ -63,14 +63,10 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 64 : 55
   },
   leftContainer: {
-    flex: 1,
-    paddingLeft: 12,
-    justifyContent: 'center'
+    flex: 1
   },
   rightContainer: {
     flex: 1,
-    paddingRight: 12,
-    justifyContent: 'center',
     alignItems: 'flex-end'
   },
   titleContainer: {
@@ -91,7 +87,10 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   button: {
-    padding: 8
+    width: Platform.OS === 'ios' ? 44 : 55,
+    height: Platform.OS === 'ios' ? 44 : 55,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
