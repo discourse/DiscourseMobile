@@ -56,7 +56,7 @@ class NavigationBar extends React.Component {
         <View style={styles.leftContainer}>
           <TouchableHighlight
             underlayColor={'white'}
-            style={[styles.button, {width: 36, height: 36}]}
+            style={[styles.button]}
             onPress={this.props.onDidPressLeftButton}>
               <AnimatedIcon
                 name="plus"
@@ -82,7 +82,7 @@ class NavigationBar extends React.Component {
             underlayColor={'white'}
             style={styles.button}
             onPress={this.props.onDidPressRightButton}>
-              <Icon name={'bell'} style={{padding: 8}} color={this.props.rightButtonIconColor} size={20} />
+              <Icon name={'bell'} color={this.props.rightButtonIconColor} size={20} />
           </TouchableHighlight>
         </View>
         <View style={styles.separator} />
@@ -101,15 +101,11 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'ios' ? 20 : 0
   },
   leftContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingLeft: 4
+    flex: 1
   },
   rightContainer: {
     alignItems: 'flex-end',
-    flex: 1,
-    justifyContent: 'center',
-    paddingRight: 4
+    flex: 1
   },
   titleContainer: {
     alignItems: 'center',
@@ -126,9 +122,12 @@ const styles = StyleSheet.create({
   },
   animatedIcon: {
     backgroundColor: 'transparent',
-    bottom: 0,
-    padding: 8,
-    position: 'absolute'
+  },
+  button: {
+    width: Platform.OS === 'ios' ? 44 : 55,
+    height: Platform.OS === 'ios' ? 44 : 55,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
