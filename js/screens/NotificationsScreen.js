@@ -64,8 +64,16 @@ class NotificationsScreen extends React.Component {
     this._mounted = true
 
     if (this._refreshed) {
-      this.setState({renderPlaceholderOnly: false})
+      removePlaceholder()
     }
+  }
+
+  removePlaceholder() {
+    InteractionManager.runAfterInteractions(()=>{
+      if (this._mounted) {
+        this.setState({renderPlaceholderOnly: false})
+      }
+    })
   }
 
   componentWillUnmount() {
@@ -78,6 +86,8 @@ class NotificationsScreen extends React.Component {
       return (
         <View style={styles.container}>
           <Components.NavigationBar onDidPressRightButton={() => {}} />
+          {this._renderListHeader()}
+          {this._renderEmptyNotifications()}
         </View>
       )
     }
@@ -94,9 +104,7 @@ class NotificationsScreen extends React.Component {
     )
   }
 
-  _renderList() {
-
-    let emptyNotificationsView = null
+  _renderEmptyNotifications() {
     if (this.state.dataSource.getRowCount() === 0) {
       let text
       switch (this.state.selectedIndex) {
@@ -113,8 +121,13 @@ class NotificationsScreen extends React.Component {
           text = ""
       }
 
-      emptyNotificationsView = <Components.EmptyNotificationsView text={text} />
+      return <Components.EmptyNotificationsView text={text} />
     }
+
+    return null
+  }
+
+  _renderList() {
 
     return (
       <View style={{flex: 1}}>
@@ -125,7 +138,7 @@ class NotificationsScreen extends React.Component {
           renderRow={(rowData) => this._renderListRow(rowData)}
           style={styles.notificationsList}
         />
-        {emptyNotificationsView}
+        {this._renderEmptyNotifications()}
       </View>
     )
   }
@@ -209,9 +222,10 @@ class NotificationsScreen extends React.Component {
                   if (this.state.progress !== 0) {
 
                     this.setState({
-                      progress: 1,
-                      renderPlaceholderOnly: false
+                      progress: 1
                     })
+
+                    this.removePlaceholder()
 
                     setTimeout(()=>{
                       if (this._mounted) {
@@ -221,9 +235,10 @@ class NotificationsScreen extends React.Component {
                   }
 
                   this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(notifications),
-                    renderPlaceholderOnly: false
+                    dataSource: this.state.dataSource.cloneWithRows(notifications)
                   })
+
+                  this.removePlaceholder()
                 }
         })
         .finally(()=>{this._fetching = false})
