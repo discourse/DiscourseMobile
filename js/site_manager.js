@@ -130,7 +130,12 @@ class SiteManager {
     })
   }
 
+  isLoading() {
+    return !!this._loading
+  }
+
   load() {
+    this._loading = true
     AsyncStorage.getItem('@Discourse.sites').then((json) => {
       if (json) {
         this.sites = JSON.parse(json).map(obj=>{
@@ -139,12 +144,17 @@ class SiteManager {
           site.ensureHasWrite()
           return site
         })
+        this._loading = false
         this._onChange()
         this.refreshSites({ui: false, fast: true}).then(()=>{
           this._onChange()
         }).done()
       }
-    }).done()
+    })
+    .finally(()=>{
+      this._loading = false
+    })
+    .done()
   }
 
   totalUnread() {

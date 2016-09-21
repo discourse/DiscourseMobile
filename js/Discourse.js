@@ -40,16 +40,32 @@ class Discourse extends React.Component {
 
       if (AppState.currentState === 'inactive') {
         this._siteManager.enterBackground()
-        if (this._navigator) {
-          this._navigator.popToTop()
-        }
         this._seenNotificationMap = null
+        this.resetToTop();
       }
 
       if (AppState.currentState === 'active') {
         this._siteManager.exitBackground()
         this._siteManager.refreshSites({ui: false, fast: true})
       }
+    }
+  }
+
+  Home() {
+    return {
+      id: 'HomeScreen'
+    }
+  }
+
+  Notifications() {
+    return {
+      id: 'NotificationsScreen'
+    }
+  }
+
+  resetToTop() {
+    if (this._navigator) {
+      this._navigator.immediatelyResetRouteStack([this.Home(), this.Notifications()])
     }
   }
 
@@ -93,6 +109,7 @@ class Discourse extends React.Component {
           switch (route.identifier) {
             case 'NotificationsScreen':
               return (<Screens.Notifications
+                        resetToTop={this.resetToTop.bind(this)}
                         openUrl={this.openUrl.bind(this)}
                         navigator={navigator}
                         seenNotificationMap={this._seenNotificationMap}
