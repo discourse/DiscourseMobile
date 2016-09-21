@@ -13,6 +13,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.RNKeyPair.RNKeyPairPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.github.yamill.orientation.OrientationPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,12 +31,13 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-              new MainReactPackage(),
-              new VectorIconsPackage(),
-              new RNKeyPairPackage(),
-              new RNDeviceInfo(),
-              new ChromeCustomTabPackage(),
-              new AndroidTokenPackage()
+        new MainReactPackage(),
+        new OrientationPackage(),
+        new VectorIconsPackage(),
+        new RNKeyPairPackage(),
+        new RNDeviceInfo(),
+        new ChromeCustomTabPackage(),
+        new AndroidTokenPackage()
       );
     }
   };

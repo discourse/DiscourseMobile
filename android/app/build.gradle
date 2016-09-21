@@ -98,14 +98,7 @@ android {
         multiDexEnabled true
     }
 
-    signingConfigs {
-        release {
-            storeFile file(MYAPP_RELEASE_STORE_FILE)
-            storePassword MYAPP_RELEASE_STORE_PASSWORD
-            keyAlias MYAPP_RELEASE_KEY_ALIAS
-            keyPassword MYAPP_RELEASE_KEY_PASSWORD
-        }
-    }
+
 
     splits {
         abi {
@@ -120,7 +113,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
+
         }
     }
     // applicationVariants are e.g. debug, release
@@ -139,6 +132,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-orientation')
     compile project(':react-native-vector-icons')
     compile project(':react-native-key-pair')
     compile project(':react-native-device-info')

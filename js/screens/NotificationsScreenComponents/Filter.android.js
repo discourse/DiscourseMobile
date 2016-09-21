@@ -14,6 +14,7 @@ import {
 import Dimensions from 'Dimensions'
 
 import _ from 'lodash'
+import Orientation from 'react-native-orientation'
 
 import colors from '../../colors'
 
@@ -27,10 +28,20 @@ class Filter extends React.Component {
   constructor(props) {
     super(props)
 
+    this.initialOrientation = Orientation.getInitialOrientation()
+
     this.state = {
-      indicatorWidth: Dimensions.get('window').width / props.tabs.length,
+      indicatorWidth: Dimensions.get('window').width / this.props.tabs.length,
       selectedIndex: new Animated.Value(props.selectedIndex)
     }
+  }
+
+  componentDidMount() {
+    Orientation.addOrientationListener(this._orientationDidChange.bind(this))
+  }
+
+  componentWillUnmount() {
+    Orientation.removeOrientationListener(this._orientationDidChange)
   }
 
   onDidSelect(index) {
@@ -52,7 +63,7 @@ class Filter extends React.Component {
             styles.indicator,
             {
               width: this.state.indicatorWidth,
-              left:this._indicatorLeftPosition()
+              left: this._indicatorLeftPosition()
             }
           ]}
         />
@@ -65,7 +76,7 @@ class Filter extends React.Component {
       return (
         <TouchableHighlight
           key={tab}
-          underlayColor={colors.grayUI}
+          underlayColor={colors.yellowUIFeedback}
           style={[styles.button]}
           onPress={() => this.onDidSelect(tabIndex)}>
             <Text style={styles.buttonText}>
@@ -82,6 +93,19 @@ class Filter extends React.Component {
       outputRange: [0, this.state.indicatorWidth]
     })
   }
+
+  _orientationDidChange(newOrientation) {
+    let width
+
+    if (newOrientation === this.initialOrientation) {
+      width = Dimensions.get('window').width / this.props.tabs.length
+    }
+    else {
+      width = Dimensions.get('window').height / this.props.tabs.length
+    }
+
+    this.setState({indicatorWidth: width})
+  }
 }
 
 const styles = {
@@ -89,7 +113,7 @@ const styles = {
     alignItems: 'flex-end',
     justifyContent: 'center',
     backgroundColor: colors.grayUILight,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   button: {
     flex: 1,
@@ -97,7 +121,7 @@ const styles = {
     backgroundColor: colors.grayUILight
   },
   buttonText: {
-    padding: 16,
+    padding: 12,
     fontSize: 14,
     fontWeight: '500',
     color: colors.grayUI,

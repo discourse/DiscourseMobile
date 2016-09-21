@@ -86,7 +86,7 @@ class NotificationsScreen extends React.Component {
       return (
         <View style={styles.container}>
           <Components.NavigationBar onDidPressRightButton={() => {}} />
-          {this._renderListHeader()}
+          {this._renderList()}
           {this._renderEmptyNotifications()}
         </View>
       )
@@ -100,6 +100,7 @@ class NotificationsScreen extends React.Component {
           progress={this.state.progress}
         />
         {this._renderList()}
+        {this._renderEmptyNotifications()}
       </View>
     )
   }
@@ -128,18 +129,13 @@ class NotificationsScreen extends React.Component {
   }
 
   _renderList() {
-
     return (
-      <View style={{flex: 1}}>
-        <ListView
-          enableEmptySections={true}
-          dataSource={this.state.dataSource}
-          renderHeader={() => this._renderListHeader()}
-          renderRow={(rowData) => this._renderListRow(rowData)}
-          style={styles.notificationsList}
-        />
-        {this._renderEmptyNotifications()}
-      </View>
+      <ListView
+        enableEmptySections={true}
+        dataSource={this.state.dataSource}
+        renderHeader={() => this._renderListHeader()}
+        renderRow={(rowData) => this._renderListRow(rowData)}
+      />
     )
   }
 
@@ -250,9 +246,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.grayBackground
-  },
-  notificationsList: {
-    flex: 1
   }
 })
 

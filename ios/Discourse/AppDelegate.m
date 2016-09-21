@@ -15,6 +15,7 @@
 #import "RCTPushNotificationManager.h"
 #import "RNBackgroundFetch.h"
 #import "RCTLog.h"
+#import "Orientation.h"
 
 @implementation AppDelegate
 
@@ -129,6 +130,10 @@
 
   [RNBackgroundFetch gotBackgroundFetch:wrappedCompletionHandler];
 
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
 }
 
 @end
