@@ -275,6 +275,7 @@ class HomeScreen extends React.Component {
             && !this.state.isRefreshing
             && this.state.addSiteProgress === 0
             && !this.state.displayTermBar
+            && !this._siteManager.isLoading()
   }
 
   renderSites() {
