@@ -573,6 +573,11 @@ class Site {
         let minId = options && options.minId
         if (types || minId) {
           filtered = _.filter(filtered, notification=>{
+            // for new always show unread PMs and suppress read
+            if (minId) {
+              if (notification.read) { return false }
+              if (!notification.read && notification.notification_type === 6) { return true }
+            }
             if (minId && minId >= notification.id) {
               return false
             }
