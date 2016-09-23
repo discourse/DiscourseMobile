@@ -13,12 +13,6 @@ import android.os.Bundle;
 import com.facebook.common.logging.FLog;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
-import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.common.ReactConstants;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.net.URLEncoder;
 
