@@ -111,8 +111,6 @@ const styles = StyleSheet.create({
     padding: 12
   },
   icon: {
-    backgroundColor: colors.grayUILight,
-    borderRadius: 20,
     alignSelf: 'center',
     height: 40,
     width: 40

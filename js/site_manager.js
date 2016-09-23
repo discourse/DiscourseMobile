@@ -518,12 +518,15 @@ class SiteManager {
          promises.push(promise)
       })
 
+      let now = new Date()
       Promise.all(promises)
           .then((results) => {
              resolve(
                _.chain(results)
                   .flatten()
-                  .orderBy(['notification.created_at'], ['desc'])
+                  .orderBy([(o) => {
+                    return (!o.notification.read && o.notification.notification_type === 6) ? 0: 1
+                  }, 'notification.created_at'], ['asc', 'desc'])
                   .value()
               )
           }).done()
