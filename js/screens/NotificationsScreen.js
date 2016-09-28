@@ -68,11 +68,21 @@ class NotificationsScreen extends React.Component {
     }
   }
 
+  setTimeout(callback, timeout) {
+    if (this._mounted) {
+      setTimeout(()=>{
+        if (this._mounted) {
+          callback()
+        }
+      },timeout)
+    }
+  }
+
   removePlaceholder() {
     InteractionManager.runAfterInteractions(()=>{
-      if (this._mounted) {
+      this.setTimeout(()=>{
         this.setState({renderPlaceholderOnly: false})
-      }
+      },0)
     })
   }
 
@@ -86,8 +96,9 @@ class NotificationsScreen extends React.Component {
       return (
         <View style={styles.container}>
           <Components.NavigationBar onDidPressRightButton={() => {}} />
-          {this._renderList()}
-          {this._renderEmptyNotifications()}
+          <View style={{height: 50, marginTop: 0, paddingTop: 0}}>
+            {this._renderListHeader()}
+          </View>
         </View>
       )
     }
