@@ -121,7 +121,11 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
+            manifestPlaceholders = [permissionName: "android.permission.SYSTEM_ALERT_WINDOW"]
 
+        }
+        debug {
+            manifestPlaceholders = [permissionName: "MADE.UP.To.Make.SYSTEM_ALERT_WINDOW.removal.work"]
         }
     }
     // applicationVariants are e.g. debug, release
