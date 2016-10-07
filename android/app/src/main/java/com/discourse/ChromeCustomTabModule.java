@@ -1,9 +1,13 @@
 package com.discourse;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.customtabs.CustomTabsServiceConnection;
+import android.support.customtabs.CustomTabsSession;
 
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
 import com.facebook.react.bridge.Promise;
@@ -15,10 +19,34 @@ import com.facebook.react.bridge.ReactMethod;
 public class ChromeCustomTabModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
+    private CustomTabsClient mCustomTabsClient;
+    private CustomTabsSession mCustomTabsSession;
+
+    CustomTabsServiceConnection connection = new CustomTabsServiceConnection() {
+        @Override
+        public void onCustomTabsServiceConnected(ComponentName name, CustomTabsClient client) {
+            mCustomTabsClient = client;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
     public ChromeCustomTabModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
+        CustomTabsClient.bindCustomTabsService(this.reactContext, "com.android.chrome", connection);
+    }
+
+    public CustomTabsSession getSession() {
+        if (mCustomTabsClient == null) {
+            mCustomTabsSession = null;
+        } else if (mCustomTabsSession == null) {
+            mCustomTabsSession = mCustomTabsClient.newSession(null);
+        }
+        return mCustomTabsSession;
     }
 
     @Override
@@ -41,7 +69,7 @@ public class ChromeCustomTabModule extends ReactContextBaseJavaModule {
         if (serviceIntent == null || activity.getPackageManager().resolveService(serviceIntent, 0) == null) {
             promise.reject(new JSApplicationIllegalArgumentException("chrome not installed"));
         } else {
-            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder(getSession());
             CustomTabsIntent customTabsIntent = builder.build();
             customTabsIntent.intent.setPackage("com.android.chrome");
             Uri url = Uri.parse(location);
