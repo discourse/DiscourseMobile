@@ -16,19 +16,19 @@
     "react-native-device-info": "^0.9.4",
     "react-native-ecc": "^1.2.2",
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair.git",
+    "react-native-orientation": "git+https://github.com/yamill/react-native-orientation",
     "react-native-progress": "^3.0.1",
     "react-native-safari-view": "git+https://github.com/samsaffron/react-native-safari-view.git",
-    "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
-    "react-native-vector-icons": "^2.1.0",
     "react-native-sortable-listview": "git+https://github.com/jjaffeux/react-native-sortable-listview.git",
-    "react-native-orientation": "git+https://github.com/yamill/react-native-orientation"
+    "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
+    "react-native-vector-icons": "^2.1.0"
   },
   "devDependencies": {
+    "@kadira/react-native-storybook": "^2.0.0",
     "babel-eslint": "^6.0.0",
     "babel-polyfill": "^6.13.0",
     "babel-preset-react-native": "^1.9.0",
     "eslint": "^2.5.3",
-    "eslint-plugin-react": "^4.2.1",
-    "@kadira/react-native-storybook": "^2.0.0"
+    "eslint-plugin-react": "^4.2.1"
   }
 }
