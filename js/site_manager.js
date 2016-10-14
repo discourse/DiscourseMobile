@@ -140,8 +140,8 @@ class SiteManager {
       if (json) {
         this.sites = JSON.parse(json).map(obj=>{
           let site = new Site(obj)
-          // we require write tokens now
-          site.ensureHasWrite()
+          // we require latest API
+          site.ensureLatestApi()
           return site
         })
         this._loading = false
@@ -153,6 +153,7 @@ class SiteManager {
     })
     .finally(()=>{
       this._loading = false
+      this._onChange()
     })
     .done()
   }
@@ -373,7 +374,15 @@ class SiteManager {
   }
 
   registerClientId(id) {
+
+    console.log("REGISTER CLIENT ID " + id)
+
     this.getClientId().then(existing => {
+
+      this.sites.forEach((site)=>{
+        site.clientId = id
+      })
+
       if (existing !== id) {
         this.clientId = id
         AsyncStorage.setItem('@ClientId', this.clientId)
@@ -426,8 +435,8 @@ class SiteManager {
     }
 
     this._nonceSite.authToken = decrypted.key
-    this._nonceSite.hasPush = decrypted.access.indexOf('p') > -1
-    this._nonceSite.hasWrite = decrypted.access.indexOf('w') > -1
+    this._nonceSite.hasPush = decrypted.push
+    this._nonceSite.apiVersion = decrypted.api
 
     // cause we want to stop rendering connect
     this._onChange()
@@ -463,7 +472,7 @@ class SiteManager {
         //let basePushUrl = "http://l.discourse:3000"
 
         let params = {
-          access: 'rwp',
+          scopes: 'notifications,session_info',
           client_id: clientId,
           nonce: nonce,
           push_url: basePushUrl + '/api/publish_' + Platform.OS,

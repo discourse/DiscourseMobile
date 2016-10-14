@@ -59,8 +59,10 @@ class TermBar extends React.Component {
         this.setState({text: ''})
       })
       .catch(error => {
+        this.setState({text: term})
         this.showTermInput()
       })
+      .done()
   }
 
   componentWillReceiveProps(props) {

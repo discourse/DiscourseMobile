@@ -10,7 +10,6 @@ import {
   NativeModules,
   Navigator,
   Platform,
-  PushNotificationIOS,
   StyleSheet
 } from 'react-native'
 
@@ -19,10 +18,6 @@ import SiteManager from './site_manager'
 import SafariView from 'react-native-safari-view'
 
 const ChromeCustomTab = NativeModules.ChromeCustomTab
-
-if (Platform.OS === 'ios') {
-  PushNotificationIOS.requestPermissions({'alert': true, 'badge': true})
-}
 
 class Discourse extends React.Component {
 
