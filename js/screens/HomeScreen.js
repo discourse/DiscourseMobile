@@ -39,7 +39,8 @@ class HomeScreen extends React.Component {
       lastRefreshTime: null,
       scrollEnabled: true,
       refreshingEnabled: true,
-      rightButtonIconColor: colors.grayUI
+      rightButtonIconColor: colors.grayUI,
+      loadingSites: this._siteManager.isLoading()
     }
 
     this._onChangeSites = (e) => this.onChangeSites(e)
@@ -77,6 +78,8 @@ class HomeScreen extends React.Component {
       PushNotificationIOS.addEventListener('register', (s) => {
         this._siteManager.registerClientId(s)
       })
+
+      PushNotificationIOS.requestPermissions({'alert': true, 'badge': true})
     }
 
   }
@@ -191,6 +194,7 @@ class HomeScreen extends React.Component {
 
     this._siteManager.subscribe(this._onChangeSites)
     this._siteManager.refreshInterval(15000)
+    this._onChangeSites()
   }
 
   componentWillUnmount() {
@@ -199,7 +203,11 @@ class HomeScreen extends React.Component {
   }
 
   onChangeSites(e) {
-    if (e.event === 'change') {
+
+    if (this._siteManager.isLoading() !== this.state.loadingSites) {
+      this.setState({loadingSites: this._siteManager.isLoading()})
+    }
+    if (e && e.event === 'change') {
       let totalUnread = this._siteManager.totalUnread()
       // blue unread is a bit loud and we can see it anyway in the list
       //let iconColor = totalUnread === 0 ? colors.grayUI : colors.blueUnread
@@ -217,40 +225,46 @@ class HomeScreen extends React.Component {
 
     this.setState({addSiteProgress: Math.random() * 0.4})
 
-    return Site.fromTerm(term)
-      .then(site => {
-        this.setState({
-          displayTermBar: false,
-          addSiteProgress: 1
-        })
+    return new Promise((resolve,reject) => {
 
-        if (site) {
-          if (this._siteManager.exists(site)) {
-            throw 'dupe site'
+      Site.fromTerm(term)
+        .then(site => {
+          this.setState({
+            displayTermBar: false,
+            addSiteProgress: 1
+          })
+
+          if (site) {
+            if (this._siteManager.exists(site)) {
+              throw 'dupe site'
+            }
+            this._siteManager.add(site)
           }
-          this._siteManager.add(site)
-        }
-      })
-      .catch(e=>{
-        console.log(e)
+          resolve(site)
+        })
+        .catch(e=>{
+          console.log(e)
 
-        if ( e === 'dupe site') {
-          Alert.alert(`${term} already exists`)
-        } else if (e === 'bad api') {
-          Alert.alert(`Sorry, ${term} does not support mobile APIs, have owner upgrade Discourse to latest!`)
-        } else {
-          Alert.alert(`${term} was not found!`)
-        }
+          if ( e === 'dupe site') {
+            Alert.alert(`${term} already exists`)
+          } else if (e === 'bad api') {
+            Alert.alert(`Sorry, ${term} does not support mobile APIs, have owner upgrade Discourse to latest!`)
+          } else {
+            Alert.alert(`${term} was not found!`)
+          }
 
-        this.setState({displayTermBar: true, addSiteProgress: 1})
+          this.setState({displayTermBar: true, addSiteProgress: 1})
 
-        throw 'failure'
-      })
-      .finally(() => {
-        setTimeout(() => {
-          this.setState({addSiteProgress: 0})
-        }, 1000)
-      })
+          reject('failure')
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.setState({addSiteProgress: 0})
+          }, 1000)
+        })
+        .done()
+    })
+
   }
 
   refreshSites(opts) {
@@ -275,16 +289,21 @@ class HomeScreen extends React.Component {
             && !this.state.isRefreshing
             && this.state.addSiteProgress === 0
             && !this.state.displayTermBar
-            && !this._siteManager.isLoading()
   }
 
   renderSites() {
+
+    if (this.state.loadingSites) {
+      return <View style={{flex: 1}}></View>
+    }
+
     if (this.shouldDisplayOnBoarding()) {
       return (
         <Components.OnBoardingView
           onDidPressAddSite={()=>this.setState({displayTermBar: true})} />
       )
     } else {
+
       return (
         <SortableListView
           data={this.state.data}

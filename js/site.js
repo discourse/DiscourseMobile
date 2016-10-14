@@ -25,7 +25,7 @@ class Site {
     'username',
     'hasPush',
     'isStaff',
-    'hasWrite'
+    'apiVersion'
   ]
 
   static fromTerm(term) {
@@ -62,6 +62,12 @@ class Site {
           return
         }
 
+        let version = userApiKeyResponse.headers.get('Auth-Api-Version')
+        if (parseInt(version,10) < 2) {
+          throw 'bad api'
+          return
+        }
+
         // correct url in case we had a redirect
         let split = userApiKeyResponse.url.split('/')
         url = split[0] + '//' + split[2]
@@ -95,7 +101,8 @@ class Site {
       'User-Api-Key': this.authToken,
       'User-Agent': `Discourse ${Platform.OS} App / 1.0`,
       'Content-Type': 'application/json',
-      'Dont-Chunk': 'true'
+      'Dont-Chunk': 'true',
+      'User-Api-Client-Id': (this.clientId || '')
     }
 
     if (data) {
@@ -149,8 +156,8 @@ class Site {
     this.isStaff = null
   }
 
-  ensureHasWrite() {
-    if (!this.hasWrite) {
+  ensureLatestApi() {
+    if (this.apiVersion < 2) {
       this.logoff()
     }
   }
