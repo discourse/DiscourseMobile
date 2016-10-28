@@ -46,9 +46,6 @@ class DebugRow extends React.Component {
         <Text style={styles.debugText}>
           Last Updated: {Moment(this.state.lastRefresh).format('h:mmA')}
         </Text>
-        <Text style={styles.debugText}>
-          Background fetch stats (first/last/count): {Moment(this.state.firstFetch).format('h:mmA')}/{Moment(this.state.lastFetch).format('h:mmA')}/{this.state.fetchCount}
-        </Text>
       </View>
     )
   }
