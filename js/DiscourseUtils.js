@@ -20,6 +20,7 @@ class DiscourseUtils {
       case 10:
       case 11:
       case 13:
+      case 14:
       case 15:
       case 17:
         endpoint = `/t/${notification.slug}/${notification.topic_id}/${notification.post_number}`
@@ -66,6 +67,8 @@ class DiscourseUtils {
         return 'certificate'
       case 13:
         return 'hand-o-right'
+      case 14:
+        return 'check-square'
       case 15:
         return 'at'
       case 16:

@@ -65,6 +65,7 @@ class NotificationRow extends React.Component {
       case 10:
       case 11:
       case 13:
+      case 14:
       case 15:
       case 17:
         innerText = (
