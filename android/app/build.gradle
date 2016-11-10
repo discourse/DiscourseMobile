@@ -88,14 +88,13 @@ android {
 
     defaultConfig {
         applicationId "com.discourse"
-        minSdkVersion 16
-        targetSdkVersion 22
-        versionCode 6
-        versionName "1.0.5"
+        minSdkVersion 18
+        targetSdkVersion 18
+        versionCode 8
+        versionName "1.0.7"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-        multiDexEnabled true
     }
 
     signingConfigs {

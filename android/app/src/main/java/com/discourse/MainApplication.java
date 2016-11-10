@@ -2,7 +2,6 @@ package com.discourse;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;

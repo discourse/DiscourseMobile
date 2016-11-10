@@ -62,12 +62,12 @@ public class ChromeCustomTabModule extends ReactContextBaseJavaModule {
         final Activity activity = getCurrentActivity();
 
         if (activity == null) {
-            promise.resolve(false);
+            promise.reject(new JSApplicationIllegalArgumentException("no current activity"));
             return;
         }
 
         if (serviceIntent == null || activity.getPackageManager().resolveService(serviceIntent, 0) == null) {
-            promise.reject(new JSApplicationIllegalArgumentException("chrome not installed"));
+            promise.reject(new JSApplicationIllegalArgumentException("chrome stable not installed"));
         } else {
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder(getSession());
             CustomTabsIntent customTabsIntent = builder.build();
