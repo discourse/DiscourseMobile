@@ -36,21 +36,21 @@ class TermBar extends React.Component {
   }
 
   hideTermInput() {
-    this.animateTermInputToValue(0)
-    this.refs.Input.blur()
+    let callback = ()=> { this.refs.Input.blur() }
+    this.animateTermInputToValue(0, callback)
   }
 
   showTermInput() {
-    this.animateTermInputToValue(1)
-    this.refs.Input.focus()
+    let callback = ()=> { this.refs.Input.focus() }
+    this.animateTermInputToValue(1, callback)
   }
 
-  animateTermInputToValue(value) {
+  animateTermInputToValue(value, callback) {
     Animated.timing(this.state.termContainerHeight, {
       easing: Easing.inOut(Easing.ease),
       duration: 200,
       toValue: value
-    }).start()
+    }).start(callback)
   }
 
   handleSubmitTerm(term) {
