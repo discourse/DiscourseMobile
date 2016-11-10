@@ -38,7 +38,6 @@ class TermBar extends React.Component {
   hideTermInput() {
     let callback = ()=> { this.refs.Input.blur() }
     this.animateTermInputToValue(0, callback)
-
   }
 
   showTermInput() {
