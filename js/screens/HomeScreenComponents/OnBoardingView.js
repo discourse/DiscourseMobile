@@ -26,7 +26,7 @@ class OnBoardingView extends React.Component {
           </Text>
           {'\n'}
           <Text style={{color: colors.graySubtitle}}>
-            Discourse notifier can keep track of your notifications across sites.
+            Add Discourse sites to keep track of your notifications across sites.
           </Text>
         </Text>
 
