@@ -438,7 +438,7 @@ class Site {
                        .done()
 
                  } else {
-                   resolve({changed: this.updateTotals() || changes.notifications, alerts: changes.alerts})
+                   resolve({changed: this.updateTotals() || changes.notifications || changes.totals, alerts: changes.alerts})
                  }
               })
               .catch(e => {
