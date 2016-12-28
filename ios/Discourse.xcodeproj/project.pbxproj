@@ -23,6 +23,7 @@
 		226098D21D655CC9001A0518 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 226098D11D655C00001A0518 /* libRCTPushNotification.a */; };
 		22728C5A1D7E44F100FB7227 /* RNBackgroundJob.m in Sources */ = {isa = PBXBuildFile; fileRef = 22728C591D7E44F100FB7227 /* RNBackgroundJob.m */; };
 		2275E8C11D891D2900327641 /* RNBackgroundFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2275E8C01D891D2900327641 /* RNBackgroundFetch.m */; };
+		229A44281E13920000C4297B /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 229A44251E13919A00C4297B /* libRCTAnimation.a */; };
 		29A5744DA0BC49DF86270373 /* libSafariViewManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F996349405C34010996EE336 /* libSafariViewManager.a */; };
 		2DC1D89CEDF74F62B515F966 /* libRNECC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BE631481BC54AEDB434F50A /* libRNECC.a */; };
 		5A9B9D17F302472BBBD88186 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2084424E16BE4B72A25D79DC /* libRNDeviceInfo.a */; };
@@ -120,6 +121,27 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTPushNotification;
+		};
+		229A44061E138B7D00C4297B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 226098CC1D655C00001A0518 /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2DD0EFE61DA8533A00B0C975;
+			remoteInfo = "RCTPushNotification-tvOS";
+		};
+		229A44241E13919A00C4297B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 229A441F1E13919A00C4297B /* RCTAnimation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTAnimation;
+		};
+		229A44261E13919A00C4297B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 229A441F1E13919A00C4297B /* RCTAnimation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
+			remoteInfo = "RCTAnimation-tvOS";
 		};
 		22A2D1B31D7640D100CD5F05 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -255,6 +277,7 @@
 		22728C6D1D7E450D00FB7227 /* RNBackgroundJob.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNBackgroundJob.h; sourceTree = "<group>"; };
 		2275E8AD1D891D1F00327641 /* RNBackgroundFetch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNBackgroundFetch.h; sourceTree = "<group>"; };
 		2275E8C01D891D2900327641 /* RNBackgroundFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNBackgroundFetch.m; sourceTree = "<group>"; };
+		229A441F1E13919A00C4297B /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "/Users/sam/Source/DiscourseMobile/node_modules/react-native-vector-icons/../react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<absolute>"; };
 		3CB836B0207247C4B1101787 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		4A01B54512B844D58735C60D /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		4B79D987F06E411DA4302BA3 /* SafariViewManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SafariViewManager.xcodeproj; path = "../node_modules/react-native-safari-view/SafariViewManager.xcodeproj"; sourceTree = "<group>"; };
@@ -283,6 +306,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				229A44281E13920000C4297B /* libRCTAnimation.a in Frameworks */,
 				226098D21D655CC9001A0518 /* libRCTPushNotification.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -431,6 +455,16 @@
 			isa = PBXGroup;
 			children = (
 				226098D11D655C00001A0518 /* libRCTPushNotification.a */,
+				229A44071E138B7D00C4297B /* libRCTPushNotification-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		229A44201E13919A00C4297B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				229A44251E13919A00C4297B /* libRCTAnimation.a */,
+				229A44271E13919A00C4297B /* libRCTAnimation-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -464,6 +498,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				229A441F1E13919A00C4297B /* RCTAnimation.xcodeproj */,
 				226098CC1D655C00001A0518 /* RCTPushNotification.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -629,6 +664,10 @@
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
 				},
 				{
+					ProductGroup = 229A44201E13919A00C4297B /* Products */;
+					ProjectRef = 229A441F1E13919A00C4297B /* RCTAnimation.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
 					ProjectRef = 00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */;
 				},
@@ -777,6 +816,27 @@
 			fileType = archive.ar;
 			path = libRCTPushNotification.a;
 			remoteRef = 226098D01D655C00001A0518 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		229A44071E138B7D00C4297B /* libRCTPushNotification-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRCTPushNotification-tvOS.a";
+			remoteRef = 229A44061E138B7D00C4297B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		229A44251E13919A00C4297B /* libRCTAnimation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTAnimation.a;
+			remoteRef = 229A44241E13919A00C4297B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		229A44271E13919A00C4297B /* libRCTAnimation-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRCTAnimation-tvOS.a";
+			remoteRef = 229A44261E13919A00C4297B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		22A2D1B41D7640D100CD5F05 /* libRNKeyPair.a */ = {
