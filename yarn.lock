@@ -4221,7 +4221,7 @@ react-native-progress@^3.0.1:
 
 "react-native-sortable-listview@git+https://github.com/samsaffron/react-native-sortable-listview.git":
   version "0.1.1"
-  resolved "git+https://github.com/samsaffron/react-native-sortable-listview.git#8ed22e08d27fd47e14d2715ad3f384db1586a7a3"
+  resolved "git+https://github.com/samsaffron/react-native-sortable-listview.git#4648df9c995e01fb4452d7b9791d878266fc89c4"
   dependencies:
     react-timer-mixin "^0.13.3"
 
