@@ -1,4 +1,4 @@
-#import "RCTEventEmitter.h"
+#import <React/RCTEventEmitter.h>
 
 @interface RNBackgroundFetch : RCTEventEmitter
 

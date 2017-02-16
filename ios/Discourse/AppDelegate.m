@@ -9,12 +9,12 @@
 
 #import "AppDelegate.h"
 
-#import "RCTBundleURLProvider.h"
-#import "RCTRootView.h"
-#import "RCTLinkingManager.h"
-#import "RCTPushNotificationManager.h"
+#import <React/RCTBundleURLProvider.h>
+#import <React/RCTRootView.h>
+#import <React/RCTLinkingManager.h>
+#import <React/RCTPushNotificationManager.h>
 #import "RNBackgroundFetch.h"
-#import "RCTLog.h"
+#import <React/RCTLog.h>
 #import "Orientation.h"
 
 @implementation AppDelegate

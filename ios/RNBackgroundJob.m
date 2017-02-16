@@ -1,10 +1,10 @@
 #import "RNBackgroundJob.h"
 #import <UIKit/UIKit.h>
 
-#import "RCTBridge.h"
-#import "RCTEventDispatcher.h"
-#import "RCTUtils.h"
-#import "RCTLog.h"
+#import <React/RCTBridge.h>
+#import <React/RCTEventDispatcher.h>
+#import <React/RCTUtils.h>
+#import <React/RCTLog.h>
 
 
 @implementation RNBackgroundJob {
