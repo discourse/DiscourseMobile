@@ -4235,43 +4235,28 @@ react-native-device-info@0.10.0:
   version "0.10.0"
   resolved "http://registry.npm.taobao.org/react-native-device-info/download/react-native-device-info-0.10.0.tgz#4c4361d183bdb4a82c7336e54900702bd789f7f3"
 
-"react-native-ecc@file:../react-native-ecc":
+"react-native-ecc@git+https://github.com/nihgwu/react-native-ecc.git":
   version "1.4.0"
+  resolved "git+https://github.com/nihgwu/react-native-ecc.git#026f59eba530f847dbf6c8f81d5554ed0b50b449"
   dependencies:
     buffer "^4.9.1"
     hash.js "^1.0.3"
 
-"react-native-ecc@https://github.com/nihgwu/react-native-ecc.git":
-  version "1.4.0"
-  resolved "https://github.com/nihgwu/react-native-ecc.git#026f59eba530f847dbf6c8f81d5554ed0b50b449"
-  dependencies:
-    buffer "^4.9.1"
-    hash.js "^1.0.3"
-
-"react-native-key-pair@file:../react-native-key-pair":
+"react-native-key-pair@git+https://github.com/samsaffron/react-native-key-pair.git":
   version "1.0.0"
+  resolved "git+https://github.com/samsaffron/react-native-key-pair.git#33408f92fcd8f6b8a907e57f9f0e67c623df5947"
 
-"react-native-key-pair@https://github.com/nihgwu/react-native-key-pair.git":
-  version "1.0.0"
-  resolved "https://github.com/nihgwu/react-native-key-pair.git#21061c03ceead75301f0ac9be6b73967f091eea1"
-
-"react-native-orientation@file:../react-native-orientation":
+"react-native-orientation@git+https://github.com/nihgwu/react-native-orientation.git":
   version "1.17.0"
-
-"react-native-orientation@https://github.com/nihgwu/react-native-orientation.git":
-  version "1.17.0"
-  resolved "https://github.com/nihgwu/react-native-orientation.git#f94eea69c98689f4566c262aea287ef7f81a2396"
+  resolved "git+https://github.com/nihgwu/react-native-orientation.git#f94eea69c98689f4566c262aea287ef7f81a2396"
 
 react-native-progress@^3.0.1:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-3.2.0.tgz#86d756be5537c09936ac3d3c4e23710da590743c"
 
-"react-native-safari-view@file:../react-native-safari-view":
+"react-native-safari-view@git+https://github.com/samsaffron/react-native-safari-view.git":
   version "1.0.2"
-
-"react-native-safari-view@https://github.com/nihgwu/react-native-safari-view.git":
-  version "1.0.2"
-  resolved "https://github.com/nihgwu/react-native-safari-view.git#a7b603832bd5d54b619302ef29b117d7fa738391"
+  resolved "git+https://github.com/samsaffron/react-native-safari-view.git#fa5fcb17a73435dd870e45c13818dbd8ebb909e7"
 
 "react-native-sortable-listview@git+https://github.com/samsaffron/react-native-sortable-listview.git":
   version "0.1.1"
