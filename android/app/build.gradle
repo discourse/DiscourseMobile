@@ -154,9 +154,9 @@ dependencies {
 
 
     compile 'com.google.android.gms:play-services-gcm:9.6.0'
-    compile 'com.google.firebase:firebase-core:9.6.0'
-    compile 'com.google.firebase:firebase-analytics:9.6.0'
-    compile 'com.google.firebase:firebase-messaging:9.6.0'
+    compile 'com.google.firebase:firebase-core:10.2.4'
+    compile 'com.google.firebase:firebase-analytics:10.2.4'
+    compile 'com.google.firebase:firebase-messaging:10.2.4'
     compile 'com.google.android.gms:play-services-appindexing:9.6.0'
 }
 
