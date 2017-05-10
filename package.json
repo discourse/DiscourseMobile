@@ -11,8 +11,8 @@
   "dependencies": {
     "lodash": "^4.15.0",
     "moment": "^2.14.1",
-    "react": "15.4.2",
-    "react-native": "0.42.0-rc.3",
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.4",
     "react-native-device-info": "0.10.0",
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair.git",
     "react-native-orientation": "git+https://github.com/nihgwu/react-native-orientation.git",
