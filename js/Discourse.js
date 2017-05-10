@@ -8,10 +8,11 @@ import {
   AppState,
   Linking,
   NativeModules,
-  Navigator,
   Platform,
   StyleSheet
 } from 'react-native'
+
+import NavigationExperimental from 'react-native-deprecated-custom-components'
 
 import Screens from './screens'
 import SiteManager from './site_manager'
@@ -88,15 +89,15 @@ class Discourse extends React.Component {
 
   render() {
     return (
-      <Navigator
+      <NavigationExperimental.Navigator
         style={styles.app}
         initialRoute={{ identifier: 'HomeScreen', index: 0 }}
         configureScene={(route, routeStack) => {
           switch (route.identifier) {
             case 'NotificationsScreen':
-              return Navigator.SceneConfigs.FloatFromBottom
+              return NavigationExperimental.Navigator.SceneConfigs.FloatFromBottom
             default:
-              return Navigator.SceneConfigs.FloatFromLeft
+              return NavigationExperimental.Navigator.SceneConfigs.FloatFromLeft
           }
         }}
         renderScene={(route, navigator) => {
