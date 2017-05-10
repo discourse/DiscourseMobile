@@ -1183,11 +1183,7 @@ babel-types@^6.0.19, babel-types@^6.19.0, babel-types@^6.21.0, babel-types@^6.22
     lodash "^4.2.0"
     to-fast-properties "^1.0.1"
 
-babylon@^6.0.18, babylon@^6.11.0, babylon@^6.15.0:
-  version "6.15.0"
-  resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.15.0.tgz#ba65cfa1a80e1759b0e89fb562e27dccae70348e"
-
-babylon@^6.16.1:
+babylon@^6.0.18, babylon@^6.11.0, babylon@^6.15.0, babylon@^6.16.1:
   version "6.17.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.17.0.tgz#37da948878488b9c4e3c4038893fa3314b3fc932"
 
@@ -4252,6 +4248,15 @@ react-modal@^1.2.1:
     element-class "^0.2.0"
     exenv "1.2.0"
     lodash.assign "^4.2.0"
+
+react-native-deprecated-custom-components@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-deprecated-custom-components/-/react-native-deprecated-custom-components-0.1.0.tgz#f716d431ef2dc4f91b7a686af091ee3656538086"
+  dependencies:
+    fbjs "~0.8.9"
+    immutable "~3.7.6"
+    react-timer-mixin "^0.13.2"
+    rebound "^0.0.13"
 
 react-native-device-info@0.10.0:
   version "0.10.0"
