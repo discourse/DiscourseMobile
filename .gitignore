@@ -58,3 +58,5 @@ fastlane/screenshots
 ios/Discourse.app.dSym.zip
 ios/fastlane/report.xml
 android/app/my-release-key.keystore
+
+android/app/fabric.properties
