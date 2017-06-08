@@ -14,6 +14,9 @@ import com.facebook.common.logging.FLog;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 import java.net.URLEncoder;
 
 import javax.annotation.Nullable;
@@ -87,6 +90,8 @@ public class MainActivity extends ReactActivity {
         }
 
         super.onCreate(savedInstanceState);
+
+        Fabric.with(this, new Crashlytics());
     }
 
 
