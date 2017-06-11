@@ -1,0 +1,137 @@
+fastlane_require "base64"
+fastlane_require "fileutils"
+
+APP_VERSION = "1.8.0"
+IOS_TEAM_ID = "6T3LU73T8S"
+KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
+
+fastlane_version "1.101.0"
+
+default_platform :ios
+
+desc "Bootstrap keys"
+lane :bootstrap do
+  FileUtils.rm_rf("keys")
+  `git clone #{KEYS_REPOSITORY} keys`
+
+  appfile = <<TEMPLATE
+# Generated from `fastlane bootstrap` do not edit or commit
+
+# iOS
+app_identifier "org.discourse.DiscourseApp"
+apple_id "#{apple_id}"
+team_id "#{IOS_TEAM_ID}"
+
+# Android
+json_key_file "fastlane/keys/google-play-api-secret.json"
+package_name "com.discourse"
+TEMPLATE
+  File.write("Appfile", appfile)
+
+  gradle_properties = <<TEMPLATE
+# Generated from `fastlane bootstrap` do not edit or commit
+android.useDeprecatedNdk=true
+MYAPP_VERSION=#{APP_VERSION}
+MYAPP_RELEASE_STORE_FILE=my-release-key.keystore
+MYAPP_RELEASE_KEY_ALIAS=discourse
+MYAPP_RELEASE_STORE_PASSWORD=#{google_key_store_password}
+MYAPP_RELEASE_KEY_PASSWORD=#{google_key_store_password}
+TEMPLATE
+  File.write(File.expand_path("../android/gradle.properties"), gradle_properties)
+
+  android_fabric_properties = <<TEMPLATE
+# Generated from `fastlane bootstrap` do not edit or commit
+apiSecret=#{fabric_build_secret}
+apiKey=#{fabric_api_key}
+TEMPLATE
+  File.write(File.expand_path("../android/app/fabric.properties"), android_fabric_properties)
+
+  key_store = Base64.decode64(File.open("keys/my-release-key.keystore").read)
+  File.write(File.expand_path("../android/app/my-release-key.keystore"), key_store)
+end
+
+def apple_id
+  @apple_id ||= File.open("keys/apple_id").read.strip
+end
+
+def google_key_store_password
+  @google_key_store_password ||= File.open("keys/google-key-store-password").read.strip
+end
+
+def fabric_build_secret
+  @fabric_build_secret ||= File.open("keys/fabric_build_secret").read.strip
+end
+
+def fabric_api_key
+  @fabric_api_key ||= File.open("keys/fabric_api_key").read.strip
+end
+
+platform :ios do
+  desc "Submit a new Beta Build to Fabric -> Beta"
+  desc "This will also make sure the profile is up to date"
+  lane :beta do
+    register_devices(
+      devices_file: File.expand_path("./keys/ios-beta-devices.txt")
+    )
+
+    match(
+      force_for_new_devices: true,
+      type: "development",
+      git_url: KEYS_REPOSITORY
+    )
+
+    increment_build_number(
+      xcodeproj: "./ios/#{SCHEME}.xcodeproj"
+    )
+
+    increment_version_number_in_plist(
+      xcodeproj: "./ios/#{SCHEME}.xcodeproj",
+      target: SCHEME,
+      version_number: APP_VERSION
+    )
+
+    gym(
+      scheme: SCHEME,
+      clean: true,
+      project: "./ios/#{SCHEME}.xcodeproj"
+    )
+
+    crashlytics(
+      api_token: fabric_api_key,
+      build_secret: fabric_build_secret,
+      notifications: true
+    )
+  end
+end
+
+platform :android do
+  before_all do
+    increment_version_code(
+      gradle_file_path: "android/app/build.gradle"
+    )
+  end
+
+  desc "Submit a new Beta Build to Fabric -> Beta"
+  lane :beta do
+    unless ENV["ANDROID_HOME"]
+      STDOUT.puts("ANDROID_HOME env variable not set, set it android sdk location")
+      ENV["ANDROID_HOME"] = STDIN.gets.chomp
+    end
+
+    `cd ../android && ./gradlew assembleRelease crashlyticsUploadDistributionRelease`
+  end
+
+  desc "Submit a build to Google Play Store"
+  lane :release do
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      project_dir: "android/"
+    )
+
+    supply(
+      track: "alpha",
+      apk: "#{lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]}"
+    )
+  end
+end

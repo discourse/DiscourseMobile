@@ -43,20 +43,17 @@ android/app/libs
 android/keystores/debug.keystore
 
 # fastlane
-#
-# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
-# screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Gitignore.md
-
-fastlane/report.xml
-fastlane/Preview.html
+*report.xml
+*Preview.html
 fastlane/screenshots
-
 *.swp
-
-ios/Discourse.app.dSym.zip
-ios/fastlane/report.xml
-android/app/my-release-key.keystore
-
+*.keystore
+android/gradle.properties
 android/app/fabric.properties
+fastlane/screenshots
+*dSym.zip
+*dSYM.zip
+ios/fastlane/Appfile
+fastlane/Appfile
+fastlane/keys
+fastlane/README.md
