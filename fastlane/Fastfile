@@ -2,6 +2,7 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 
 APP_VERSION = "1.8.0"
+PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
 
@@ -67,6 +68,18 @@ def fabric_api_key
 end
 
 platform :ios do
+  before_all do
+    increment_version_number_in_plist(
+      xcodeproj: "./ios/#{PROJECT_NAME}.xcodeproj",
+      target: PROJECT_NAME,
+      version_number: APP_VERSION
+    )
+
+    increment_build_number(
+      xcodeproj: "./ios/#{PROJECT_NAME}.xcodeproj"
+    )
+  end
+
   desc "Submit a new Beta Build to Fabric -> Beta"
   desc "This will also make sure the profile is up to date"
   lane :beta do
@@ -80,26 +93,46 @@ platform :ios do
       git_url: KEYS_REPOSITORY
     )
 
-    increment_build_number(
-      xcodeproj: "./ios/#{SCHEME}.xcodeproj"
-    )
-
-    increment_version_number_in_plist(
-      xcodeproj: "./ios/#{SCHEME}.xcodeproj",
-      target: SCHEME,
-      version_number: APP_VERSION
-    )
-
     gym(
-      scheme: SCHEME,
+      scheme: PROJECT_NAME,
       clean: true,
-      project: "./ios/#{SCHEME}.xcodeproj"
+      project: "./ios/#{PROJECT_NAME}.xcodeproj",
+      provisioning_profile_path: ENV["sigh_org.discourse.DiscourseApp_development_profile-path"]
     )
 
     crashlytics(
       api_token: fabric_api_key,
       build_secret: fabric_build_secret,
       notifications: true
+    )
+  end
+
+  desc "Submit a new build to Testflight"
+  lane :release do
+    register_devices(
+      devices_file: File.expand_path("./keys/ios-beta-devices.txt")
+    )
+
+    match(
+      force_for_new_devices: true,
+      type: "appstore",
+      git_url: KEYS_REPOSITORY
+    )
+
+    gym(
+      scheme: PROJECT_NAME,
+      clean: true,
+      project: "./ios/#{PROJECT_NAME}.xcodeproj"
+    )
+
+    upload_symbols_to_crashlytics(
+      api_token: fabric_api_key,
+      binary_path: ENV["IPA_OUTPUT_PATH"]
+    )
+
+    testflight(
+      username: apple_id,
+      beta_app_feedback_email: apple_id
     )
   end
 end
