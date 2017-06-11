@@ -57,3 +57,6 @@ ios/fastlane/Appfile
 fastlane/Appfile
 fastlane/keys
 fastlane/README.md
+ios/Discourse-tvOS
+ios/Discourse-tvOSTests
+ios/DiscourseTests
