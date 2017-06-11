@@ -40,15 +40,12 @@ yarn-error.log
 buck-out/
 \.buckd/
 android/app/libs
-android/keystores/debug.keystore
 
 # fastlane
 *report.xml
 *Preview.html
 fastlane/screenshots
 *.swp
-*.keystore
-android/gradle.properties
 android/app/fabric.properties
 fastlane/screenshots
 *dSym.zip
