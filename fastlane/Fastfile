@@ -1,5 +1,6 @@
 fastlane_require "base64"
 fastlane_require "fileutils"
+fastlane_require "json"
 
 APP_VERSION = "1.8.0"
 PROJECT_NAME = "Discourse"
@@ -15,16 +16,26 @@ lane :bootstrap do
   FileUtils.rm_rf("keys")
   `git clone #{KEYS_REPOSITORY} keys`
 
+  `openssl enc -aes-256-cbc -d -in keys/secrets.enc > keys/secrets.json`
+
+  File.open("google-play-api-secret.json","w") do |f|
+    f.write(secrets["google-play-api-secret"].to_json)
+  end
+
+  File.open("my-release-key.keystore","w") do |f|
+    f.write(secrets["my_release_key_store"])
+  end
+
   appfile = <<TEMPLATE
 # Generated from `fastlane bootstrap` do not edit or commit
 
 # iOS
 app_identifier "org.discourse.DiscourseApp"
-apple_id "#{apple_id}"
+apple_id "#{secrets["apple_id"]}"
 team_id "#{IOS_TEAM_ID}"
 
 # Android
-json_key_file "fastlane/keys/google-play-api-secret.json"
+json_key_file "fastlane/google-play-api-secret.json"
 package_name "com.discourse"
 TEMPLATE
   File.write("Appfile", appfile)
@@ -47,24 +58,28 @@ apiKey=#{fabric_api_key}
 TEMPLATE
   File.write(File.expand_path("../android/app/fabric.properties"), android_fabric_properties)
 
-  key_store = Base64.decode64(File.open("keys/my-release-key.keystore").read)
+  key_store = Base64.decode64(File.open("my-release-key.keystore").read)
   File.write(File.expand_path("../android/app/my-release-key.keystore"), key_store)
 end
 
+def secrets
+  @secrets ||= JSON.load(File.read("keys/secrets.json"))
+end
+
 def apple_id
-  @apple_id ||= File.open("keys/apple_id").read.strip
+  @apple_id ||= secrets["apple_id"]
 end
 
 def google_key_store_password
-  @google_key_store_password ||= File.open("keys/google-key-store-password").read.strip
+  @google_key_store_password ||= secrets["google_key_store_password"]
 end
 
 def fabric_build_secret
-  @fabric_build_secret ||= File.open("keys/fabric_build_secret").read.strip
+  @fabric_build_secret ||= secrets["fabric_build_secret"]
 end
 
 def fabric_api_key
-  @fabric_api_key ||= File.open("keys/fabric_api_key").read.strip
+  @fabric_api_key ||= secrets["fabric_api_key"]
 end
 
 platform :ios do

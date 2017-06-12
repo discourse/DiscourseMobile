@@ -59,3 +59,4 @@ ios/Discourse-tvOSTests
 ios/DiscourseTests
 android/gradle.properties
 *.keystore
+fastlane/google-play-api-secret.json
