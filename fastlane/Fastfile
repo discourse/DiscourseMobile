@@ -96,8 +96,7 @@ platform :ios do
     gym(
       scheme: PROJECT_NAME,
       clean: true,
-      project: "./ios/#{PROJECT_NAME}.xcodeproj",
-      provisioning_profile_path: ENV["sigh_org.discourse.DiscourseApp_development_profile-path"]
+      project: "./ios/#{PROJECT_NAME}.xcodeproj"
     )
 
     crashlytics(
