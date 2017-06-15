@@ -4370,9 +4370,9 @@ react-native-vector-icons@^4.1.0:
     prop-types "^15.5.8"
     yargs "^6.3.0"
 
-react-native@0.45.0:
-  version "0.45.0"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.45.0.tgz#1d686b905e4d439bb9c31eec67ef1c1355663ea0"
+react-native@0.45.1:
+  version "0.45.1"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.45.1.tgz#b3283c4a88233421f9c662a2ff1a4ccc8a9f07c0"
   dependencies:
     absolute-path "^0.0.0"
     art "^0.10.0"
@@ -4767,11 +4767,7 @@ rx-lite@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-3.1.2.tgz#19ce502ca572665f3b647b10939f97fd1615f102"
 
-safe-buffer@^5.0.1:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.0.tgz#fe4c8460397f9eaaaa58e73be46273408a45e223"
-
-safe-buffer@~5.0.1:
+safe-buffer@^5.0.1, safe-buffer@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.0.1.tgz#d263ca54696cd8a306b5ca6551e92de57918fbe7"
 
