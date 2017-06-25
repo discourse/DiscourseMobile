@@ -95,8 +95,8 @@ android {
 
     defaultConfig {
         applicationId "com.discourse"
-        minSdkVersion 18
-        targetSdkVersion 18
+        minSdkVersion 19
+        targetSdkVersion 19
         versionCode 22
         versionName MYAPP_VERSION
         ndk {
