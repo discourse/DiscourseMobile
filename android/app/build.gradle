@@ -97,7 +97,7 @@ android {
         applicationId "com.discourse"
         minSdkVersion 19
         targetSdkVersion 19
-        versionCode 22
+        versionCode 32
         versionName MYAPP_VERSION
         ndk {
             abiFilters "armeabi-v7a", "x86"
