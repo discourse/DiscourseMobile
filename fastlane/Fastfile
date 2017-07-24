@@ -2,7 +2,7 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-APP_VERSION = "1.8.0"
+APP_VERSION = "1.1.0"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
