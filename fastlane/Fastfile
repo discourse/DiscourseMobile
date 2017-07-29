@@ -103,8 +103,7 @@ platform :ios do
     )
 
     match(
-      force_for_new_devices: true,
-      type: "development",
+      force: true,
       git_url: KEYS_REPOSITORY
     )
 
@@ -128,7 +127,7 @@ platform :ios do
     )
 
     match(
-      force_for_new_devices: true,
+      force: true,
       type: "appstore",
       git_url: KEYS_REPOSITORY
     )
