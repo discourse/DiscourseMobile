@@ -104,6 +104,7 @@ platform :ios do
 
     match(
       force: true,
+      type: "adhoc",
       git_url: KEYS_REPOSITORY
     )
 
