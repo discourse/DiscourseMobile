@@ -78,10 +78,7 @@ class HomeScreen extends React.Component {
       PushNotificationIOS.addEventListener('register', (s) => {
         this._siteManager.registerClientId(s)
       })
-
-      PushNotificationIOS.requestPermissions({'alert': true, 'badge': true})
     }
-
   }
 
   _handleLocalNotification(e) {

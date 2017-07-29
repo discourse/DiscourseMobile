@@ -9,6 +9,7 @@ import {
   Linking,
   NativeModules,
   Platform,
+  PushNotificationIOS,
   StyleSheet
 } from 'react-native'
 
@@ -67,6 +68,10 @@ class Discourse extends React.Component {
 
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange)
+
+    if (Platform.OS === 'ios') {
+      PushNotificationIOS.requestPermissions({'alert': true, 'badge': true});
+    }
   }
 
   componentWillUnmount() {
