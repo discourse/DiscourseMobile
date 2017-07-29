@@ -19,6 +19,8 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 
+@import Photos;
+@import AVFoundation;
 
 @implementation AppDelegate
 
@@ -26,6 +28,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [Fabric with:@[[Crashlytics class]]];
+
+  [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {}];
+  [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {}];
 
   NSURL *jsCodeLocation;
 
