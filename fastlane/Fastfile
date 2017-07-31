@@ -144,6 +144,8 @@ platform :ios do
       binary_path: ENV["IPA_OUTPUT_PATH"]
     )
 
+    `cp ../Discourse.ipa ../releases/Discourse.ipa`
+
     testflight(
       username: apple_id,
       beta_app_feedback_email: apple_id
@@ -175,6 +177,8 @@ platform :android do
       build_type: "Release",
       project_dir: "android/"
     )
+
+    `cp ../android/app/build/outputs/apk/app-release.apk ../releases/discourse-mobile.apk`
 
     supply(
       track: "alpha",
