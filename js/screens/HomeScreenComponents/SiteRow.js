@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
   row: {
     borderBottomColor: colors.grayBorder,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    flex: 1,
     flexDirection: 'row',
     padding: 12
   },
