@@ -9,19 +9,19 @@
     "storybook-ios": "storybook start -p 7007"
   },
   "dependencies": {
-    "lodash": "^4.15.0",
-    "moment": "^2.14.1",
+    "lodash": "^4.17.0",
+    "moment": "^2.18.1",
     "react": "16.0.0-alpha.12",
-    "react-native": "0.46.4",
-    "react-native-deprecated-custom-components": "0.1.0",
-    "react-native-device-info": "^0.10.0",
+    "react-native": "0.47.1",
+    "react-native-deprecated-custom-components": "0.1.1",
+    "react-native-device-info": "^0.11.0",
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair.git",
-    "react-native-orientation": "git+https://github.com/nihgwu/react-native-orientation.git",
-    "react-native-progress": "^3.2.1",
+    "react-native-orientation": "^2.1.0",
+    "react-native-progress": "^3.3.0",
     "react-native-safari-view": "git+https://github.com/samsaffron/react-native-safari-view.git",
-    "react-native-sortable-listview": "git+https://github.com/samsaffron/react-native-sortable-listview.git",
-    "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
-    "react-native-vector-icons": "^4.1.0"
+    "react-native-sortable-listview": "^0.2.3",
+    "react-native-swipeout": "^2.2.2",
+    "react-native-vector-icons": "^4.3.0"
   },
   "devDependencies": {
     "@kadira/react-native-storybook": "^2.0.0",

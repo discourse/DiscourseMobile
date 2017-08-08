@@ -5,13 +5,13 @@ import android.content.Context;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.github.yamill.orientation.OrientationPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.RNKeyPair.RNKeyPairPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.github.yamill.orientation.OrientationPackage;
 import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
@@ -32,9 +32,9 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
         new OrientationPackage(),
+        new RNDeviceInfo(),
         new VectorIconsPackage(),
         new RNKeyPairPackage(),
-        new RNDeviceInfo(),
         new ChromeCustomTabPackage(),
         new AndroidTokenPackage()
       );
