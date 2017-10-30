@@ -3,6 +3,8 @@
 
 import React from 'react'
 
+import PropTypes from 'prop-types'
+
 import {
   StyleSheet,
   Text,
@@ -14,7 +16,7 @@ import colors from '../../colors'
 
 class OnBoardingView extends React.Component {
   static propTypes = {
-    onDidPressAddSite: React.PropTypes.func.isRequired
+    onDidPressAddSite: PropTypes.func.isRequired
   }
 
   render() {

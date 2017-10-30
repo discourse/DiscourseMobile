@@ -54,18 +54,15 @@ class Site {
       .then((userApiKeyResponse)=>{
         if (userApiKeyResponse.status === 404) {
           throw 'bad api'
-          return
         }
 
         if (userApiKeyResponse.status !== 200) {
           throw 'bad url'
-          return
         }
 
         let version = userApiKeyResponse.headers.get('Auth-Api-Version')
         if (parseInt(version,10) < 2) {
           throw 'bad api'
-          return
         }
 
         // correct url in case we had a redirect
@@ -536,7 +533,7 @@ class Site {
         return
       }
 
-      if(this._seenNotificationId) {
+      if (this._seenNotificationId) {
         resolve(this._seenNotificationId)
         return
       }
@@ -596,7 +593,7 @@ class Site {
       }
 
       this._loadingNotifications = true
-      this.jsonApi('/notifications.json?recent=true&limit=25' + (options && options.silent===false ? "" : "&silent=true"))
+      this.jsonApi('/notifications.json?recent=true&limit=25' + (options && options.silent === false ? '' : '&silent=true'))
           .then(results=>{
             this._loadingNotifications = false
             this._notifications = (results && results.notifications) || []
@@ -607,7 +604,7 @@ class Site {
                 ).done()
           })
           .catch(e=>{
-            console.log("failed to fetch notifications " + e)
+            console.log('failed to fetch notifications ' + e)
             resolve([])
           })
           .finally(()=>{this._loadingNotifications = false})

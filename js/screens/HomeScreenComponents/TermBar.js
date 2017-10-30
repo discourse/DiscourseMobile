@@ -3,6 +3,8 @@
 
 import React from 'react'
 
+import PropTypes from 'prop-types'
+
 import {
   Animated,
   Easing,
@@ -15,8 +17,8 @@ import colors from '../../colors'
 
 class TermBar extends React.Component {
   static propTypes = {
-    expanded: React.PropTypes.bool.isRequired,
-    onDidSubmitTerm: React.PropTypes.func.isRequired
+    expanded: PropTypes.bool.isRequired,
+    onDidSubmitTerm: PropTypes.func.isRequired
   }
 
   constructor(props) {

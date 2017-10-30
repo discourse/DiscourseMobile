@@ -3,6 +3,8 @@
 
 import React from 'react'
 
+import PropTypes from 'prop-types'
+
 import {
   Platform,
   StyleSheet,
@@ -18,8 +20,8 @@ import colors from '../../colors'
 
 class NavigationBar extends React.Component {
   static propTypes = {
-    onDidPressLeftButton: React.PropTypes.func,
-    onDidPressRightButton: React.PropTypes.func
+    onDidPressLeftButton: PropTypes.func,
+    onDidPressRightButton: PropTypes.func
   }
 
   render() {
@@ -28,8 +30,7 @@ class NavigationBar extends React.Component {
     return (
       <View style={styles.container}>
         <ProgressBar progress={this.props.progress} />
-        <View style={styles.leftContainer}>
-        </View>
+        <View style={styles.leftContainer} />
         <View style={styles.titleContainer}>
           <Text style={styles.title}>
             Notifications

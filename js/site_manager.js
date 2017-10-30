@@ -63,11 +63,11 @@ class SiteManager {
   remove(site) {
     let index = this.sites.indexOf(site)
     if (index >= 0) {
-      let site = this.sites.splice(index,1)[0]
-      site.revokeApiKey()
-          .catch(e => {
-            console.log(`Failed to revoke API Key ${e}`)
-          })
+      let removableSite = this.sites.splice(index,1)[0]
+      removableSite.revokeApiKey()
+        .catch(e => {
+          console.log(`Failed to revoke API Key ${e}`)
+        })
       this.save()
       this._onChange()
       this.updateUnreadBadge()
@@ -317,7 +317,7 @@ class SiteManager {
             .catch((e)=>{
               console.log('failed to refresh ' + site.url)
               console.log(e)
-              if (e === "User was logged off!") {
+              if (e === 'User was logged off!') {
                 somethingChanged = true
               }
               errors++
@@ -375,7 +375,7 @@ class SiteManager {
 
   registerClientId(id) {
 
-    console.log("REGISTER CLIENT ID " + id)
+    console.log('REGISTER CLIENT ID ' + id)
 
     this.getClientId().then(existing => {
 
@@ -494,9 +494,9 @@ class SiteManager {
       this.sites.forEach(site=>{
          if (site.authToken) {
            promises.push(
-             site.getSeenNotificationId().then((id)=>
-               results[site.url] = id
-            )
+             site.getSeenNotificationId().then(function(id) {
+              results[site.url] = id
+            })
            )
          }
       })
@@ -527,18 +527,17 @@ class SiteManager {
          promises.push(promise)
       })
 
-      let now = new Date()
       Promise.all(promises)
-          .then((results) => {
-             resolve(
-               _.chain(results)
-                  .flatten()
-                  .orderBy([(o) => {
-                    return (!o.notification.read && o.notification.notification_type === 6) ? 0: 1
-                  }, 'notification.created_at'], ['asc', 'desc'])
-                  .value()
-              )
-          }).done()
+        .then((results) => {
+           resolve(
+             _.chain(results)
+                .flatten()
+                .orderBy([(o) => {
+                  return (!o.notification.read && o.notification.notification_type === 6) ? 0 : 1
+                }, 'notification.created_at'], ['asc', 'desc'])
+                .value()
+            )
+        }).done()
     })
   }
 
