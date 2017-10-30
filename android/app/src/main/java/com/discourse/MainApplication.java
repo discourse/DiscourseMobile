@@ -39,6 +39,11 @@ public class MainApplication extends Application implements ReactApplication {
         new AndroidTokenPackage()
       );
     }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index.android";
+    }
   };
 
   @Override

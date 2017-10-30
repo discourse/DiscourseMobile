@@ -3,6 +3,8 @@
 
 import React from 'react'
 
+import PropTypes from 'prop-types'
+
 import {
   Animated,
   Easing,
@@ -20,9 +22,9 @@ import colors from '../../colors'
 
 class Filter extends React.Component {
   static propTypes = {
-    onChange: React.PropTypes.func.isRequired,
-    selectedIndex: React.PropTypes.number.isRequired,
-    tabs: React.PropTypes.array
+    onChange: PropTypes.func.isRequired,
+    selectedIndex: PropTypes.number.isRequired,
+    tabs: PropTypes.array
   }
 
   constructor(props) {

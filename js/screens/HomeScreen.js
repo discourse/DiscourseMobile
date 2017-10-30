@@ -7,6 +7,7 @@ import {
   Alert,
   AppState,
   Linking,
+  ListView,
   NativeModules,
   Platform,
   PushNotificationIOS,
@@ -40,7 +41,10 @@ class HomeScreen extends React.Component {
       scrollEnabled: true,
       refreshingEnabled: true,
       rightButtonIconColor: colors.grayUI,
-      loadingSites: this._siteManager.isLoading()
+      loadingSites: this._siteManager.isLoading(),
+      suggestionsDataSource: new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 !== r2
+      })
     }
 
     this._onChangeSites = (e) => this.onChangeSites(e)
@@ -205,13 +209,7 @@ class HomeScreen extends React.Component {
       this.setState({loadingSites: this._siteManager.isLoading()})
     }
     if (e && e.event === 'change') {
-      let totalUnread = this._siteManager.totalUnread()
-      // blue unread is a bit loud and we can see it anyway in the list
-      //let iconColor = totalUnread === 0 ? colors.grayUI : colors.blueUnread
-
-      this.setState({
-        data: this._siteManager.toObject()
-      })
+      this.setState({ data: this._siteManager.toObject() })
     }
   }
 
@@ -288,10 +286,16 @@ class HomeScreen extends React.Component {
             && !this.state.displayTermBar
   }
 
-  renderSites() {
+  renderSuggestions() {
+    return (<ListView
+        dataSource={this.state.suggestionsDataSource}
+        renderRow={(rowData) => <View>{rowData}</View>}
+      />)
+  }
 
+  renderSites() {
     if (this.state.loadingSites) {
-      return <View style={{flex: 1}}></View>
+      return <View style={{flex: 1}}/>
     }
 
     if (this.shouldDisplayOnBoarding()) {

@@ -3,6 +3,8 @@
 
 import React from 'react'
 
+import PropTypes from 'prop-types'
+
 import {
   Animated,
   Image,
@@ -19,10 +21,10 @@ import colors from '../../colors'
 
 class NavigationBar extends React.Component {
   static propTypes = {
-    leftButtonIconRotated: React.PropTypes.bool.isRequired,
-    rightButtonIconColor: React.PropTypes.string.isRequired,
-    onDidPressRightButton: React.PropTypes.func.isRequired,
-    onDidPressLeftButton: React.PropTypes.func.isRequired
+    leftButtonIconRotated: PropTypes.bool.isRequired,
+    rightButtonIconColor: PropTypes.string.isRequired,
+    onDidPressRightButton: PropTypes.func.isRequired,
+    onDidPressLeftButton: PropTypes.func.isRequired
   }
 
   constructor(props) {

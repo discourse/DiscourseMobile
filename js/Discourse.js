@@ -38,7 +38,7 @@ class Discourse extends React.Component {
       if (AppState.currentState === 'inactive') {
         this._siteManager.enterBackground()
         this._seenNotificationMap = null
-        this.resetToTop();
+        this.resetToTop()
       }
 
       if (AppState.currentState === 'active') {
@@ -70,7 +70,7 @@ class Discourse extends React.Component {
     AppState.addEventListener('change', this._handleAppStateChange)
 
     if (Platform.OS === 'ios') {
-      PushNotificationIOS.requestPermissions({'alert': true, 'badge': true});
+      PushNotificationIOS.requestPermissions({'alert': true, 'badge': true})
     }
   }
 
@@ -87,7 +87,7 @@ class Discourse extends React.Component {
       } else {
         ChromeCustomTab.show(url)
           .then(()=>{})
-          .catch((e)=>{ Alert.alert("Discourse requires that Google Chrome Stable is installed.") })
+          .catch((e)=>{ Alert.alert('Discourse requires that Google Chrome Stable is installed.') })
       }
     }
   }

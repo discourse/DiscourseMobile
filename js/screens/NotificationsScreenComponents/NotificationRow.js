@@ -47,7 +47,7 @@ class NotificationRow extends React.Component {
       if (data.count === 2) {
         displayName = `${displayName} and ${data.username2}`
       } else if (data.count > 2) {
-        let other = data.count == 2 ? 'other' : 'others'
+        let other = data.count === 2 ? 'other' : 'others'
         displayName = `${displayName}, ${data.username2} and ${data.count - 2} ${other}`
       }
     }

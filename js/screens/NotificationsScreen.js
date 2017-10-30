@@ -7,7 +7,6 @@ import {
   InteractionManager,
   ListView,
   StyleSheet,
-  Text,
   View
 } from 'react-native'
 
@@ -32,7 +31,7 @@ class NotificationsScreen extends React.Component {
     }
 
     this._onSiteChange = (e)=>{
-      if (e.event === "change") {
+      if (e.event === 'change') {
         this.refresh()
       }
     }
@@ -53,18 +52,11 @@ class NotificationsScreen extends React.Component {
   }
 
   componentDidMount() {
-
-    if (this._notifications) {
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this._notifications),
-      })
-    }
-
     this.props.siteManager.subscribe(this._onSiteChange)
     this._mounted = true
 
     if (this._refreshed) {
-      removePlaceholder()
+      this.removePlaceholder()
     }
   }
 
@@ -121,16 +113,16 @@ class NotificationsScreen extends React.Component {
       let text
       switch (this.state.selectedIndex) {
         case 0:
-          text = "No new notifications."
+          text = 'No new notifications.'
           break
         case 1:
-          text = "No replies."
+          text = 'No replies.'
           break
         case 2:
-          text = "No notifications."
+          text = 'No notifications.'
           break
         default:
-          text = ""
+          text = ''
       }
 
       return <Components.EmptyNotificationsView text={text} />
@@ -161,7 +153,7 @@ class NotificationsScreen extends React.Component {
     //   })
     // }, 400)
     site.readNotification(notification).catch((e)=>{
-      console.log("failed to mark notification as read " + e)
+      console.log('failed to mark notification as read ' + e)
     }).done()
     let url = DiscourseUtils.endpointForSiteNotification(site, notification)
     this.props.openUrl(url)
@@ -206,13 +198,11 @@ class NotificationsScreen extends React.Component {
   }
 
   _fetchNotifications(notificationTypes, options) {
-
     if (this._fetching) { return }
     this._fetching = true
 
-    let progressTimeout
     if (this._mounted) {
-      progressTimeout = setTimeout(()=>{
+      setTimeout(()=>{
         if (this._mounted && this._fetching) {
           this.setState({
             progress: Math.random() * 0.4
@@ -222,35 +212,34 @@ class NotificationsScreen extends React.Component {
     }
 
     this.props.siteManager.notifications(notificationTypes, options)
-        .then(notifications => {
-                this._notification = notifications
-                this._refreshed = true
+      .then(notifications => {
+        this._notification = notifications
+        this._refreshed = true
 
-                if (this._mounted) {
-                  if (this.state.progress !== 0) {
+        if (this._mounted) {
+          if (this.state.progress !== 0) {
 
-                    this.setState({
-                      progress: 1
-                    })
+            this.setState({
+              progress: 1
+            })
 
-                    this.removePlaceholder()
+            this.removePlaceholder()
 
-                    setTimeout(()=>{
-                      if (this._mounted) {
-                        this.setState({progress: 0})
-                      }
-                    },400)
-                  }
+            setTimeout(()=>{
+              if (this._mounted) {
+                this.setState({progress: 0})
+              }
+            }, 400)
+          }
 
-                  this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(notifications)
-                  })
+          this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(notifications)
+          })
 
-                  this.removePlaceholder()
-                }
-        })
-        .finally(()=>{this._fetching = false})
-
+          this.removePlaceholder()
+        }
+      })
+      .finally(()=>{this._fetching = false})
   }
 }
 
