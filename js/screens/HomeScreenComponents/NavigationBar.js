@@ -14,6 +14,7 @@ import {
   View
 } from 'react-native'
 
+import { SafeAreaView } from 'react-navigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import ProgressBar from '../../ProgressBar'
@@ -53,7 +54,7 @@ class NavigationBar extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container} forceInset={{ top: 'always', bottom: 'never' }}>
         <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer}>
           <TouchableHighlight
@@ -88,7 +89,7 @@ class NavigationBar extends React.Component {
           </TouchableHighlight>
         </View>
         <View style={styles.separator} />
-      </View>
+      </SafeAreaView>
     )
   }
 }
@@ -99,8 +100,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flexDirection: 'row',
-    height: Platform.OS === 'ios' ? 64 : 55,
-    paddingTop: Platform.OS === 'ios' ? 20 : 0
+    height: Platform.OS === 'ios' ? 40 : 55,
   },
   leftContainer: {
     flex: 1

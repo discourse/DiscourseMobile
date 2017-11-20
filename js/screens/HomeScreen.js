@@ -18,6 +18,7 @@ import {
 
 const AndroidToken = NativeModules.AndroidToken
 
+import { SafeAreaView } from 'react-navigation'
 import SortableListView from 'react-native-sortable-listview'
 import SafariView from 'react-native-safari-view'
 import BackgroundFetch from '../../lib/background-fetch'
@@ -30,7 +31,7 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props)
 
-    this._siteManager = this.props.siteManager
+    this._siteManager = this.props.screenProps.siteManager
 
     this.state = {
       addSiteProgress: 0,
@@ -109,14 +110,14 @@ class HomeScreen extends React.Component {
 
   visitSite(site) {
     if (site.authToken) {
-      this.props.openUrl(site.url)
+      this.props.screenProps.openUrl(site.url)
       return
     }
 
     this._siteManager
       .generateAuthURL(site)
       .then(url => {
-        this.props.openUrl(url)
+        this.props.screenProps.openUrl(url)
       })
   }
 
@@ -352,14 +353,14 @@ class HomeScreen extends React.Component {
   }
 
   onDidPressRighButton() {
-    this.props.navigator.push({identifier:'NotificationsScreen', index:1})
+    this.props.navigation.navigate('Notifications')
   }
 
   render() {
     // left 500 on refresh control so it does not render incorrectly when
     // not refreshing
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container} forceInset={{ top: 'never', bottom: 'always' }}>
         <Components.NavigationBar
           leftButtonIconRotated={this.state.displayTermBar ? true : false}
           rightButtonIconColor={this.state.rightButtonIconColor}
@@ -373,7 +374,7 @@ class HomeScreen extends React.Component {
         />
         {this.renderSites()}
         <Components.DebugRow siteManager={this._siteManager} />
-      </View>
+      </SafeAreaView>
     )
   }
 }
