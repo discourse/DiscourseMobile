@@ -13,6 +13,7 @@ import {
   View
 } from 'react-native'
 
+import { SafeAreaView } from 'react-navigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import ProgressBar from '../../ProgressBar'
@@ -28,7 +29,7 @@ class NavigationBar extends React.Component {
     // not sure we need a refresh button for now, it live refreshes
     // {this._renderButton(this.props.onDidPressLeftButton, 'refresh')}
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container} forceInset={{ top: 'always', bottom: 'never' }}>
         <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer} />
         <View style={styles.titleContainer}>
@@ -40,7 +41,7 @@ class NavigationBar extends React.Component {
           {this._renderButton(this.props.onDidPressRightButton, 'close')}
         </View>
         <View style={styles.separator} />
-      </View>
+      </SafeAreaView>
     )
   }
 
@@ -60,8 +61,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flexDirection: 'row',
-    paddingTop: Platform.OS === 'ios' ? 20 : 0,
-    height: Platform.OS === 'ios' ? 64 : 55
+    height: Platform.OS === 'ios' ? 44 : 55
   },
   leftContainer: {
     flex: 1

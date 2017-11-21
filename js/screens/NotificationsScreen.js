@@ -10,12 +10,13 @@ import {
   View
 } from 'react-native'
 
+import { SafeAreaView } from 'react-navigation'
+
 import DiscourseUtils from '../DiscourseUtils'
 import Components from './NotificationsScreenComponents'
 import colors from '../colors'
 
 class NotificationsScreen extends React.Component {
-
   static replyTypes = [1, 2, 3, 6, 9, 11, 15, 16, 17]
 
   constructor(props) {
@@ -36,15 +37,16 @@ class NotificationsScreen extends React.Component {
       }
     }
 
+    this._siteManager = this.props.screenProps.siteManager
 
-    if (this.props.seenNotificationMap) {
-      this._seenNotificationMap = this.props.seenNotificationMap
+    if (this.props.screenProps.seenNotificationMap) {
+      this._seenNotificationMap = this.props.screenProps.seenNotificationMap
       this.refresh()
     } else {
-      this.props.siteManager.getSeenNotificationMap()
+      this._siteManager.getSeenNotificationMap()
         .then((map)=>{
           this._seenNotificationMap = map
-          this.props.setSeenNotificationMap(map)
+          this.props.screenProps.setSeenNotificationMap(map)
           this.refresh()
         }).done()
     }
@@ -52,7 +54,7 @@ class NotificationsScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.siteManager.subscribe(this._onSiteChange)
+    this._siteManager.subscribe(this._onSiteChange)
     this._mounted = true
 
     if (this._refreshed) {
@@ -79,7 +81,7 @@ class NotificationsScreen extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.siteManager.unsubscribe(this._onSiteChange)
+    this._siteManager.unsubscribe(this._onSiteChange)
     this._mounted = false
   }
 
@@ -96,7 +98,7 @@ class NotificationsScreen extends React.Component {
     }
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container} forceInset={{ top: 'never', bottom: 'always' }}>
         <Components.NavigationBar
           onDidPressRightButton={() => this._onDidPressRightButton()}
           onDidPressLeftButton={() => this._onDidPressLeftButton()}
@@ -104,7 +106,7 @@ class NotificationsScreen extends React.Component {
         />
         {this._renderList()}
         {this._renderEmptyNotifications()}
-      </View>
+      </SafeAreaView>
     )
   }
 
@@ -149,14 +151,14 @@ class NotificationsScreen extends React.Component {
     //     // simulate behavior on site
     //     // when visiting a notification the notification
     //     // list is collapsed
-    //     this.props.resetToTop()
+    //     this.props.screenProps.resetToTop()
     //   })
     // }, 400)
     site.readNotification(notification).catch((e)=>{
       console.log('failed to mark notification as read ' + e)
     }).done()
     let url = DiscourseUtils.endpointForSiteNotification(site, notification)
-    this.props.openUrl(url)
+    this.props.screenProps.openUrl(url)
   }
 
   _onDidPressLeftButton() {
@@ -164,7 +166,7 @@ class NotificationsScreen extends React.Component {
   }
 
   _onDidPressRightButton() {
-    this.props.navigator.pop()
+    this.props.navigation.goBack()
   }
 
   _renderListRow(rowData) {
@@ -211,7 +213,7 @@ class NotificationsScreen extends React.Component {
       }, 100)
     }
 
-    this.props.siteManager.notifications(notificationTypes, options)
+    this._siteManager.notifications(notificationTypes, options)
       .then(notifications => {
         this._notification = notifications
         this._refreshed = true
