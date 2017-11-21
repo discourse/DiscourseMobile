@@ -101,7 +101,7 @@ class Discourse extends React.Component {
   render() {
     return (
       <AppNavigator
-        ref={ref => (this._navigation = ref._navigation)}
+        ref={ref => (this._navigation = ref && ref._navigation)}
         style={styles.app}
         screenProps={{
           resetToTop: this.resetToTop.bind(this),
