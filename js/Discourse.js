@@ -13,11 +13,7 @@ import {
   StyleSheet
 } from 'react-native'
 
-import {
-  StackNavigator,
-  addNavigationHelpers,
-  NavigationActions
-} from 'react-navigation'
+import { StackNavigator, NavigationActions } from 'react-navigation'
 
 import Screens from './screens'
 import SiteManager from './site_manager'
@@ -25,13 +21,16 @@ import SafariView from 'react-native-safari-view'
 
 const ChromeCustomTab = NativeModules.ChromeCustomTab
 
-const AppNavigator = StackNavigator({
-  Home: { screen: Screens.Home },
-  Notifications: { screen: Screens.Notifications }
-}, {
-  mode: 'modal',
-  headerMode: 'none'
-})
+const AppNavigator = StackNavigator(
+  {
+    Home: { screen: Screens.Home },
+    Notifications: { screen: Screens.Notifications }
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none'
+  }
+)
 
 class Discourse extends React.Component {
   constructor(props) {
@@ -41,7 +40,6 @@ class Discourse extends React.Component {
     if (this.props.url) {
       this.openUrl(this.props.url)
     }
-
 
     this._handleAppStateChange = () => {
       console.log('Detected appstate change ' + AppState.currentState)
@@ -54,7 +52,7 @@ class Discourse extends React.Component {
 
       if (AppState.currentState === 'active') {
         this._siteManager.exitBackground()
-        this._siteManager.refreshSites({ui: false, fast: true})
+        this._siteManager.refreshSites({ ui: false, fast: true })
       }
     }
   }
@@ -64,9 +62,7 @@ class Discourse extends React.Component {
       this._navigation.dispatch(
         NavigationActions.reset({
           index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Home'})
-          ]
+          actions: [NavigationActions.navigate({ routeName: 'Home' })]
         })
       )
     }
@@ -76,7 +72,7 @@ class Discourse extends React.Component {
     AppState.addEventListener('change', this._handleAppStateChange)
 
     if (Platform.OS === 'ios') {
-      PushNotificationIOS.requestPermissions({'alert': true, 'badge': true})
+      PushNotificationIOS.requestPermissions({ alert: true, badge: true })
     }
   }
 
@@ -86,14 +82,18 @@ class Discourse extends React.Component {
 
   openUrl(url) {
     if (Platform.OS === 'ios') {
-      SafariView.show({url})
+      SafariView.show({ url })
     } else {
       if (this.props.simulator) {
         Linking.openURL(url)
       } else {
         ChromeCustomTab.show(url)
-          .then(()=>{})
-          .catch((e)=>{ Alert.alert('Discourse requires that Google Chrome Stable is installed.') })
+          .then(() => {})
+          .catch(e => {
+            Alert.alert(
+              'Discourse requires that Google Chrome Stable is installed.'
+            )
+          })
       }
     }
   }
@@ -110,7 +110,7 @@ class Discourse extends React.Component {
           setSeenNotificationMap: map => {
             this._seenNotificationMap = map
           },
-          siteManager: this._siteManager,
+          siteManager: this._siteManager
         }}
       />
     )

@@ -5,13 +5,7 @@ import React from 'react'
 
 import PropTypes from 'prop-types'
 
-import {
-  Animated,
-  StyleSheet,
-  TextInput,
-  View,
-  Platform
-} from 'react-native'
+import { Animated, StyleSheet, TextInput, View, Platform } from 'react-native'
 
 import colors from '../../colors'
 
@@ -32,12 +26,13 @@ class TermBar extends React.Component {
   }
 
   handleSubmitTerm(term) {
-    this.props.onDidSubmitTerm(term)
+    this.props
+      .onDidSubmitTerm(term)
       .then(() => {
-        this.setState({text: ''})
+        this.setState({ text: '' })
       })
       .catch(error => {
-        this.setState({text: term})
+        this.setState({ text: term })
       })
       .done()
   }
@@ -54,7 +49,7 @@ class TermBar extends React.Component {
     })
     const transform = [{ translateY }, { scaleY }]
     return (
-      <Animated.View style={[styles.container, {transform}]}>
+      <Animated.View style={[styles.container, { transform }]}>
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <TextInput
             ref={this.props.getInputRef}
@@ -64,10 +59,12 @@ class TermBar extends React.Component {
             clearButtonMode="while-editing"
             autoCapitalize="none"
             autoCorrect={false}
-            onSubmitEditing={(event) => this.handleSubmitTerm(event.nativeEvent.text)}
+            onSubmitEditing={event =>
+              this.handleSubmitTerm(event.nativeEvent.text)
+            }
             placeholder="meta.discourse.org"
             style={[styles.term]}
-            onChangeText={(text) => this.setState({text})}
+            onChangeText={text => this.setState({ text })}
             underlineColorAndroid={'transparent'}
             value={this.state.text}
           />

@@ -29,13 +29,14 @@ class NavigationBar extends React.Component {
     // not sure we need a refresh button for now, it live refreshes
     // {this._renderButton(this.props.onDidPressLeftButton, 'refresh')}
     return (
-      <SafeAreaView style={styles.container} forceInset={{ top: 'always', bottom: 'never' }}>
+      <SafeAreaView
+        style={styles.container}
+        forceInset={{ top: 'always', bottom: 'never' }}
+      >
         <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer} />
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>
-            Notifications
-          </Text>
+          <Text style={styles.title}>Notifications</Text>
         </View>
         <View style={styles.rightContainer}>
           {this._renderButton(this.props.onDidPressRightButton, 'close')}
@@ -50,7 +51,8 @@ class NavigationBar extends React.Component {
       <TouchableHighlight
         underlayColor={'white'}
         style={styles.button}
-        onPress={callback}>
+        onPress={callback}
+      >
         <Icon name={iconName} size={20} color={colors.grayUI} />
       </TouchableHighlight>
     )

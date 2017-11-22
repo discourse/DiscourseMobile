@@ -3,13 +3,7 @@
 
 import React from 'react'
 
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View
-} from 'react-native'
+import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -21,19 +15,30 @@ class NotificationRow extends React.Component {
       <TouchableHighlight
         style={[styles.contentView, this._backgroundColor()]}
         underlayColor={'#ffffa6'}
-        onPress={()=>this.props.onClick()}>
-          <View style={styles.container}>
-            {this._iconForNotification(this.props.notification)}
-            {this._textForNotification(this.props.notification)}
-            <Image style={styles.siteIcon} source={{uri: this.props.site.icon}} />
-          </View>
+        onPress={() => this.props.onClick()}
+      >
+        <View style={styles.container}>
+          {this._iconForNotification(this.props.notification)}
+          {this._textForNotification(this.props.notification)}
+          <Image
+            style={styles.siteIcon}
+            source={{ uri: this.props.site.icon }}
+          />
+        </View>
       </TouchableHighlight>
     )
   }
 
   _iconForNotification(notification) {
     let name = DiscourseUtils.iconNameForNotification(notification)
-    return <Icon style={styles.notificationIcon} name={name} size={14} color="#919191" />
+    return (
+      <Icon
+        style={styles.notificationIcon}
+        name={name}
+        size={14}
+        color="#919191"
+      />
+    )
   }
 
   _textForNotification(notification) {
@@ -48,7 +53,8 @@ class NotificationRow extends React.Component {
         displayName = `${displayName} and ${data.username2}`
       } else if (data.count > 2) {
         let other = data.count === 2 ? 'other' : 'others'
-        displayName = `${displayName}, ${data.username2} and ${data.count - 2} ${other}`
+        displayName = `${displayName}, ${data.username2} and ${data.count -
+          2} ${other}`
       }
     }
 
@@ -72,7 +78,8 @@ class NotificationRow extends React.Component {
           <Text>
             {displayName}
             <Text style={styles.notificationText}>
-              {' '}{this.props.notification.data.topic_title}
+              {' '}
+              {this.props.notification.data.topic_title}
             </Text>
           </Text>
         )
@@ -80,7 +87,8 @@ class NotificationRow extends React.Component {
       case 12:
         innerText = (
           <Text style={styles.notificationText}>
-            {' '}{this.props.notification.data.badge_name}
+            {' '}
+            {this.props.notification.data.badge_name}
           </Text>
         )
         break
@@ -103,9 +111,9 @@ class NotificationRow extends React.Component {
   _backgroundColor() {
     let read = this.props.notification.read
     if (read) {
-      return {backgroundColor: 'white'}
+      return { backgroundColor: 'white' }
     } else {
-      return {backgroundColor: '#d1f0ff'}
+      return { backgroundColor: '#d1f0ff' }
     }
   }
 }
@@ -122,7 +130,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   notificationText: {
-    color: '#08c',
+    color: '#08c'
   },
   container: {
     flex: 1,

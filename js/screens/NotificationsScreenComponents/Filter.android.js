@@ -5,13 +5,7 @@ import React from 'react'
 
 import PropTypes from 'prop-types'
 
-import {
-  Animated,
-  Easing,
-  Text,
-  TouchableHighlight,
-  View
-} from 'react-native'
+import { Animated, Easing, Text, TouchableHighlight, View } from 'react-native'
 
 import Dimensions from 'Dimensions'
 
@@ -66,7 +60,7 @@ class Filter extends React.Component {
             styles.indicator,
             {
               width: this.state.indicatorWidth,
-              transform: [{ translateX: this._indicatorLeftPosition()}]
+              transform: [{ translateX: this._indicatorLeftPosition() }]
             }
           ]}
         />
@@ -81,10 +75,9 @@ class Filter extends React.Component {
           key={tab}
           underlayColor={colors.yellowUIFeedback}
           style={[styles.button]}
-          onPress={() => this.onDidSelect(tabIndex)}>
-            <Text style={styles.buttonText}>
-              {tab.toUpperCase()}
-            </Text>
+          onPress={() => this.onDidSelect(tabIndex)}
+        >
+          <Text style={styles.buttonText}>{tab.toUpperCase()}</Text>
         </TouchableHighlight>
       )
     })
@@ -102,12 +95,11 @@ class Filter extends React.Component {
 
     if (newOrientation === this.initialOrientation) {
       width = Dimensions.get('window').width / this.props.tabs.length
-    }
-    else {
+    } else {
       width = Dimensions.get('window').height / this.props.tabs.length
     }
 
-    this.setState({indicatorWidth: width})
+    this.setState({ indicatorWidth: width })
   }
 }
 

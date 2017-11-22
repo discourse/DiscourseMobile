@@ -23,7 +23,9 @@ class DiscourseUtils {
       case 14:
       case 15:
       case 17:
-        endpoint = `/t/${notification.slug}/${notification.topic_id}/${notification.post_number}`
+        endpoint = `/t/${notification.slug}/${notification.topic_id}/${
+          notification.post_number
+        }`
         break
       case 12:
         endpoint = `/badges/${data.badge_id}/basic?username=${data.username}`
@@ -32,7 +34,10 @@ class DiscourseUtils {
         endpoint = `/users/${data.username}/messages/group/${data.group_name}`
         break
       default:
-        console.log('Couldn’t generate an endpoint for notification', notification)
+        console.log(
+          'Couldn’t generate an endpoint for notification',
+          notification
+        )
         endpoint = ''
     }
 
@@ -44,13 +49,13 @@ class DiscourseUtils {
       case 1:
         return 'at'
       case 2:
-          return 'reply'
+        return 'reply'
       case 3:
-          return 'quote-right'
+        return 'quote-right'
       case 4:
-          return 'pencil'
+        return 'pencil'
       case 5:
-          return 'heart'
+        return 'heart'
       case 6:
         return 'envelope-o'
       case 7:
@@ -76,7 +81,10 @@ class DiscourseUtils {
       case 17:
         return 'dot-circle-o'
       default:
-        console.log('Couldn’t generate an icon name for notification', notification)
+        console.log(
+          'Couldn’t generate an icon name for notification',
+          notification
+        )
         return 'exclamation-circle'
     }
   }
