@@ -46,7 +46,8 @@ class NavigationBar extends React.Component {
       Animated.spring(
         this.state.rotationValue, {
           toValue: props.leftButtonIconRotated ? 1 : 0,
-          duration: 50
+          duration: 50,
+          useNativeDriver: true
         }
       ).start()
     }

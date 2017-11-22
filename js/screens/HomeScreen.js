@@ -6,6 +6,8 @@ import React from 'react'
 import {
   Alert,
   AppState,
+  Animated,
+  Easing,
   Linking,
   ListView,
   NativeModules,
@@ -39,6 +41,7 @@ class HomeScreen extends React.Component {
     this.state = {
       addSiteProgress: 0,
       displayTermBar: false,
+      anim: new Animated.Value(0),
       data: this._siteManager.toObject(),
       isRefreshing: false,
       lastRefreshTime: null,
@@ -231,6 +234,8 @@ class HomeScreen extends React.Component {
           this.setState({
             displayTermBar: false,
             addSiteProgress: 1
+          }, () => {
+            this.onToggleTermBar(this.state.displayTermBar)
           })
 
           if (site) {
@@ -252,7 +257,9 @@ class HomeScreen extends React.Component {
             Alert.alert(`${term} was not found!`)
           }
 
-          this.setState({displayTermBar: true, addSiteProgress: 1})
+          this.setState({displayTermBar: true, addSiteProgress: 1}, () => {
+            this.onToggleTermBar(this.state.displayTermBar)
+          })
 
           reject('failure')
         })
@@ -305,7 +312,9 @@ class HomeScreen extends React.Component {
     if (this.shouldDisplayOnBoarding()) {
       return (
         <Components.OnBoardingView
-          onDidPressAddSite={()=>this.setState({displayTermBar: true})} />
+          onDidPressAddSite={()=>this.setState({displayTermBar: true}, () => {
+            this.onToggleTermBar(this.state.displayTermBar)
+          })} />
       )
     } else {
 
@@ -358,8 +367,23 @@ class HomeScreen extends React.Component {
     }
   }
 
+  onToggleTermBar(show) {
+    Animated.timing(this.state.anim, {
+      easing: Easing.inOut(Easing.ease),
+      duration: 200,
+      toValue: show ? 1 : 0,
+      useNativeDriver: true,
+    }).start(() => {
+      if (this._input) {
+        show ? this._input.focus() : this._input.blur()
+      }
+    })
+  }
+
   onDidPressLeftButton() {
-    this.setState({displayTermBar: !this.state.displayTermBar})
+    this.setState({displayTermBar: !this.state.displayTermBar}, () => {
+      this.onToggleTermBar(this.state.displayTermBar)
+    })
   }
 
   onDidPressRighButton() {
@@ -369,21 +393,29 @@ class HomeScreen extends React.Component {
   render() {
     // left 500 on refresh control so it does not render incorrectly when
     // not refreshing
+    const translateY = this.state.anim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, Components.TermBar.Height]
+    })
     return (
       <SafeAreaView style={styles.container} forceInset={{ top: 'never', bottom: 'always' }}>
         <Components.NavigationBar
           leftButtonIconRotated={this.state.displayTermBar ? true : false}
+          anim={this.state.anim}
           rightButtonIconColor={this.state.rightButtonIconColor}
           onDidPressLeftButton={() => this.onDidPressLeftButton()}
           onDidPressRightButton={() => this.onDidPressRighButton()}
           progress={this.state.addSiteProgress}
         />
         <Components.TermBar
+          anim={this.state.anim}
+          getInputRef={ref => (this._input = ref)}
           onDidSubmitTerm={(term)=>this.doSearch(term)}
-          expanded={this.state.displayTermBar}
         />
-        {this.renderSites()}
-        <Components.DebugRow siteManager={this._siteManager} />
+        <Animated.View style={[styles.sitesContainer, {transform: [{translateY}]}]}>
+          {this.renderSites()}
+          <Components.DebugRow siteManager={this._siteManager} />
+        </Animated.View>
       </SafeAreaView>
     )
   }
@@ -396,6 +428,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.grayBackground
+  },
+  sitesContainer: {
+    flex: 1,
+    marginTop: -Components.TermBar.Height
   }
 })
 

@@ -50,7 +50,8 @@ class Filter extends React.Component {
     Animated.timing(this.state.selectedIndex, {
       easing: Easing.inOut(Easing.ease),
       duration: 250,
-      toValue: index
+      toValue: index,
+      useNativeDriver: true
     }).start()
 
     this.props.onChange(index)
@@ -65,7 +66,7 @@ class Filter extends React.Component {
             styles.indicator,
             {
               width: this.state.indicatorWidth,
-              left: this._indicatorLeftPosition()
+              transform: [{ translateX: this._indicatorLeftPosition()}]
             }
           ]}
         />
@@ -133,6 +134,7 @@ const styles = {
     backgroundColor: colors.grayUI,
     height: 3,
     position: 'absolute',
+    left: 0,
     bottom: 0
   }
 }
