@@ -25,15 +25,15 @@ class TermBar extends React.Component {
     super(props)
 
     this.state = {
-      termContainerHeight: new Animated.Value(props.expanded ? 1 : 0),
+      termContainerScale: new Animated.Value(props.expanded ? 1 : 0),
       text: ''
     }
   }
 
-  termContainerAnimatedHeight() {
-    return this.state.termContainerHeight.interpolate({
+  termContainerAnimatedTranslateY() {
+    return this.state.termContainerScale.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 48]
+      outputRange: [-24, 0]
     })
   }
 
@@ -48,10 +48,11 @@ class TermBar extends React.Component {
   }
 
   animateTermInputToValue(value, callback) {
-    Animated.timing(this.state.termContainerHeight, {
+    Animated.timing(this.state.termContainerScale, {
       easing: Easing.inOut(Easing.ease),
       duration: 200,
-      toValue: value
+      toValue: value,
+      useNativeDriver: true,
     }).start(callback)
   }
 
@@ -72,8 +73,14 @@ class TermBar extends React.Component {
   }
 
   render() {
+    const translateY = this.termContainerAnimatedTranslateY()
+    const scaleY = this.state.termContainerScale.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0.00001, 1] // hacky to fix unexpected behavior on Android
+    })
+    const transform = [{ translateY }, { scaleY }]
     return (
-      <Animated.View style={[styles.container, {height: this.termContainerAnimatedHeight()}]}>
+      <Animated.View style={[styles.container, {transform}]}>
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <TextInput
             ref="Input"
@@ -105,7 +112,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.grayUILight,
     justifyContent: 'center',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    height: 48
   }
 })
 
