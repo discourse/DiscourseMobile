@@ -7,17 +7,18 @@ import PropTypes from 'prop-types'
 
 import {
   Animated,
-  Easing,
   StyleSheet,
   TextInput,
-  View
+  View,
+  Platform
 } from 'react-native'
 
 import colors from '../../colors'
 
 class TermBar extends React.Component {
   static propTypes = {
-    expanded: PropTypes.bool.isRequired,
+    anim: PropTypes.object.isRequired,
+    getInputRef: PropTypes.func,
     onDidSubmitTerm: PropTypes.func.isRequired
   }
 
@@ -25,35 +26,8 @@ class TermBar extends React.Component {
     super(props)
 
     this.state = {
-      termContainerScale: new Animated.Value(props.expanded ? 1 : 0),
       text: ''
     }
-  }
-
-  termContainerAnimatedTranslateY() {
-    return this.state.termContainerScale.interpolate({
-      inputRange: [0, 1],
-      outputRange: [-24, 0]
-    })
-  }
-
-  hideTermInput() {
-    let callback = ()=> { this.refs.Input.blur() }
-    this.animateTermInputToValue(0, callback)
-  }
-
-  showTermInput() {
-    let callback = ()=> { this.refs.Input.focus() }
-    this.animateTermInputToValue(1, callback)
-  }
-
-  animateTermInputToValue(value, callback) {
-    Animated.timing(this.state.termContainerScale, {
-      easing: Easing.inOut(Easing.ease),
-      duration: 200,
-      toValue: value,
-      useNativeDriver: true,
-    }).start(callback)
   }
 
   handleSubmitTerm(term) {
@@ -68,22 +42,22 @@ class TermBar extends React.Component {
       .done()
   }
 
-  componentWillReceiveProps(props) {
-    props.expanded ? this.showTermInput() : this.hideTermInput()
-  }
-
   render() {
-    const translateY = this.termContainerAnimatedTranslateY()
-    const scaleY = this.state.termContainerScale.interpolate({
+    const translateY = this.props.anim.interpolate({
       inputRange: [0, 1],
-      outputRange: [0.00001, 1] // hacky to fix unexpected behavior on Android
+      outputRange: [-24, 0]
+    })
+    const scaleY = this.props.anim.interpolate({
+      inputRange: [0, 1],
+      // hacky to fix unexpected behavior on Android
+      outputRange: [Platform.OS === 'android' ? 0.00001 : 0, 1]
     })
     const transform = [{ translateY }, { scaleY }]
     return (
       <Animated.View style={[styles.container, {transform}]}>
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <TextInput
-            ref="Input"
+            ref={this.props.getInputRef}
             selectionColor={colors.yellowUIFeedback}
             keyboardType="url"
             returnKeyType="done"

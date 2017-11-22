@@ -363,7 +363,11 @@ class HomeScreen extends React.Component {
       duration: 200,
       toValue: show ? 1 : 0,
       useNativeDriver: true,
-    }).start()
+    }).start(() => {
+      if (this._input) {
+        show ? this._input.focus() : this._input.blur()
+      }
+    })
   }
 
   onDidPressLeftButton() {
@@ -387,14 +391,16 @@ class HomeScreen extends React.Component {
       <SafeAreaView style={styles.container} forceInset={{ top: 'never', bottom: 'always' }}>
         <Components.NavigationBar
           leftButtonIconRotated={this.state.displayTermBar ? true : false}
+          anim={this.state.anim}
           rightButtonIconColor={this.state.rightButtonIconColor}
           onDidPressLeftButton={() => this.onDidPressLeftButton()}
           onDidPressRightButton={() => this.onDidPressRighButton()}
           progress={this.state.addSiteProgress}
         />
         <Components.TermBar
+          anim={this.state.anim}
+          getInputRef={ref => (this._input = ref)}
           onDidSubmitTerm={(term)=>this.doSearch(term)}
-          expanded={this.state.displayTermBar}
         />
         <Animated.View style={{flex: 1, marginTop: -48, transform: [{translateY}]}}>
           {this.renderSites()}
