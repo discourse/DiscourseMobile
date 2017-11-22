@@ -385,7 +385,7 @@ class HomeScreen extends React.Component {
     // not refreshing
     const translateY = this.state.anim.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 48]
+      outputRange: [0, Components.TermBar.Height]
     })
     return (
       <SafeAreaView style={styles.container} forceInset={{ top: 'never', bottom: 'always' }}>
@@ -402,7 +402,7 @@ class HomeScreen extends React.Component {
           getInputRef={ref => (this._input = ref)}
           onDidSubmitTerm={(term)=>this.doSearch(term)}
         />
-        <Animated.View style={{flex: 1, marginTop: -48, transform: [{translateY}]}}>
+        <Animated.View style={[styles.sitesContainer, {transform: [{translateY}]}]}>
           {this.renderSites()}
           <Components.DebugRow siteManager={this._siteManager} />
         </Animated.View>
@@ -418,6 +418,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.grayBackground
+  },
+  sitesContainer: {
+    flex: 1,
+    marginTop: -Components.TermBar.Height
   }
 })
 

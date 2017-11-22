@@ -16,6 +16,7 @@ import {
 import colors from '../../colors'
 
 class TermBar extends React.Component {
+  static Height = 48
   static propTypes = {
     anim: PropTypes.object.isRequired,
     getInputRef: PropTypes.func,
@@ -37,7 +38,6 @@ class TermBar extends React.Component {
       })
       .catch(error => {
         this.setState({text: term})
-        this.showTermInput()
       })
       .done()
   }
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grayUILight,
     justifyContent: 'center',
     overflow: 'hidden',
-    height: 48
+    height: TermBar.Height
   }
 })
 
