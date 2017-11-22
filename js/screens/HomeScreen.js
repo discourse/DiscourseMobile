@@ -13,10 +13,9 @@ import {
   PushNotificationIOS,
   RefreshControl,
   StyleSheet,
+  UIManager,
   View
 } from 'react-native'
-
-const AndroidToken = NativeModules.AndroidToken
 
 import { SafeAreaView } from 'react-navigation'
 import SortableListView from 'react-native-sortable-listview'
@@ -26,6 +25,10 @@ import BackgroundFetch from '../../lib/background-fetch'
 import Site from '../site'
 import Components from './HomeScreenComponents'
 import colors from '../colors'
+
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true)
+
+const AndroidToken = NativeModules.AndroidToken
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -312,6 +315,8 @@ class HomeScreen extends React.Component {
           order={Object.keys(this.state.data)}
           scrollEnabled={this.state.scrollEnabled}
           enableEmptySections={true}
+          activeOpacity={0.5}
+          disableAnimatedScrolling={true}
           styles={styles.list}
           rowHasChanged={(r1, r2)=> {
             // TODO: r2 returns as an Object instead of a Site
@@ -320,11 +325,16 @@ class HomeScreen extends React.Component {
           }}
           onRowMoved={(e)=> {
             this._siteManager.updateOrder(e.from, e.to)
-            this.setState({refreshingEnabled: true})
             this.forceUpdate()
           }}
-          onSortingRow={(e) => {
+          onRowActive={() => {
             this.setState({refreshingEnabled: false})
+          }}
+          onMoveEnd={() => {
+            this.setState({refreshingEnabled: true})
+          }}
+          onMoveCancel={() => {
+            this.setState({refreshingEnabled: true})
           }}
           refreshControl={
             <RefreshControl
