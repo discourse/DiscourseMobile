@@ -3,12 +3,7 @@
 
 import React from 'react'
 
-import {
-  InteractionManager,
-  ListView,
-  StyleSheet,
-  View
-} from 'react-native'
+import { InteractionManager, ListView, StyleSheet, View } from 'react-native'
 
 import { SafeAreaView } from 'react-navigation'
 
@@ -22,7 +17,7 @@ class NotificationsScreen extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state =  {
+    this.state = {
       progress: 0,
       renderPlaceholderOnly: true,
       selectedIndex: 0,
@@ -31,7 +26,7 @@ class NotificationsScreen extends React.Component {
       })
     }
 
-    this._onSiteChange = (e)=>{
+    this._onSiteChange = e => {
       if (e.event === 'change') {
         this.refresh()
       }
@@ -43,14 +38,15 @@ class NotificationsScreen extends React.Component {
       this._seenNotificationMap = this.props.screenProps.seenNotificationMap
       this.refresh()
     } else {
-      this._siteManager.getSeenNotificationMap()
-        .then((map)=>{
+      this._siteManager
+        .getSeenNotificationMap()
+        .then(map => {
           this._seenNotificationMap = map
           this.props.screenProps.setSeenNotificationMap(map)
           this.refresh()
-        }).done()
+        })
+        .done()
     }
-
   }
 
   componentDidMount() {
@@ -64,19 +60,19 @@ class NotificationsScreen extends React.Component {
 
   setTimeout(callback, timeout) {
     if (this._mounted) {
-      setTimeout(()=>{
+      setTimeout(() => {
         if (this._mounted) {
           callback()
         }
-      },timeout)
+      }, timeout)
     }
   }
 
   removePlaceholder() {
-    InteractionManager.runAfterInteractions(()=>{
-      this.setTimeout(()=>{
-        this.setState({renderPlaceholderOnly: false})
-      },0)
+    InteractionManager.runAfterInteractions(() => {
+      this.setTimeout(() => {
+        this.setState({ renderPlaceholderOnly: false })
+      }, 0)
     })
   }
 
@@ -90,7 +86,7 @@ class NotificationsScreen extends React.Component {
       return (
         <View style={styles.container}>
           <Components.NavigationBar onDidPressRightButton={() => {}} />
-          <View style={{height: 50, marginTop: 0, paddingTop: 0}}>
+          <View style={{ height: 50, marginTop: 0, paddingTop: 0 }}>
             {this._renderListHeader()}
           </View>
         </View>
@@ -98,7 +94,10 @@ class NotificationsScreen extends React.Component {
     }
 
     return (
-      <SafeAreaView style={styles.container} forceInset={{ top: 'never', bottom: 'always' }}>
+      <SafeAreaView
+        style={styles.container}
+        forceInset={{ top: 'never', bottom: 'always' }}
+      >
         <Components.NavigationBar
           onDidPressRightButton={() => this._onDidPressRightButton()}
           onDidPressLeftButton={() => this._onDidPressLeftButton()}
@@ -139,7 +138,7 @@ class NotificationsScreen extends React.Component {
         enableEmptySections={true}
         dataSource={this.state.dataSource}
         renderHeader={() => this._renderListHeader()}
-        renderRow={(rowData) => this._renderListRow(rowData)}
+        renderRow={rowData => this._renderListRow(rowData)}
       />
     )
   }
@@ -154,9 +153,12 @@ class NotificationsScreen extends React.Component {
     //     this.props.screenProps.resetToTop()
     //   })
     // }, 400)
-    site.readNotification(notification).catch((e)=>{
-      console.log('failed to mark notification as read ' + e)
-    }).done()
+    site
+      .readNotification(notification)
+      .catch(e => {
+        console.log('failed to mark notification as read ' + e)
+      })
+      .done()
     let url = DiscourseUtils.endpointForSiteNotification(site, notification)
     this.props.screenProps.openUrl(url)
   }
@@ -173,13 +175,19 @@ class NotificationsScreen extends React.Component {
     return (
       <Components.Row
         site={rowData.site}
-        onClick={() => this._openNotificationForSite(rowData.notification, rowData.site)}
-        notification={rowData.notification} />
+        onClick={() =>
+          this._openNotificationForSite(rowData.notification, rowData.site)
+        }
+        notification={rowData.notification}
+      />
     )
   }
 
   refresh() {
-    let types = this.state.selectedIndex === 1 ? NotificationsScreen.replyTypes : undefined
+    let types =
+      this.state.selectedIndex === 1
+        ? NotificationsScreen.replyTypes
+        : undefined
     this._fetchNotifications(types, {
       onlyNew: this.state.selectedIndex === 0,
       newMap: this._seenNotificationMap,
@@ -192,19 +200,23 @@ class NotificationsScreen extends React.Component {
       <Components.Filter
         selectedIndex={this.state.selectedIndex}
         tabs={['New', 'Replies', 'All']}
-        onChange={(index) => {
-          this.setState({selectedIndex: index}, ()=>{this.refresh()})
+        onChange={index => {
+          this.setState({ selectedIndex: index }, () => {
+            this.refresh()
+          })
         }}
       />
     )
   }
 
   _fetchNotifications(notificationTypes, options) {
-    if (this._fetching) { return }
+    if (this._fetching) {
+      return
+    }
     this._fetching = true
 
     if (this._mounted) {
-      setTimeout(()=>{
+      setTimeout(() => {
         if (this._mounted && this._fetching) {
           this.setState({
             progress: Math.random() * 0.4
@@ -213,23 +225,23 @@ class NotificationsScreen extends React.Component {
       }, 100)
     }
 
-    this._siteManager.notifications(notificationTypes, options)
+    this._siteManager
+      .notifications(notificationTypes, options)
       .then(notifications => {
         this._notification = notifications
         this._refreshed = true
 
         if (this._mounted) {
           if (this.state.progress !== 0) {
-
             this.setState({
               progress: 1
             })
 
             this.removePlaceholder()
 
-            setTimeout(()=>{
+            setTimeout(() => {
               if (this._mounted) {
-                this.setState({progress: 0})
+                this.setState({ progress: 0 })
               }
             }, 400)
           }
@@ -241,7 +253,9 @@ class NotificationsScreen extends React.Component {
           this.removePlaceholder()
         }
       })
-      .finally(()=>{this._fetching = false})
+      .finally(() => {
+        this._fetching = false
+      })
   }
 }
 

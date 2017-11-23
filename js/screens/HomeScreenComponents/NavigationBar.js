@@ -37,56 +37,72 @@ class NavigationBar extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.leftButtonIconRotated !== this.props.leftButtonIconRotated ||
-           nextProps.progress !== this.props.progress
+    return (
+      nextProps.leftButtonIconRotated !== this.props.leftButtonIconRotated ||
+      nextProps.progress !== this.props.progress
+    )
   }
 
   componentWillReceiveProps(props) {
     if (this.props.leftButtonIconRotated !== props.leftButtonIconRotated) {
-      Animated.spring(
-        this.state.rotationValue, {
-          toValue: props.leftButtonIconRotated ? 1 : 0,
-          duration: 50,
-          useNativeDriver: true
-        }
-      ).start()
+      Animated.spring(this.state.rotationValue, {
+        toValue: props.leftButtonIconRotated ? 1 : 0,
+        duration: 50,
+        useNativeDriver: true
+      }).start()
     }
   }
 
   render() {
     return (
-      <SafeAreaView style={styles.container} forceInset={{ top: 'always', bottom: 'never' }}>
+      <SafeAreaView
+        style={styles.container}
+        forceInset={{ top: 'always', bottom: 'never' }}
+      >
         <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer}>
           <TouchableHighlight
             underlayColor={'white'}
             style={[styles.button]}
-            onPress={this.props.onDidPressLeftButton}>
-              <AnimatedIcon
-                name="plus"
-                color={colors.grayUI}
-                size={20}
-                style={[
-                  styles.animatedIcon,
-                  {transform: [{
-                    rotate: this.state.rotationValue.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: ['0deg', '225deg']
-                    })
-                  }]}
-                ]}
-              />
+            onPress={this.props.onDidPressLeftButton}
+          >
+            <AnimatedIcon
+              name="plus"
+              color={colors.grayUI}
+              size={20}
+              style={[
+                styles.animatedIcon,
+                {
+                  transform: [
+                    {
+                      rotate: this.state.rotationValue.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: ['0deg', '225deg']
+                      })
+                    }
+                  ]
+                }
+              ]}
+            />
           </TouchableHighlight>
         </View>
         <View style={styles.titleContainer}>
-          <Image style={styles.icon} source={require('../../../img/nav-icon-gray.png')} />
+          <Image
+            style={styles.icon}
+            source={require('../../../img/nav-icon-gray.png')}
+          />
         </View>
         <View style={styles.rightContainer}>
           <TouchableHighlight
             underlayColor={'white'}
             style={styles.button}
-            onPress={this.props.onDidPressRightButton}>
-              <Icon name={'bell'} color={this.props.rightButtonIconColor} size={20} />
+            onPress={this.props.onDidPressRightButton}
+          >
+            <Icon
+              name={'bell'}
+              color={this.props.rightButtonIconColor}
+              size={20}
+            />
           </TouchableHighlight>
         </View>
         <View style={styles.separator} />
@@ -101,7 +117,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flexDirection: 'row',
-    height: Platform.OS === 'ios' ? 40 : 55,
+    height: Platform.OS === 'ios' ? 40 : 55
   },
   leftContainer: {
     flex: 1
@@ -124,7 +140,7 @@ const styles = StyleSheet.create({
     right: 0
   },
   animatedIcon: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   },
   button: {
     width: Platform.OS === 'ios' ? 44 : 55,

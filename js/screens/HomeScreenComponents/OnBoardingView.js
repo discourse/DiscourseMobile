@@ -5,12 +5,7 @@ import React from 'react'
 
 import PropTypes from 'prop-types'
 
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import colors from '../../colors'
 
@@ -23,20 +18,18 @@ class OnBoardingView extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
-          <Text style={{color: colors.grayTitle}}>
+          <Text style={{ color: colors.grayTitle }}>
             You don’t have any sites yet.
           </Text>
           {'\n'}
-          <Text style={{color: colors.graySubtitle}}>
+          <Text style={{ color: colors.graySubtitle }}>
             Add Discourse sites to keep track of.
           </Text>
         </Text>
 
         <View style={styles.button}>
           <TouchableOpacity onPress={() => this.props.onDidPressAddSite()}>
-            <Text style={styles.buttonText}>
-              + Add your first site
-            </Text>
+            <Text style={styles.buttonText}>+ Add your first site</Text>
           </TouchableOpacity>
         </View>
       </View>

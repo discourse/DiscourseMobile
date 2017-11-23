@@ -36,7 +36,7 @@ class Site {
       term = term.slice(0, term.length - 1)
     }
 
-    if (!term.match(/^https?:\/\//)){
+    if (!term.match(/^https?:\/\//)) {
       url = `http://${term}`
     } else {
       url = term
@@ -51,7 +51,7 @@ class Site {
     })
 
     return fetch(req)
-      .then((userApiKeyResponse)=>{
+      .then(userApiKeyResponse => {
         if (userApiKeyResponse.status === 404) {
           throw 'bad api'
         }
@@ -61,7 +61,7 @@ class Site {
         }
 
         let version = userApiKeyResponse.headers.get('Auth-Api-Version')
-        if (parseInt(version,10) < 2) {
+        if (parseInt(version, 10) < 2) {
           throw 'bad api'
         }
 
@@ -69,10 +69,11 @@ class Site {
         let split = userApiKeyResponse.url.split('/')
         url = split[0] + '//' + split[2]
 
-        return fetch(`${url}/site/basic-info.json`)
-          .then(basicInfoResponse => basicInfoResponse.json())
+        return fetch(`${url}/site/basic-info.json`).then(basicInfoResponse =>
+          basicInfoResponse.json()
+        )
       })
-      .then(info=>{
+      .then(info => {
         return new Site({
           url: url,
           title: info.title,
@@ -82,10 +83,11 @@ class Site {
       })
   }
 
-
   constructor(props) {
     if (props) {
-      Site.FIELDS.forEach(prop=>{this[prop] = props[prop]})
+      Site.FIELDS.forEach(prop => {
+        this[prop] = props[prop]
+      })
     }
     this._timeout = 10000
   }
@@ -99,7 +101,7 @@ class Site {
       'User-Agent': `Discourse ${Platform.OS} App / 1.0`,
       'Content-Type': 'application/json',
       'Dont-Chunk': 'true',
-      'User-Api-Client-Id': (this.clientId || '')
+      'User-Api-Client-Id': this.clientId || ''
     }
 
     if (data) {
@@ -107,42 +109,44 @@ class Site {
     }
 
     if (this._background) {
-      return new Promise((resolve, reject) => reject('In background mode aborting start request!'))
+      return new Promise((resolve, reject) =>
+        reject('In background mode aborting start request!')
+      )
     }
 
     return new Promise((resolve, reject) => {
-
       let req = new Request(this.url + path, {
         headers: headers,
         method: method,
         body: data
       })
       this._currentFetch = fetch(req)
-      this._currentFetch.then(r1 => {
-        if (this._background) {
-          throw 'In Background mode aborting request!'
-        }
-        if (r1.status === 200) {
-          return r1.json()
-        } else {
-          if (r1.status === 403) {
-            this.logoff()
-            throw 'User was logged off!'
-          } else {
-            throw 'Error during fetch status code:' + r1.status
+      this._currentFetch
+        .then(r1 => {
+          if (this._background) {
+            throw 'In Background mode aborting request!'
           }
-        }
-      })
-      .then(result=>{
-        resolve(result)
-      })
-      .catch((e)=>{
-        reject(e)
-      })
-      .finally(()=>{
-        this._currentFetch = undefined
-      })
-      .done()
+          if (r1.status === 200) {
+            return r1.json()
+          } else {
+            if (r1.status === 403) {
+              this.logoff()
+              throw 'User was logged off!'
+            } else {
+              throw 'Error during fetch status code:' + r1.status
+            }
+          }
+        })
+        .then(result => {
+          resolve(result)
+        })
+        .catch(e => {
+          reject(e)
+        })
+        .finally(() => {
+          this._currentFetch = undefined
+        })
+        .done()
     })
   }
 
@@ -167,14 +171,19 @@ class Site {
     return new Promise((resolve, reject) => {
       if (this.userId && this.username) {
         console.log('we have user id and user name')
-        resolve({userId: this.userId, username: this.username, isStaff: this.isStaff})
+        resolve({
+          userId: this.userId,
+          username: this.username,
+          isStaff: this.isStaff
+        })
       } else {
         this.jsonApi('/session/current.json')
-          .then(json =>{
-
+          .then(json => {
             this.userId = json.current_user.id
             this.username = json.current_user.username
-            this.isStaff = !!(json.current_user.admin || json.current_user.moderator)
+            this.isStaff = !!(
+              json.current_user.admin || json.current_user.moderator
+            )
 
             resolve({
               userId: this.userId,
@@ -184,7 +193,8 @@ class Site {
           })
           .catch(err => {
             reject(err)
-          }).done()
+          })
+          .done()
       }
     })
   }
@@ -200,11 +210,14 @@ class Site {
     })
   }
 
-  messageBus(channels){
-    return this.getMessageBusId()
-      .then(messageBusId => {
-        return this.jsonApi(`/message-bus/${messageBusId}/poll?dlp=t`, 'POST', channels)
-      })
+  messageBus(channels) {
+    return this.getMessageBusId().then(messageBusId => {
+      return this.jsonApi(
+        `/message-bus/${messageBusId}/poll?dlp=t`,
+        'POST',
+        channels
+      )
+    })
   }
 
   processMessages(messages) {
@@ -218,7 +231,6 @@ class Site {
     let alertChannel = `/notification-alert/${this.userId}`
 
     messages.forEach(message => {
-
       console.info(`processing incoming message on ${this.url}`)
       console.log(message)
 
@@ -232,7 +244,6 @@ class Site {
         // we have to get notifications now cause we may have an incorrect number
         rval.notifications = true
       } else if (message.channel === notificationChannel) {
-
         this._seenNotificationId = message.data.seen_notification_id
 
         // force a refresh on next open
@@ -241,11 +252,11 @@ class Site {
           let newData = message.data.recent
 
           let existing = _.chain(this._notifications)
-                          .take(newData.length)
-                          .map(n=>[n.id, n.read])
-                          .value()
+            .take(newData.length)
+            .map(n => [n.id, n.read])
+            .value()
 
-          let changed = !_.isEqual(newData,existing)
+          let changed = !_.isEqual(newData, existing)
           if (changed) {
             this._notifications = null
             rval.notifications = true
@@ -257,27 +268,37 @@ class Site {
           rval.notifications = true
         }
 
-        if (this.unreadPrivateMessages !== message.data.unread_private_messages) {
+        if (
+          this.unreadPrivateMessages !== message.data.unread_private_messages
+        ) {
           this.unreadPrivateMessages = message.data.unread_private_messages
           rval.notifications = true
         }
-
-      } else if (['/new', '/latest', '/unread/' + this.userId].indexOf(message.channel) > -1) {
+      } else if (
+        ['/new', '/latest', '/unread/' + this.userId].indexOf(message.channel) >
+        -1
+      ) {
         let payload = message.data.payload
         if (payload.archetype !== 'private_message') {
           let existing = this.trackingState['t' + payload.topic_id]
           if (existing) {
-            this.trackingState['t' + payload.topic_id] = _.merge(existing, payload)
+            this.trackingState['t' + payload.topic_id] = _.merge(
+              existing,
+              payload
+            )
           } else {
             this.trackingState['t' + payload.topic_id] = payload
           }
           this.updateTotals()
           rval.totals = true
         }
-      } else if (message.channel === '/recover' || message.channel === '/delete') {
+      } else if (
+        message.channel === '/recover' ||
+        message.channel === '/delete'
+      ) {
         let existing = this.trackingState['t' + message.data.payload.topic_id]
         if (existing) {
-          existing.deleted = (message.channel === '/delete')
+          existing.deleted = message.channel === '/delete'
         }
       } else if (message.channel === '/flagged_counts') {
         if (this.flagCount !== message.data.total) {
@@ -287,7 +308,8 @@ class Site {
       } else if (message.channel === '/queue_counts') {
         if (this.queueCount !== message.data.post_queue_new_count) {
           // yes this is weird, we have some real coupled code here
-          this.flagCount -= ((this.queueCount || 0) - message.data.post_queue_new_count)
+          this.flagCount -=
+            (this.queueCount || 0) - message.data.post_queue_new_count
           this.queueCount = message.data.post_queue_new_count
           rval.notifications = true
         }
@@ -309,72 +331,79 @@ class Site {
     this.channels = null
   }
 
-  initBus(){
-    return new Promise((resolve,reject) => {
+  initBus() {
+    return new Promise((resolve, reject) => {
       if (this.channels && this.trackingState) {
-        resolve({wasReady: true})
+        resolve({ wasReady: true })
       } else {
-
         this.getUserInfo()
-            .then(info => {
+          .then(info => {
+            let channels = {
+              '/delete': -1,
+              '/recover': -1,
+              '/new': -1,
+              '/latest': -1,
+              __seq: 1
+            }
 
-          let channels = {
-            '/delete': -1,
-            '/recover': -1,
-            '/new': -1,
-            '/latest': -1,
-            '__seq': 1
-          }
+            if (info.isStaff) {
+              channels['/queue_counts'] = -1
+              channels['/flagged_counts'] = -1
+            }
 
-          if (info.isStaff) {
-            channels['/queue_counts'] = -1
-            channels['/flagged_counts'] = -1
-          }
+            channels[`/notification/${info.userId}`] = -1
+            channels[`/notification-alert/${info.userId}`] = -1
+            channels[`/unread/${info.userId}`] = -1
 
-          channels[`/notification/${info.userId}`] = -1
-          channels[`/notification-alert/${info.userId}`] = -1
-          channels[`/unread/${info.userId}`] = -1
+            this.messageBus(channels)
+              .then(r => {
+                this.processMessages(r)
 
-          this.messageBus(channels).then(r => {
-            this.processMessages(r)
-
-            this.jsonApi(`/users/${info.username}/topic-tracking-state.json`)
-              .then(trackingState => {
-                this.trackingState = {}
-                trackingState.forEach(state => {
-                  this.trackingState[`t${state.topic_id}`] = state
-                })
-                resolve({wasReady: false})
+                this.jsonApi(
+                  `/users/${info.username}/topic-tracking-state.json`
+                )
+                  .then(trackingState => {
+                    this.trackingState = {}
+                    trackingState.forEach(state => {
+                      this.trackingState[`t${state.topic_id}`] = state
+                    })
+                    resolve({ wasReady: false })
+                  })
+                  .catch(e => {
+                    console.log('failed to get tracking state ' + e)
+                    reject(e)
+                  })
+                  .done()
               })
               .catch(e => {
-                console.log('failed to get tracking state ' + e)
+                console.log(`failed to poll message bus ${e}`)
                 reject(e)
-              }).done()
+              })
+              .done()
           })
           .catch(e => {
-            console.log(`failed to poll message bus ${e}`)
+            console.log(`get user info failed ${e}`)
             reject(e)
-          }).done()
-
-        })
-        .catch(e => {
-          console.log(`get user info failed ${e}`)
-          reject(e)
-        }).done()
+          })
+          .done()
       }
     })
   }
 
   isNew(topic) {
-    return topic.last_read_post_number === null &&
-          ((topic.notification_level !== 0 && !topic.notification_level) ||
-          topic.notification_level >= 2)
+    return (
+      topic.last_read_post_number === null &&
+      ((topic.notification_level !== 0 && !topic.notification_level) ||
+        topic.notification_level >= 2)
+    )
   }
 
   isUnread(topic) {
-    return topic.last_read_post_number !== null &&
-           topic.last_read_post_number < topic.highest_post_number &&
-           topic.notification_level >= 2
+    return (
+      topic.last_read_post_number !== null &&
+      topic.last_read_post_number < topic.highest_post_number &&
+      topic.notification_level >= 2
+    )
   }
 
   updateTotals() {
@@ -382,7 +411,6 @@ class Site {
     let newTopics = 0
 
     _.each(this.trackingState, t => {
-
       if (!t.deleted && t.archetype !== 'private_message') {
         if (this.isNew(t)) {
           newTopics++
@@ -402,103 +430,113 @@ class Site {
 
   checkBus() {
     console.info(`${new Date()} Checking Message Bus on ${this.url}`)
-    return this.messageBus(this.channels).then(messages => this.processMessages(messages))
+    return this.messageBus(this.channels).then(messages =>
+      this.processMessages(messages)
+    )
   }
 
-  refresh(opts){
-
+  refresh(opts) {
     opts = opts || {}
 
-    return new Promise((resolve,reject) => {
-
+    return new Promise((resolve, reject) => {
       if (!this.authToken) {
-        resolve({changed: false})
+        resolve({ changed: false })
         return
       }
 
-      this.initBus().then((busState) => {
-
-        if (opts.fast || !busState.wasReady) {
-          this.checkBus()
+      this.initBus()
+        .then(busState => {
+          if (opts.fast || !busState.wasReady) {
+            this.checkBus()
               .then(changes => {
-                 console.log(`changes detected on ${this.url}`)
-                 console.log(changes)
+                console.log(`changes detected on ${this.url}`)
+                console.log(changes)
 
-                 if (!busState.wasReady) {
-                   this.updateTotals()
+                if (!busState.wasReady) {
+                  this.updateTotals()
 
-                   this.refresh({fast: false})
-                       .then(result => {
-                         resolve({changed: true, alerts: changes.alerts})
-                       })
-                       .catch(e => reject(e))
-                       .done()
-
-                 } else {
-                   resolve({changed: this.updateTotals() || changes.notifications || changes.totals, alerts: changes.alerts})
-                 }
+                  this.refresh({ fast: false })
+                    .then(result => {
+                      resolve({ changed: true, alerts: changes.alerts })
+                    })
+                    .catch(e => reject(e))
+                    .done()
+                } else {
+                  resolve({
+                    changed:
+                      this.updateTotals() ||
+                      changes.notifications ||
+                      changes.totals,
+                    alerts: changes.alerts
+                  })
+                }
               })
               .catch(e => {
                 console.log(`failed to check bus ${e}`)
                 reject(e)
               })
 
-          return
-        }
+            return
+          }
 
-        this.jsonApi('/session/current.json')
-           .then(json =>{
-             let currentUser = json.current_user
+          this.jsonApi('/session/current.json')
+            .then(json => {
+              let currentUser = json.current_user
 
-             let changed = (this.userId !== currentUser.id) ||
-                           (this.username !== currentUser.username) ||
-                           (this.isStaff !== !!(currentUser.admin || currentUser.moderator))
+              let changed =
+                this.userId !== currentUser.id ||
+                this.username !== currentUser.username ||
+                this.isStaff !== !!(currentUser.admin || currentUser.moderator)
 
-             changed = changed || this.updateTotals()
+              changed = changed || this.updateTotals()
 
-             this.userId = currentUser.id
-             this.username = currentUser.username
-             this.isStaff = !!(currentUser.admin || currentUser.moderator)
+              this.userId = currentUser.id
+              this.username = currentUser.username
+              this.isStaff = !!(currentUser.admin || currentUser.moderator)
 
-             // in case of old API fallback
-             this._seenNotificationId = currentUser.seen_notification_id || this._seenNotificationId
+              // in case of old API fallback
+              this._seenNotificationId =
+                currentUser.seen_notification_id || this._seenNotificationId
 
-             if (this.unreadNotifications !== currentUser.unread_notifications) {
-               this.unreadNotifications = currentUser.unread_notifications
-               changed = true
-             }
+              if (
+                this.unreadNotifications !== currentUser.unread_notifications
+              ) {
+                this.unreadNotifications = currentUser.unread_notifications
+                changed = true
+              }
 
-             if (this.unreadPrivateMessages !== currentUser.unread_private_messages) {
-               this.unreadPrivateMessages = currentUser.unread_private_messages
-               changed = true
-             }
+              if (
+                this.unreadPrivateMessages !==
+                currentUser.unread_private_messages
+              ) {
+                this.unreadPrivateMessages = currentUser.unread_private_messages
+                changed = true
+              }
 
-             if (this.isStaff) {
-
-               let newFlagCount = currentUser.post_queue_new_count
-               if (newFlagCount !== this.flagCount) {
+              if (this.isStaff) {
+                let newFlagCount = currentUser.post_queue_new_count
+                if (newFlagCount !== this.flagCount) {
                   this.flagCount = newFlagCount
                   changed = true
-               }
+                }
 
-               let newQueueCount = currentUser.post_queue_new_count
-               if (newQueueCount !== this.queueCount) {
+                let newQueueCount = currentUser.post_queue_new_count
+                if (newQueueCount !== this.queueCount) {
                   this.queueCount = newQueueCount
                   changed = true
-               }
-             }
+                }
+              }
 
-             resolve({changed})
-
+              resolve({ changed })
             })
-            .catch(e=>{
+            .catch(e => {
               console.warn(e)
               reject(e)
-           })
-      })
-      .catch(e => {
-        reject(e)
-      })
+            })
+        })
+        .catch(e => {
+          reject(e)
+        })
     })
   }
 
@@ -516,18 +554,18 @@ class Site {
   }
 
   readNotification(notification) {
-    return new Promise((resolve,reject)=>{
-      this.jsonApi('/notifications/read', 'PUT', {id: notification.id})
-        .catch(e=>{
+    return new Promise((resolve, reject) => {
+      this.jsonApi('/notifications/read', 'PUT', { id: notification.id })
+        .catch(e => {
           reject(e)
         })
-        .finally(()=>resolve)
+        .finally(() => resolve)
         .done()
     })
   }
 
   getSeenNotificationId() {
-    return new Promise(resolve=>{
+    return new Promise(resolve => {
       if (!this.authToken) {
         resolve()
         return
@@ -538,27 +576,28 @@ class Site {
         return
       }
 
-      this.notifications().then(()=>{
+      this.notifications().then(() => {
         resolve(this._seenNotificationId)
       })
     })
   }
 
-
   notifications(types, options) {
-
     if (this._loadingNotifications) {
-
       // avoid double json
       return new Promise(resolve => {
         let retries = 100
-        let interval = setInterval(()=>{
+        let interval = setInterval(() => {
           retries--
           if (retries === 0 || this._notifications) {
             clearInterval(interval)
-            this.notifications(types).then((n)=>{resolve(n)}).done()
+            this.notifications(types)
+              .then(n => {
+                resolve(n)
+              })
+              .done()
           }
-        },50)
+        }, 50)
       })
     }
 
@@ -576,11 +615,15 @@ class Site {
         let filtered = this._notifications
         let minId = options && options.minId
         if (types || minId) {
-          filtered = _.filter(filtered, notification=>{
+          filtered = _.filter(filtered, notification => {
             // for new always show unread PMs and suppress read
             if (minId) {
-              if (notification.read) { return false }
-              if (!notification.read && notification.notification_type === 6) { return true }
+              if (notification.read) {
+                return false
+              }
+              if (!notification.read && notification.notification_type === 6) {
+                return true
+              }
             }
             if (minId && minId >= notification.id) {
               return false
@@ -593,28 +636,34 @@ class Site {
       }
 
       this._loadingNotifications = true
-      this.jsonApi('/notifications.json?recent=true&limit=25' + (options && options.silent === false ? '' : '&silent=true'))
-          .then(results=>{
-            this._loadingNotifications = false
-            this._notifications = (results && results.notifications) || []
-            this._seenNotificationId = results && results.seen_notification_id
-            this.notifications(types, _.merge(options, {silent: true}))
-                .then(n=>
-                    resolve(n)
-                ).done()
-          })
-          .catch(e=>{
-            console.log('failed to fetch notifications ' + e)
-            resolve([])
-          })
-          .finally(()=>{this._loadingNotifications = false})
-          .done()
+      this.jsonApi(
+        '/notifications.json?recent=true&limit=25' +
+          (options && options.silent === false ? '' : '&silent=true')
+      )
+        .then(results => {
+          this._loadingNotifications = false
+          this._notifications = (results && results.notifications) || []
+          this._seenNotificationId = results && results.seen_notification_id
+          this.notifications(types, _.merge(options, { silent: true }))
+            .then(n => resolve(n))
+            .done()
+        })
+        .catch(e => {
+          console.log('failed to fetch notifications ' + e)
+          resolve([])
+        })
+        .finally(() => {
+          this._loadingNotifications = false
+        })
+        .done()
     })
   }
 
   toJSON() {
     let obj = {}
-    Site.FIELDS.forEach(prop=>{obj[prop] = this[prop]})
+    Site.FIELDS.forEach(prop => {
+      obj[prop] = this[prop]
+    })
     return obj
   }
 }

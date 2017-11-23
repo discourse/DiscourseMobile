@@ -2,26 +2,19 @@
 'use strict'
 
 import React from 'react'
-import {
-  StyleSheet,
-  Text,
-  View
-} from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 
 class Notification extends React.Component {
   render() {
     if (this.props.count > 0) {
       return (
         <View style={styles.container}>
-          <View style={[styles.number, {backgroundColor: this.props.color}]}>
-            <Text style={styles.numberText}>
-              {this.props.count}
-            </Text>
+          <View style={[styles.number, { backgroundColor: this.props.color }]}>
+            <Text style={styles.numberText}>{this.props.count}</Text>
           </View>
         </View>
       )
-    }
-    else {
+    } else {
       return null
     }
   }
@@ -37,10 +30,10 @@ const styles = StyleSheet.create({
     marginLeft: 6
   },
   number: {
-    alignItems:'center',
+    alignItems: 'center',
     borderRadius: 6,
-    flexDirection:'row',
-    justifyContent:'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
     padding: 6
   },
   numberText: {
@@ -49,6 +42,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 })
-
 
 export default Notification
