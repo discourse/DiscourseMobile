@@ -28,7 +28,8 @@ import Site from '../site'
 import Components from './HomeScreenComponents'
 import colors from '../colors'
 
-UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true)
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const AndroidToken = NativeModules.AndroidToken
 
@@ -54,9 +55,9 @@ class HomeScreen extends React.Component {
       })
     }
 
-    this._onChangeSites = (e) => this.onChangeSites(e)
+    this._onChangeSites = e => this.onChangeSites(e)
 
-    this._handleOpenUrl = (event) => {
+    this._handleOpenUrl = event => {
       console.log('handling incoming url')
       console.log(event)
       let split = event.url.split('payload=')
@@ -66,9 +67,8 @@ class HomeScreen extends React.Component {
       }
     }
 
-
     if (Platform.OS === 'android') {
-      AndroidToken.GetInstanceId(id=>{
+      AndroidToken.GetInstanceId(id => {
         this._siteManager.registerClientId(id)
       })
     }
@@ -80,13 +80,17 @@ class HomeScreen extends React.Component {
 
       SafariView.addEventListener('onDismiss', () => {
         this._siteManager.refreshInterval(15000)
-        this._siteManager.refreshSites({ui: false, fast: true})
+        this._siteManager.refreshSites({ ui: false, fast: true })
       })
 
-      PushNotificationIOS.addEventListener('notification', (e) => this._handleRemoteNotification(e))
-      PushNotificationIOS.addEventListener('localNotification', (e) => this._handleLocalNotification(e))
+      PushNotificationIOS.addEventListener('notification', e =>
+        this._handleRemoteNotification(e)
+      )
+      PushNotificationIOS.addEventListener('localNotification', e =>
+        this._handleLocalNotification(e)
+      )
 
-      PushNotificationIOS.addEventListener('register', (s) => {
+      PushNotificationIOS.addEventListener('register', s => {
         this._siteManager.registerClientId(s)
       })
     }
@@ -95,9 +99,13 @@ class HomeScreen extends React.Component {
   _handleLocalNotification(e) {
     console.log('got local notification')
     console.log(e)
-    if (AppState.currentState !== 'active' && e._data && e._data.discourse_url) {
+    if (
+      AppState.currentState !== 'active' &&
+      e._data &&
+      e._data.discourse_url
+    ) {
       console.log('open safari view')
-      SafariView.show({url: e._data.discourse_url})
+      SafariView.show({ url: e._data.discourse_url })
     }
   }
 
@@ -106,7 +114,7 @@ class HomeScreen extends React.Component {
     console.log(e)
     if (e._data && e._data.AppState === 'inactive' && e._data.discourse_url) {
       console.log('open safari view')
-      SafariView.show({url: e._data.discourse_url})
+      SafariView.show({ url: e._data.discourse_url })
     }
 
     // TODO if we are active we should try to notify user somehow that a notification
@@ -120,13 +128,10 @@ class HomeScreen extends React.Component {
       return
     }
 
-    this._siteManager
-      .generateAuthURL(site)
-      .then(url => {
-        this.props.screenProps.openUrl(url)
-      })
+    this._siteManager.generateAuthURL(site).then(url => {
+      this.props.screenProps.openUrl(url)
+    })
   }
-
 
   closeBrowser() {
     if (Platform.OS === 'ios') {
@@ -141,58 +146,59 @@ class HomeScreen extends React.Component {
 
     if (Platform.OS === 'ios') {
       let doRefresh = () => {
-
         console.log('Background fetch Called!')
 
-        this._siteManager.refreshSites({ui: false, fast: true, background: true})
-          .then((state)=>{
-
+        this._siteManager
+          .refreshSites({ ui: false, fast: true, background: true })
+          .then(state => {
             console.log('Finished refreshing sites in BG fetch!')
             console.log(state)
 
             if (state.alerts) {
-
               console.log('Got ' + state.alerts.length + ' alert in BG fetch')
 
-              state.alerts.forEach((a) => {
-
+              state.alerts.forEach(a => {
                 if (a.excerpt) {
-                  let excerpt = a.username + ': '  + a.excerpt
-                  excerpt = excerpt.substr(0,250)
+                  let excerpt = a.username + ': ' + a.excerpt
+                  excerpt = excerpt.substr(0, 250)
 
                   if (!a.site.hasPush) {
-                    console.log(`publishing local notifications for ${a.site.url}`)
+                    console.log(
+                      `publishing local notifications for ${a.site.url}`
+                    )
                     PushNotificationIOS.presentLocalNotification({
                       alertBody: excerpt,
-                      userInfo: {discourse_url: a.url}
+                      userInfo: { discourse_url: a.url }
                     })
                   }
                 }
               })
             }
           })
-        .catch((e) => {
-          console.log('WARN: failed in bg fetch')
-          console.log(e)
-        })
-        .finally(() => {
-          PushNotificationIOS.checkPermissions(p => {
-            if (p.badge) {
-              let total = this._siteManager.totalUnread()
-              console.log('Setting badge to ' + total)
-              PushNotificationIOS.setApplicationIconBadgeNumber(total)
-            }
-
-            console.log('finishing up background fetch')
-            BackgroundFetch.done(true)
+          .catch(e => {
+            console.log('WARN: failed in bg fetch')
+            console.log(e)
           })
-        })
+          .finally(() => {
+            PushNotificationIOS.checkPermissions(p => {
+              if (p.badge) {
+                let total = this._siteManager.totalUnread()
+                console.log('Setting badge to ' + total)
+                PushNotificationIOS.setApplicationIconBadgeNumber(total)
+              }
+
+              console.log('finishing up background fetch')
+              BackgroundFetch.done(true)
+            })
+          })
       }
 
-      BackgroundFetch.addEventListener('backgroundFetch', ()=>{
+      BackgroundFetch.addEventListener('backgroundFetch', () => {
         if (this._siteManager.refreshing) {
           // assume prviously aborted and force allow a refresh
-          console.log('WARNING: forcing refresh cause _siteManager was stuck refreshing')
+          console.log(
+            'WARNING: forcing refresh cause _siteManager was stuck refreshing'
+          )
           this._siteManager.refreshing = false
         }
 
@@ -211,9 +217,8 @@ class HomeScreen extends React.Component {
   }
 
   onChangeSites(e) {
-
     if (this._siteManager.isLoading() !== this.state.loadingSites) {
-      this.setState({loadingSites: this._siteManager.isLoading()})
+      this.setState({ loadingSites: this._siteManager.isLoading() })
     }
     if (e && e.event === 'change') {
       this.setState({ data: this._siteManager.toObject() })
@@ -225,18 +230,20 @@ class HomeScreen extends React.Component {
       return new Promise((resolve, reject) => reject())
     }
 
-    this.setState({addSiteProgress: Math.random() * 0.4})
+    this.setState({ addSiteProgress: Math.random() * 0.4 })
 
-    return new Promise((resolve,reject) => {
-
+    return new Promise((resolve, reject) => {
       Site.fromTerm(term)
         .then(site => {
-          this.setState({
-            displayTermBar: false,
-            addSiteProgress: 1
-          }, () => {
-            this.onToggleTermBar(this.state.displayTermBar)
-          })
+          this.setState(
+            {
+              displayTermBar: false,
+              addSiteProgress: 1
+            },
+            () => {
+              this.onToggleTermBar(this.state.displayTermBar)
+            }
+          )
 
           if (site) {
             if (this._siteManager.exists(site)) {
@@ -246,18 +253,22 @@ class HomeScreen extends React.Component {
           }
           resolve(site)
         })
-        .catch(e=>{
+        .catch(e => {
           console.log(e)
 
-          if ( e === 'dupe site') {
+          if (e === 'dupe site') {
             Alert.alert(`${term} already exists`)
           } else if (e === 'bad api') {
-            Alert.alert(`Sorry, ${term} does not support mobile APIs, have owner upgrade Discourse to latest!`)
+            Alert.alert(
+              `Sorry, ${
+                term
+              } does not support mobile APIs, have owner upgrade Discourse to latest!`
+            )
           } else {
             Alert.alert(`${term} was not found!`)
           }
 
-          this.setState({displayTermBar: true, addSiteProgress: 1}, () => {
+          this.setState({ displayTermBar: true, addSiteProgress: 1 }, () => {
             this.onToggleTermBar(this.state.displayTermBar)
           })
 
@@ -265,59 +276,65 @@ class HomeScreen extends React.Component {
         })
         .finally(() => {
           setTimeout(() => {
-            this.setState({addSiteProgress: 0})
+            this.setState({ addSiteProgress: 0 })
           }, 1000)
         })
         .done()
     })
-
   }
 
   refreshSites(opts) {
-    if (this.refreshing) { return false }
-
-    if (opts.ui) {
-      this.setState({isRefreshing: true})
+    if (this.refreshing) {
+      return false
     }
 
-    this._siteManager.refreshSites(opts)
-      .then(()=>{
-        this.refreshing = false
-        this.setState({
-          isRefreshing: false
-        })
+    if (opts.ui) {
+      this.setState({ isRefreshing: true })
+    }
+
+    this._siteManager.refreshSites(opts).then(() => {
+      this.refreshing = false
+      this.setState({
+        isRefreshing: false
+      })
     })
   }
 
   shouldDisplayOnBoarding() {
-    return this._siteManager.sites.length === 0
-            && !this.refreshing
-            && !this.state.isRefreshing
-            && this.state.addSiteProgress === 0
-            && !this.state.displayTermBar
+    return (
+      this._siteManager.sites.length === 0 &&
+      !this.refreshing &&
+      !this.state.isRefreshing &&
+      this.state.addSiteProgress === 0 &&
+      !this.state.displayTermBar
+    )
   }
 
   renderSuggestions() {
-    return (<ListView
+    return (
+      <ListView
         dataSource={this.state.suggestionsDataSource}
-        renderRow={(rowData) => <View>{rowData}</View>}
-      />)
+        renderRow={rowData => <View>{rowData}</View>}
+      />
+    )
   }
 
   renderSites() {
     if (this.state.loadingSites) {
-      return <View style={{flex: 1}}/>
+      return <View style={{ flex: 1 }} />
     }
 
     if (this.shouldDisplayOnBoarding()) {
       return (
         <Components.OnBoardingView
-          onDidPressAddSite={()=>this.setState({displayTermBar: true}, () => {
-            this.onToggleTermBar(this.state.displayTermBar)
-          })} />
+          onDidPressAddSite={() =>
+            this.setState({ displayTermBar: true }, () => {
+              this.onToggleTermBar(this.state.displayTermBar)
+            })
+          }
+        />
       )
     } else {
-
       return (
         <SortableListView
           data={this.state.data}
@@ -327,41 +344,44 @@ class HomeScreen extends React.Component {
           activeOpacity={0.5}
           disableAnimatedScrolling={true}
           styles={styles.list}
-          rowHasChanged={(r1, r2)=> {
+          rowHasChanged={(r1, r2) => {
             // TODO: r2 returns as an Object instead of a Site
             // casting Site shouldn't be needed
             return new Site(r1).toJSON() !== new Site(r2).toJSON()
           }}
-          onRowMoved={(e)=> {
+          onRowMoved={e => {
             this._siteManager.updateOrder(e.from, e.to)
             this.forceUpdate()
           }}
           onRowActive={() => {
-            this.setState({refreshingEnabled: false})
+            this.setState({ refreshingEnabled: false })
           }}
           onMoveEnd={() => {
-            this.setState({refreshingEnabled: true})
+            this.setState({ refreshingEnabled: true })
           }}
           onMoveCancel={() => {
-            this.setState({refreshingEnabled: true})
+            this.setState({ refreshingEnabled: true })
           }}
           refreshControl={
             <RefreshControl
-              style={{left: 500}}
+              style={{ left: 500 }}
               enabled={this.state.refreshingEnabled}
               refreshing={this.state.isRefreshing}
-              onRefresh={()=>this.refreshSites({ui: true, fast: false})}
+              onRefresh={() => this.refreshSites({ ui: true, fast: false })}
               title="Loading..."
               titleColor={colors.graySubtitle}
             />
           }
-          renderRow={(site) =>
+          renderRow={site => (
             <Components.SiteRow
               site={site}
-              onSwipe={(scrollEnabled)=>this.setState({scrollEnabled: scrollEnabled})}
-              onClick={()=>this.visitSite(site)}
-              onDelete={()=>this._siteManager.remove(site)} />
-          }
+              onSwipe={scrollEnabled =>
+                this.setState({ scrollEnabled: scrollEnabled })
+              }
+              onClick={() => this.visitSite(site)}
+              onDelete={() => this._siteManager.remove(site)}
+            />
+          )}
         />
       )
     }
@@ -372,7 +392,7 @@ class HomeScreen extends React.Component {
       easing: Easing.inOut(Easing.ease),
       duration: 200,
       toValue: show ? 1 : 0,
-      useNativeDriver: true,
+      useNativeDriver: true
     }).start(() => {
       if (this._input) {
         show ? this._input.focus() : this._input.blur()
@@ -381,7 +401,7 @@ class HomeScreen extends React.Component {
   }
 
   onDidPressLeftButton() {
-    this.setState({displayTermBar: !this.state.displayTermBar}, () => {
+    this.setState({ displayTermBar: !this.state.displayTermBar }, () => {
       this.onToggleTermBar(this.state.displayTermBar)
     })
   }
@@ -398,7 +418,10 @@ class HomeScreen extends React.Component {
       outputRange: [0, Components.TermBar.Height]
     })
     return (
-      <SafeAreaView style={styles.container} forceInset={{ top: 'never', bottom: 'always' }}>
+      <SafeAreaView
+        style={styles.container}
+        forceInset={{ top: 'never', bottom: 'always' }}
+      >
         <Components.NavigationBar
           leftButtonIconRotated={this.state.displayTermBar ? true : false}
           anim={this.state.anim}
@@ -410,9 +433,11 @@ class HomeScreen extends React.Component {
         <Components.TermBar
           anim={this.state.anim}
           getInputRef={ref => (this._input = ref)}
-          onDidSubmitTerm={(term)=>this.doSearch(term)}
+          onDidSubmitTerm={term => this.doSearch(term)}
         />
-        <Animated.View style={[styles.sitesContainer, {transform: [{translateY}]}]}>
+        <Animated.View
+          style={[styles.sitesContainer, { transform: [{ translateY }] }]}
+        >
           {this.renderSites()}
           <Components.DebugRow siteManager={this._siteManager} />
         </Animated.View>
@@ -423,7 +448,7 @@ class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
   list: {
-    flex: 1,
+    flex: 1
   },
   container: {
     flex: 1,

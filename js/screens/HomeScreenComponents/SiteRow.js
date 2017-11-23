@@ -3,13 +3,7 @@
 
 import React from 'react'
 
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View
-} from 'react-native'
+import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 
 import Swipeout from 'react-native-swipeout'
 
@@ -22,36 +16,38 @@ class SiteRow extends React.Component {
       <Swipeout
         sensitivity={2}
         backgroundColor={'white'}
-        scroll={(scrollEnabled) => this.props.onSwipe(scrollEnabled)}
-        right={[{
-          text: 'Remove',
-          backgroundColor: colors.redDanger,
-          onPress: this.props.onDelete
-        }]}>
+        scroll={scrollEnabled => this.props.onSwipe(scrollEnabled)}
+        right={[
+          {
+            text: 'Remove',
+            backgroundColor: colors.redDanger,
+            onPress: this.props.onDelete
+          }
+        ]}
+      >
         <TouchableHighlight
           underlayColor={colors.yellowUIFeedback}
-          onPress={()=>this.props.onClick()}
-          {...this.props.sortHandlers}>
-            <View accessibilityTraits="link" style={styles.row}>
-              <Image style={styles.icon} source={{uri: this.props.site.icon}} />
-              <View style={styles.info}>
-                <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                  style={styles.url}>
-                    {this.props.site.url.replace(/^https?:\/\//, '')}
-                </Text>
-                <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={2}
-                  style={styles.description}>
-                    {this.props.site.description}
-                </Text>
-                {this._renderCounts(this.props.site)}
-              </View>
-              {this._renderShouldLogin(this.props.site)}
-              {this._renderNotifications(this.props.site)}
+          onPress={() => this.props.onClick()}
+          {...this.props.sortHandlers}
+        >
+          <View accessibilityTraits="link" style={styles.row}>
+            <Image style={styles.icon} source={{ uri: this.props.site.icon }} />
+            <View style={styles.info}>
+              <Text ellipsizeMode="tail" numberOfLines={1} style={styles.url}>
+                {this.props.site.url.replace(/^https?:\/\//, '')}
+              </Text>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={2}
+                style={styles.description}
+              >
+                {this.props.site.description}
+              </Text>
+              {this._renderCounts(this.props.site)}
             </View>
+            {this._renderShouldLogin(this.props.site)}
+            {this._renderNotifications(this.props.site)}
+          </View>
         </TouchableHighlight>
       </Swipeout>
     )
@@ -61,9 +57,15 @@ class SiteRow extends React.Component {
     if (site.authToken) {
       return (
         <View style={styles.notifications}>
-          <Notification color={colors.redDanger} count={site.flagCount}/>
-          <Notification color={colors.greenPrivateUnread} count={site.unreadPrivateMessages}/>
-          <Notification color={colors.blueUnread} count={site.unreadNotifications}/>
+          <Notification color={colors.redDanger} count={site.flagCount} />
+          <Notification
+            color={colors.greenPrivateUnread}
+            count={site.unreadPrivateMessages}
+          />
+          <Notification
+            color={colors.blueUnread}
+            count={site.unreadNotifications}
+          />
         </View>
       )
     }
@@ -93,9 +95,7 @@ class SiteRow extends React.Component {
     if (counts.length > 0) {
       return (
         <View style={styles.counts}>
-          <Text style={styles.countsText}>
-            {counts.join('  ')}
-          </Text>
+          <Text style={styles.countsText}>{counts.join('  ')}</Text>
         </View>
       )
     }

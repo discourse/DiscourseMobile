@@ -3,17 +3,13 @@
 
 import React from 'react'
 
-import {
-  StyleSheet,
-  Text,
-  View
-} from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 
 import Moment from 'moment'
 
 class DebugRow extends React.Component {
   componentDidMount() {
-    this._subscription = ()=> {
+    this._subscription = () => {
       this.setState({
         firstFetch: this.props.siteManager.firstFetch,
         lastFetch: this.props.siteManager.lastFetch,
@@ -42,7 +38,7 @@ class DebugRow extends React.Component {
 
   render() {
     return (
-      <View style={{padding: 5}}>
+      <View style={{ padding: 5 }}>
         <Text style={styles.debugText}>
           Last Updated: {Moment(this.state.lastRefresh).format('h:mmA')}
         </Text>
