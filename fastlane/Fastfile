@@ -2,7 +2,7 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-APP_VERSION = "1.1.0"
+APP_VERSION = "1.2.0"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
@@ -95,22 +95,27 @@ platform :ios do
     )
   end
 
+  desc "update all the certs"
+  lane :certs do
+    match(force: true, type: "appstore", git_url: KEYS_REPOSITORY)
+    match(force: true, type: "adhoc", git_url: KEYS_REPOSITORY)
+    match(force: true, type: "development", git_url: KEYS_REPOSITORY)
+
+    register_devices(devices_file: File.expand_path("./keys/ios-beta-devices.txt"))
+  end
+
   desc "Submit a new Beta Build to Fabric -> Beta"
   desc "This will also make sure the profile is up to date"
   lane :beta do
-    register_devices(
-      devices_file: File.expand_path("./keys/ios-beta-devices.txt")
-    )
-
-    match(
-      force: true,
-      type: "adhoc",
-      git_url: KEYS_REPOSITORY
-    )
-
     gym(
       scheme: PROJECT_NAME,
       clean: true,
+      export_method: "ad-hoc",
+      export_options: {
+        provisioningProfiles: {
+          "org.discourse.DiscourseApp" => "match AdHoc org.discourse.DiscourseApp"
+        }
+      },
       project: "./ios/#{PROJECT_NAME}.xcodeproj"
     )
 
@@ -125,12 +130,6 @@ platform :ios do
   lane :release do
     register_devices(
       devices_file: File.expand_path("./keys/ios-beta-devices.txt")
-    )
-
-    match(
-      force: true,
-      type: "appstore",
-      git_url: KEYS_REPOSITORY
     )
 
     gym(
