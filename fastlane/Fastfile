@@ -97,11 +97,11 @@ platform :ios do
 
   desc "update all the certs"
   lane :certs do
+    register_devices(devices_file: File.expand_path("./keys/ios-beta-devices.txt"))
+
     match(force: true, type: "appstore", git_url: KEYS_REPOSITORY)
     match(force: true, type: "adhoc", git_url: KEYS_REPOSITORY)
     match(force: true, type: "development", git_url: KEYS_REPOSITORY)
-
-    register_devices(devices_file: File.expand_path("./keys/ios-beta-devices.txt"))
   end
 
   desc "Submit a new Beta Build to Fabric -> Beta"
