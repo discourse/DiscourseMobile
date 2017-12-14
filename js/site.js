@@ -65,10 +65,6 @@ class Site {
           throw 'bad api'
         }
 
-        // correct url in case we had a redirect
-        let split = userApiKeyResponse.url.split('/')
-        url = split[0] + '//' + split[2]
-
         return fetch(`${url}/site/basic-info.json`).then(basicInfoResponse =>
           basicInfoResponse.json()
         )
