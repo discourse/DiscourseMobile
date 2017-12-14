@@ -319,7 +319,13 @@ class HomeScreen extends React.Component {
     )
   }
 
-  renderSites() {
+  _renderDebugRow() {
+    if (this._siteManager.sites.length !== 0) {
+      return <Components.DebugRow siteManager={this._siteManager} />
+    }
+  }
+
+  _renderSites() {
     if (this.state.loadingSites) {
       return <View style={{ flex: 1 }} />
     }
@@ -332,6 +338,11 @@ class HomeScreen extends React.Component {
               this.onToggleTermBar(this.state.displayTermBar)
             })
           }
+          onDidPressSuggestedSite={site => {
+            if (!this._siteManager.exists(site)) {
+              this._siteManager.add(site)
+            }
+          }}
         />
       )
     } else {
@@ -438,8 +449,8 @@ class HomeScreen extends React.Component {
         <Animated.View
           style={[styles.sitesContainer, { transform: [{ translateY }] }]}
         >
-          {this.renderSites()}
-          <Components.DebugRow siteManager={this._siteManager} />
+          {this._renderSites()}
+          {this._renderDebugRow()}
         </Animated.View>
       </SafeAreaView>
     )

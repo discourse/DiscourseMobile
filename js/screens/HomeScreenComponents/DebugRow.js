@@ -38,7 +38,7 @@ class DebugRow extends React.Component {
 
   render() {
     return (
-      <View style={{ padding: 5 }}>
+      <View>
         <Text style={styles.debugText}>
           Last Updated: {Moment(this.state.lastRefresh).format('h:mmA')}
         </Text>
@@ -50,7 +50,12 @@ class DebugRow extends React.Component {
 const styles = StyleSheet.create({
   debugText: {
     color: '#777',
-    fontSize: 10
+    fontSize: 10,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    paddingLeft: 6,
+    backgroundColor: 'transparent'
   }
 })
 
