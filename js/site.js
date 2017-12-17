@@ -65,6 +65,11 @@ class Site {
           throw 'bad api'
         }
 
+        // make sure we use the correct URL, eg: a URL could lead us to
+        // the correct destination after a redirect, we want to store the
+        // final destination and not the origin
+        url = userApiKeyResponse.url.replace('/user-api-key/new', '')
+
         return fetch(`${url}/site/basic-info.json`).then(basicInfoResponse =>
           basicInfoResponse.json()
         )
