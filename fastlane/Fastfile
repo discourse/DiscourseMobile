@@ -2,7 +2,8 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-APP_VERSION = "1.2.0"
+IOS_APP_VERSION = "1.2.0"
+ANDROID_APP_VERSION = "1.2.1"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
@@ -43,7 +44,7 @@ TEMPLATE
   gradle_properties = <<TEMPLATE
 # Generated from `fastlane bootstrap` do not edit or commit
 android.useDeprecatedNdk=true
-MYAPP_VERSION=#{APP_VERSION}
+MYAPP_VERSION=#{ANDROID_APP_VERSION}
 MYAPP_RELEASE_STORE_FILE=my-release-key.keystore
 MYAPP_RELEASE_KEY_ALIAS=discourse
 MYAPP_RELEASE_STORE_PASSWORD=#{google_key_store_password}
@@ -87,7 +88,7 @@ platform :ios do
     increment_version_number_in_plist(
       xcodeproj: "./ios/#{PROJECT_NAME}.xcodeproj",
       target: PROJECT_NAME,
-      version_number: APP_VERSION
+      version_number: IOS_APP_VERSION
     )
 
     increment_build_number(
