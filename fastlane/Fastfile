@@ -12,6 +12,16 @@ fastlane_version "1.101.0"
 
 default_platform :ios
 
+desc "Generate icons"
+lane :icons do
+  # make sure this is installed
+  # npm install -g yo generator-rn-toolbox
+  # brew install imagemagick
+  Dir.chdir("..") do
+    system("yo rn-toolbox:assets --icon icon.png")
+  end
+end
+
 desc "Bootstrap keys"
 lane :bootstrap do
   FileUtils.rm_rf("keys")
