@@ -82,7 +82,7 @@ class DiscourseUtils {
         return 'dot-circle-o'
       default:
         console.log(
-          'Couldn’t generate an icon name for notification',
+          'Couldn’t generaaate an icon name for notification',
           notification
         )
         return 'exclamation-circle'

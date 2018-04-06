@@ -42,9 +42,9 @@ buck-out/
 android/app/libs
 
 # fastlane
-*report.xml
-*Preview.html
-fastlane/screenshots
+*/fastlane/report.xml
+*/fastlane/Preview.html
+*/fastlane/screenshots
 *.swp
 android/app/fabric.properties
 fastlane/screenshots
@@ -59,3 +59,6 @@ ios/Discourse-tvOSTests
 ios/DiscourseTests
 *.keystore
 fastlane/google-play-api-secret.json
+
+# Bundle artifact
+*.jsbundle
