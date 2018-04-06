@@ -8,7 +8,7 @@ PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
 
-fastlane_version "1.101.0"
+fastlane_version "2.89.0"
 
 default_platform :ios
 
