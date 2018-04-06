@@ -262,7 +262,7 @@ class HomeScreen extends React.Component {
             Alert.alert(
               `Sorry, ${
                 term
-              } does not support mobile APIs, have owner upgrade Discourse to latest!`
+              } is not a correct URL to a Discourse forum or does not support mobile APIs, have owner upgrade Discourse to latest!`
             )
           } else {
             Alert.alert(`${term} was not found!`)
