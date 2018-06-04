@@ -340,7 +340,7 @@ class SiteManager {
 
             if (processedSites === sites.length) {
               // Don't save stuff in the background
-              if (somethingChanged && !this._background) {
+              if (!this._background) {
                 this.save()
               }
 
