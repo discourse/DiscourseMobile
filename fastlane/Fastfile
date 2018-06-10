@@ -108,6 +108,8 @@ platform :ios do
 
   desc "update all the certs"
   lane :certs do
+    system("rm -rf ~/Library/MobileDevice/Provisioning\ Profiles/*.mobile*")
+
     register_devices(devices_file: File.expand_path("./keys/ios-beta-devices.txt"))
 
     match(force: true, type: "appstore", git_url: KEYS_REPOSITORY)
@@ -127,7 +129,8 @@ platform :ios do
           "org.discourse.DiscourseApp" => "match AdHoc org.discourse.DiscourseApp"
         }
       },
-      project: "./ios/#{PROJECT_NAME}.xcodeproj"
+      project: "./ios/#{PROJECT_NAME}.xcodeproj",
+      export_xcargs: "-allowProvisioningUpdates"
     )
 
     crashlytics(

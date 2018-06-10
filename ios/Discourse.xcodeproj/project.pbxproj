@@ -1304,7 +1304,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.discourse.DiscourseApp;
 				PRODUCT_NAME = Discourse;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.discourse.DiscourseApp";
+				PROVISIONING_PROFILE = "8a5dde79-abbd-4707-a921-2b4412ef65ad";
+				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc org.discourse.DiscourseApp";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
