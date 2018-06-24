@@ -1,6 +1,6 @@
 package com.discourse;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 import android.content.Context;
 import android.util.Log;
 
@@ -17,7 +17,7 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   public static boolean running = false;
 
