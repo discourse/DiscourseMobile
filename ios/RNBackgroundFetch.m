@@ -45,11 +45,15 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
++ (BOOL)requiresMainQueueSetup {
+  return YES;
+}
+
 + (void)gotBackgroundFetch:(void (^)(UIBackgroundFetchResult))completionHandler {
-    
- 
+
+
     NSDictionary *payload = @{@"callback": completionHandler};
-    
+
     [[NSNotificationCenter defaultCenter] postNotificationName:RNBackgroundFetchGotNotification
                                                         object:self
                                                         userInfo: payload];
@@ -77,7 +81,7 @@ RCT_EXPORT_METHOD(done:(BOOL)gotData)
 
 
     completionHandler = [[notification userInfo] objectForKey:@"callback"];
-    
+
     self->_done = ^(BOOL hasData){
         if (hasData) {
             completionHandler(UIBackgroundFetchResultNewData);
@@ -85,10 +89,10 @@ RCT_EXPORT_METHOD(done:(BOOL)gotData)
             completionHandler(UIBackgroundFetchResultNoData);
         }
     };
-    
-    
+
+
     self->count++;
-    
+
     [self sendEventWithName:@"backgroundFetch" body:nil];
 }
 

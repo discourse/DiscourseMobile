@@ -6,10 +6,12 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.app.NotificationChannel;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -72,6 +74,11 @@ public class DiscourseFirebaseMessagingService extends FirebaseMessagingService 
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        if (Build.VERSION.SDK_INT >= 26) {
+          NotificationChannel channel = new NotificationChannel("default", "Discourse", NotificationManager.IMPORTANCE_DEFAULT);
+          channel.setDescription("Discourse notifications channel");
+          notificationManager.createNotificationChannel(channel);
+        }
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntent(intent);
@@ -86,12 +93,12 @@ public class DiscourseFirebaseMessagingService extends FirebaseMessagingService 
                 notificationIntent, 0);
 
 
-        Notification notification = new Notification.Builder(context)
+        Notification notification = new NotificationCompat.Builder(context,"default")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(String.valueOf(array.length()) + " new alert" + (array.length()==1 ? "" : "s"))
                 .setContentText(excerpt)
                 .setAutoCancel(true)
-                .setStyle(new Notification.BigTextStyle()
+                .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(sb.toString()))
                 .setContentIntent(pendingIntent)
                 .setNumber(array.length())

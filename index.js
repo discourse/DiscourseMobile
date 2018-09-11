@@ -2,9 +2,7 @@
  * @flow
  */
 
-import {
-  AppRegistry
-} from 'react-native'
+import { AppRegistry } from 'react-native'
 
 import Discourse from './js/Discourse'
 

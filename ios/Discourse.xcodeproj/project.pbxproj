@@ -34,12 +34,12 @@
 		9BA53773877E40FF90EF12CE /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 72D9AE590CD84DABBB3AB66C /* SimpleLineIcons.ttf */; };
 		A25AF18AE9904F57BC8B88A0 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 952AABF0517348CB9F03F3FB /* libRNDeviceInfo.a */; };
 		A5D495A66F92411DA8B3FB9A /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 923CE19D83A6422B8835F6CA /* MaterialCommunityIcons.ttf */; };
-		B50D1D931E554AE80013CA06 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B50D1D901E554ADA0013CA06 /* libRCTPushNotification.a */; };
 		B52583FE1E5551D7001E9B7C /* nav-icon-gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B52583FD1E5551D7001E9B7C /* nav-icon-gray@3x.png */; };
 		B587A4EF1E5549A8003AAE26 /* RNBackgroundFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = B587A4EC1E5549A8003AAE26 /* RNBackgroundFetch.m */; };
 		B587A4F01E5549A8003AAE26 /* RNBackgroundJob.m in Sources */ = {isa = PBXBuildFile; fileRef = B587A4EE1E5549A8003AAE26 /* RNBackgroundJob.m */; };
 		B5BE5C04DCE640A2935B51D2 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 93878C5DFDE7482D9BE57D4D /* FontAwesome.ttf */; };
 		CD8C22ACE1FA47FDB1ADC85F /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 460EF239AD964FD3B38E3432 /* Ionicons.ttf */; };
+		D03ED4D7213D64C700E228AB /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B50D1D901E554ADA0013CA06 /* libRCTPushNotification.a */; };
 		D04173051EE98A0F004B7E2F /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04173031EE98A0F004B7E2F /* Fabric.framework */; };
 		D04173061EE98A0F004B7E2F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04173041EE98A0F004B7E2F /* Crashlytics.framework */; };
 		D09E47561F2C996500AFDCBE /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09E47551F2C996500AFDCBE /* Photos.framework */; };
@@ -415,9 +415,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D03ED4D7213D64C700E228AB /* libRCTPushNotification.a in Frameworks */,
 				D09E47801F2C9D6100AFDCBE /* AVFoundation.framework in Frameworks */,
 				D09E47561F2C996500AFDCBE /* Photos.framework in Frameworks */,
-				B50D1D931E554AE80013CA06 /* libRCTPushNotification.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				D04173061EE98A0F004B7E2F /* Crashlytics.framework in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
@@ -1225,6 +1225,43 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		00E356F61AD99517003FC87E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = DiscourseTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Discourse.app/Discourse";
+			};
+			name = Debug;
+		};
+		00E356F71AD99517003FC87E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COPY_PHASE_STRIP = NO;
+				INFOPLIST_FILE = DiscourseTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Discourse.app/Discourse";
+			};
+			name = Release;
+		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1345,7 +1382,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1380,7 +1417,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
