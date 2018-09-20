@@ -160,7 +160,7 @@ class NotificationsScreen extends React.Component {
       })
       .done()
     let url = DiscourseUtils.endpointForSiteNotification(site, notification)
-    this.props.screenProps.openUrl(url)
+    this.props.screenProps.openUrl(url, true)
   }
 
   _onDidPressLeftButton() {
