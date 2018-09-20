@@ -1,21 +1,21 @@
 /* @flow */
-'use strict'
+"use strict";
 
-import React from 'react'
+import React from "react";
 
-import { InteractionManager, ListView, StyleSheet, View } from 'react-native'
+import { InteractionManager, ListView, StyleSheet, View } from "react-native";
 
-import { SafeAreaView } from 'react-navigation'
+import { SafeAreaView } from "react-navigation";
 
-import DiscourseUtils from '../DiscourseUtils'
-import Components from './NotificationsScreenComponents'
-import colors from '../colors'
+import DiscourseUtils from "../DiscourseUtils";
+import Components from "./NotificationsScreenComponents";
+import colors from "../colors";
 
 class NotificationsScreen extends React.Component {
-  static replyTypes = [1, 2, 3, 6, 9, 11, 15, 16, 17]
+  static replyTypes = [1, 2, 3, 6, 9, 11, 15, 16, 17];
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       progress: 0,
@@ -24,37 +24,37 @@ class NotificationsScreen extends React.Component {
       dataSource: new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2
       })
-    }
+    };
 
     this._onSiteChange = e => {
-      if (e.event === 'change') {
-        this.refresh()
+      if (e.event === "change") {
+        this.refresh();
       }
-    }
+    };
 
-    this._siteManager = this.props.screenProps.siteManager
+    this._siteManager = this.props.screenProps.siteManager;
 
     if (this.props.screenProps.seenNotificationMap) {
-      this._seenNotificationMap = this.props.screenProps.seenNotificationMap
-      this.refresh()
+      this._seenNotificationMap = this.props.screenProps.seenNotificationMap;
+      this.refresh();
     } else {
       this._siteManager
         .getSeenNotificationMap()
         .then(map => {
-          this._seenNotificationMap = map
-          this.props.screenProps.setSeenNotificationMap(map)
-          this.refresh()
+          this._seenNotificationMap = map;
+          this.props.screenProps.setSeenNotificationMap(map);
+          this.refresh();
         })
-        .done()
+        .done();
     }
   }
 
   componentDidMount() {
-    this._siteManager.subscribe(this._onSiteChange)
-    this._mounted = true
+    this._siteManager.subscribe(this._onSiteChange);
+    this._mounted = true;
 
     if (this._refreshed) {
-      this.removePlaceholder()
+      this.removePlaceholder();
     }
   }
 
@@ -62,23 +62,23 @@ class NotificationsScreen extends React.Component {
     if (this._mounted) {
       setTimeout(() => {
         if (this._mounted) {
-          callback()
+          callback();
         }
-      }, timeout)
+      }, timeout);
     }
   }
 
   removePlaceholder() {
     InteractionManager.runAfterInteractions(() => {
       this.setTimeout(() => {
-        this.setState({ renderPlaceholderOnly: false })
-      }, 0)
-    })
+        this.setState({ renderPlaceholderOnly: false });
+      }, 0);
+    });
   }
 
   componentWillUnmount() {
-    this._siteManager.unsubscribe(this._onSiteChange)
-    this._mounted = false
+    this._siteManager.unsubscribe(this._onSiteChange);
+    this._mounted = false;
   }
 
   render() {
@@ -90,13 +90,13 @@ class NotificationsScreen extends React.Component {
             {this._renderListHeader()}
           </View>
         </View>
-      )
+      );
     }
 
     return (
       <SafeAreaView
         style={styles.container}
-        forceInset={{ top: 'never', bottom: 'always' }}
+        forceInset={{ top: "never", bottom: "always" }}
       >
         <Components.NavigationBar
           onDidPressRightButton={() => this._onDidPressRightButton()}
@@ -106,30 +106,30 @@ class NotificationsScreen extends React.Component {
         {this._renderList()}
         {this._renderEmptyNotifications()}
       </SafeAreaView>
-    )
+    );
   }
 
   _renderEmptyNotifications() {
     if (this.state.dataSource.getRowCount() === 0) {
-      let text
+      let text;
       switch (this.state.selectedIndex) {
         case 0:
-          text = 'No new notifications.'
-          break
+          text = "No new notifications.";
+          break;
         case 1:
-          text = 'No replies.'
-          break
+          text = "No replies.";
+          break;
         case 2:
-          text = 'No notifications.'
-          break
+          text = "No notifications.";
+          break;
         default:
-          text = ''
+          text = "";
       }
 
-      return <Components.EmptyNotificationsView text={text} />
+      return <Components.EmptyNotificationsView text={text} />;
     }
 
-    return null
+    return null;
   }
 
   _renderList() {
@@ -140,7 +140,7 @@ class NotificationsScreen extends React.Component {
         renderHeader={() => this._renderListHeader()}
         renderRow={rowData => this._renderListRow(rowData)}
       />
-    )
+    );
   }
 
   _openNotificationForSite(notification, site) {
@@ -156,19 +156,19 @@ class NotificationsScreen extends React.Component {
     site
       .readNotification(notification)
       .catch(e => {
-        console.log('failed to mark notification as read ' + e)
+        console.log("failed to mark notification as read " + e);
       })
-      .done()
-    let url = DiscourseUtils.endpointForSiteNotification(site, notification)
-    this.props.screenProps.openUrl(url, true)
+      .done();
+    let url = DiscourseUtils.endpointForSiteNotification(site, notification);
+    this.props.screenProps.openUrl(url, true);
   }
 
   _onDidPressLeftButton() {
-    this.refresh()
+    this.refresh();
   }
 
   _onDidPressRightButton() {
-    this.props.navigation.goBack()
+    this.props.navigation.goBack();
   }
 
   _renderListRow(rowData) {
@@ -180,82 +180,82 @@ class NotificationsScreen extends React.Component {
         }
         notification={rowData.notification}
       />
-    )
+    );
   }
 
   refresh() {
     let types =
       this.state.selectedIndex === 1
         ? NotificationsScreen.replyTypes
-        : undefined
+        : undefined;
     this._fetchNotifications(types, {
       onlyNew: this.state.selectedIndex === 0,
       newMap: this._seenNotificationMap,
       silent: false
-    })
+    });
   }
 
   _renderListHeader() {
     return (
       <Components.Filter
         selectedIndex={this.state.selectedIndex}
-        tabs={['New', 'Replies', 'All']}
+        tabs={["New", "Replies", "All"]}
         onChange={index => {
           this.setState({ selectedIndex: index }, () => {
-            this.refresh()
-          })
+            this.refresh();
+          });
         }}
       />
-    )
+    );
   }
 
   _fetchNotifications(notificationTypes, options) {
     if (this._fetching) {
-      return
+      return;
     }
-    this._fetching = true
+    this._fetching = true;
 
     if (this._mounted) {
       setTimeout(() => {
         if (this._mounted && this._fetching) {
           this.setState({
             progress: Math.random() * 0.4
-          })
+          });
         }
-      }, 100)
+      }, 100);
     }
 
     this._siteManager
       .notifications(notificationTypes, options)
       .then(notifications => {
-        this._notification = notifications
-        this._refreshed = true
+        this._notification = notifications;
+        this._refreshed = true;
 
         if (this._mounted) {
           if (this.state.progress !== 0) {
             this.setState({
               progress: 1
-            })
+            });
 
-            this.removePlaceholder()
+            this.removePlaceholder();
 
             setTimeout(() => {
               if (this._mounted) {
-                this.setState({ progress: 0 })
+                this.setState({ progress: 0 });
               }
-            }, 400)
+            }, 400);
           }
 
           this.setState({
             dataSource: this.state.dataSource.cloneWithRows(notifications)
-          })
+          });
 
-          this.removePlaceholder()
+          this.removePlaceholder();
         }
       })
       .finally(() => {
-        this._fetching = false
-      })
+        this._fetching = false;
+      });
   }
 }
 
@@ -264,6 +264,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.grayBackground
   }
-})
+});
 
-export default NotificationsScreen
+export default NotificationsScreen;

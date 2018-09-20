@@ -1,19 +1,19 @@
 /* @flow */
-'use strict'
+"use strict";
 
-import React from 'react'
+import React from "react";
 
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
-import { SegmentedControlIOS, View } from 'react-native'
+import { SegmentedControlIOS, View } from "react-native";
 
-import colors from '../../colors'
+import colors from "../../colors";
 
 class Filter extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     selectedIndex: PropTypes.number.isRequired
-  }
+  };
 
   render() {
     return (
@@ -24,22 +24,22 @@ class Filter extends React.Component {
           style={styles.segmentedControl}
           selectedIndex={this.props.selectedIndex}
           onChange={event => {
-            this.props.onChange(event.nativeEvent.selectedSegmentIndex)
+            this.props.onChange(event.nativeEvent.selectedSegmentIndex);
           }}
         />
       </View>
-    )
+    );
   }
 }
 
 const styles = {
   container: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     flex: 1
   },
   segmentedControl: {
     margin: 12
   }
-}
+};
 
-export default Filter
+export default Filter;

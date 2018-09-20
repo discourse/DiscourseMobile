@@ -1,43 +1,43 @@
 /* @flow */
-'use strict'
+"use strict";
 
-import React from 'react'
+import React from "react";
 
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
-import { Animated, Easing, Text, TouchableHighlight, View } from 'react-native'
+import { Animated, Easing, Text, TouchableHighlight, View } from "react-native";
 
-import Dimensions from 'Dimensions'
+import Dimensions from "Dimensions";
 
-import _ from 'lodash'
-import Orientation from 'react-native-orientation'
+import _ from "lodash";
+import Orientation from "react-native-orientation";
 
-import colors from '../../colors'
+import colors from "../../colors";
 
 class Filter extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     selectedIndex: PropTypes.number.isRequired,
     tabs: PropTypes.array
-  }
+  };
 
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.initialOrientation = Orientation.getInitialOrientation()
+    this.initialOrientation = Orientation.getInitialOrientation();
 
     this.state = {
-      indicatorWidth: Dimensions.get('window').width / this.props.tabs.length,
+      indicatorWidth: Dimensions.get("window").width / this.props.tabs.length,
       selectedIndex: new Animated.Value(props.selectedIndex)
-    }
+    };
   }
 
   componentDidMount() {
-    Orientation.addOrientationListener(this._orientationDidChange.bind(this))
+    Orientation.addOrientationListener(this._orientationDidChange.bind(this));
   }
 
   componentWillUnmount() {
-    Orientation.removeOrientationListener(this._orientationDidChange)
+    Orientation.removeOrientationListener(this._orientationDidChange);
   }
 
   onDidSelect(index) {
@@ -46,9 +46,9 @@ class Filter extends React.Component {
       duration: 250,
       toValue: index,
       useNativeDriver: true
-    }).start()
+    }).start();
 
-    this.props.onChange(index)
+    this.props.onChange(index);
   }
 
   render() {
@@ -65,7 +65,7 @@ class Filter extends React.Component {
           ]}
         />
       </View>
-    )
+    );
   }
 
   _renderTabs(tabs) {
@@ -79,56 +79,56 @@ class Filter extends React.Component {
         >
           <Text style={styles.buttonText}>{tab.toUpperCase()}</Text>
         </TouchableHighlight>
-      )
-    })
+      );
+    });
   }
 
   _indicatorLeftPosition() {
     return this.state.selectedIndex.interpolate({
       inputRange: [0, 1],
       outputRange: [0, this.state.indicatorWidth]
-    })
+    });
   }
 
   _orientationDidChange(newOrientation) {
-    let width
+    let width;
 
     if (newOrientation === this.initialOrientation) {
-      width = Dimensions.get('window').width / this.props.tabs.length
+      width = Dimensions.get("window").width / this.props.tabs.length;
     } else {
-      width = Dimensions.get('window').height / this.props.tabs.length
+      width = Dimensions.get("window").height / this.props.tabs.length;
     }
 
-    this.setState({ indicatorWidth: width })
+    this.setState({ indicatorWidth: width });
   }
 }
 
 const styles = {
   container: {
-    alignItems: 'flex-end',
-    justifyContent: 'center',
+    alignItems: "flex-end",
+    justifyContent: "center",
     backgroundColor: colors.grayUILight,
-    flexDirection: 'row'
+    flexDirection: "row"
   },
   button: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: "column",
     backgroundColor: colors.grayUILight
   },
   buttonText: {
     padding: 12,
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
     color: colors.grayUI,
-    textAlign: 'center'
+    textAlign: "center"
   },
   indicator: {
     backgroundColor: colors.grayUI,
     height: 3,
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     bottom: 0
   }
-}
+};
 
-export default Filter
+export default Filter;

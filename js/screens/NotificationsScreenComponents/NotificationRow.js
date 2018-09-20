@@ -1,20 +1,26 @@
 /* @flow */
-'use strict'
+"use strict";
 
-import React from 'react'
+import React from "react";
 
-import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native'
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View
+} from "react-native";
 
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from "react-native-vector-icons/FontAwesome";
 
-import DiscourseUtils from '../../DiscourseUtils'
+import DiscourseUtils from "../../DiscourseUtils";
 
 class NotificationRow extends React.Component {
   render() {
     return (
       <TouchableHighlight
         style={[styles.contentView, this._backgroundColor()]}
-        underlayColor={'#ffffa6'}
+        underlayColor={"#ffffa6"}
         onPress={() => this.props.onClick()}
       >
         <View style={styles.container}>
@@ -26,11 +32,11 @@ class NotificationRow extends React.Component {
           />
         </View>
       </TouchableHighlight>
-    )
+    );
   }
 
   _iconForNotification(notification) {
-    let name = DiscourseUtils.iconNameForNotification(notification)
+    let name = DiscourseUtils.iconNameForNotification(notification);
     return (
       <Icon
         style={styles.notificationIcon}
@@ -38,23 +44,23 @@ class NotificationRow extends React.Component {
         size={14}
         color="#919191"
       />
-    )
+    );
   }
 
   _textForNotification(notification) {
-    let innerText
+    let innerText;
 
-    let data = this.props.notification.data
-    let displayName = data.display_username
+    let data = this.props.notification.data;
+    let displayName = data.display_username;
 
     if (notification.notification_type === 5) {
       // special logic for multi like
       if (data.count === 2) {
-        displayName = `${displayName} and ${data.username2}`
+        displayName = `${displayName} and ${data.username2}`;
       } else if (data.count > 2) {
-        let other = data.count === 2 ? 'other' : 'others'
+        let other = data.count === 2 ? "other" : "others";
         displayName = `${displayName}, ${data.username2} and ${data.count -
-          2} ${other}`
+          2} ${other}`;
       }
     }
 
@@ -78,75 +84,77 @@ class NotificationRow extends React.Component {
           <Text>
             {displayName}
             <Text style={styles.notificationText}>
-              {' '}
+              {" "}
               {this.props.notification.data.topic_title}
             </Text>
           </Text>
-        )
-        break
+        );
+        break;
       case 12:
         innerText = (
           <Text style={styles.notificationText}>
-            {' '}
+            {" "}
             {this.props.notification.data.badge_name}
           </Text>
-        )
-        break
+        );
+        break;
       case 16:
-        let messages = data.inbox_count > 1 ? 'messages' : 'message'
+        let messages = data.inbox_count > 1 ? "messages" : "message";
         innerText = (
           <Text style={styles.notificationText}>
             {`${data.inbox_count} ${messages} in your ${data.group_name} inbox`}
           </Text>
-        )
-        break
+        );
+        break;
       default:
-        console.log('Couldn’t generate text for notification', notification)
-        innerText = <Text>Unmapped type: {notification.notification_type}</Text>
+        console.log("Couldn’t generate text for notification", notification);
+        innerText = (
+          <Text>Unmapped type: {notification.notification_type}</Text>
+        );
     }
 
-    return <Text style={styles.textContainer}>{innerText}</Text>
+    return <Text style={styles.textContainer}>{innerText}</Text>;
   }
 
   _backgroundColor() {
-    let read = this.props.notification.read
+    let read = this.props.notification.read;
     if (read) {
-      return { backgroundColor: 'white' }
+      return { backgroundColor: "white" };
     } else {
-      return { backgroundColor: '#d1f0ff' }
+      return { backgroundColor: "#d1f0ff" };
     }
   }
 }
 
 const styles = StyleSheet.create({
   contentView: {
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
     borderBottomWidth: StyleSheet.hairlineWidth
   },
   textContainer: {
     flex: 1,
-    flexDirection: 'column',
-    alignSelf: 'center',
+    flexDirection: "column",
+    alignSelf: "center",
     fontSize: 14
   },
   notificationText: {
-    color: '#08c'
+    color: "#08c"
   },
   container: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     margin: 12
   },
   siteIcon: {
     width: 25,
     height: 25,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginLeft: 12
   },
   notificationIcon: {
-    alignSelf: 'center',
+    alignSelf: "center",
     marginRight: 12
   }
-})
+});
 
-export default NotificationRow
+export default NotificationRow;

@@ -1,8 +1,8 @@
 /* @flow */
-'use strict'
+"use strict";
 
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 class Notification extends React.Component {
   render() {
@@ -13,34 +13,34 @@ class Notification extends React.Component {
             <Text style={styles.numberText}>{this.props.count}</Text>
           </View>
         </View>
-      )
+      );
     } else {
-      return null
+      return null;
     }
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    backgroundColor: 'white',
-    justifyContent: 'center',
+    alignItems: "center",
+    alignSelf: "flex-start",
+    backgroundColor: "white",
+    justifyContent: "center",
     marginBottom: 6,
     marginLeft: 6
   },
   number: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 6,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     padding: 6
   },
   numberText: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontWeight: 'bold'
+    fontWeight: "bold"
   }
-})
+});
 
-export default Notification
+export default Notification;
