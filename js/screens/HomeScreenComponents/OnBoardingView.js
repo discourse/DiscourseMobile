@@ -1,9 +1,9 @@
 /* @flow */
-'use strict'
+"use strict";
 
-import React from 'react'
+import React from "react";
 
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
 import {
   ListView,
@@ -13,28 +13,28 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   View
-} from 'react-native'
+} from "react-native";
 
-import colors from '../../colors'
+import colors from "../../colors";
 
-import Site from '../../site'
+import Site from "../../site";
 
 class OnBoardingView extends React.Component {
   static propTypes = {
     onDidPressAddSite: PropTypes.func.isRequired,
     onDidPressSuggestedSite: PropTypes.func.isRequired
-  }
+  };
 
   constructor(props) {
-    super(props)
+    super(props);
 
     const dataSource = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
-    })
+    });
 
-    this.state = { dataSource, suggestedSitesLoaded: false }
+    this.state = { dataSource, suggestedSitesLoaded: false };
 
-    this._fetchSuggestedSites(suggestedSites)
+    this._fetchSuggestedSites(suggestedSites);
   }
 
   _fetchSuggestedSites(suggestedSites) {
@@ -42,9 +42,9 @@ class OnBoardingView extends React.Component {
       return fetch(`${url}/site/basic-info.json`)
         .then(response => response.json())
         .then(info => {
-          return { info, url }
-        })
-    })
+          return { info, url };
+        });
+    });
 
     Promise.all(sitesFetchPromises)
       .then(responses => {
@@ -54,26 +54,26 @@ class OnBoardingView extends React.Component {
             title: response.info.title,
             description: response.info.description,
             icon: response.info.apple_touch_icon_url
-          })
-        })
+          });
+        });
       })
       .then(sites => {
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(sites),
           suggestedSitesLoaded: true
-        })
+        });
       })
-      .catch(error => console.log(error))
+      .catch(error => console.log(error));
   }
 
   _renderOnBoardingRow(site) {
-    const lastRow = site.url === suggestedSites[suggestedSites.length - 1]
-    let lastRowStyle = {}
+    const lastRow = site.url === suggestedSites[suggestedSites.length - 1];
+    let lastRowStyle = {};
 
     if (lastRow) {
-      lastRowStyle.borderBottomColor = colors.grayBorder
-      lastRowStyle.borderBottomWidth = StyleSheet.hairlineWidth
-      lastRowStyle.marginBottom = 16
+      lastRowStyle.borderBottomColor = colors.grayBorder;
+      lastRowStyle.borderBottomWidth = StyleSheet.hairlineWidth;
+      lastRowStyle.marginBottom = 16;
     }
 
     return (
@@ -85,7 +85,7 @@ class OnBoardingView extends React.Component {
           <Image style={styles.icon} source={{ uri: site.icon }} />
           <View style={styles.info}>
             <Text ellipsizeMode="tail" numberOfLines={1} style={styles.url}>
-              {site.url.replace(/^https?:\/\//, '')}
+              {site.url.replace(/^https?:\/\//, "")}
             </Text>
             <Text
               ellipsizeMode="tail"
@@ -99,7 +99,7 @@ class OnBoardingView extends React.Component {
           <Text style={styles.connect}>+ Add</Text>
         </View>
       </TouchableHighlight>
-    )
+    );
   }
 
   _renderSuggestedSitesIntro() {
@@ -108,13 +108,13 @@ class OnBoardingView extends React.Component {
         <View style={styles.suggestedSitesContainer}>
           <Text style={styles.text}>
             <Text style={styles.title}>Don’t know where to start?</Text>
-            {'\n'}
+            {"\n"}
             <Text style={styles.subtitle}>
               Check out these popular communities.
             </Text>
           </Text>
         </View>
-      )
+      );
     }
   }
 
@@ -123,7 +123,7 @@ class OnBoardingView extends React.Component {
       <View style={styles.addSiteContainer}>
         <Text style={styles.text}>
           <Text style={styles.title}>You don’t have any sites yet.</Text>
-          {'\n'}
+          {"\n"}
           <Text style={styles.subtitle}>
             Add Discourse sites to keep track of.
           </Text>
@@ -138,7 +138,7 @@ class OnBoardingView extends React.Component {
 
         {this._renderSuggestedSitesIntro()}
       </View>
-    )
+    );
   }
 
   render() {
@@ -150,34 +150,34 @@ class OnBoardingView extends React.Component {
         renderHeader={() => this._renderOnBoardingHeader()}
         renderRow={site => this._renderOnBoardingRow(site)}
       />
-    )
+    );
   }
 }
 
 const suggestedSites = [
-  'https://meta.discourse.org',
-  'https://community.cartalk.com',
-  'https://community.imgur.com',
-  'https://bbs.boingboing.net'
-]
+  "https://meta.discourse.org",
+  "https://community.cartalk.com",
+  "https://community.imgur.com",
+  "https://bbs.boingboing.net"
+];
 
 const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     padding: 32,
-    textAlign: 'center'
+    textAlign: "center"
   },
   addSiteButtonText: {
     backgroundColor: colors.blueCallToAction,
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
     padding: 8,
-    textAlign: 'center'
+    textAlign: "center"
   },
   title: {
     color: colors.grayTitle,
-    fontWeight: '500'
+    fontWeight: "500"
   },
   subtitle: {
     color: colors.graySubtitle
@@ -189,27 +189,27 @@ const styles = StyleSheet.create({
     borderRightWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.grayBorder,
     borderTopWidth: StyleSheet.hairlineWidth,
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 12,
     marginRight: 16,
     marginLeft: 16,
-    backgroundColor: 'white'
+    backgroundColor: "white"
   },
   icon: {
-    alignSelf: 'center',
+    alignSelf: "center",
     height: 40,
     width: 40
   },
   info: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    justifyContent: "space-between",
     paddingLeft: 12
   },
   url: {
     color: colors.grayTitle,
     fontSize: 16,
-    fontWeight: 'normal'
+    fontWeight: "normal"
   },
   description: {
     color: colors.graySubtitle,
@@ -217,14 +217,14 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   connect: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     backgroundColor: colors.blueCallToAction,
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
     marginLeft: 6,
     marginBottom: 6,
-    overflow: 'hidden',
+    overflow: "hidden",
     padding: 6
   },
   suggestedSitesContainer: {
@@ -232,10 +232,10 @@ const styles = StyleSheet.create({
   },
   addSiteContainer: {
     marginTop: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column'
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column"
   }
-})
+});
 
-export default OnBoardingView
+export default OnBoardingView;

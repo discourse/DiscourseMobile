@@ -1,9 +1,9 @@
 /* @flow */
-'use strict'
+"use strict";
 
-import React from 'react'
+import React from "react";
 
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
 import {
   Platform,
@@ -11,19 +11,19 @@ import {
   Text,
   TouchableHighlight,
   View
-} from 'react-native'
+} from "react-native";
 
-import { SafeAreaView } from 'react-navigation'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { SafeAreaView } from "react-navigation";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-import ProgressBar from '../../ProgressBar'
-import colors from '../../colors'
+import ProgressBar from "../../ProgressBar";
+import colors from "../../colors";
 
 class NavigationBar extends React.Component {
   static propTypes = {
     onDidPressLeftButton: PropTypes.func,
     onDidPressRightButton: PropTypes.func
-  }
+  };
 
   render() {
     // not sure we need a refresh button for now, it live refreshes
@@ -31,7 +31,7 @@ class NavigationBar extends React.Component {
     return (
       <SafeAreaView
         style={styles.container}
-        forceInset={{ top: 'always', bottom: 'never' }}
+        forceInset={{ top: "always", bottom: "never" }}
       >
         <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer} />
@@ -39,47 +39,47 @@ class NavigationBar extends React.Component {
           <Text style={styles.title}>Notifications</Text>
         </View>
         <View style={styles.rightContainer}>
-          {this._renderButton(this.props.onDidPressRightButton, 'close')}
+          {this._renderButton(this.props.onDidPressRightButton, "close")}
         </View>
         <View style={styles.separator} />
       </SafeAreaView>
-    )
+    );
   }
 
   _renderButton(callback, iconName) {
     return (
       <TouchableHighlight
-        underlayColor={'white'}
+        underlayColor={"white"}
         style={styles.button}
         onPress={callback}
       >
         <Icon name={iconName} size={20} color={colors.grayUI} />
       </TouchableHighlight>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    height: Platform.OS === 'ios' ? 44 : 55
+    backgroundColor: "white",
+    flexDirection: "row",
+    height: Platform.OS === "ios" ? 44 : 55
   },
   leftContainer: {
     flex: 1
   },
   rightContainer: {
     flex: 1,
-    alignItems: 'flex-end'
+    alignItems: "flex-end"
   },
   titleContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
   separator: {
     height: 1,
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
@@ -90,11 +90,11 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   button: {
-    width: Platform.OS === 'ios' ? 44 : 55,
-    height: Platform.OS === 'ios' ? 44 : 55,
-    justifyContent: 'center',
-    alignItems: 'center'
+    width: Platform.OS === "ios" ? 44 : 55,
+    height: Platform.OS === "ios" ? 44 : 55,
+    justifyContent: "center",
+    alignItems: "center"
   }
-})
+});
 
-export default NavigationBar
+export default NavigationBar;

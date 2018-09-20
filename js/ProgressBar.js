@@ -1,19 +1,19 @@
 /* @flow */
-'use strict'
+"use strict";
 
-import React from 'react'
+import React from "react";
 
-import { View } from 'react-native'
+import { View } from "react-native";
 
-import Dimensions from 'Dimensions'
+import Dimensions from "Dimensions";
 
-import { Bar } from 'react-native-progress'
+import { Bar } from "react-native-progress";
 
-import colors from './colors'
+import colors from "./colors";
 
 class ProgressBar extends React.Component {
   render() {
-    let height = this.props.progress === 0 ? 0 : 3
+    let height = this.props.progress === 0 ? 0 : 3;
 
     return (
       <View style={[styles.container, { height: height }]}>
@@ -23,21 +23,21 @@ class ProgressBar extends React.Component {
           borderRadius={0}
           height={height}
           progress={this.props.progress}
-          width={Dimensions.get('window').width}
+          width={Dimensions.get("window").width}
         />
       </View>
-    )
+    );
   }
 }
 
 const styles = {
   container: {
     zIndex: 10,
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     backgroundColor: colors.grayBackground
   }
-}
+};
 
-export default ProgressBar
+export default ProgressBar;

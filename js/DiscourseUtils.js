@@ -1,11 +1,11 @@
 /* @flow */
-'use strict'
+"use strict";
 
 class DiscourseUtils {
   static endpointForSiteNotification(site, notification) {
-    let endpoint
+    let endpoint;
 
-    let data = notification.data
+    let data = notification.data;
 
     switch (notification.notification_type) {
       case 1:
@@ -25,69 +25,69 @@ class DiscourseUtils {
       case 17:
         endpoint = `/t/${notification.slug}/${notification.topic_id}/${
           notification.post_number
-        }`
-        break
+        }`;
+        break;
       case 12:
-        endpoint = `/badges/${data.badge_id}/basic?username=${data.username}`
-        break
+        endpoint = `/badges/${data.badge_id}/basic?username=${data.username}`;
+        break;
       case 16:
-        endpoint = `/users/${data.username}/messages/group/${data.group_name}`
-        break
+        endpoint = `/users/${data.username}/messages/group/${data.group_name}`;
+        break;
       default:
         console.log(
-          'Couldn’t generate an endpoint for notification',
+          "Couldn’t generate an endpoint for notification",
           notification
-        )
-        endpoint = ''
+        );
+        endpoint = "";
     }
 
-    return `${site.url}${endpoint}`
+    return `${site.url}${endpoint}`;
   }
 
   static iconNameForNotification(notification) {
     switch (notification.notification_type) {
       case 1:
-        return 'at'
+        return "at";
       case 2:
-        return 'reply'
+        return "reply";
       case 3:
-        return 'quote-right'
+        return "quote-right";
       case 4:
-        return 'pencil'
+        return "pencil";
       case 5:
-        return 'heart'
+        return "heart";
       case 6:
-        return 'envelope-o'
+        return "envelope-o";
       case 7:
-        return 'envelope-o'
+        return "envelope-o";
       case 8:
-        return 'user'
+        return "user";
       case 9:
-        return 'reply'
+        return "reply";
       case 10:
-        return 'sign-out'
+        return "sign-out";
       case 11:
-        return 'link'
+        return "link";
       case 12:
-        return 'certificate'
+        return "certificate";
       case 13:
-        return 'hand-o-right'
+        return "hand-o-right";
       case 14:
-        return 'check-square'
+        return "check-square";
       case 15:
-        return 'at'
+        return "at";
       case 16:
-        return 'group'
+        return "group";
       case 17:
-        return 'dot-circle-o'
+        return "dot-circle-o";
       default:
         console.log(
-          'Couldn’t generaaate an icon name for notification',
+          "Couldn’t generaaate an icon name for notification",
           notification
-        )
-        return 'exclamation-circle'
+        );
+        return "exclamation-circle";
     }
   }
 }
 
-export default DiscourseUtils
+export default DiscourseUtils;

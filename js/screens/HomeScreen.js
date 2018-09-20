@@ -1,7 +1,7 @@
 /* @flow */
-'use strict'
+"use strict";
 
-import React from 'react'
+import React from "react";
 
 import {
   Alert,
@@ -16,29 +16,28 @@ import {
   RefreshControl,
   StyleSheet,
   UIManager,
-  View,
-  Button
-} from 'react-native'
+  View
+} from "react-native";
 
-import { SafeAreaView } from 'react-navigation'
-import SortableListView from 'react-native-sortable-listview'
-import DiscourseSafariViewManager from '../../lib/discourse-safari-view-manager'
-import BackgroundFetch from '../../lib/background-fetch'
+import { SafeAreaView } from "react-navigation";
+import SortableListView from "react-native-sortable-listview";
+import DiscourseSafariViewManager from "../../lib/discourse-safari-view-manager";
+import BackgroundFetch from "../../lib/background-fetch";
 
-import Site from '../site'
-import Components from './HomeScreenComponents'
-import colors from '../colors'
+import Site from "../site";
+import Components from "./HomeScreenComponents";
+import colors from "../colors";
 
 UIManager.setLayoutAnimationEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true)
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 
-const AndroidToken = NativeModules.AndroidToken
+const AndroidToken = NativeModules.AndroidToken;
 
 class HomeScreen extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    this._siteManager = this.props.screenProps.siteManager
+    this._siteManager = this.props.screenProps.siteManager;
 
     this.state = {
       addSiteProgress: 0,
@@ -54,59 +53,59 @@ class HomeScreen extends React.Component {
       suggestionsDataSource: new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2
       })
-    }
+    };
 
-    this._onChangeSites = e => this.onChangeSites(e)
+    this._onChangeSites = e => this.onChangeSites(e);
 
     this._handleOpenUrl = event => {
-      console.log('handling incoming url')
-      console.log(event)
-      let split = event.url.split('payload=')
+      console.log("handling incoming url");
+      console.log(event);
+      let split = event.url.split("payload=");
       if (split.length === 2) {
-        this.closeBrowser()
-        this._siteManager.handleAuthPayload(decodeURIComponent(split[1]))
+        this.closeBrowser();
+        this._siteManager.handleAuthPayload(decodeURIComponent(split[1]));
       }
-    }
+    };
 
-    if (Platform.OS === 'android') {
+    if (Platform.OS === "android") {
       AndroidToken.GetInstanceId(id => {
-        this._siteManager.registerClientId(id)
-      })
+        this._siteManager.registerClientId(id);
+      });
     }
 
-    if (Platform.OS === 'ios') {
-      PushNotificationIOS.addEventListener('notification', e =>
+    if (Platform.OS === "ios") {
+      PushNotificationIOS.addEventListener("notification", e =>
         this._handleRemoteNotification(e)
-      )
-      PushNotificationIOS.addEventListener('localNotification', e =>
+      );
+      PushNotificationIOS.addEventListener("localNotification", e =>
         this._handleLocalNotification(e)
-      )
+      );
 
-      PushNotificationIOS.addEventListener('register', s => {
-        this._siteManager.registerClientId(s)
-      })
+      PushNotificationIOS.addEventListener("register", s => {
+        this._siteManager.registerClientId(s);
+      });
     }
   }
 
   _handleLocalNotification(e) {
-    console.log('got local notification')
-    console.log(e)
+    console.log("got local notification");
+    console.log(e);
     if (
-      AppState.currentState !== 'active' &&
+      AppState.currentState !== "active" &&
       e._data &&
       e._data.discourse_url
     ) {
-      console.log('open safari view')
-      DiscourseSafariViewManager.openAuthSessionAsync(e._data.discourse_url)
+      console.log("open safari view");
+      DiscourseSafariViewManager.openAuthSessionAsync(e._data.discourse_url);
     }
   }
 
   _handleRemoteNotification(e) {
-    console.log('got remote notification')
-    console.log(e)
-    if (e._data && e._data.AppState === 'inactive' && e._data.discourse_url) {
-      console.log('open safari view')
-      DiscourseSafariViewManager.openAuthSessionAsync(e._data.discourse_url)
+    console.log("got remote notification");
+    console.log(e);
+    if (e._data && e._data.AppState === "inactive" && e._data.discourse_url) {
+      console.log("open safari view");
+      DiscourseSafariViewManager.openAuthSessionAsync(e._data.discourse_url);
     }
 
     // TODO if we are active we should try to notify user somehow that a notification
@@ -116,113 +115,113 @@ class HomeScreen extends React.Component {
 
   visitSite(site) {
     if (site.authToken) {
-      this.props.screenProps.openUrl(site.url, true)
-      return
+      this.props.screenProps.openUrl(site.url, true);
+      return;
     }
 
     this._siteManager.generateAuthURL(site).then(async url => {
-      this.props.screenProps.openUrl(url)
-    })
+      this.props.screenProps.openUrl(url);
+    });
   }
 
   closeBrowser() {
-    if (Platform.OS === 'ios') {
-      DiscourseSafariViewManager.dismissBrowser()
+    if (Platform.OS === "ios") {
+      DiscourseSafariViewManager.dismissBrowser();
     } else {
       // TODO decide if we need this for android, probably not, its just a hack
     }
   }
 
   componentDidMount() {
-    Linking.addEventListener('url', this._handleOpenUrl)
+    Linking.addEventListener("url", this._handleOpenUrl);
 
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === "ios") {
       let doRefresh = () => {
-        console.log('Background fetch Called!')
+        console.log("Background fetch Called!");
 
         this._siteManager
           .refreshSites({ ui: false, fast: true, background: true })
           .then(state => {
-            console.log('Finished refreshing sites in BG fetch!')
-            console.log(state)
+            console.log("Finished refreshing sites in BG fetch!");
+            console.log(state);
 
             if (state.alerts) {
-              console.log('Got ' + state.alerts.length + ' alert in BG fetch')
+              console.log("Got " + state.alerts.length + " alert in BG fetch");
 
               state.alerts.forEach(a => {
                 if (a.excerpt) {
-                  let excerpt = a.username + ': ' + a.excerpt
-                  excerpt = excerpt.substr(0, 250)
+                  let excerpt = a.username + ": " + a.excerpt;
+                  excerpt = excerpt.substr(0, 250);
 
                   if (!a.site.hasPush) {
                     console.log(
                       `publishing local notifications for ${a.site.url}`
-                    )
+                    );
                     PushNotificationIOS.presentLocalNotification({
                       alertBody: excerpt,
                       userInfo: { discourse_url: a.url }
-                    })
+                    });
                   }
                 }
-              })
+              });
             }
           })
           .catch(e => {
-            console.log('WARN: failed in bg fetch')
-            console.log(e)
+            console.log("WARN: failed in bg fetch");
+            console.log(e);
           })
           .finally(() => {
             PushNotificationIOS.checkPermissions(p => {
               if (p.badge) {
-                let total = this._siteManager.totalUnread()
-                console.log('Setting badge to ' + total)
-                PushNotificationIOS.setApplicationIconBadgeNumber(total)
+                let total = this._siteManager.totalUnread();
+                console.log("Setting badge to " + total);
+                PushNotificationIOS.setApplicationIconBadgeNumber(total);
               }
 
-              console.log('finishing up background fetch')
-              BackgroundFetch.done(true)
-            })
-          })
-      }
+              console.log("finishing up background fetch");
+              BackgroundFetch.done(true);
+            });
+          });
+      };
 
-      BackgroundFetch.addEventListener('backgroundFetch', () => {
+      BackgroundFetch.addEventListener("backgroundFetch", () => {
         if (this._siteManager.refreshing) {
           // assume prviously aborted and force allow a refresh
           console.log(
-            'WARNING: forcing refresh cause _siteManager was stuck refreshing'
-          )
-          this._siteManager.refreshing = false
+            "WARNING: forcing refresh cause _siteManager was stuck refreshing"
+          );
+          this._siteManager.refreshing = false;
         }
 
-        doRefresh()
-      })
+        doRefresh();
+      });
     }
 
-    this._siteManager.subscribe(this._onChangeSites)
-    this._siteManager.refreshInterval(15000)
-    this._onChangeSites()
+    this._siteManager.subscribe(this._onChangeSites);
+    this._siteManager.refreshInterval(15000);
+    this._onChangeSites();
   }
 
   componentWillUnmount() {
-    Linking.removeEventListener('url', this._handleOpenUrl)
-    this._siteManager.unsubscribe(this._onChangeSites)
+    Linking.removeEventListener("url", this._handleOpenUrl);
+    this._siteManager.unsubscribe(this._onChangeSites);
   }
 
   onChangeSites(e) {
     if (this._siteManager.isLoading() !== this.state.loadingSites) {
-      this.setState({ loadingSites: this._siteManager.isLoading() })
+      this.setState({ loadingSites: this._siteManager.isLoading() });
     }
-    if (e && e.event === 'change') {
-      this.setState({ data: this._siteManager.toObject() })
+    if (e && e.event === "change") {
+      this.setState({ data: this._siteManager.toObject() });
     }
   }
 
   doSearch(term) {
     if (term.length === 0) {
-      return new Promise((resolve, reject) => reject())
+      return new Promise((resolve, reject) => reject());
     }
 
-    this.setState({ addSiteProgress: Math.random() * 0.4 })
+    this.setState({ addSiteProgress: Math.random() * 0.4 });
 
     return new Promise((resolve, reject) => {
       Site.fromTerm(term)
@@ -233,61 +232,61 @@ class HomeScreen extends React.Component {
               addSiteProgress: 1
             },
             () => {
-              this.onToggleTermBar(this.state.displayTermBar)
+              this.onToggleTermBar(this.state.displayTermBar);
             }
-          )
+          );
 
           if (site) {
             if (this._siteManager.exists(site)) {
-              throw 'dupe site'
+              throw "dupe site";
             }
-            this._siteManager.add(site)
+            this._siteManager.add(site);
           }
-          resolve(site)
+          resolve(site);
         })
         .catch(e => {
-          console.log(e)
+          console.log(e);
 
-          if (e === 'dupe site') {
-            Alert.alert(`${term} already exists`)
-          } else if (e === 'bad api') {
+          if (e === "dupe site") {
+            Alert.alert(`${term} already exists`);
+          } else if (e === "bad api") {
             Alert.alert(
               `Sorry, ${term} is not a correct URL to a Discourse forum or does not support mobile APIs, have owner upgrade Discourse to latest!`
-            )
+            );
           } else {
-            Alert.alert(`${term} was not found!`)
+            Alert.alert(`${term} was not found!`);
           }
 
           this.setState({ displayTermBar: true, addSiteProgress: 1 }, () => {
-            this.onToggleTermBar(this.state.displayTermBar)
-          })
+            this.onToggleTermBar(this.state.displayTermBar);
+          });
 
-          reject('failure')
+          reject("failure");
         })
         .finally(() => {
           setTimeout(() => {
-            this.setState({ addSiteProgress: 0 })
-          }, 1000)
+            this.setState({ addSiteProgress: 0 });
+          }, 1000);
         })
-        .done()
-    })
+        .done();
+    });
   }
 
   refreshSites(opts) {
     if (this.refreshing) {
-      return false
+      return false;
     }
 
     if (opts.ui) {
-      this.setState({ isRefreshing: true })
+      this.setState({ isRefreshing: true });
     }
 
     this._siteManager.refreshSites(opts).then(() => {
-      this.refreshing = false
+      this.refreshing = false;
       this.setState({
         isRefreshing: false
-      })
-    })
+      });
+    });
   }
 
   shouldDisplayOnBoarding() {
@@ -297,7 +296,7 @@ class HomeScreen extends React.Component {
       !this.state.isRefreshing &&
       this.state.addSiteProgress === 0 &&
       !this.state.displayTermBar
-    )
+    );
   }
 
   renderSuggestions() {
@@ -306,18 +305,18 @@ class HomeScreen extends React.Component {
         dataSource={this.state.suggestionsDataSource}
         renderRow={rowData => <View>{rowData}</View>}
       />
-    )
+    );
   }
 
   _renderDebugRow() {
     if (this._siteManager.sites.length !== 0) {
-      return <Components.DebugRow siteManager={this._siteManager} />
+      return <Components.DebugRow siteManager={this._siteManager} />;
     }
   }
 
   _renderSites() {
     if (this.state.loadingSites) {
-      return <View style={{ flex: 1 }} />
+      return <View style={{ flex: 1 }} />;
     }
 
     if (this.shouldDisplayOnBoarding()) {
@@ -325,16 +324,16 @@ class HomeScreen extends React.Component {
         <Components.OnBoardingView
           onDidPressAddSite={() =>
             this.setState({ displayTermBar: true }, () => {
-              this.onToggleTermBar(this.state.displayTermBar)
+              this.onToggleTermBar(this.state.displayTermBar);
             })
           }
           onDidPressSuggestedSite={site => {
             if (!this._siteManager.exists(site)) {
-              this._siteManager.add(site)
+              this._siteManager.add(site);
             }
           }}
         />
-      )
+      );
     } else {
       return (
         <SortableListView
@@ -348,20 +347,20 @@ class HomeScreen extends React.Component {
           rowHasChanged={(r1, r2) => {
             // TODO: r2 returns as an Object instead of a Site
             // casting Site shouldn't be needed
-            return new Site(r1).toJSON() !== new Site(r2).toJSON()
+            return new Site(r1).toJSON() !== new Site(r2).toJSON();
           }}
           onRowMoved={e => {
-            this._siteManager.updateOrder(e.from, e.to)
-            this.forceUpdate()
+            this._siteManager.updateOrder(e.from, e.to);
+            this.forceUpdate();
           }}
           onRowActive={() => {
-            this.setState({ refreshingEnabled: false })
+            this.setState({ refreshingEnabled: false });
           }}
           onMoveEnd={() => {
-            this.setState({ refreshingEnabled: true })
+            this.setState({ refreshingEnabled: true });
           }}
           onMoveCancel={() => {
-            this.setState({ refreshingEnabled: true })
+            this.setState({ refreshingEnabled: true });
           }}
           refreshControl={
             <RefreshControl
@@ -384,7 +383,7 @@ class HomeScreen extends React.Component {
             />
           )}
         />
-      )
+      );
     }
   }
 
@@ -396,19 +395,19 @@ class HomeScreen extends React.Component {
       useNativeDriver: true
     }).start(() => {
       if (this._input) {
-        show ? this._input.focus() : this._input.blur()
+        show ? this._input.focus() : this._input.blur();
       }
-    })
+    });
   }
 
   onDidPressLeftButton() {
     this.setState({ displayTermBar: !this.state.displayTermBar }, () => {
-      this.onToggleTermBar(this.state.displayTermBar)
-    })
+      this.onToggleTermBar(this.state.displayTermBar);
+    });
   }
 
   onDidPressRighButton() {
-    this.props.navigation.navigate('Notifications')
+    this.props.navigation.navigate("Notifications");
   }
 
   render() {
@@ -417,11 +416,11 @@ class HomeScreen extends React.Component {
     const translateY = this.state.anim.interpolate({
       inputRange: [0, 1],
       outputRange: [0, Components.TermBar.Height]
-    })
+    });
     return (
       <SafeAreaView
         style={styles.container}
-        forceInset={{ top: 'never', bottom: 'always' }}
+        forceInset={{ top: "never", bottom: "always" }}
       >
         <Components.NavigationBar
           leftButtonIconRotated={this.state.displayTermBar ? true : false}
@@ -443,7 +442,7 @@ class HomeScreen extends React.Component {
           {this._renderDebugRow()}
         </Animated.View>
       </SafeAreaView>
-    )
+    );
   }
 }
 
@@ -459,6 +458,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: -Components.TermBar.Height
   }
-})
+});
 
-export default HomeScreen
+export default HomeScreen;

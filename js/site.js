@@ -1,68 +1,68 @@
 /* @flow */
-'use strict'
+"use strict";
 
-import { Platform } from 'react-native'
-import _ from 'lodash'
+import { Platform } from "react-native";
+import _ from "lodash";
 
-const fetch = require('./../lib/fetch')
-import randomBytes from './../lib/random-bytes'
+const fetch = require("./../lib/fetch");
+import randomBytes from "./../lib/random-bytes";
 
 class Site {
   static FIELDS = [
-    'authToken',
-    'title',
-    'description',
-    'icon',
-    'url',
-    'unreadNotifications',
-    'unreadPrivateMessages',
-    'lastSeenNotificationId',
-    'flagCount',
-    'queueCount',
-    'totalUnread',
-    'totalNew',
-    'userId',
-    'username',
-    'hasPush',
-    'isStaff',
-    'apiVersion'
-  ]
+    "authToken",
+    "title",
+    "description",
+    "icon",
+    "url",
+    "unreadNotifications",
+    "unreadPrivateMessages",
+    "lastSeenNotificationId",
+    "flagCount",
+    "queueCount",
+    "totalUnread",
+    "totalNew",
+    "userId",
+    "username",
+    "hasPush",
+    "isStaff",
+    "apiVersion"
+  ];
 
   static fromTerm(term) {
-    let url = ''
+    let url = "";
 
-    term = term.trim()
-    while (term.endsWith('/')) {
-      term = term.slice(0, term.length - 1)
+    term = term.trim();
+    while (term.endsWith("/")) {
+      term = term.slice(0, term.length - 1);
     }
 
     if (!term.match(/^https?:\/\//)) {
-      url = `http://${term}`
+      url = `http://${term}`;
     } else {
-      url = term
+      url = term;
     }
 
-    return Site.fromURL(url, term)
+    return Site.fromURL(url, term);
   }
 
   static fromURL(url, term) {
     let req = new Request(`${url}/user-api-key/new`, {
-      method: 'HEAD'
-    })
+      method: "HEAD"
+    });
 
     return fetch(req)
       .then(userApiKeyResponse => {
         if (userApiKeyResponse.status === 404) {
-          throw 'bad api'
+          throw "bad api";
         }
 
         if (userApiKeyResponse.status !== 200) {
-          throw 'bad url'
+          throw "bad url";
         }
 
-        let version = userApiKeyResponse.headers.get('Auth-Api-Version')
+        let version = userApiKeyResponse.headers.get("Auth-Api-Version");
         if (parseInt(version, 10) < 2) {
-          throw 'bad api'
+          throw "bad api";
         }
 
         // make sure we use the correct URL, eg: a URL could lead us to
@@ -70,12 +70,12 @@ class Site {
         // final destination and not the origin
         // we also replace any trailing slash
         url = userApiKeyResponse.url
-          .replace('/user-api-key/new', '')
-          .replace(/\/+$/, '')
+          .replace("/user-api-key/new", "")
+          .replace(/\/+$/, "");
 
         return fetch(`${url}/site/basic-info.json`).then(basicInfoResponse =>
           basicInfoResponse.json()
-        )
+        );
       })
       .then(info => {
         return new Site({
@@ -83,39 +83,39 @@ class Site {
           title: info.title,
           description: info.description,
           icon: info.apple_touch_icon_url
-        })
-      })
+        });
+      });
   }
 
   constructor(props) {
     if (props) {
       Site.FIELDS.forEach(prop => {
-        this[prop] = props[prop]
-      })
+        this[prop] = props[prop];
+      });
     }
-    this._timeout = 10000
+    this._timeout = 10000;
   }
 
   jsonApi(path, method, data) {
-    console.log(`calling: ${this.url}${path}`)
+    console.log(`calling: ${this.url}${path}`);
 
-    method = method || 'GET'
+    method = method || "GET";
     let headers = {
-      'User-Api-Key': this.authToken,
-      'User-Agent': `Discourse ${Platform.OS} App / 1.0`,
-      'Content-Type': 'application/json',
-      'Dont-Chunk': 'true',
-      'User-Api-Client-Id': this.clientId || ''
-    }
+      "User-Api-Key": this.authToken,
+      "User-Agent": `Discourse ${Platform.OS} App / 1.0`,
+      "Content-Type": "application/json",
+      "Dont-Chunk": "true",
+      "User-Api-Client-Id": this.clientId || ""
+    };
 
     if (data) {
-      data = JSON.stringify(data)
+      data = JSON.stringify(data);
     }
 
     if (this._background) {
       return new Promise((resolve, reject) =>
-        reject('In background mode aborting start request!')
-      )
+        reject("In background mode aborting start request!")
+      );
     }
 
     return new Promise((resolve, reject) => {
@@ -123,105 +123,105 @@ class Site {
         headers: headers,
         method: method,
         body: data
-      })
-      this._currentFetch = fetch(req)
+      });
+      this._currentFetch = fetch(req);
       this._currentFetch
         .then(r1 => {
           if (this._background) {
-            throw 'In Background mode aborting request!'
+            throw "In Background mode aborting request!";
           }
           if (r1.status === 200) {
-            return r1.json()
+            return r1.json();
           } else {
             if (r1.status === 403) {
-              this.logoff()
-              throw 'User was logged off!'
+              this.logoff();
+              throw "User was logged off!";
             } else {
-              throw 'Error during fetch status code:' + r1.status
+              throw "Error during fetch status code:" + r1.status;
             }
           }
         })
         .then(result => {
-          resolve(result)
+          resolve(result);
         })
         .catch(e => {
-          reject(e)
+          reject(e);
         })
         .finally(() => {
-          this._currentFetch = undefined
+          this._currentFetch = undefined;
         })
-        .done()
-    })
+        .done();
+    });
   }
 
   logoff() {
-    this.authToken = null
-    this.userId = null
-    this.username = null
-    this.isStaff = null
+    this.authToken = null;
+    this.userId = null;
+    this.username = null;
+    this.isStaff = null;
   }
 
   ensureLatestApi() {
     if (this.apiVersion < 2) {
-      this.logoff()
+      this.logoff();
     }
   }
 
   revokeApiKey() {
-    return this.jsonApi('/user-api-key/revoke', 'POST')
+    return this.jsonApi("/user-api-key/revoke", "POST");
   }
 
   getUserInfo() {
     return new Promise((resolve, reject) => {
       if (this.userId && this.username) {
-        console.log('we have user id and user name')
+        console.log("we have user id and user name");
         resolve({
           userId: this.userId,
           username: this.username,
           isStaff: this.isStaff
-        })
+        });
       } else {
-        this.jsonApi('/session/current.json')
+        this.jsonApi("/session/current.json")
           .then(json => {
-            this.userId = json.current_user.id
-            this.username = json.current_user.username
+            this.userId = json.current_user.id;
+            this.username = json.current_user.username;
             this.isStaff = !!(
               json.current_user.admin || json.current_user.moderator
-            )
+            );
 
             resolve({
               userId: this.userId,
               username: this.username,
               isStaff: this.isStaff
-            })
+            });
           })
           .catch(err => {
-            reject(err)
+            reject(err);
           })
-          .done()
+          .done();
       }
-    })
+    });
   }
 
   getMessageBusId() {
     return new Promise(resolve => {
       if (this.messageBusId) {
-        resolve(this.messageBusId)
+        resolve(this.messageBusId);
       } else {
-        this.messageBusId = randomBytes(16)
-        resolve(this.messageBusId)
+        this.messageBusId = randomBytes(16);
+        resolve(this.messageBusId);
       }
-    })
+    });
   }
 
   messageBus(channels) {
     return this.getMessageBusId().then(messageBusId => {
       return this.jsonApi(
         `/message-bus/${messageBusId}/poll?dlp=t`,
-        'POST',
+        "POST",
         channels
-      )
-    })
+      );
+    });
   }
 
   processMessages(messages) {
@@ -229,169 +229,169 @@ class Site {
       notifications: false,
       totals: false,
       alerts: []
-    }
+    };
 
-    let notificationChannel = `/notification/${this.userId}`
-    let alertChannel = `/notification-alert/${this.userId}`
+    let notificationChannel = `/notification/${this.userId}`;
+    let alertChannel = `/notification-alert/${this.userId}`;
 
     messages.forEach(message => {
-      console.info(`processing incoming message on ${this.url}`)
-      console.log(message)
+      console.info(`processing incoming message on ${this.url}`);
+      console.log(message);
 
       if (this.channels) {
-        this.channels[message.channel] = message.message_id
+        this.channels[message.channel] = message.message_id;
       }
 
-      if (message.channel === '/__status') {
-        this.channels = message.data
-        this.channels.__seq = 0
+      if (message.channel === "/__status") {
+        this.channels = message.data;
+        this.channels.__seq = 0;
         // we have to get notifications now cause we may have an incorrect number
-        rval.notifications = true
+        rval.notifications = true;
       } else if (message.channel === notificationChannel) {
-        this._seenNotificationId = message.data.seen_notification_id
+        this._seenNotificationId = message.data.seen_notification_id;
 
         // force a refresh on next open
         if (this._notifications) {
           // compare most recent notifications
-          let newData = message.data.recent
+          let newData = message.data.recent;
 
           let existing = _.chain(this._notifications)
             .take(newData.length)
             .map(n => [n.id, n.read])
-            .value()
+            .value();
 
-          let changed = !_.isEqual(newData, existing)
+          let changed = !_.isEqual(newData, existing);
           if (changed) {
-            this._notifications = null
-            rval.notifications = true
+            this._notifications = null;
+            rval.notifications = true;
           }
         }
 
         if (this.unreadNotifications !== message.data.unread_notifications) {
-          this.unreadNotifications = message.data.unread_notifications
-          rval.notifications = true
+          this.unreadNotifications = message.data.unread_notifications;
+          rval.notifications = true;
         }
 
         if (
           this.unreadPrivateMessages !== message.data.unread_private_messages
         ) {
-          this.unreadPrivateMessages = message.data.unread_private_messages
-          rval.notifications = true
+          this.unreadPrivateMessages = message.data.unread_private_messages;
+          rval.notifications = true;
         }
       } else if (
-        ['/new', '/latest', '/unread/' + this.userId].indexOf(message.channel) >
+        ["/new", "/latest", "/unread/" + this.userId].indexOf(message.channel) >
         -1
       ) {
-        let payload = message.data.payload
-        if (payload.archetype !== 'private_message') {
-          let existing = this.trackingState['t' + payload.topic_id]
+        let payload = message.data.payload;
+        if (payload.archetype !== "private_message") {
+          let existing = this.trackingState["t" + payload.topic_id];
           if (existing) {
-            this.trackingState['t' + payload.topic_id] = _.merge(
+            this.trackingState["t" + payload.topic_id] = _.merge(
               existing,
               payload
-            )
+            );
           } else {
-            this.trackingState['t' + payload.topic_id] = payload
+            this.trackingState["t" + payload.topic_id] = payload;
           }
-          this.updateTotals()
-          rval.totals = true
+          this.updateTotals();
+          rval.totals = true;
         }
       } else if (
-        message.channel === '/recover' ||
-        message.channel === '/delete'
+        message.channel === "/recover" ||
+        message.channel === "/delete"
       ) {
-        let existing = this.trackingState['t' + message.data.payload.topic_id]
+        let existing = this.trackingState["t" + message.data.payload.topic_id];
         if (existing) {
-          existing.deleted = message.channel === '/delete'
+          existing.deleted = message.channel === "/delete";
         }
-      } else if (message.channel === '/flagged_counts') {
+      } else if (message.channel === "/flagged_counts") {
         if (this.flagCount !== message.data.total) {
-          this.flagCount = message.data.total
-          rval.notifications = true
+          this.flagCount = message.data.total;
+          rval.notifications = true;
         }
-      } else if (message.channel === '/queue_counts') {
+      } else if (message.channel === "/queue_counts") {
         if (this.queueCount !== message.data.post_queue_new_count) {
           // yes this is weird, we have some real coupled code here
           this.flagCount -=
-            (this.queueCount || 0) - message.data.post_queue_new_count
-          this.queueCount = message.data.post_queue_new_count
-          rval.notifications = true
+            (this.queueCount || 0) - message.data.post_queue_new_count;
+          this.queueCount = message.data.post_queue_new_count;
+          rval.notifications = true;
         }
       } else if (message.channel === alertChannel) {
-        message.data.url = this.url + message.data.post_url
-        message.data.site = this
-        rval.alerts.push(message.data)
+        message.data.url = this.url + message.data.post_url;
+        message.data.site = this;
+        rval.alerts.push(message.data);
       }
-    })
+    });
 
-    return rval
+    return rval;
   }
 
   resetBus() {
-    this.userId = null
-    this.username = null
-    this.isStaff = null
-    this.trackingState = null
-    this.channels = null
+    this.userId = null;
+    this.username = null;
+    this.isStaff = null;
+    this.trackingState = null;
+    this.channels = null;
   }
 
   initBus() {
     return new Promise((resolve, reject) => {
       if (this.channels && this.trackingState) {
-        resolve({ wasReady: true })
+        resolve({ wasReady: true });
       } else {
         this.getUserInfo()
           .then(info => {
             let channels = {
-              '/delete': -1,
-              '/recover': -1,
-              '/new': -1,
-              '/latest': -1,
+              "/delete": -1,
+              "/recover": -1,
+              "/new": -1,
+              "/latest": -1,
               __seq: 1
-            }
+            };
 
             if (info.isStaff) {
-              channels['/queue_counts'] = -1
-              channels['/flagged_counts'] = -1
+              channels["/queue_counts"] = -1;
+              channels["/flagged_counts"] = -1;
             }
 
-            channels[`/notification/${info.userId}`] = -1
-            channels[`/notification-alert/${info.userId}`] = -1
-            channels[`/unread/${info.userId}`] = -1
+            channels[`/notification/${info.userId}`] = -1;
+            channels[`/notification-alert/${info.userId}`] = -1;
+            channels[`/unread/${info.userId}`] = -1;
 
             this.messageBus(channels)
               .then(r => {
-                this.processMessages(r)
+                this.processMessages(r);
 
                 this.jsonApi(
                   `/users/${info.username}/topic-tracking-state.json`
                 )
                   .then(trackingState => {
-                    this.trackingState = {}
+                    this.trackingState = {};
                     trackingState.forEach(state => {
-                      this.trackingState[`t${state.topic_id}`] = state
-                    })
-                    resolve({ wasReady: false })
+                      this.trackingState[`t${state.topic_id}`] = state;
+                    });
+                    resolve({ wasReady: false });
                   })
                   .catch(e => {
-                    console.log('failed to get tracking state ' + e)
-                    reject(e)
+                    console.log("failed to get tracking state " + e);
+                    reject(e);
                   })
-                  .done()
+                  .done();
               })
               .catch(e => {
-                console.log(`failed to poll message bus ${e}`)
-                reject(e)
+                console.log(`failed to poll message bus ${e}`);
+                reject(e);
               })
-              .done()
+              .done();
           })
           .catch(e => {
-            console.log(`get user info failed ${e}`)
-            reject(e)
+            console.log(`get user info failed ${e}`);
+            reject(e);
           })
-          .done()
+          .done();
       }
-    })
+    });
   }
 
   isNew(topic) {
@@ -399,7 +399,7 @@ class Site {
       topic.last_read_post_number === null &&
       ((topic.notification_level !== 0 && !topic.notification_level) ||
         topic.notification_level >= 2)
-    )
+    );
   }
 
   isUnread(topic) {
@@ -407,45 +407,45 @@ class Site {
       topic.last_read_post_number !== null &&
       topic.last_read_post_number < topic.highest_post_number &&
       topic.notification_level >= 2
-    )
+    );
   }
 
   updateTotals() {
-    let unread = 0
-    let newTopics = 0
+    let unread = 0;
+    let newTopics = 0;
 
     _.each(this.trackingState, t => {
-      if (!t.deleted && t.archetype !== 'private_message') {
+      if (!t.deleted && t.archetype !== "private_message") {
         if (this.isNew(t)) {
-          newTopics++
+          newTopics++;
         } else if (this.isUnread(t)) {
-          unread++
+          unread++;
         }
       }
-    })
+    });
 
-    let changed = this.totalUnread !== unread || this.totalNew !== newTopics
+    let changed = this.totalUnread !== unread || this.totalNew !== newTopics;
 
-    this.totalUnread = unread
-    this.totalNew = newTopics
+    this.totalUnread = unread;
+    this.totalNew = newTopics;
 
-    return changed
+    return changed;
   }
 
   checkBus() {
-    console.info(`${new Date()} Checking Message Bus on ${this.url}`)
+    console.info(`${new Date()} Checking Message Bus on ${this.url}`);
     return this.messageBus(this.channels).then(messages =>
       this.processMessages(messages)
-    )
+    );
   }
 
   refresh(opts) {
-    opts = opts || {}
+    opts = opts || {};
 
     return new Promise((resolve, reject) => {
       if (!this.authToken) {
-        resolve({ changed: false })
-        return
+        resolve({ changed: false });
+        return;
       }
 
       this.initBus()
@@ -453,18 +453,18 @@ class Site {
           if (opts.fast || !busState.wasReady) {
             this.checkBus()
               .then(changes => {
-                console.log(`changes detected on ${this.url}`)
-                console.log(changes)
+                console.log(`changes detected on ${this.url}`);
+                console.log(changes);
 
                 if (!busState.wasReady) {
-                  this.updateTotals()
+                  this.updateTotals();
 
                   this.refresh({ fast: false })
                     .then(result => {
-                      resolve({ changed: true, alerts: changes.alerts })
+                      resolve({ changed: true, alerts: changes.alerts });
                     })
                     .catch(e => reject(e))
-                    .done()
+                    .done();
                 } else {
                   resolve({
                     changed:
@@ -472,204 +472,205 @@ class Site {
                       changes.notifications ||
                       changes.totals,
                     alerts: changes.alerts
-                  })
+                  });
                 }
               })
               .catch(e => {
-                console.log(`failed to check bus ${e}`)
-                reject(e)
-              })
+                console.log(`failed to check bus ${e}`);
+                reject(e);
+              });
 
-            return
+            return;
           }
 
-          this.jsonApi('/session/current.json')
+          this.jsonApi("/session/current.json")
             .then(json => {
-              let currentUser = json.current_user
+              let currentUser = json.current_user;
 
               let changed =
                 this.userId !== currentUser.id ||
                 this.username !== currentUser.username ||
-                this.isStaff !== !!(currentUser.admin || currentUser.moderator)
+                this.isStaff !== !!(currentUser.admin || currentUser.moderator);
 
-              changed = changed || this.updateTotals()
+              changed = changed || this.updateTotals();
 
-              this.userId = currentUser.id
-              this.username = currentUser.username
-              this.isStaff = !!(currentUser.admin || currentUser.moderator)
+              this.userId = currentUser.id;
+              this.username = currentUser.username;
+              this.isStaff = !!(currentUser.admin || currentUser.moderator);
 
               // in case of old API fallback
               this._seenNotificationId =
-                currentUser.seen_notification_id || this._seenNotificationId
+                currentUser.seen_notification_id || this._seenNotificationId;
 
               if (
                 this.unreadNotifications !== currentUser.unread_notifications
               ) {
-                this.unreadNotifications = currentUser.unread_notifications
-                changed = true
+                this.unreadNotifications = currentUser.unread_notifications;
+                changed = true;
               }
 
               if (
                 this.unreadPrivateMessages !==
                 currentUser.unread_private_messages
               ) {
-                this.unreadPrivateMessages = currentUser.unread_private_messages
-                changed = true
+                this.unreadPrivateMessages =
+                  currentUser.unread_private_messages;
+                changed = true;
               }
 
               if (this.isStaff) {
-                let newFlagCount = currentUser.post_queue_new_count
+                let newFlagCount = currentUser.post_queue_new_count;
                 if (newFlagCount !== this.flagCount) {
-                  this.flagCount = newFlagCount
-                  changed = true
+                  this.flagCount = newFlagCount;
+                  changed = true;
                 }
 
-                let newQueueCount = currentUser.post_queue_new_count
+                let newQueueCount = currentUser.post_queue_new_count;
                 if (newQueueCount !== this.queueCount) {
-                  this.queueCount = newQueueCount
-                  changed = true
+                  this.queueCount = newQueueCount;
+                  changed = true;
                 }
               }
 
-              resolve({ changed })
+              resolve({ changed });
             })
             .catch(e => {
-              console.warn(e)
-              reject(e)
-            })
+              console.warn(e);
+              reject(e);
+            });
         })
         .catch(e => {
-          reject(e)
-        })
-    })
+          reject(e);
+        });
+    });
   }
 
   enterBackground() {
-    this._background = true
+    this._background = true;
     if (this._currentFetch && this._currentFetch.abort) {
-      this._currentFetch.abort()
+      this._currentFetch.abort();
     }
-    this._timeout = 5000
+    this._timeout = 5000;
   }
 
   exitBackground() {
-    this._background = false
-    this._timeout = 10000
+    this._background = false;
+    this._timeout = 10000;
   }
 
   readNotification(notification) {
     return new Promise((resolve, reject) => {
-      this.jsonApi('/notifications/read', 'PUT', { id: notification.id })
+      this.jsonApi("/notifications/read", "PUT", { id: notification.id })
         .catch(e => {
-          reject(e)
+          reject(e);
         })
         .finally(() => resolve)
-        .done()
-    })
+        .done();
+    });
   }
 
   getSeenNotificationId() {
     return new Promise(resolve => {
       if (!this.authToken) {
-        resolve()
-        return
+        resolve();
+        return;
       }
 
       if (this._seenNotificationId) {
-        resolve(this._seenNotificationId)
-        return
+        resolve(this._seenNotificationId);
+        return;
       }
 
       this.notifications().then(() => {
-        resolve(this._seenNotificationId)
-      })
-    })
+        resolve(this._seenNotificationId);
+      });
+    });
   }
 
   notifications(types, options) {
     if (this._loadingNotifications) {
       // avoid double json
       return new Promise(resolve => {
-        let retries = 100
+        let retries = 100;
         let interval = setInterval(() => {
-          retries--
+          retries--;
           if (retries === 0 || this._notifications) {
-            clearInterval(interval)
+            clearInterval(interval);
             this.notifications(types)
               .then(n => {
-                resolve(n)
+                resolve(n);
               })
-              .done()
+              .done();
           }
-        }, 50)
-      })
+        }, 50);
+      });
     }
 
     return new Promise(resolve => {
       if (!this.authToken) {
-        resolve([])
-        return
+        resolve([]);
+        return;
       }
 
-      let silent = !(options && options.silent === false)
+      let silent = !(options && options.silent === false);
       // avoid json call when no unread
-      silent = silent || this.unreadNotifications === 0
+      silent = silent || this.unreadNotifications === 0;
 
       if (this._notifications && silent) {
-        let filtered = this._notifications
-        let minId = options && options.minId
+        let filtered = this._notifications;
+        let minId = options && options.minId;
         if (types || minId) {
           filtered = _.filter(filtered, notification => {
             // for new always show unread PMs and suppress read
             if (minId) {
               if (notification.read) {
-                return false
+                return false;
               }
               if (!notification.read && notification.notification_type === 6) {
-                return true
+                return true;
               }
             }
             if (minId && minId >= notification.id) {
-              return false
+              return false;
             }
-            return !types || _.includes(types, notification.notification_type)
-          })
+            return !types || _.includes(types, notification.notification_type);
+          });
         }
-        resolve(filtered)
-        return
+        resolve(filtered);
+        return;
       }
 
-      this._loadingNotifications = true
+      this._loadingNotifications = true;
       this.jsonApi(
-        '/notifications.json?recent=true&limit=25' +
-          (options && options.silent === false ? '' : '&silent=true')
+        "/notifications.json?recent=true&limit=25" +
+          (options && options.silent === false ? "" : "&silent=true")
       )
         .then(results => {
-          this._loadingNotifications = false
-          this._notifications = (results && results.notifications) || []
-          this._seenNotificationId = results && results.seen_notification_id
+          this._loadingNotifications = false;
+          this._notifications = (results && results.notifications) || [];
+          this._seenNotificationId = results && results.seen_notification_id;
           this.notifications(types, _.merge(options, { silent: true }))
             .then(n => resolve(n))
-            .done()
+            .done();
         })
         .catch(e => {
-          console.log('failed to fetch notifications ' + e)
-          resolve([])
+          console.log("failed to fetch notifications " + e);
+          resolve([]);
         })
         .finally(() => {
-          this._loadingNotifications = false
+          this._loadingNotifications = false;
         })
-        .done()
-    })
+        .done();
+    });
   }
 
   toJSON() {
-    let obj = {}
+    let obj = {};
     Site.FIELDS.forEach(prop => {
-      obj[prop] = this[prop]
-    })
-    return obj
+      obj[prop] = this[prop];
+    });
+    return obj;
   }
 }
 
-export default Site
+export default Site;

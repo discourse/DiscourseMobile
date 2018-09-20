@@ -1,25 +1,31 @@
 /* @flow */
-'use strict'
+"use strict";
 
-import React from 'react'
+import React from "react";
 
-import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native'
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View
+} from "react-native";
 
-import Swipeout from 'react-native-swipeout'
+import Swipeout from "react-native-swipeout";
 
-import colors from '../../colors'
-import Notification from './Notification'
+import colors from "../../colors";
+import Notification from "./Notification";
 
 class SiteRow extends React.Component {
   render() {
     return (
       <Swipeout
         sensitivity={2}
-        backgroundColor={'white'}
+        backgroundColor={"white"}
         scroll={scrollEnabled => this.props.onSwipe(scrollEnabled)}
         right={[
           {
-            text: 'Remove',
+            text: "Remove",
             backgroundColor: colors.redDanger,
             onPress: this.props.onDelete
           }
@@ -34,7 +40,7 @@ class SiteRow extends React.Component {
             <Image style={styles.icon} source={{ uri: this.props.site.icon }} />
             <View style={styles.info}>
               <Text ellipsizeMode="tail" numberOfLines={1} style={styles.url}>
-                {this.props.site.url.replace(/^https?:\/\//, '')}
+                {this.props.site.url.replace(/^https?:\/\//, "")}
               </Text>
               <Text
                 ellipsizeMode="tail"
@@ -50,7 +56,7 @@ class SiteRow extends React.Component {
           </View>
         </TouchableHighlight>
       </Swipeout>
-    )
+    );
   }
 
   _renderNotifications(site) {
@@ -67,7 +73,7 @@ class SiteRow extends React.Component {
             count={site.unreadNotifications}
           />
         </View>
-      )
+      );
     }
   }
 
@@ -77,27 +83,27 @@ class SiteRow extends React.Component {
         <View style={styles.notifications}>
           <Text style={styles.connect}>connect</Text>
         </View>
-      )
+      );
     }
   }
 
   _renderCounts(site) {
-    var counts = []
+    var counts = [];
     if (site.authToken) {
       if (site.totalNew > 0) {
-        counts.push('new (' + site.totalNew + ')')
+        counts.push("new (" + site.totalNew + ")");
       }
       if (site.totalUnread > 0) {
-        counts.push('unread (' + site.totalUnread + ')')
+        counts.push("unread (" + site.totalUnread + ")");
       }
     }
 
     if (counts.length > 0) {
       return (
         <View style={styles.counts}>
-          <Text style={styles.countsText}>{counts.join('  ')}</Text>
+          <Text style={styles.countsText}>{counts.join("  ")}</Text>
         </View>
-      )
+      );
     }
   }
 }
@@ -106,24 +112,24 @@ const styles = StyleSheet.create({
   row: {
     borderBottomColor: colors.grayBorder,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 12
   },
   icon: {
-    alignSelf: 'center',
+    alignSelf: "center",
     height: 40,
     width: 40
   },
   info: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    justifyContent: "space-between",
     paddingLeft: 12
   },
   url: {
     color: colors.grayTitle,
     fontSize: 16,
-    fontWeight: 'normal'
+    fontWeight: "normal"
   },
   description: {
     color: colors.graySubtitle,
@@ -131,18 +137,18 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   notifications: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingLeft: 12
   },
   connect: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     backgroundColor: colors.blueCallToAction,
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
     marginLeft: 6,
     marginBottom: 6,
-    overflow: 'hidden',
+    overflow: "hidden",
     padding: 6
   },
   counts: {
@@ -152,6 +158,6 @@ const styles = StyleSheet.create({
     color: colors.blueUnread,
     fontSize: 14
   }
-})
+});
 
-export default SiteRow
+export default SiteRow;
