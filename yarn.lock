@@ -2395,6 +2395,12 @@ inquirer@^3.0.6:
     strip-ansi "^4.0.0"
     through "^2.3.6"
 
+invariant@^2.2:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
+  dependencies:
+    loose-envify "^1.0.0"
+
 invariant@^2.2.0:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
@@ -3811,10 +3817,6 @@ react-native-progress@^3.5:
   resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-3.5.0.tgz#d1ccc7f96dc17c609aedb43b2e6695d67deae0ec"
   dependencies:
     prop-types "^15.5.8"
-
-"react-native-safari-view@git+https://github.com/samsaffron/react-native-safari-view.git":
-  version "1.0.2"
-  resolved "git+https://github.com/samsaffron/react-native-safari-view.git#fa5fcb17a73435dd870e45c13818dbd8ebb909e7"
 
 react-native-safe-area-view@^0.9.0:
   version "0.9.0"

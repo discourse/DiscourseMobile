@@ -17,7 +17,7 @@ import { StackNavigator, NavigationActions } from 'react-navigation'
 
 import Screens from './screens'
 import SiteManager from './site_manager'
-import SafariView from 'react-native-safari-view'
+import DiscourseSafariViewManager from '../lib/discourse-safari-view-manager'
 
 const ChromeCustomTab = NativeModules.ChromeCustomTab
 
@@ -80,9 +80,23 @@ class Discourse extends React.Component {
     AppState.removeEventListener('change', this._handleAppStateChange)
   }
 
-  openUrl(url) {
+  async openUrl(url, authToken = false) {
     if (Platform.OS === 'ios') {
-      SafariView.show({ url })
+      if (authToken) {
+        Linking.openURL(url)
+
+        this._siteManager.refreshInterval(60000)
+      } else {
+        let result = await DiscourseSafariViewManager.openAuthSessionAsync(url)
+
+        DiscourseSafariViewManager.dismissBrowser
+
+        if (result.type === 'success') {
+          Linking.openURL(result.url)
+        } else {
+          Alert.alert('Error while authenticating with this Discourse isntance')
+        }
+      }
     } else {
       if (this.props.simulator) {
         Linking.openURL(url)

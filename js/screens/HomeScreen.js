@@ -16,12 +16,13 @@ import {
   RefreshControl,
   StyleSheet,
   UIManager,
-  View
+  View,
+  Button
 } from 'react-native'
 
 import { SafeAreaView } from 'react-navigation'
 import SortableListView from 'react-native-sortable-listview'
-import SafariView from 'react-native-safari-view'
+import DiscourseSafariViewManager from '../../lib/discourse-safari-view-manager'
 import BackgroundFetch from '../../lib/background-fetch'
 
 import Site from '../site'
@@ -74,15 +75,6 @@ class HomeScreen extends React.Component {
     }
 
     if (Platform.OS === 'ios') {
-      SafariView.addEventListener('onShow', () => {
-        this._siteManager.refreshInterval(60000)
-      })
-
-      SafariView.addEventListener('onDismiss', () => {
-        this._siteManager.refreshInterval(15000)
-        this._siteManager.refreshSites({ ui: false, fast: true })
-      })
-
       PushNotificationIOS.addEventListener('notification', e =>
         this._handleRemoteNotification(e)
       )
@@ -105,7 +97,7 @@ class HomeScreen extends React.Component {
       e._data.discourse_url
     ) {
       console.log('open safari view')
-      SafariView.show({ url: e._data.discourse_url })
+      DiscourseSafariViewManager.openAuthSessionAsync(e._data.discourse_url)
     }
   }
 
@@ -114,7 +106,7 @@ class HomeScreen extends React.Component {
     console.log(e)
     if (e._data && e._data.AppState === 'inactive' && e._data.discourse_url) {
       console.log('open safari view')
-      SafariView.show({ url: e._data.discourse_url })
+      DiscourseSafariViewManager.openAuthSessionAsync(e._data.discourse_url)
     }
 
     // TODO if we are active we should try to notify user somehow that a notification
@@ -124,18 +116,18 @@ class HomeScreen extends React.Component {
 
   visitSite(site) {
     if (site.authToken) {
-      this.props.screenProps.openUrl(site.url)
+      this.props.screenProps.openUrl(site.url, true)
       return
     }
 
-    this._siteManager.generateAuthURL(site).then(url => {
+    this._siteManager.generateAuthURL(site).then(async url => {
       this.props.screenProps.openUrl(url)
     })
   }
 
   closeBrowser() {
     if (Platform.OS === 'ios') {
-      SafariView.dismiss()
+      DiscourseSafariViewManager.dismissBrowser()
     } else {
       // TODO decide if we need this for android, probably not, its just a hack
     }
@@ -260,9 +252,7 @@ class HomeScreen extends React.Component {
             Alert.alert(`${term} already exists`)
           } else if (e === 'bad api') {
             Alert.alert(
-              `Sorry, ${
-                term
-              } is not a correct URL to a Discourse forum or does not support mobile APIs, have owner upgrade Discourse to latest!`
+              `Sorry, ${term} is not a correct URL to a Discourse forum or does not support mobile APIs, have owner upgrade Discourse to latest!`
             )
           } else {
             Alert.alert(`${term} was not found!`)

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "clean-ios": "cd ios && xcodebuild -scheme Discourse -destination 'platform=iOS Simulator,name=iPhone 6' clean",
+    "clean-ios": "cd ios && xcodebuild -scheme Discourse -destination 'platform=iOS Simulator,name=iPhone X' clean",
     "prettier": "prettier --write \"js/**/*.js\"",
     "lint": "eslint ./js",
     "precommit": "lint-staged"
@@ -25,11 +25,11 @@
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair.git",
     "react-native-orientation": "git+https://github.com/yamill/react-native-orientation.git",
     "react-native-progress": "^3.5",
-    "react-native-safari-view": "git+https://github.com/samsaffron/react-native-safari-view.git",
     "react-native-sortable-listview": "github:deanmcpherson/react-native-sortable-listview",
     "react-native-swipeout": "^2.3",
     "react-native-vector-icons": "^5.0",
-    "react-navigation": "^1.5"
+    "react-navigation": "^1.5",
+    "invariant": "^2.2"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",
