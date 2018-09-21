@@ -43,6 +43,20 @@
 		D04173051EE98A0F004B7E2F /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04173031EE98A0F004B7E2F /* Fabric.framework */; };
 		D04173061EE98A0F004B7E2F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04173041EE98A0F004B7E2F /* Crashlytics.framework */; };
 		D086E1C1215252FA00012B08 /* DiscourseSafariViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D086E1C0215252FA00012B08 /* DiscourseSafariViewManager.m */; };
+		D088D2A32154DF410086E7EC /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = D088D2A22154DF410086E7EC /* NotificationService.m */; };
+		D088D2A72154DF410086E7EC /* discourse-notification-extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D088D29F2154DF410086E7EC /* discourse-notification-extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D088D2D72154E00A0086E7EC /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		D088D2D82154E00A0086E7EC /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
+		D088D2D92154E00A0086E7EC /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
+		D088D2DA2154E00A0086E7EC /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
+		D088D2DB2154E00A0086E7EC /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
+		D088D2DE2154E00A0086E7EC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
+		D088D2DF2154E00A0086E7EC /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		D088D2E02154E00A0086E7EC /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
+		D088D2E12154E00A0086E7EC /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
+		D088D2EE2154E43F0086E7EC /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D088D2ED2154E43F0086E7EC /* NotificationCenter.framework */; };
+		D088D2EF2154E4490086E7EC /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		D088D2F02154E4540086E7EC /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		D09E47561F2C996500AFDCBE /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09E47551F2C996500AFDCBE /* Photos.framework */; };
 		D09E47801F2C9D6100AFDCBE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09E477F1F2C9D6100AFDCBE /* AVFoundation.framework */; };
 		E608EAFD420F4EDE95A688E3 /* SortableTests.xctest in Frameworks */ = {isa = PBXBuildFile; fileRef = BAEFCC01321644799518320D /* SortableTests.xctest */; };
@@ -289,6 +303,13 @@
 			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
 			remoteInfo = "privatedata-tvOS";
 		};
+		D088D2A52154DF410086E7EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D088D29E2154DF410086E7EC;
+			remoteInfo = "discourse-notification-extension";
+		};
 		D09D6A3D2077BFD80003297D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -347,6 +368,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D088D2D52154DF410086E7EC /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D088D2A72154DF410086E7EC /* discourse-notification-extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
@@ -398,6 +433,11 @@
 		D04173041EE98A0F004B7E2F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		D086E1BF215252FA00012B08 /* DiscourseSafariViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscourseSafariViewManager.h; sourceTree = "<group>"; };
 		D086E1C0215252FA00012B08 /* DiscourseSafariViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscourseSafariViewManager.m; sourceTree = "<group>"; };
+		D088D29F2154DF410086E7EC /* discourse-notification-extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "discourse-notification-extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D088D2A12154DF410086E7EC /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		D088D2A22154DF410086E7EC /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		D088D2A42154DF410086E7EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D088D2ED2154E43F0086E7EC /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		D09E47551F2C996500AFDCBE /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		D09E477F1F2C9D6100AFDCBE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		EFAF4B8436CD47FD9F03CF75 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -430,6 +470,25 @@
 				A25AF18AE9904F57BC8B88A0 /* libRNDeviceInfo.a in Frameworks */,
 				19BD4843AA434E0C9DBB4782 /* Sortable.app in Frameworks */,
 				E608EAFD420F4EDE95A688E3 /* SortableTests.xctest in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D088D29C2154DF410086E7EC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D088D2F02154E4540086E7EC /* libRCTActionSheet.a in Frameworks */,
+				D088D2EF2154E4490086E7EC /* libReact.a in Frameworks */,
+				D088D2EE2154E43F0086E7EC /* NotificationCenter.framework in Frameworks */,
+				D088D2D72154E00A0086E7EC /* libRCTAnimation.a in Frameworks */,
+				D088D2D82154E00A0086E7EC /* libRCTGeolocation.a in Frameworks */,
+				D088D2D92154E00A0086E7EC /* libRCTImage.a in Frameworks */,
+				D088D2DA2154E00A0086E7EC /* libRCTLinking.a in Frameworks */,
+				D088D2DB2154E00A0086E7EC /* libRCTNetwork.a in Frameworks */,
+				D088D2DE2154E00A0086E7EC /* libRCTSettings.a in Frameworks */,
+				D088D2DF2154E00A0086E7EC /* libRCTText.a in Frameworks */,
+				D088D2E02154E00A0086E7EC /* libRCTVibration.a in Frameworks */,
+				D088D2E12154E00A0086E7EC /* libRCTWebSocket.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -599,6 +658,7 @@
 			children = (
 				13B07FAE1A68108700A75B9A /* Discourse */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
+				D088D2A02154DF410086E7EC /* discourse-notification-extension */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				EBC3308E104F4DB19F2249B1 /* Resources */,
 				D09E47541F2C996500AFDCBE /* Frameworks */,
@@ -612,6 +672,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* Discourse.app */,
+				D088D29F2154DF410086E7EC /* discourse-notification-extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -649,9 +710,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		D088D2A02154DF410086E7EC /* discourse-notification-extension */ = {
+			isa = PBXGroup;
+			children = (
+				D088D2A12154DF410086E7EC /* NotificationService.h */,
+				D088D2A22154DF410086E7EC /* NotificationService.m */,
+				D088D2A42154DF410086E7EC /* Info.plist */,
+			);
+			path = "discourse-notification-extension";
+			sourceTree = "<group>";
+		};
 		D09E47541F2C996500AFDCBE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D088D2ED2154E43F0086E7EC /* NotificationCenter.framework */,
 				D09E477F1F2C9D6100AFDCBE /* AVFoundation.framework */,
 				D09E47551F2C996500AFDCBE /* Photos.framework */,
 			);
@@ -711,15 +783,35 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				D04172DC1EE989E6004B7E2F /* ShellScript */,
+				D088D2D52154DF410086E7EC /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D088D2A62154DF410086E7EC /* PBXTargetDependency */,
 			);
 			name = Discourse;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* Discourse.app */;
 			productType = "com.apple.product-type.application";
+		};
+		D088D29E2154DF410086E7EC /* discourse-notification-extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D088D2D42154DF410086E7EC /* Build configuration list for PBXNativeTarget "discourse-notification-extension" */;
+			buildPhases = (
+				D088D29B2154DF410086E7EC /* Sources */,
+				D088D29C2154DF410086E7EC /* Frameworks */,
+				D088D29D2154DF410086E7EC /* Resources */,
+				D088D2F12154E4890086E7EC /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "discourse-notification-extension";
+			productName = "discourse-notification-extension";
+			productReference = D088D29F2154DF410086E7EC /* discourse-notification-extension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -733,6 +825,11 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 6T3LU73T8S;
 						ProvisioningStyle = Manual;
+					};
+					D088D29E2154DF410086E7EC = {
+						CreatedOnToolsVersion = 10.0;
+						DevelopmentTeam = 6T3LU73T8S;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -816,6 +913,7 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* Discourse */,
+				D088D29E2154DF410086E7EC /* discourse-notification-extension */,
 			);
 		};
 /* End PBXProject section */
@@ -1139,6 +1237,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D088D29D2154DF410086E7EC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1154,7 +1259,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		D04172DC1EE989E6004B7E2F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1167,7 +1272,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Fabric.framework/run f1fad9d488bbe6a5a5434d2511423aae3aa653d2 5d253490433495e50092115fa84e293c99bdd7c733fb6d8f62896ace2078af33";
+			shellScript = "./Fabric.framework/run f1fad9d488bbe6a5a5434d2511423aae3aa653d2 5d253490433495e50092115fa84e293c99bdd7c733fb6d8f62896ace2078af33\n";
+		};
+		D088D2F12154E4890086E7EC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh index.widget.js\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1184,7 +1306,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D088D29B2154DF410086E7EC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D088D2A32154DF410086E7EC /* NotificationService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D088D2A62154DF410086E7EC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D088D29E2154DF410086E7EC /* discourse-notification-extension */;
+			targetProxy = D088D2A52154DF410086E7EC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
@@ -1204,6 +1342,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 88;
@@ -1247,6 +1386,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 88;
@@ -1361,6 +1501,91 @@
 			};
 			name = Release;
 		};
+		D088D2A82154DF410086E7EC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6T3LU73T8S;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "discourse-notification-extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.discourse.DiscourseApp.discourse-notification-extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D088D2A92154DF410086E7EC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 6T3LU73T8S;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "discourse-notification-extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.discourse.DiscourseApp.discourse-notification-extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1378,6 +1603,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D088D2D42154DF410086E7EC /* Build configuration list for PBXNativeTarget "discourse-notification-extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D088D2A82154DF410086E7EC /* Debug */,
+				D088D2A92154DF410086E7EC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

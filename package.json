@@ -34,7 +34,7 @@
   "devDependencies": {
     "babel-eslint": "^8.0.0",
     "babel-polyfill": "^6.13.0",
-    "babel-preset-react-native": "^4",
+    "babel-preset-react-native": "4.0.1",
     "eslint": "^5.6",
     "eslint-plugin-react": "^7.11",
     "eslint-plugin-react-native": "^3.3",
