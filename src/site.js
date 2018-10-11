@@ -25,7 +25,9 @@ class Site {
     "username",
     "hasPush",
     "isStaff",
-    "apiVersion"
+    "apiVersion",
+    "headerBackgroundColor",
+    "headerPrimaryColor"
   ];
 
   static fromTerm(term) {
@@ -82,7 +84,9 @@ class Site {
           url: url,
           title: info.title,
           description: info.description,
-          icon: info.apple_touch_icon_url
+          icon: info.apple_touch_icon_url,
+          headerBackgroundColor: `#${info.header_background_color}`,
+          headerPrimaryColor: `#${info.header_primary_color}`
         });
       });
   }
@@ -97,9 +101,8 @@ class Site {
   }
 
   jsonApi(path, method, data) {
-    console.log(`calling: ${this.url}${path}`);
-
     method = method || "GET";
+
     let headers = {
       "User-Api-Key": this.authToken,
       "User-Agent": `Discourse ${Platform.OS} App / 1.0`,
@@ -120,8 +123,8 @@ class Site {
 
     return new Promise((resolve, reject) => {
       let req = new Request(this.url + path, {
-        headers: headers,
-        method: method,
+        headers,
+        method,
         body: data
       });
       this._currentFetch = fetch(req);
@@ -662,6 +665,43 @@ class Site {
         })
         .done();
     });
+  }
+
+  topTopics() {
+    return fetch(`${this.url}/top/daily.json`)
+      .then(response => {
+        if (response.url && response.url.includes("/login")) {
+          return {
+            topic_list: {
+              topics: []
+            }
+          };
+        } else {
+          return response.json();
+        }
+      })
+      .then(response => {
+        return response.topic_list.topics.slice(0, 4).map(topic => {
+          const mostRecentPosterId = topic.posters.find(p => {
+            return p.description.includes("Most Recent Poster");
+          }).user_id;
+
+          const mostRecentPoster = response.users.find(u => {
+            return u.id === mostRecentPosterId;
+          });
+
+          const avatarURL = mostRecentPoster.avatar_template.replace(
+            "{size}",
+            240
+          );
+
+          return {
+            id: topic.id,
+            title: topic.unicode_title || topic.title,
+            mostRecentPosterAvatar: `${this.url}${avatarURL}`
+          };
+        });
+      });
   }
 
   toJSON() {

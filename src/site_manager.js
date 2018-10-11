@@ -11,6 +11,7 @@ import {
 } from "react-native";
 
 import Site from "./site";
+import Client from "./client";
 import RNKeyPair from "react-native-key-pair";
 import DeviceInfo from "react-native-device-info";
 import JSEncrypt from "./../lib/jsencrypt";
@@ -21,7 +22,13 @@ class SiteManager {
   constructor() {
     this._subscribers = [];
     this.sites = [];
-    this.load();
+    this.client = new Client();
+
+    console.log("LOADING SITES");
+
+    this.client.getId().then(id => {
+      this.load(id);
+    });
 
     this.firstFetch = new Date();
     this.lastFetch = new Date();
@@ -55,8 +62,12 @@ class SiteManager {
   }
 
   add(site) {
+    console.log("adding site", site);
     this.sites.push(site);
+
+    console.log("sites", this.sites);
     this.save();
+    console.log("sites saved", this.sites);
     this._onChange();
   }
 
@@ -101,8 +112,15 @@ class SiteManager {
   }
 
   save() {
-    AsyncStorage.setItem("@Discourse.sites", JSON.stringify(this.sites)).done();
-    this.updateUnreadBadge();
+    return new Promise((resolve, reject) => {
+      AsyncStorage.setItem("@Discourse.sites", JSON.stringify(this.sites)).then(
+        () => {
+          this.updateUnreadBadge();
+          resolve(this.sites);
+          this._onChange();
+        }
+      );
+    });
   }
 
   ensureRSAKeys() {
@@ -136,17 +154,25 @@ class SiteManager {
     return !!this._loading;
   }
 
-  load() {
+  load(clientId) {
+    console.log("LOADING");
     this._loading = true;
     AsyncStorage.getItem("@Discourse.sites")
       .then(json => {
+        console.log("json", json);
         if (json) {
           this.sites = JSON.parse(json).map(obj => {
+            console.log("OBJ", obj);
             let site = new Site(obj);
             // we require latest API
+
+            if (clientId) site.clientId = clientId;
+
             site.ensureLatestApi();
             return site;
           });
+
+          console.log(this.sites);
           this._loading = false;
           this._onChange();
           this.refreshSites({ ui: false, fast: true })
@@ -399,25 +425,6 @@ class SiteManager {
     });
   }
 
-  getClientId() {
-    return new Promise(resolve => {
-      if (this.clientId) {
-        resolve(this.clientId);
-      } else {
-        AsyncStorage.getItem("@ClientId").then(clientId => {
-          if (clientId && clientId.length > 0) {
-            this.clientId = clientId;
-            resolve(clientId);
-          } else {
-            this.clientId = randomBytes(32);
-            AsyncStorage.setItem("@ClientId", this.clientId);
-            resolve(clientId);
-          }
-        });
-      }
-    });
-  }
-
   generateNonce(site) {
     return new Promise(resolve => {
       this._nonce = randomBytes(16);
@@ -430,12 +437,16 @@ class SiteManager {
     let crypt = new JSEncrypt();
 
     crypt.setKey(this.rsaKeys.private);
-    let decrypted = JSON.parse(crypt.decrypt(payload));
+    const decrypted = JSON.parse(crypt.decrypt(payload));
 
     if (decrypted.nonce !== this._nonce) {
       Alert.alert("We were not expecting this reply, please try again!");
       return;
     }
+
+    console.log(this._nonceSite, {
+      "decrypted.key": decrypted.key
+    });
 
     this._nonceSite.authToken = decrypted.key;
     this._nonceSite.hasPush = decrypted.push;
@@ -448,6 +459,7 @@ class SiteManager {
       .refresh()
       .then(() => {
         this._onChange();
+        console.log(this.sites);
       })
       .catch(e => {
         console.log("Failed to refresh " + this._nonceSite.url + " " + e);
@@ -458,7 +470,8 @@ class SiteManager {
     let clientId;
 
     return this.ensureRSAKeys().then(() =>
-      this.getClientId()
+      this.client
+        .getId()
         .then(cid => {
           clientId = cid;
           return this.generateNonce(site);
