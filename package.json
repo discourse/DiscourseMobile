@@ -16,7 +16,6 @@
     ]
   },
   "dependencies": {
-    "url": "0.11.0",
     "invariant": "^2.2",
     "lodash": "^4.17",
     "moment": "^2.22",
@@ -32,7 +31,8 @@
     "react-native-swipeout": "^2.3",
     "react-native-typography": "^1.4.0",
     "react-native-vector-icons": "^5.0",
-    "react-navigation": "^1.5"
+    "react-navigation": "^1.5",
+    "url": "0.11.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.0",
