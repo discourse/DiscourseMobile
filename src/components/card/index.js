@@ -20,7 +20,8 @@ export default class extends React.Component {
 
     this.state = {
       isLoadingTopics: false,
-      topics: []
+      topics: [],
+      showMore: false
     };
   }
 
@@ -32,6 +33,31 @@ export default class extends React.Component {
         this.setState({ topics, isLoadingTopics: false });
       });
     }
+  }
+
+  _displayedTopics() {
+    if (this.state.showMore) {
+      return this.state.topics;
+    }
+
+    return this.state.topics.slice(0, 4);
+  }
+
+  _renderShowMore() {
+    if (this.state.showMore || this.state.topics.length <= 4) {
+      return;
+    }
+
+    return (
+      <View style={style.showMore}>
+        <TouchableHighlight
+          style={style.showMoreButtonWrapper}
+          onPress={() => this.setState({ showMore: true })}
+        >
+          <Text style={[material.button, style.showMoreButton]}>Show more</Text>
+        </TouchableHighlight>
+      </View>
+    );
   }
 
   _renderUnreadNotifications(unreadNotificationsCount) {
@@ -260,11 +286,12 @@ export default class extends React.Component {
                   title: "Title1",
                   data: this.state.isLoadingTopics
                     ? [0, 1, 2, 3]
-                    : this.state.topics
+                    : this._displayedTopics()
                 }
               ]}
-              keyExtractor={(item, index) => index}
+              keyExtractor={(item, index) => `${index}-${item.id}`}
             />
+            {this._renderShowMore()}
             {this._renderNotifications(this.props.site)}
           </View>
         </View>

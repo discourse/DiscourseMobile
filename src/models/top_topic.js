@@ -1,4 +1,5 @@
 import Api from "../api";
+import _ from "lodash";
 
 export default class TopTopic {
   constructor(site) {
@@ -9,90 +10,48 @@ export default class TopTopic {
   static startTracking(site) {
     const topTopic = new TopTopic(site);
 
-    return Promise.all([
-      topTopic._fetchTopDaily(),
-      topTopic._fetchTopicsTrackingState()
-    ]).then(responses => {
-      const top = responses[0];
-      const trackedTopics = responses[1];
+    return Promise.all([topTopic._fetchUnread(), topTopic._fetchNew()]).then(
+      responses => {
+        if (Array.isArray(responses[0]) || Array.isArray(responses[1])) {
+          return [];
+        }
 
-      console.log("-----", topTopic.site.url, top, trackedTopics);
+        const topics = responses[0]["topic_list"]["topics"]
+          .concat(responses[1]["topic_list"]["topics"])
+          .sort((t1, t2) => {
+            return new Date(t2.bumped_at) - new Date(t1.bumped_at);
+          });
 
-      return top.topic_list.topics.slice(0, 4).map(topic => {
-        const mostRecentPosterId = topic.posters.find(p => {
-          return p.description.includes("Most Recent Poster");
-        }).user_id;
-
-        const mostRecentPoster = top.users.find(u => {
-          return u.id === mostRecentPosterId;
-        });
-
-        const avatarURL = mostRecentPoster.avatar_template.replace(
-          "{size}",
-          240
+        const users = _.uniq(
+          responses[0]["users"].concat(responses[1]["users"])
         );
 
-        const trackedTopic = trackedTopics.find(x => x.topic_id === topic.id);
+        return topics.map(topic => {
+          const lastPosterId = topic.posters.find(
+            poster => poster.extras && poster.extras.includes("latest")
+          ).user_id;
 
-        let isNewTopic = false;
-        if (trackedTopic) {
-          const lastReadPostNumber = Number(trackedTopic.last_read_post_number);
-          if (lastReadPostNumber > 0) {
-            isNewTopic = false;
-          }
-        }
+          const lastPoster = users.find(user => user.id === lastPosterId);
 
-        let unreadPosts = 0;
-        if (trackedTopic) {
-          const lastReadPostNumber = Number(trackedTopic.last_read_post_number);
-          const highestPostNumber = Number(trackedTopic.highest_post_number);
-          unreadPosts = highestPostNumber - lastReadPostNumber;
-        }
+          const avatarURL = lastPoster.avatar_template.replace("{size}", 120);
 
-        console.log("dd", trackedTopics, trackedTopic, {
-          id: topic.id,
-          title: topic.unicode_title || topic.title,
-          mostRecentPosterAvatar: avatarURL.includes("http")
-            ? avatarURL
-            : `${site.url}${avatarURL}`,
-          new: isNewTopic,
-          unreadPosts
+          return {
+            id: topic.id,
+            title: topic.title,
+            mostRecentPosterAvatar: avatarURL.includes("http")
+              ? avatarURL
+              : `${site.url}${avatarURL}`,
+            unreadPosts: topic.unread || topic.highest_post_number,
+            newPosts: topic.new_posts
+          };
         });
-
-        return {
-          id: topic.id,
-          title: topic.unicode_title || topic.title,
-          mostRecentPosterAvatar: avatarURL.includes("http")
-            ? avatarURL
-            : `${site.url}${avatarURL}`,
-          new: isNewTopic,
-          unreadPosts
-        };
-      });
-    });
-  }
-
-  _fetchTopDaily() {
-    return fetch(`${this.site.url}/top/quarterly.json`).then(response => {
-      console.log("_fetchTopDaily", response);
-      if (response.url && response.url.includes("/login")) {
-        return {
-          topic_list: {
-            topics: []
-          },
-          users: []
-        };
-      } else {
-        return response.json();
       }
-    });
+    );
   }
 
-  _fetchTopicsTrackingState() {
+  _fetchFilter(filter) {
     return new Promise((resolve, reject) => {
-      const endpoint = `${
-        this.site.url
-      }/users/joffreyjaffeux/topic-tracking-state.json`;
+      const endpoint = `${this.site.url}/${filter}.json`;
 
       this._apiClient
         .fetch(endpoint)
@@ -100,5 +59,13 @@ export default class TopTopic {
         .catch(() => resolve([]))
         .done();
     });
+  }
+
+  _fetchUnread() {
+    return this._fetchFilter("unread");
+  }
+
+  _fetchNew() {
+    return this._fetchFilter("new");
   }
 }

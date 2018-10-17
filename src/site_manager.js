@@ -154,6 +154,18 @@ class SiteManager {
     return !!this._loading;
   }
 
+  storedSites() {
+    return AsyncStorage.getItem("@Discourse.sites").then(json => {
+      if (json) {
+        return JSON.parse(json).map(obj => {
+          return new Site(obj);
+        });
+      } else {
+        return [];
+      }
+    });
+  }
+
   load(clientId) {
     console.log("LOADING");
     this._loading = true;
@@ -408,14 +420,15 @@ class SiteManager {
   registerClientId(id) {
     console.log("REGISTER CLIENT ID " + id);
 
-    this.getClientId().then(existing => {
+    this.client.getId().then(existing => {
       this.sites.forEach(site => {
         site.clientId = id;
       });
 
       if (existing !== id) {
+        this.client.setId(id);
         this.clientId = id;
-        AsyncStorage.setItem("@ClientId", this.clientId);
+
         this.sites.forEach(site => {
           site.authToken = null;
           site.userId = null;

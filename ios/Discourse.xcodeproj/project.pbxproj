@@ -44,6 +44,7 @@
 		D03ED4D7213D64C700E228AB /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B50D1D901E554ADA0013CA06 /* libRCTPushNotification.a */; };
 		D04173051EE98A0F004B7E2F /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04173031EE98A0F004B7E2F /* Fabric.framework */; };
 		D04173061EE98A0F004B7E2F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04173041EE98A0F004B7E2F /* Crashlytics.framework */; };
+		D0753A142170BC8100C4BA83 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D0753A132170BC8100C4BA83 /* Settings.bundle */; };
 		D086E1C1215252FA00012B08 /* DiscourseSafariViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D086E1C0215252FA00012B08 /* DiscourseSafariViewManager.m */; };
 		D088D2A32154DF410086E7EC /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = D088D2A22154DF410086E7EC /* NotificationService.m */; };
 		D088D2D72154E00A0086E7EC /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
@@ -457,6 +458,7 @@
 		CAA90F8E98084C94A22F8309 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		D04173031EE98A0F004B7E2F /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		D04173041EE98A0F004B7E2F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		D0753A132170BC8100C4BA83 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		D086E1BF215252FA00012B08 /* DiscourseSafariViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscourseSafariViewManager.h; sourceTree = "<group>"; };
 		D086E1C0215252FA00012B08 /* DiscourseSafariViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscourseSafariViewManager.m; sourceTree = "<group>"; };
 		D088D29F2154DF410086E7EC /* discourse-notification-extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "discourse-notification-extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -685,6 +687,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				D0753A132170BC8100C4BA83 /* Settings.bundle */,
 				13B07FAE1A68108700A75B9A /* Discourse */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				D088D2A02154DF410086E7EC /* discourse-notification-extension */,
@@ -1336,6 +1339,7 @@
 				F5055FF2A04543E4A5C9BB62 /* Zocial.ttf in Resources */,
 				8D9322AE23B744B48052020D /* FontAwesome5_Brands.ttf in Resources */,
 				836E69940F724E62A174A300 /* FontAwesome5_Regular.ttf in Resources */,
+				D0753A142170BC8100C4BA83 /* Settings.bundle in Resources */,
 				967D024766934A6593367E90 /* FontAwesome5_Solid.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

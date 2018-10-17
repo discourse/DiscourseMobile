@@ -6,7 +6,8 @@ export default StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 3
+    paddingVertical: 3,
+    paddingHorizontal: 5
   },
 
   topicTitle: {
@@ -23,27 +24,27 @@ export default StyleSheet.create({
 
   newTopicIndicator: {
     color: "white",
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
     backgroundColor: colors.blueUnread,
     marginRight: 5
   },
 
-  newTopicIndicatorWithUnread: {
+  newPostsIndicator: {
     color: "white",
     paddingVertical: 2,
     paddingHorizontal: 4,
     borderRadius: 4,
     backgroundColor: colors.blueUnread,
-    marginRight: 5
+    marginHorizontal: 3
   },
 
-  unreadTopicIndicator: {
+  unreadPostsIndicator: {
     paddingVertical: 2,
     paddingHorizontal: 4,
     borderRadius: 4,
     backgroundColor: colors.grayUILight,
-    marginRight: 5
+    marginHorizontal: 3
   }
 });

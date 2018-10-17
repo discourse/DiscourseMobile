@@ -19,6 +19,8 @@ export default class extends React.Component {
         <Text numberOfLines={1} style={[material.body1, style.topicTitle]}>
           {this.topic.title}
         </Text>
+        {this._renderPostsState(this.topic)}
+
         <Image
           style={style.topicMostRecentPoster}
           source={{ uri: this.topic.mostRecentPosterAvatar }}
@@ -27,25 +29,29 @@ export default class extends React.Component {
     );
   }
 
-  _renderTopicState(topic) {
-    if (!topic.unreadPosts && topic.new) {
-      return <View style={style.newTopicIndicator} />;
-    } else if (topic.unreadPosts && topic.new) {
+  _renderPostsState(topic) {
+    if (topic.newPosts) {
       return (
-        <View style={style.newTopicIndicatorWithUnread}>
+        <View style={style.newPostsIndicator}>
           <Text style={[material.caption, { color: "white" }]}>
-            {topic.unreadPosts}
+            {topic.newPosts}
           </Text>
         </View>
       );
-    } else if (topic.unreadPosts && !topic.new) {
+    } else if (topic.unreadPosts) {
       return (
-        <View style={style.unreadTopicIndicator}>
+        <View style={style.unreadPostsIndicator}>
           <Text style={[material.caption, { color: "black" }]}>
             {topic.unreadPosts}
           </Text>
         </View>
       );
+    }
+  }
+
+  _renderTopicState(topic) {
+    if (topic.unreadPosts && !topic.newPosts) {
+      return <View style={style.newTopicIndicator} />;
     }
   }
 }

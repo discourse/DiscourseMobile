@@ -6,8 +6,8 @@
       {
         "root": ["./src"],
         "alias": {
-          "screens": "./src/screens",
-          "components": "./src/components"
+          "screens": "src/screens",
+          "components": "src/components"
         }
       }
     ]

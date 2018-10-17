@@ -9,7 +9,8 @@ import {
   AlertIOS,
   Linking,
   StatusBar,
-  PushNotificationIOS
+  PushNotificationIOS,
+  Platform
 } from "react-native";
 
 import { material } from "react-native-typography";
@@ -19,8 +20,10 @@ import CardComponent from "../../components/card";
 import Site from "../../site";
 import TopTopic from "../../models/top_topic";
 import SiteAuthenticator from "../../site_authenticator";
+import ExternalUrlHandler from "../../external_url_handler";
 import style from "./stylesheet";
 import DiscourseSafariViewManager from "../../../lib/discourse-safari-view-manager";
+import { UnexistingSite } from "../../errors";
 
 export default class HubScreen extends React.Component {
   constructor(props) {
@@ -28,6 +31,8 @@ export default class HubScreen extends React.Component {
 
     this.siteAuthenticator = null;
     this.siteManager = this.props.siteManager;
+    alert(this.siteManager);
+    this.test = new ExternalUrlHandler(this.siteManager);
 
     this.onChangeSitesHandler = e => this.onChangeSites(e);
 
@@ -37,6 +42,27 @@ export default class HubScreen extends React.Component {
       if (this.siteAuthenticator && split.length === 2) {
         // this.closeBrowser();
         this.siteAuthenticator.handleAuthenticationPayload(split[1]);
+      } else {
+        this.test.open(event.url).catch(e => {
+          console.log("TEST OPEN", e);
+          if (e instanceof UnexistingSite) {
+            AlertIOS.prompt(
+              `The site [${
+                event.url
+              }] is not added yet, would you want to add it?`,
+              null,
+              input =>
+                Site.fromTerm(input).then(site => {
+                  if (site) {
+                    if (this.siteManager.exists(site)) {
+                      throw "dupe site";
+                    }
+                    this.siteManager.add(site);
+                  }
+                })
+            );
+          }
+        });
       }
     };
 
@@ -45,9 +71,22 @@ export default class HubScreen extends React.Component {
       sites: []
     };
 
-    PushNotificationIOS.addEventListener("register", s => {
-      this.siteManager.registerClientId(s);
-    });
+    if (Platform.OS === "ios") {
+      PushNotificationIOS.addEventListener("notification", e => {
+        // alert(e._data.discourse_url);
+        // this._handleRemoteNotification(e)
+        this.test.open(e._data.discourse_url);
+      });
+
+      PushNotificationIOS.addEventListener("register", s => {
+        this.siteManager.registerClientId(s);
+      });
+
+      PushNotificationIOS.addEventListener("localNotification", e => {
+        alert(e._data.discourse_url);
+        this.test.open(e.discourse_url);
+      });
+    }
   }
 
   onAddSite() {
@@ -149,7 +188,7 @@ export default class HubScreen extends React.Component {
     if (authToken) {
       Linking.openURL(url);
 
-      this.siteManager.refreshInterval(60000);
+      // this.siteManager.refreshInterval(60000);
     } else {
       let result = await DiscourseSafariViewManager.openAuthSessionAsync(url);
 

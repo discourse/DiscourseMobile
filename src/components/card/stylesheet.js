@@ -65,8 +65,7 @@ export default StyleSheet.create({
     flex: 1,
     height: 1,
     backgroundColor: colors.grayUILight,
-    marginVertical: 10,
-    marginHorizontal: 5
+    marginVertical: 10
   },
 
   notificationsCount: {
@@ -129,7 +128,7 @@ export default StyleSheet.create({
   },
 
   topics: {
-    marginHorizontal: 10
+    marginHorizontal: 5
   },
 
   fakeTopic: {
@@ -155,5 +154,13 @@ export default StyleSheet.create({
     backgroundColor: colors.grayBackground
   },
 
-  unreadAndNew: {}
+  unreadAndNew: {},
+
+  showMore: {},
+  showMoreButtonWrapper: {
+    backgroundColor: colors.grayUILight,
+    padding: 5,
+    marginTop: 5
+  },
+  showMoreButton: { color: colors.graySubtitle, textAlign: "center" }
 });

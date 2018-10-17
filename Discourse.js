@@ -1,48 +1,14 @@
-/* @flow */
-"use strict";
+import {
+  AppState,
+  Platform,
+  PushNotificationIOS,
+  Settings
+} from "react-native";
 
 import React from "react";
 
-import {
-  Alert,
-  AppState,
-  Linking,
-  NativeModules,
-  Platform,
-  PushNotificationIOS,
-  StyleSheet,
-  View
-} from "react-native";
-
-// import { StackNavigator, NavigationActions } from "react-navigation";
-
 import SiteManager from "./src/site_manager";
-import HubScreen from "./src/screens/hub";
-
-import DiscourseSafariViewManager from "./lib/discourse-safari-view-manager";
-
-const ChromeCustomTab = NativeModules.ChromeCustomTab;
-//
-// const AppNavigator = StackNavigator(
-//   {
-//     Home: { screen: Screens.Home },
-//     Notifications: { screen: Screens.Notifications }
-//   },
-//   {
-//     mode: "modal",
-//     headerMode: "none"
-//   }
-// );
-
-// const styles = StyleSheet.create({
-//   app: {
-//     flex: 1,
-//     backgroundColor: "white"
-//   },
-//   screenContainer: {
-//     flex: 1
-//   }
-// });
+import HubScreen from "screens/hub";
 
 export default class Discourse extends React.Component {
   constructor(props) {
@@ -50,8 +16,6 @@ export default class Discourse extends React.Component {
 
     this._siteManager = new SiteManager();
 
-    console.log(this._siteManager);
-    //
     if (this.props.url) {
       this.openUrl(this.props.url);
     }
@@ -72,62 +36,26 @@ export default class Discourse extends React.Component {
     // };
   }
 
-  // resetToTop() {
-  //   if (this._navigation) {
-  //     this._navigation.dispatch(
-  //       NavigationActions.reset({
-  //         index: 0,
-  //         actions: [NavigationActions.navigate({ routeName: "Home" })]
-  //       })
-  //     );
-  //   }
-  // }
-  //
-  // componentDidMount() {
-  //   AppState.addEventListener("change", this._handleAppStateChange);
-  //
-  //   if (Platform.OS === "ios") {
-  //     PushNotificationIOS.requestPermissions({ alert: true, badge: true });
-  //   }
-  // }
-  //
+  componentDidMount() {
+    // AppState.addEventListener("change", this._handleAppStateChange);
+
+    if (Platform.OS === "ios") {
+      PushNotificationIOS.requestPermissions({ alert: true, badge: true });
+
+      if (typeof Settings.get("open_links_in_safari") === undefined) {
+        Settings.set({ open_links_in_safari: 1 });
+      }
+
+      if (typeof Settings.get("open_notifications_in_safari") === undefined) {
+        Settings.set({ open_notifications_in_safari: 1 });
+      }
+    }
+  }
+
   // componentWillUnmount() {
   //   AppState.removeEventListener("change", this._handleAppStateChange);
   // }
-  //
-  // async openUrl(url, authToken = false) {
-  //   if (Platform.OS === "ios") {
-  //     if (authToken) {
-  //       Linking.openURL(url);
-  //
-  //       this._siteManager.refreshInterval(60000);
-  //     } else {
-  //       let result = await DiscourseSafariViewManager.openAuthSessionAsync(url);
-  //
-  //       DiscourseSafariViewManager.dismissBrowser;
-  //
-  //       if (result.type === "success") {
-  //         Linking.openURL(result.url);
-  //       } else {
-  //         Alert.alert(
-  //           "Error while authenticating with this Discourse isntance"
-  //         );
-  //       }
-  //     }
-  //   } else {
-  //     if (this.props.simulator) {
-  //       Linking.openURL(url);
-  //     } else {
-  //       ChromeCustomTab.show(url)
-  //         .then(() => {})
-  //         .catch(e => {
-  //           Alert.alert(
-  //             "Discourse requires that Google Chrome Stable is installed."
-  //           );
-  //         });
-  //     }
-  //   }
-  // }
+
   render() {
     return <HubScreen siteManager={this._siteManager} />;
   }
