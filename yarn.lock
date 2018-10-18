@@ -4176,8 +4176,8 @@ react-native-safe-area-view@^0.9.0:
     hoist-non-react-statics "^2.3.1"
 
 "react-native-sortable-listview@github:deanmcpherson/react-native-sortable-listview":
-  version "0.2.6"
-  resolved "https://codeload.github.com/deanmcpherson/react-native-sortable-listview/tar.gz/ab3a1dc7c744e7186c163096f6fba4b27c3b7fd0"
+  version "0.2.8"
+  resolved "https://codeload.github.com/deanmcpherson/react-native-sortable-listview/tar.gz/ad6afb0ba712c26c08d18b94390154aa3958a3a0"
 
 react-native-swipeout@^2.3:
   version "2.3.6"

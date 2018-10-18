@@ -1,11 +1,10 @@
-/* @flow */
-"use strict";
-
 import { Platform } from "react-native";
 import _ from "lodash";
 
-const fetch = require("./../lib/fetch");
-import randomBytes from "./../lib/random-bytes";
+const fetch = require("Libs/fetch");
+import randomBytes from "Libs/random-bytes";
+import { DomainError, DupeSite, BadApi, UnknownError } from "Libs/errors";
+import TopTopic from "Models/top_topic";
 
 class Site {
   static FIELDS = [
@@ -30,7 +29,7 @@ class Site {
     "headerPrimaryColor"
   ];
 
-  static fromTerm(term) {
+  static fromTerm(term, siteManager) {
     let url = "";
 
     term = term.trim();
@@ -44,10 +43,10 @@ class Site {
       url = term;
     }
 
-    return Site.fromURL(url, term);
+    return Site.fromURL(url, term, siteManager);
   }
 
-  static fromURL(url, term) {
+  static fromURL(url, term, siteManager) {
     let req = new Request(`${url}/user-api-key/new`, {
       method: "HEAD"
     });
@@ -55,16 +54,16 @@ class Site {
     return fetch(req)
       .then(userApiKeyResponse => {
         if (userApiKeyResponse.status === 404) {
-          throw "bad api";
+          throw new BadApi();
         }
 
         if (userApiKeyResponse.status !== 200) {
-          throw "bad url";
+          throw new DomainError();
         }
 
         let version = userApiKeyResponse.headers.get("Auth-Api-Version");
         if (parseInt(version, 10) < 2) {
-          throw "bad api";
+          throw new BadApi();
         }
 
         // make sure we use the correct URL, eg: a URL could lead us to
@@ -80,14 +79,31 @@ class Site {
         );
       })
       .then(info => {
-        return new Site({
-          url: url,
+        const site = new Site({
+          url,
           title: info.title,
           description: info.description,
           icon: info.apple_touch_icon_url,
           headerBackgroundColor: `#${info.header_background_color}`,
           headerPrimaryColor: `#${info.header_primary_color}`
         });
+
+        if (site) {
+          if (siteManager.exists(site)) {
+            throw new DupeSite();
+          } else {
+            return site;
+          }
+        } else {
+          throw new UnknownError();
+        }
+      })
+      .catch(e => {
+        if (e instanceof TypeError && e.message === "Network request failed") {
+          throw new DomainError();
+        } else {
+          throw e;
+        }
       });
   }
 
@@ -98,6 +114,9 @@ class Site {
       });
     }
     this._timeout = 10000;
+
+    this.isLoadingTopics = false;
+    this.topics = [];
   }
 
   jsonApi(path, method, data) {
@@ -451,6 +470,8 @@ class Site {
         return;
       }
 
+      this.isLoadingTopics = true;
+
       this.initBus()
         .then(busState => {
           if (opts.fast || !busState.wasReady) {
@@ -535,7 +556,14 @@ class Site {
                 }
               }
 
-              resolve({ changed });
+              TopTopic.startTracking(this)
+                .then(topics => {
+                  this.topics = topics;
+                })
+                .finally(() => {
+                  this.isLoadingTopics = false;
+                  resolve({ changed });
+                });
             })
             .catch(e => {
               console.warn(e);
@@ -665,43 +693,6 @@ class Site {
         })
         .done();
     });
-  }
-
-  topTopics() {
-    return fetch(`${this.url}/top/daily.json`)
-      .then(response => {
-        if (response.url && response.url.includes("/login")) {
-          return {
-            topic_list: {
-              topics: []
-            }
-          };
-        } else {
-          return response.json();
-        }
-      })
-      .then(response => {
-        return response.topic_list.topics.slice(0, 4).map(topic => {
-          const mostRecentPosterId = topic.posters.find(p => {
-            return p.description.includes("Most Recent Poster");
-          }).user_id;
-
-          const mostRecentPoster = response.users.find(u => {
-            return u.id === mostRecentPosterId;
-          });
-
-          const avatarURL = mostRecentPoster.avatar_template.replace(
-            "{size}",
-            240
-          );
-
-          return {
-            id: topic.id,
-            title: topic.unicode_title || topic.title,
-            mostRecentPosterAvatar: `${this.url}${avatarURL}`
-          };
-        });
-      });
   }
 
   toJSON() {

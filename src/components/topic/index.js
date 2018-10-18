@@ -7,10 +7,8 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
 
-    this.topic = this.props.topic;
+    this.topic = props.topic;
   }
-
-  componentDidMount() {}
 
   render() {
     return (

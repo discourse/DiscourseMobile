@@ -1,10 +1,9 @@
-import { Alert, AsyncStorage, Platform } from "react-native";
-
+import { AsyncStorage, Platform } from "react-native";
 import RNKeyPair from "react-native-key-pair";
 import DeviceInfo from "react-native-device-info";
-import JSEncrypt from "./../lib/jsencrypt";
-import randomBytes from "./../lib/random-bytes";
-import Client from "./client";
+import JSEncrypt from "Libs/jsencrypt";
+import randomBytes from "Libs/random-bytes";
+import Client from "Libs/client";
 
 const RSA_STORAGE_KEY = "@Discourse.rsaKeys";
 
@@ -18,7 +17,7 @@ export default class SiteAuthenticator {
   }
 
   handleAuthenticationPayload(payload) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       payload = decodeURIComponent(payload);
 
       this._ensureRSAKeys().then(keys => {
@@ -28,14 +27,9 @@ export default class SiteAuthenticator {
         const decrypted = JSON.parse(crypt.decrypt(payload));
 
         if (decrypted.nonce !== this._nonce) {
-          Alert.alert("We were not expecting this reply, please try again!");
+          reject("We were not expecting this reply, please try again!");
           return;
         }
-
-        console.log("_authenticatedSite", this._siteManager.sites);
-        AsyncStorage.getItem("@Discourse.sites").then(json =>
-          console.log(json)
-        );
 
         this._authenticatedSite.authToken = decrypted.key;
         this._authenticatedSite.hasPush = decrypted.push;
@@ -44,19 +38,8 @@ export default class SiteAuthenticator {
         this._client.getId().then(id => {
           this._authenticatedSite.clientId = id;
           this._siteManager.save();
+          resolve(this._authenticatedSite);
         });
-
-        // // cause we want to stop rendering connect
-        // this._onChange();
-        //
-        // this._authenticatedSite
-        //   .refresh()
-        //   .then(() => {
-        //     this._onChange();
-        //   })
-        //   .catch(e => {
-        //     console.log("Failed to refresh " + this._nonceSite.url + " " + e);
-        //   });
       });
     });
   }

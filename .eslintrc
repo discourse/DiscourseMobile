@@ -72,6 +72,7 @@
   },
 
   "rules": {
+    "react/display-name": 0,
     "comma-dangle": 0, // disallow trailing commas in object literals
     "no-cond-assign": 1, // disallow assignment in conditional expressions
     "no-console": 0, // disallow use of console (off by default in the node environment)
@@ -221,5 +222,7 @@
     // Flow
     "flow-vars/define-flow-type": 0,
     "flow-vars/use-flow-type": 0
-  }
+  },
+
+  "extends": ["eslint:recommended", "plugin:react/recommended"]
 }

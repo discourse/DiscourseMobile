@@ -131,29 +131,6 @@ export default StyleSheet.create({
     marginHorizontal: 5
   },
 
-  fakeTopic: {
-    display: "flex",
-    flex: 1,
-    margin: 5,
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "row"
-  },
-
-  fakeTopicTitle: {
-    height: 15,
-    width: 200,
-    marginVertical: 5,
-    backgroundColor: colors.grayBackground
-  },
-
-  fakeTopicAvatar: {
-    height: 24,
-    width: 24,
-    borderRadius: 12,
-    backgroundColor: colors.grayBackground
-  },
-
   unreadAndNew: {},
 
   showMore: {},

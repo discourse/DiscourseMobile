@@ -1,4 +1,4 @@
-import randomBytes from "./../lib/random-bytes";
+import randomBytes from "Libs/random-bytes";
 import { AsyncStorage } from "react-native";
 
 const STORAGE_KEY = "@ClientId";

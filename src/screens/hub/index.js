@@ -1,81 +1,51 @@
+import PropTypes from "prop-types";
+
 import React from "react";
 
 import {
   Alert,
+  RefreshControl,
   ScrollView,
   View,
   Text,
   SafeAreaView,
   AlertIOS,
-  Linking,
-  StatusBar,
   PushNotificationIOS,
-  Platform
+  Platform,
+  FlatList
 } from "react-native";
 
 import { material } from "react-native-typography";
-import AddSiteButtonComponent from "../../components/add-site-button";
-import FirstSiteCardComponent from "../../components/first-site-card";
-import CardComponent from "../../components/card";
-import Site from "../../site";
-import TopTopic from "../../models/top_topic";
-import SiteAuthenticator from "../../site_authenticator";
-import ExternalUrlHandler from "../../external_url_handler";
+import AddSiteButtonComponent from "Components/add-site-button";
+import FirstSiteCardComponent from "Components/first-site-card";
+import EditSitesModalComponent from "Components/edit-sites-modal";
+import CardComponent from "Components/card";
+import EditSitesButtonComponent from "Components/edit-sites-button";
+import Site from "Models/site";
+import SiteAuthenticator from "Libs/site_authenticator";
+import Urlhandler from "Libs/url_handler";
 import style from "./stylesheet";
-import DiscourseSafariViewManager from "../../../lib/discourse-safari-view-manager";
-import { UnexistingSite } from "../../errors";
+import { DomainError, DupeSite, BadApi } from "Libs/errors";
 
 export default class HubScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    this.siteAuthenticator = null;
     this.siteManager = this.props.siteManager;
-    alert(this.siteManager);
-    this.test = new ExternalUrlHandler(this.siteManager);
+
+    this.urlHandler = new Urlhandler(this.siteManager);
 
     this.onChangeSitesHandler = e => this.onChangeSites(e);
 
-    this.openURLHandler = event => {
-      const split = event.url.split("payload=");
-
-      if (this.siteAuthenticator && split.length === 2) {
-        // this.closeBrowser();
-        this.siteAuthenticator.handleAuthenticationPayload(split[1]);
-      } else {
-        this.test.open(event.url).catch(e => {
-          console.log("TEST OPEN", e);
-          if (e instanceof UnexistingSite) {
-            AlertIOS.prompt(
-              `The site [${
-                event.url
-              }] is not added yet, would you want to add it?`,
-              null,
-              input =>
-                Site.fromTerm(input).then(site => {
-                  if (site) {
-                    if (this.siteManager.exists(site)) {
-                      throw "dupe site";
-                    }
-                    this.siteManager.add(site);
-                  }
-                })
-            );
-          }
-        });
-      }
-    };
-
     this.state = {
+      isEditSitesModalVisible: false,
       loadingSites: false,
       sites: []
     };
 
     if (Platform.OS === "ios") {
       PushNotificationIOS.addEventListener("notification", e => {
-        // alert(e._data.discourse_url);
-        // this._handleRemoteNotification(e)
-        this.test.open(e._data.discourse_url);
+        this.urlHandler.open(e._data.discourse_url);
       });
 
       PushNotificationIOS.addEventListener("register", s => {
@@ -83,51 +53,69 @@ export default class HubScreen extends React.Component {
       });
 
       PushNotificationIOS.addEventListener("localNotification", e => {
-        alert(e._data.discourse_url);
-        this.test.open(e.discourse_url);
+        this.urlHandler.open(e.discourse_url);
       });
     }
   }
 
-  onAddSite() {
-    AlertIOS.prompt("Enter a value", null, input =>
-      Site.fromTerm(input).then(site => {
-        if (site) {
-          if (this.siteManager.exists(site)) {
-            throw "dupe site";
-          }
-          this.siteManager.add(site);
-        }
-      })
+  onAddSite(existingInput) {
+    AlertIOS.prompt(
+      "Enter a forum URL",
+      null,
+      input => this._addSiteFromInput(input),
+      "plain-text",
+      existingInput
     );
   }
 
-  onPressConnect(site) {
-    if (site.authToken) {
-      this.openUrlsite(site.url, true);
-    } else {
-      this.siteAuthenticator = new SiteAuthenticator(site, this.siteManager);
+  onConnect(site) {
+    const siteAuthenticator = new SiteAuthenticator(site, this.siteManager);
 
-      this.siteAuthenticator.generateAuthenticationURL(site).then(async url => {
-        this.openUrl(url);
+    siteAuthenticator
+      .generateAuthenticationURL(site)
+      .then(async authUrl => {
+        this.urlHandler
+          .openAuthUrl(authUrl)
+          .then(url => {
+            const split = url.split("payload=");
+            if (split.length === 2) {
+              siteAuthenticator
+                .handleAuthenticationPayload(split[1])
+                .then(site => {
+                  // // // cause we want to stop rendering connect
+                  // this.onChangeSites();
+                  // //
+                  // site
+                  //   .refresh()
+                  //   .then(() => {
+                  //     this.onChangeSites();
+                  //   })
+
+                  // console.log("WILL REFFHSDJSHJDHKSDHKS");
+                  this.siteManager.refreshSites({ background: false });
+                })
+                .catch(error => Alert.alert(error));
+            }
+          })
+          .catch(e => {
+            console.log("CATCH", e);
+          });
+      })
+      .catch(e => {
+        console.log("CATCH", e);
       });
-    }
   }
 
   componentDidMount() {
-    Linking.addEventListener("url", this.openURLHandler);
     this.siteManager.subscribe(this.onChangeSitesHandler);
-    this.siteManager.refreshInterval(15000);
     this.onChangeSites();
 
     PushNotificationIOS.checkPermissions(p => {
-      // if (p.badge) {
-      //   // let total = this._siteManager.totalUnread();
-      //   console.log("Setting badge to " + total);
-      //   // PushNotificationIOS.setApplicationIconBadgeNumber(total);
-      // }
-      //
-      // console.log("finishing up background fetch");
+      if (p.badge) {
+        const total = this.siteManager.totalUnread();
+        PushNotificationIOS.setApplicationIconBadgeNumber(total);
+      }
+
       // BackgroundFetch.done(true);
     });
   }
@@ -146,17 +134,76 @@ export default class HubScreen extends React.Component {
     }
   }
 
-  _renderSites(sites) {
-    return sites.map((site, index) => {
-      return (
-        <CardComponent
-          onOpenUrl={this.onOpenUrl.bind(this)}
-          onPressConnect={this.onPressConnect.bind(this)}
-          site={site}
-          key={index}
+  render() {
+    return (
+      <SafeAreaView style={style.container}>
+        <EditSitesModalComponent
+          siteManager={this.siteManager}
+          onClose={this._onEditSites.bind(this)}
+          visible={this.state.isEditSitesModalVisible}
         />
-      );
+        <ScrollView
+          style={style.list}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.loadingSites}
+              onRefresh={this._onRefreshSites.bind(this)}
+            />
+          }
+        >
+          <View style={style.header}>
+            <Text style={material.display1}>DiscourseHub</Text>
+            <AddSiteButtonComponent onPress={this.onAddSite.bind(this)} />
+          </View>
+          {this._renderFirstSiteCard(this.state.sites.length)}
+          {this._renderSites(this.state.sites)}
+          {this._renderEditSites(this.state.sites.length)}
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  openUrl(url) {
+    this.urlHandler.open(url);
+  }
+
+  _onRefreshSites() {
+    this.siteManager.refreshSites({ background: false });
+  }
+
+  _onEditSites() {
+    this.setState({
+      isEditSitesModalVisible: !this.state.isEditSitesModalVisible
     });
+  }
+
+  _renderEditSites(sitesLength) {
+    if (sitesLength) {
+      return (
+        <EditSitesButtonComponent onPress={this._onEditSites.bind(this)} />
+      );
+    }
+  }
+
+  _renderSites(sites) {
+    return (
+      <FlatList
+        data={sites}
+        extraData={this.state}
+        scrollEnabled={false}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={context => {
+          return (
+            <CardComponent
+              onOpenUrl={this.openUrl.bind(this)}
+              onConnect={this.onConnect.bind(this)}
+              site={context.item}
+              key={`${context.item.url}-${context.index}`}
+            />
+          );
+        }}
+      />
+    );
   }
 
   _renderFirstSiteCard(sitesLength) {
@@ -165,40 +212,28 @@ export default class HubScreen extends React.Component {
     }
   }
 
-  render() {
-    return (
-      <SafeAreaView style={style.container}>
-        <ScrollView style={style.list}>
-          <View style={style.header}>
-            <Text style={material.display1}>DiscourseHub</Text>
-            <AddSiteButtonComponent onPress={this.onAddSite.bind(this)} />
-          </View>
-          {this._renderFirstSiteCard(this.state.sites.length)}
-          {this._renderSites(this.state.sites)}
-        </ScrollView>
-      </SafeAreaView>
-    );
+  _addSiteFromInput(input) {
+    Site.fromTerm(input, this.siteManager)
+      .then(site => this.siteManager.add(site))
+      .catch(e => this._handleRejectedSite(e));
   }
 
-  onOpenUrl(url, token) {
-    this.openUrl(url, token);
-  }
+  _handleRejectedSite(exception, input) {
+    if (exception instanceof DomainError) {
+      Alert.alert(
+        "Domain error",
+        exception.message,
+        [{ text: "OK", onPress: () => this.onAddSite(input) }],
+        { cancelable: false }
+      );
+    }
 
-  async openUrl(url, authToken = false) {
-    if (authToken) {
-      Linking.openURL(url);
-
-      // this.siteManager.refreshInterval(60000);
-    } else {
-      let result = await DiscourseSafariViewManager.openAuthSessionAsync(url);
-
-      DiscourseSafariViewManager.dismissBrowser;
-
-      if (result.type === "success") {
-        Linking.openURL(result.url);
-      } else {
-        Alert.alert("Error while authenticating with this Discourse isntance");
-      }
+    if (exception instanceof DupeSite || exception instanceof BadApi) {
+      Alert.alert(null, exception.message);
     }
   }
 }
+
+HubScreen.propTypes = {
+  siteManager: PropTypes.object
+};

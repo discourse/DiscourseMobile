@@ -1,4 +1,4 @@
-import Api from "../api";
+import Api from "Libs/api";
 import _ from "lodash";
 
 export default class TopTopic {
@@ -16,15 +16,13 @@ export default class TopTopic {
           return [];
         }
 
-        const topics = responses[0]["topic_list"]["topics"]
-          .concat(responses[1]["topic_list"]["topics"])
+        const topics = responses[0].topic_list.topics
+          .concat(responses[1].topic_list.topics)
           .sort((t1, t2) => {
             return new Date(t2.bumped_at) - new Date(t1.bumped_at);
           });
 
-        const users = _.uniq(
-          responses[0]["users"].concat(responses[1]["users"])
-        );
+        const users = _.uniq(responses[0].users.concat(responses[1].users));
 
         return topics.map(topic => {
           const lastPosterId = topic.posters.find(

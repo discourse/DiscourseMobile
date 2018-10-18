@@ -1,5 +1,3 @@
-"use strict";
-
 var randomBytes = function(length) {
   return Array(length + 1)
     .join("x")

@@ -1,22 +1,10 @@
-/* @flow */
-"use strict";
-
 import _ from "lodash";
 
-import {
-  Alert,
-  AsyncStorage,
-  Platform,
-  PushNotificationIOS
-} from "react-native";
+import { AsyncStorage, Platform, PushNotificationIOS } from "react-native";
 
-import Site from "./site";
-import Client from "./client";
-import RNKeyPair from "react-native-key-pair";
-import DeviceInfo from "react-native-device-info";
-import JSEncrypt from "./../lib/jsencrypt";
-import randomBytes from "./../lib/random-bytes";
-import BackgroundJob from "./../lib/background-job";
+import Site from "Models/site";
+import Client from "Libs/client";
+import BackgroundJob from "Libs/background-job";
 
 class SiteManager {
   constructor() {
@@ -26,10 +14,7 @@ class SiteManager {
 
     console.log("LOADING SITES");
 
-    this.client.getId().then(id => {
-      this.load(id);
-    });
-
+    this.client.getId().then(id => this.load(id));
     this.firstFetch = new Date();
     this.lastFetch = new Date();
     this.fetchCount = 0;
@@ -38,6 +23,23 @@ class SiteManager {
       if (date) {
         this.lastRefresh = new Date(date);
         this._onRefresh;
+      }
+    });
+  }
+
+  registerClientId(id) {
+    this.client.getId().then(existing => {
+      this.sites.forEach(site => {
+        site.clientId = id;
+      });
+
+      if (existing !== id) {
+        AsyncStorage.setItem("@ClientId", id);
+        this.sites.forEach(site => {
+          site.authToken = null;
+          site.userId = null;
+        });
+        this.save();
       }
     });
   }
@@ -123,33 +125,6 @@ class SiteManager {
     });
   }
 
-  ensureRSAKeys() {
-    return new Promise((resolve, reject) => {
-      if (this.rsaKeys) {
-        resolve();
-        return;
-      }
-
-      AsyncStorage.getItem("@Discourse.rsaKeys").then(json => {
-        if (json) {
-          this.rsaKeys = JSON.parse(json);
-          resolve();
-        } else {
-          console.log("Generating RSA keys");
-          RNKeyPair.generate(pair => {
-            this.rsaKeys = pair;
-            console.log("Generated RSA keys");
-            AsyncStorage.setItem(
-              "@Discourse.rsaKeys",
-              JSON.stringify(this.rsaKeys)
-            );
-            resolve();
-          });
-        }
-      });
-    });
-  }
-
   isLoading() {
     return !!this._loading;
   }
@@ -178,7 +153,9 @@ class SiteManager {
             let site = new Site(obj);
             // we require latest API
 
-            if (clientId) site.clientId = clientId;
+            if (clientId) {
+              site.clientId = clientId;
+            }
 
             site.ensureLatestApi();
             return site;
@@ -408,173 +385,6 @@ class SiteManager {
           })
           .done();
       });
-    });
-  }
-
-  serializeParams(obj) {
-    return Object.keys(obj)
-      .map(k => `${encodeURIComponent(k)}=${encodeURIComponent([obj[k]])}`)
-      .join("&");
-  }
-
-  registerClientId(id) {
-    console.log("REGISTER CLIENT ID " + id);
-
-    this.client.getId().then(existing => {
-      this.sites.forEach(site => {
-        site.clientId = id;
-      });
-
-      if (existing !== id) {
-        this.client.setId(id);
-        this.clientId = id;
-
-        this.sites.forEach(site => {
-          site.authToken = null;
-          site.userId = null;
-        });
-        this.save();
-      }
-    });
-  }
-
-  generateNonce(site) {
-    return new Promise(resolve => {
-      this._nonce = randomBytes(16);
-      this._nonceSite = site;
-      resolve(this._nonce);
-    });
-  }
-
-  handleAuthPayload(payload) {
-    let crypt = new JSEncrypt();
-
-    crypt.setKey(this.rsaKeys.private);
-    const decrypted = JSON.parse(crypt.decrypt(payload));
-
-    if (decrypted.nonce !== this._nonce) {
-      Alert.alert("We were not expecting this reply, please try again!");
-      return;
-    }
-
-    console.log(this._nonceSite, {
-      "decrypted.key": decrypted.key
-    });
-
-    this._nonceSite.authToken = decrypted.key;
-    this._nonceSite.hasPush = decrypted.push;
-    this._nonceSite.apiVersion = decrypted.api;
-
-    // cause we want to stop rendering connect
-    this._onChange();
-
-    this._nonceSite
-      .refresh()
-      .then(() => {
-        this._onChange();
-        console.log(this.sites);
-      })
-      .catch(e => {
-        console.log("Failed to refresh " + this._nonceSite.url + " " + e);
-      });
-  }
-
-  generateAuthURL(site) {
-    let clientId;
-
-    return this.ensureRSAKeys().then(() =>
-      this.client
-        .getId()
-        .then(cid => {
-          clientId = cid;
-          return this.generateNonce(site);
-        })
-        .then(nonce => {
-          let deviceName = "Unknown Mobile Device";
-
-          try {
-            deviceName = DeviceInfo.getDeviceName();
-          } catch (e) {
-            // on android maybe this can fail?
-          }
-
-          let basePushUrl = "https://api.discourse.org";
-          //let basePushUrl = "http://l.discourse:3000"
-
-          let params = {
-            scopes: "notifications,session_info",
-            client_id: clientId,
-            nonce: nonce,
-            push_url: basePushUrl + "/api/publish_" + Platform.OS,
-            auth_redirect: "discourse://auth_redirect",
-            application_name: "Discourse - " + deviceName,
-            public_key: this.rsaKeys.public
-          };
-
-          return `${site.url}/user-api-key/new?${this.serializeParams(params)}`;
-        })
-    );
-  }
-
-  getSeenNotificationMap() {
-    return new Promise(resolve => {
-      let promises = [];
-      let results = {};
-
-      this.sites.forEach(site => {
-        if (site.authToken) {
-          promises.push(
-            site.getSeenNotificationId().then(function(id) {
-              results[site.url] = id;
-            })
-          );
-        }
-      });
-
-      Promise.all(promises).then(() => resolve(results));
-    });
-  }
-
-  notifications(types, options) {
-    return new Promise(resolve => {
-      let promises = [];
-      this.sites.forEach(site => {
-        let opts = options;
-
-        if (opts.onlyNew) {
-          opts = _.merge(_.clone(opts), { minId: opts.newMap[site.url] });
-        }
-
-        let promise = site.notifications(types, opts).then(notifications => {
-          return notifications.map(n => {
-            return { notification: n, site: site };
-          });
-        });
-
-        promises.push(promise);
-      });
-
-      Promise.all(promises)
-        .then(results => {
-          resolve(
-            _.chain(results)
-              .flatten()
-              .orderBy(
-                [
-                  o => {
-                    return !o.notification.read &&
-                      o.notification.notification_type === 6
-                      ? 0
-                      : 1;
-                  },
-                  "notification.created_at"
-                ],
-                ["asc", "desc"]
-              )
-              .value()
-          );
-        })
-        .done();
     });
   }
 

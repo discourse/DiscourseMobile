@@ -7,14 +7,11 @@ export default class extends React.Component {
   render() {
     return (
       <TouchableHighlight
-        style={style.outterButton}
-        underlayColor={"transparent"}
+        style={style.wrapper}
         onPress={() => this.props.onPress()}
       >
         <View style={style.button}>
-          <Text>
-            <Icon name="plus" style={style.icon} size={22} />
-          </Text>
+          <Text style={style.buttonText}>Edit sites</Text>
         </View>
       </TouchableHighlight>
     );

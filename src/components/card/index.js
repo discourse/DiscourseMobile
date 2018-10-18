@@ -1,16 +1,9 @@
 import React from "react";
-import {
-  Image,
-  TouchableOpacity,
-  TouchableHighlight,
-  View,
-  Text,
-  SectionList
-} from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { Image, TouchableHighlight, View, Text } from "react-native";
+
 import style from "./stylesheet";
-import TopicComponent from "../topic";
-import TopTopic from "../../models/top_topic";
+import TopicsComponent from "Components/topics";
+import TopTopic from "Models/top_topic";
 import Colors from "../../colors";
 import { material } from "react-native-typography";
 
@@ -18,33 +11,25 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
 
+    this.site = props.site;
+
     this.state = {
-      isLoadingTopics: false,
-      topics: [],
       showMore: false
     };
   }
 
-  componentDidMount() {
-    if (this.props.site.authToken) {
-      this.setState({ isLoadingTopics: true });
-
-      TopTopic.startTracking(this.props.site).then(topics => {
-        this.setState({ topics, isLoadingTopics: false });
-      });
-    }
-  }
-
-  _displayedTopics() {
-    if (this.state.showMore) {
-      return this.state.topics;
-    }
-
-    return this.state.topics.slice(0, 4);
-  }
+  // componentDidMount() {
+  //   if (this.site.authToken) {
+  //     this.setState({ isLoadingTopics: true });
+  //
+  //     TopTopic.startTracking(this.site).then(topics => {
+  //       this.setState({ topics, isLoadingTopics: false });
+  //     });
+  //   }
+  // }
 
   _renderShowMore() {
-    if (this.state.showMore || this.state.topics.length <= 4) {
+    if (this.state.showMore || this.props.site.topics.length <= 4) {
       return;
     }
 
@@ -60,20 +45,42 @@ export default class extends React.Component {
     );
   }
 
+  _openNotifications() {
+    this._openUserPage("notifications");
+  }
+
+  _openMessages() {
+    this._openUserPage("messages");
+  }
+
+  _openUserPage(page) {
+    const username = this.props.site.username;
+    if (username) {
+      const url = `${this.site.url}/u/${username}/${page}`;
+      this.props.onOpenUrl(url, this.site.authToken);
+    } else {
+      this.props.onOpenUrl(this.site.url, this.site.authToken);
+    }
+  }
+
   _renderUnreadNotifications(unreadNotificationsCount) {
-    unreadNotificationsCount = 2;
     if (unreadNotificationsCount > 0) {
       return (
-        <View style={style.unreadNotifications}>
-          <View style={style.unreadNotificationsCount}>
-            <Text
-              style={[material.caption, style.unreadNotificationsCountText]}
-            >
-              {unreadNotificationsCount}
-            </Text>
+        <TouchableHighlight
+          underlayColor={"transparent"}
+          onPress={this._openNotifications.bind(this)}
+        >
+          <View style={style.unreadNotifications}>
+            <View style={style.unreadNotificationsCount}>
+              <Text
+                style={[material.caption, style.unreadNotificationsCountText]}
+              >
+                {unreadNotificationsCount}
+              </Text>
+            </View>
+            <Text style={style.unreadNotificationsText}>notification(s)</Text>
           </View>
-          <Text style={style.unreadNotificationsText}>message(s)</Text>
-        </View>
+        </TouchableHighlight>
       );
     }
   }
@@ -81,16 +88,21 @@ export default class extends React.Component {
   _renderUnreadPrivateMessages(unreadPrivateMessagesCount) {
     if (unreadPrivateMessagesCount > 0) {
       return (
-        <View style={style.unreadPrivateMessages}>
-          <View style={style.unreadPrivateMessagesCount}>
-            <Text
-              style={[material.caption, style.unreadPrivateMessagesCountText]}
-            >
-              {unreadPrivateMessagesCount}
-            </Text>
+        <TouchableHighlight
+          underlayColor={"transparent"}
+          onPress={this._openMessages.bind(this)}
+        >
+          <View style={style.unreadPrivateMessages}>
+            <View style={style.unreadPrivateMessagesCount}>
+              <Text
+                style={[material.caption, style.unreadPrivateMessagesCountText]}
+              >
+                {unreadPrivateMessagesCount}
+              </Text>
+            </View>
+            <Text style={style.unreadPrivateMessagesText}>message(s)</Text>
           </View>
-          <Text style={style.unreadPrivateMessagesText}>message(s)</Text>
-        </View>
+        </TouchableHighlight>
       );
     }
   }
@@ -105,11 +117,11 @@ export default class extends React.Component {
     if (site.unreadNotifications > 0 || site.unreadPrivateMessages > 0) {
       return (
         <View style={style.notifications}>
-          {_renderNotificationSeparator(this.state.topics.length)}
+          {_renderNotificationSeparator(this.props.site.topics.length)}
           <View
             style={[
               style.notificationsCount,
-              this.notificationsCountStyle(this.state.topics.length)
+              this.notificationsCountStyle(this.props.site.topics.length)
             ]}
           >
             {this._renderUnreadNotifications(site.unreadNotifications)}
@@ -129,7 +141,7 @@ export default class extends React.Component {
       <View style={[style.connect]}>
         <TouchableHighlight
           style={style.connectButtonWrapper}
-          onPress={() => this.props.onPressConnect(site)}
+          onPress={() => this.props.onConnect(site)}
         >
           <View style={style.connectButton}>
             <Text style={[material.button, style.connectButtonText]}>
@@ -175,6 +187,8 @@ export default class extends React.Component {
   cardHeaderTitleStyle(site) {
     if (site.url === "https://www.minerva-group.org") {
       return { color: "white" };
+    } else {
+      return { color: site.headerPrimaryColor };
     }
   }
 
@@ -211,88 +225,47 @@ export default class extends React.Component {
       <TouchableHighlight
         activeOpacity={0.8}
         underlayColor={"transparent"}
-        onPress={() =>
-          this.props.onOpenUrl(this.props.site.url, this.props.site.authToken)
-        }
+        onPress={() => this.props.onOpenUrl(this.site.url, this.site.authToken)}
       >
         <View style={style.card}>
           <View
             style={[
               style.cardHeader,
-              { backgroundColor: this.props.site.headerBackgroundColor },
-              this.cardHeaderStyle(this.props.site)
+              { backgroundColor: this.site.headerBackgroundColor },
+              this.cardHeaderStyle(this.site)
             ]}
           >
             <View style={style.site}>
-              <Image
-                style={style.logo}
-                source={{ uri: this.props.site.icon }}
-              />
+              <Image style={style.logo} source={{ uri: this.site.icon }} />
               <Text
                 style={[
                   material.title,
                   style.title,
-                  this.cardHeaderTitleStyle(this.props.site)
+                  this.cardHeaderTitleStyle(this.site)
                 ]}
               >
-                {this.props.site.title}
+                {this.site.title}
               </Text>
             </View>
 
-            {this._renderUnreadAndNew(this.props.site)}
-            {this._renderConnect(this.props.site)}
+            {this._renderUnreadAndNew(this.site)}
+            {this._renderConnect(this.site)}
           </View>
           <View
-            style={[style.topics, this.topicsStyle(this.state.topics.length)]}
+            style={[
+              style.topics,
+              this.topicsStyle(this.props.site.topics.length)
+            ]}
           >
-            <SectionList
-              renderItem={({ item, index, section }) => {
-                if (this.state.isLoadingTopics) {
-                  return (
-                    <View style={style.fakeTopic}>
-                      <View
-                        style={[
-                          style.fakeTopicTitle,
-                          {
-                            width:
-                              Math.floor(Math.random() * (280 - 120 + 1)) + 120
-                          }
-                        ]}
-                      />
-                      <View style={style.fakeTopicAvatar} />
-                    </View>
-                  );
-                } else {
-                  return (
-                    <TouchableHighlight
-                      key={index}
-                      style={style.touchableTopic}
-                      activeOpacity={0.8}
-                      underlayColor={Colors.yellowUIFeedback}
-                      onPress={() =>
-                        this.props.onOpenUrl(
-                          `${this.props.site.url}/t/${item.id}`,
-                          this.props.site.authToken
-                        )
-                      }
-                    >
-                      <TopicComponent topic={item} />
-                    </TouchableHighlight>
-                  );
-                }
-              }}
-              sections={[
-                {
-                  title: "Title1",
-                  data: this.state.isLoadingTopics
-                    ? [0, 1, 2, 3]
-                    : this._displayedTopics()
-                }
-              ]}
-              keyExtractor={(item, index) => `${index}-${item.id}`}
+            <TopicsComponent
+              isLoadingTopics={this.props.site.isLoadingTopics}
+              site={this.site}
+              showMore={this.state.showMore}
+              topics={this.props.site.topics}
+              onOpenUrl={this.props.onOpenUrl}
             />
             {this._renderShowMore()}
-            {this._renderNotifications(this.props.site)}
+            {this._renderNotifications(this.site)}
           </View>
         </View>
       </TouchableHighlight>

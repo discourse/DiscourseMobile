@@ -1,5 +1,3 @@
-"use strict";
-
 // https://github.com/apentle/react-native-cancelable-fetch
 // (with very minor tweaks)
 

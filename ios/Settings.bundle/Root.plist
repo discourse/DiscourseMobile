@@ -20,7 +20,7 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Open notifications in safari</string>
+			<string>Open notifications in Safari</string>
 			<key>Key</key>
 			<string>open_notifications_in_safari</string>
 			<key>DefaultValue</key>

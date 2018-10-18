@@ -5,8 +5,7 @@
   "scripts": {
     "clean-ios": "cd ios && xcodebuild -scheme Discourse -destination 'platform=iOS Simulator,name=iPhone X' clean",
     "prettier": "prettier --write \"js/**/*.js\"",
-    "lint": "eslint ./js",
-    "precommit": "lint-staged"
+    "lint": "eslint ./js"
   },
   "lint-staged": {
     "*.js": [
