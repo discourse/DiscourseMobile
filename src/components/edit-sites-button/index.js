@@ -1,19 +1,26 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { TouchableHighlight, View, Text } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
 import style from "./stylesheet";
+import Colors from "Root/colors";
+import { material } from "react-native-typography";
 
-export default class extends React.Component {
+export default class EditSitesButtonComponent extends React.Component {
   render() {
     return (
-      <TouchableHighlight
-        style={style.wrapper}
-        onPress={() => this.props.onPress()}
-      >
-        <View style={style.button}>
-          <Text style={style.buttonText}>Edit sites</Text>
-        </View>
-      </TouchableHighlight>
+      <View style={style.wrapper}>
+        <TouchableHighlight
+          style={style.button}
+          underlayColor={Colors.yellowUIFeedback}
+          onPress={this.props.onPress}
+        >
+          <Text style={[material.button, style.buttonText]}>Edit sites</Text>
+        </TouchableHighlight>
+      </View>
     );
   }
 }
+
+EditSitesButtonComponent.propTypes = {
+  onPress: PropTypes.func
+};

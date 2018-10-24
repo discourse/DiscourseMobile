@@ -1,23 +1,12 @@
 import React from "react";
-import {
-  Image,
-  TouchableOpacity,
-  TouchableHighlight,
-  View,
-  Text
-} from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { Image, TouchableHighlight, View, Text } from "react-native";
 import style from "./stylesheet";
 import { material } from "react-native-typography";
 
 export default class extends React.Component {
-  onPress() {
-    this.props.navigation.getParam("onPress")();
-  }
-
   render() {
     return (
-      <TouchableHighlight>
+      <TouchableHighlight onPress={() => this.props.onPress()}>
         <View style={style.card}>
           <Image style={style.logo} source={require("./nav-icon-gray.png")} />
 
@@ -27,11 +16,9 @@ export default class extends React.Component {
             Add Discourse sites to keep track of.
           </Text>
 
-          <TouchableOpacity>
-            <Text style={[material.button, style.addSiteButtonText]}>
-              Add your first site
-            </Text>
-          </TouchableOpacity>
+          <Text style={[material.button, style.addSiteButtonText]}>
+            Add your first site
+          </Text>
         </View>
       </TouchableHighlight>
     );

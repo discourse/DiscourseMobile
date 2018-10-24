@@ -14,9 +14,9 @@ export default StyleSheet.create({
     marginTop: 10,
     display: "flex",
     backgroundColor: "white",
-    borderColor: colors.grayUILight,
-    borderWidth: 1,
-    borderRadius: 5,
+    borderColor: colors.grayBorder,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
     flexDirection: "column"
   },
   cardBody: { display: "flex", flex: 1 },
@@ -24,12 +24,8 @@ export default StyleSheet.create({
     display: "flex",
     flex: 1,
     flexDirection: "row",
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-    borderBottomRightRadius: 0,
-    borderBottomLeftRadius: 0,
     overflow: "hidden",
-    padding: 5,
+    padding: 10,
     justifyContent: "space-between",
     alignItems: "center"
   },
@@ -57,29 +53,25 @@ export default StyleSheet.create({
 
   notifications: {
     display: "flex",
-    flexDirection: "column"
-  },
-
-  notificationsSeparator: {
-    display: "flex",
     flex: 1,
-    height: 1,
-    backgroundColor: colors.grayUILight,
-    marginVertical: 10
+    flexDirection: "column",
+    marginHorizontal: 5,
+    marginTop: 5,
+    marginBottom: 10
   },
 
   notificationsCount: {
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "flex-start"
   },
 
   unreadNotifications: {
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
-    marginHorizontal: 5
+    marginRight: 10
   },
   unreadNotificationsCount: {
     minWidth: 22,
@@ -104,8 +96,7 @@ export default StyleSheet.create({
   unreadPrivateMessages: {
     display: "flex",
     alignItems: "center",
-    flexDirection: "row",
-    marginHorizontal: 5
+    flexDirection: "row"
   },
   unreadPrivateMessagesCount: {
     minWidth: 22,
@@ -133,11 +124,22 @@ export default StyleSheet.create({
 
   unreadAndNew: {},
 
-  showMore: {},
+  showMore: {
+    marginLeft: "auto"
+  },
   showMoreButtonWrapper: {
     backgroundColor: colors.grayUILight,
-    padding: 5,
-    marginTop: 5
+    paddingVertical: 8,
+    paddingHorizontal: 10
   },
-  showMoreButton: { color: colors.graySubtitle, textAlign: "center" }
+  showMoreButton: { color: colors.graySubtitle, textAlign: "center" },
+
+  notificationsSeparator: {
+    display: "flex",
+    flex: 1,
+    height: 1,
+    backgroundColor: colors.grayBorder,
+    marginBottom: 10,
+    marginTop: 0
+  }
 });

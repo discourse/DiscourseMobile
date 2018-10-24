@@ -6,6 +6,7 @@ export default class extends React.Component {
   render() {
     return (
       <View style={style.topic}>
+        <View style={style.avatar} />
         <View
           style={[
             style.title,
@@ -14,7 +15,6 @@ export default class extends React.Component {
             }
           ]}
         />
-        <View style={style.avatar} />
       </View>
     );
   }

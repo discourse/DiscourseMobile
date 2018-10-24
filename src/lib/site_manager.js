@@ -5,25 +5,88 @@ import { AsyncStorage, Platform, PushNotificationIOS } from "react-native";
 import Site from "Models/site";
 import Client from "Libs/client";
 import BackgroundJob from "Libs/background-job";
+import UrlParser from "url";
 
 class SiteManager {
   constructor() {
     this._subscribers = [];
     this.sites = [];
     this.client = new Client();
+    // this.firstFetch = new Date();
+    // this.lastFetch = new Date();
+    // this.fetchCount = 0;
+    //
+    // AsyncStorage.getItem("@Discourse.lastRefresh").then(date => {
+    //   if (date) {
+    //     this.lastRefresh = new Date(date);
+    //     this._onRefresh;
+    //   }
+    // });
+  }
 
-    console.log("LOADING SITES");
+  authenticatedSites() {
+    return (this.sites || []).filter(site => site.authToken);
+  }
 
-    this.client.getId().then(id => this.load(id));
-    this.firstFetch = new Date();
-    this.lastFetch = new Date();
-    this.fetchCount = 0;
+  refreshStalledSites(options) {
+    const stalledSites = [];
 
-    AsyncStorage.getItem("@Discourse.lastRefresh").then(date => {
-      if (date) {
-        this.lastRefresh = new Date(date);
-        this._onRefresh;
+    this.sites.forEach(site => {
+      if (site.shouldRefreshOnEnterForeground) {
+        stalledSites.push(site);
       }
+    });
+
+    options.sites = stalledSites;
+
+    return this.forceRefreshSites(options);
+  }
+
+  forceRefreshSites(options = {}) {
+    const sites = options.sites || this.authenticatedSites() || [];
+
+    console.log(
+      `[SITE MANAGER] Force refresh ${sites.map(s => s.url).join(",")}`
+    );
+
+    return new Promise(resolve => {
+      Promise.all(sites.map(site => site.refresh(options))).then(events => {
+        events.forEach(event => {
+          event.site
+            .loadTopics()
+            .then(() => resolve())
+            .finally(() => {
+              event.site.setState({ isLoading: false });
+            });
+        });
+      });
+    }).then(() => this.save());
+  }
+
+  preloadSites() {
+    return new Promise(resolve => {
+      this.storedSites().then(sites => {
+        this.sites = sites;
+        resolve(sites);
+      });
+    });
+  }
+
+  storedSites() {
+    return new Promise(resolve => {
+      AsyncStorage.getItem("@Discourse.sites")
+        .then(json => {
+          if (json) {
+            const sites = JSON.parse(json).map(obj => {
+              return new Site(obj);
+            });
+
+            resolve(sites);
+          } else {
+            resolve([]);
+          }
+        })
+        .catch(() => resolve([]));
     });
   }
 
@@ -64,26 +127,26 @@ class SiteManager {
   }
 
   add(site) {
-    console.log("adding site", site);
     this.sites.push(site);
-
-    console.log("sites", this.sites);
     this.save();
-    console.log("sites saved", this.sites);
     this._onChange();
   }
 
   remove(site) {
-    let index = this.sites.indexOf(site);
-    if (index >= 0) {
-      let removableSite = this.sites.splice(index, 1)[0];
-      removableSite.revokeApiKey().catch(e => {
-        console.log(`Failed to revoke API Key ${e}`);
-      });
-      this.save();
-      this._onChange();
-      this.updateUnreadBadge();
-    }
+    return new Promise(resolve => {
+      let index = this.sites.indexOf(site);
+      if (index >= 0) {
+        let removableSite = this.sites.splice(index, 1)[0];
+        removableSite.revokeApiKey().catch(e => {
+          console.log(`Failed to revoke API Key ${e}`);
+        });
+        this.save();
+        this._onChange();
+        this.updateUnreadBadge();
+      }
+
+      resolve();
+    });
   }
 
   updateOrder(from, to) {
@@ -129,53 +192,22 @@ class SiteManager {
     return !!this._loading;
   }
 
-  storedSites() {
-    return AsyncStorage.getItem("@Discourse.sites").then(json => {
-      if (json) {
-        return JSON.parse(json).map(obj => {
-          return new Site(obj);
+  siteForUrl(url) {
+    const parsedUrl = UrlParser.parse(url);
+
+    return new Promise((resolve, reject) => {
+      this.storedSites().then(sites => {
+        const site = sites.find(s => {
+          return s.url.includes(parsedUrl.host);
         });
-      } else {
-        return [];
-      }
-    });
-  }
 
-  load(clientId) {
-    console.log("LOADING");
-    this._loading = true;
-    AsyncStorage.getItem("@Discourse.sites")
-      .then(json => {
-        console.log("json", json);
-        if (json) {
-          this.sites = JSON.parse(json).map(obj => {
-            console.log("OBJ", obj);
-            let site = new Site(obj);
-            // we require latest API
-
-            if (clientId) {
-              site.clientId = clientId;
-            }
-
-            site.ensureLatestApi();
-            return site;
-          });
-
-          console.log(this.sites);
-          this._loading = false;
-          this._onChange();
-          this.refreshSites({ ui: false, fast: true })
-            .then(() => {
-              this._onChange();
-            })
-            .done();
+        if (site) {
+          resolve(site);
+        } else {
+          reject(parsedUrl.host);
         }
-      })
-      .finally(() => {
-        this._loading = false;
-        this._onChange();
-      })
-      .done();
+      });
+    });
   }
 
   totalUnread() {
@@ -260,132 +292,6 @@ class SiteManager {
     // in case UI did not pick up changes
     this._onChange();
     this._onRefresh();
-  }
-
-  refreshSites(opts) {
-    if (opts.background) {
-      this.lastFetch = new Date();
-      this.fetchCount++;
-    }
-
-    let sites = this.sites.slice(0);
-    opts = opts || {};
-
-    console.log("refresh sites was called on " + sites.length + " sites!");
-
-    return new Promise((resolve, reject) => {
-      if (this._background && !opts.background) {
-        console.log("skip refresh cause app is in background!");
-        resolve({ changed: false });
-        return;
-      }
-
-      if (sites.length === 0) {
-        console.log("no sites defined nothing to refresh!");
-        resolve({ changed: false });
-        return;
-      }
-
-      let refreshDelta =
-        this._lastRefreshStart && new Date() - this._lastRefreshStart;
-
-      if (
-        !(opts.forceRefresh === true) &&
-        opts.ui === false &&
-        this._lastRefreshStart &&
-        refreshDelta < 10000
-      ) {
-        console.log("bg refresh skipped cause it ran in last 10 seconds!");
-        resolve({ changed: false });
-        return;
-      }
-
-      if (this.refreshing && refreshDelta < 60000) {
-        console.log("not refreshing cause already refreshing!");
-        resolve({ changed: false });
-        return;
-      }
-
-      if (this.refreshing && refreshDelta >= 60000) {
-        console.log(
-          "WARNING: a previous refresh went missing, resetting cause 1 minute is too long"
-        );
-      }
-
-      this.refreshing = true;
-      this._lastRefreshStart = new Date();
-
-      let processedSites = 0;
-      let somethingChanged = false;
-      let alerts = [];
-
-      sites.forEach(site => {
-        if (opts.ui) {
-          site.resetBus();
-        }
-
-        if (opts.background) {
-          site.exitBackground();
-        }
-
-        let errors = 0;
-
-        site
-          .refresh(opts)
-          .then(state => {
-            somethingChanged = somethingChanged || state.changed;
-            if (state.alerts) {
-              alerts = alerts.concat(state.alerts);
-            }
-          })
-          .catch(e => {
-            console.log("failed to refresh " + site.url);
-            console.log(e);
-            if (e === "User was logged off!") {
-              somethingChanged = true;
-            }
-            errors++;
-          })
-          .finally(() => {
-            if (this._background) {
-              site.enterBackground();
-            }
-
-            processedSites++;
-
-            if (processedSites === sites.length) {
-              // Don't save stuff in the background
-              if (!this._background) {
-                this.save();
-              }
-
-              if (somethingChanged && this._background) {
-                this.updateUnreadBadge();
-              }
-
-              if (somethingChanged) {
-                this._onChange();
-              }
-
-              if (errors < sites.length) {
-                this.lastRefresh = new Date();
-              }
-
-              if (!this._background && this.lastRefresh) {
-                AsyncStorage.setItem(
-                  "@Discourse.lastRefresh",
-                  this.lastRefresh.toJSON()
-                ).done();
-              }
-
-              this._onRefresh();
-              this.refreshing = false;
-              resolve({ changed: somethingChanged, alerts: alerts });
-            }
-          })
-          .done();
-      });
-    });
   }
 
   toObject() {

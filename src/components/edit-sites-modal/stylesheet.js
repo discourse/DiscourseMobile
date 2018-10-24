@@ -10,7 +10,9 @@ export default StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: colors.grayUILight
   },
   title: {
     flex: 1,
@@ -19,8 +21,9 @@ export default StyleSheet.create({
   },
   closeModalButton: {
     position: "absolute",
-    top: 15,
-    right: 20
+    top: 5,
+    right: 10,
+    padding: 10
   },
   closeModalButtonText: {
     color: colors.blueCallToAction

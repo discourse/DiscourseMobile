@@ -39,3 +39,10 @@ export class UnknownError extends Error {
     this.message = "Unknown error.";
   }
 }
+
+export class RateLimit extends Error {
+  constructor(...args) {
+    super(...args);
+    this.message = "Too many requests.";
+  }
+}

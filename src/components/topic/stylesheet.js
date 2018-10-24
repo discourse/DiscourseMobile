@@ -1,25 +1,26 @@
 import { StyleSheet } from "react-native";
-import colors from "../../colors";
+import colors from "Root/colors";
 
 export default StyleSheet.create({
   topic: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 3,
+    marginVertical: 5,
     paddingHorizontal: 5
   },
 
   topicTitle: {
-    maxWidth: "75%"
+    maxWidth: "80%",
+    marginRight: 5
   },
 
   topicMostRecentPoster: {
-    marginLeft: "auto",
     height: 24,
     width: 24,
     borderRadius: 12,
-    backgroundColor: colors.grayBackground
+    backgroundColor: colors.grayBackground,
+    marginRight: 5
   },
 
   newTopicIndicator: {
@@ -27,8 +28,14 @@ export default StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: colors.blueUnread,
-    marginRight: 5
+    backgroundColor: colors.blueUnread
+  },
+
+  postsCountIndicator: {
+    color: "white",
+    paddingVertical: 2,
+    paddingHorizontal: 4,
+    marginLeft: "auto"
   },
 
   newPostsIndicator: {
@@ -37,14 +44,13 @@ export default StyleSheet.create({
     paddingHorizontal: 4,
     borderRadius: 4,
     backgroundColor: colors.blueUnread,
-    marginHorizontal: 3
+    marginLeft: "auto"
   },
 
   unreadPostsIndicator: {
     paddingVertical: 2,
     paddingHorizontal: 4,
     borderRadius: 4,
-    backgroundColor: colors.grayUILight,
-    marginHorizontal: 3
+    marginLeft: "auto"
   }
 });

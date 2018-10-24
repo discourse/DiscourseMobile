@@ -1,10 +1,10 @@
-import { Platform } from "react-native";
 import _ from "lodash";
 
 const fetch = require("Libs/fetch");
 import randomBytes from "Libs/random-bytes";
 import { DomainError, DupeSite, BadApi, UnknownError } from "Libs/errors";
 import TopTopic from "Models/top_topic";
+import Api from "Libs/api";
 
 class Site {
   static FIELDS = [
@@ -25,6 +25,7 @@ class Site {
     "hasPush",
     "isStaff",
     "apiVersion",
+    "topics",
     "headerBackgroundColor",
     "headerPrimaryColor"
   ];
@@ -72,7 +73,8 @@ class Site {
         // we also replace any trailing slash
         url = userApiKeyResponse.url
           .replace("/user-api-key/new", "")
-          .replace(/\/+$/, "");
+          .replace(/\/+$/, "")
+          .replace(/:\d+/, "");
 
         return fetch(`${url}/site/basic-info.json`).then(basicInfoResponse =>
           basicInfoResponse.json()
@@ -115,65 +117,54 @@ class Site {
     }
     this._timeout = 10000;
 
-    this.isLoadingTopics = false;
     this.topics = [];
-  }
+    this.shouldRefreshOnEnterForeground = false;
+    this.apiClient = new Api(this);
 
-  jsonApi(path, method, data) {
-    method = method || "GET";
-
-    let headers = {
-      "User-Api-Key": this.authToken,
-      "User-Agent": `Discourse ${Platform.OS} App / 1.0`,
-      "Content-Type": "application/json",
-      "Dont-Chunk": "true",
-      "User-Api-Client-Id": this.clientId || ""
+    this.state = {
+      isLoading: false
     };
 
-    if (data) {
-      data = JSON.stringify(data);
+    this._subscribers = [];
+  }
+
+  subscribe(callback) {
+    this._subscribers.push(callback);
+  }
+
+  unsubscribe(callback) {
+    const pos = this._subscribers.indexOf(callback);
+    if (pos >= -1) {
+      this._subscribers.splice(pos, 1);
+    }
+  }
+
+  dispatchState() {
+    console.log(`[SITE] Dispatch state to ${this.url}`, this.state);
+
+    this._subscribers.forEach(sub => sub(this.state));
+  }
+
+  loadTopics(lists = []) {
+    // this. = true;
+
+    if (this.totalNew) {
+      lists.push("new");
+    }
+    if (this.totalUnread) {
+      lists.push("unread");
+    }
+    if (!lists.length) {
+      lists.push("latest");
     }
 
-    if (this._background) {
-      return new Promise((resolve, reject) =>
-        reject("In background mode aborting start request!")
-      );
-    }
-
-    return new Promise((resolve, reject) => {
-      let req = new Request(this.url + path, {
-        headers,
-        method,
-        body: data
+    return TopTopic.startTracking(this, lists)
+      .then(topics => {
+        this.topics = topics.slice(0, 20);
+      })
+      .finally(() => {
+        this.setState({ isLoading: false });
       });
-      this._currentFetch = fetch(req);
-      this._currentFetch
-        .then(r1 => {
-          if (this._background) {
-            throw "In Background mode aborting request!";
-          }
-          if (r1.status === 200) {
-            return r1.json();
-          } else {
-            if (r1.status === 403) {
-              this.logoff();
-              throw "User was logged off!";
-            } else {
-              throw "Error during fetch status code:" + r1.status;
-            }
-          }
-        })
-        .then(result => {
-          resolve(result);
-        })
-        .catch(e => {
-          reject(e);
-        })
-        .finally(() => {
-          this._currentFetch = undefined;
-        })
-        .done();
-    });
   }
 
   logoff() {
@@ -190,20 +181,20 @@ class Site {
   }
 
   revokeApiKey() {
-    return this.jsonApi("/user-api-key/revoke", "POST");
+    return this.apiClient.fetch("/user-api-key/revoke", "POST");
   }
 
   getUserInfo() {
     return new Promise((resolve, reject) => {
       if (this.userId && this.username) {
-        console.log("we have user id and user name");
         resolve({
           userId: this.userId,
           username: this.username,
           isStaff: this.isStaff
         });
       } else {
-        this.jsonApi("/session/current.json")
+        this.apiClient
+          .fetch("/session/current.json")
           .then(json => {
             this.userId = json.current_user.id;
             this.username = json.current_user.username;
@@ -217,9 +208,7 @@ class Site {
               isStaff: this.isStaff
             });
           })
-          .catch(err => {
-            reject(err);
-          })
+          .catch(err => reject(err))
           .done();
       }
     });
@@ -238,7 +227,7 @@ class Site {
 
   messageBus(channels) {
     return this.getMessageBusId().then(messageBusId => {
-      return this.jsonApi(
+      return this.apiClient.fetch(
         `/message-bus/${messageBusId}/poll?dlp=t`,
         "POST",
         channels
@@ -257,9 +246,6 @@ class Site {
     let alertChannel = `/notification-alert/${this.userId}`;
 
     messages.forEach(message => {
-      console.info(`processing incoming message on ${this.url}`);
-      console.log(message);
-
       if (this.channels) {
         this.channels[message.channel] = message.message_id;
       }
@@ -372,22 +358,20 @@ class Site {
               __seq: 1
             };
 
+            channels[`/notification/${info.userId}`] = -1;
+            channels[`/notification-alert/${info.userId}`] = -1;
+            channels[`/unread/${info.userId}`] = -1;
+
             if (info.isStaff) {
               channels["/queue_counts"] = -1;
               channels["/flagged_counts"] = -1;
             }
 
-            channels[`/notification/${info.userId}`] = -1;
-            channels[`/notification-alert/${info.userId}`] = -1;
-            channels[`/unread/${info.userId}`] = -1;
-
             this.messageBus(channels)
               .then(r => {
                 this.processMessages(r);
-
-                this.jsonApi(
-                  `/users/${info.username}/topic-tracking-state.json`
-                )
+                this.apiClient
+                  .fetch(`/users/${info.username}/topic-tracking-state.json`)
                   .then(trackingState => {
                     this.trackingState = {};
                     trackingState.forEach(state => {
@@ -402,8 +386,7 @@ class Site {
                   .done();
               })
               .catch(e => {
-                console.log(`failed to poll message bus ${e}`);
-                reject(e);
+                resolve({ wasReady: false });
               })
               .done();
           })
@@ -455,59 +438,68 @@ class Site {
   }
 
   checkBus() {
-    console.info(`${new Date()} Checking Message Bus on ${this.url}`);
     return this.messageBus(this.channels).then(messages =>
       this.processMessages(messages)
     );
   }
 
+  setState(state) {
+    Object.assign(this.state, state);
+    this.dispatchState();
+  }
+
   refresh(opts) {
     opts = opts || {};
 
+    this.setState({ isLoading: true });
+
+    const stateAfterRefresh = (state, alerts) => {
+      alerts = alerts = [];
+      state = state || false;
+      return { site: this, changed: state, alerts };
+    };
+
     return new Promise((resolve, reject) => {
       if (!this.authToken) {
-        resolve({ changed: false });
+        resolve(stateAfterRefresh());
         return;
       }
-
-      this.isLoadingTopics = true;
 
       this.initBus()
         .then(busState => {
           if (opts.fast || !busState.wasReady) {
             this.checkBus()
               .then(changes => {
-                console.log(`changes detected on ${this.url}`);
-                console.log(changes);
-
                 if (!busState.wasReady) {
                   this.updateTotals();
 
                   this.refresh({ fast: false })
                     .then(result => {
-                      resolve({ changed: true, alerts: changes.alerts });
+                      resolve(stateAfterRefresh(true, changes.alerts));
                     })
                     .catch(e => reject(e))
                     .done();
                 } else {
-                  resolve({
-                    changed:
+                  resolve(
+                    stateAfterRefresh(
                       this.updateTotals() ||
-                      changes.notifications ||
-                      changes.totals,
-                    alerts: changes.alerts
-                  });
+                        changes.notifications ||
+                        changes.totals,
+                      changes.alerts
+                    )
+                  );
                 }
               })
               .catch(e => {
                 console.log(`failed to check bus ${e}`);
-                reject(e);
+                resolve(stateAfterRefresh(false));
               });
 
             return;
           }
 
-          this.jsonApi("/session/current.json")
+          this.apiClient
+            .fetch("/session/current.json")
             .then(json => {
               let currentUser = json.current_user;
 
@@ -556,23 +548,11 @@ class Site {
                 }
               }
 
-              TopTopic.startTracking(this)
-                .then(topics => {
-                  this.topics = topics;
-                })
-                .finally(() => {
-                  this.isLoadingTopics = false;
-                  resolve({ changed });
-                });
+              resolve(stateAfterRefresh(changed));
             })
-            .catch(e => {
-              console.warn(e);
-              reject(e);
-            });
+            .catch(e => resolve(stateAfterRefresh()));
         })
-        .catch(e => {
-          reject(e);
-        });
+        .catch(e => resolve(stateAfterRefresh()));
     });
   }
 
@@ -587,112 +567,6 @@ class Site {
   exitBackground() {
     this._background = false;
     this._timeout = 10000;
-  }
-
-  readNotification(notification) {
-    return new Promise((resolve, reject) => {
-      this.jsonApi("/notifications/read", "PUT", { id: notification.id })
-        .catch(e => {
-          reject(e);
-        })
-        .finally(() => resolve)
-        .done();
-    });
-  }
-
-  getSeenNotificationId() {
-    return new Promise(resolve => {
-      if (!this.authToken) {
-        resolve();
-        return;
-      }
-
-      if (this._seenNotificationId) {
-        resolve(this._seenNotificationId);
-        return;
-      }
-
-      this.notifications().then(() => {
-        resolve(this._seenNotificationId);
-      });
-    });
-  }
-
-  notifications(types, options) {
-    if (this._loadingNotifications) {
-      // avoid double json
-      return new Promise(resolve => {
-        let retries = 100;
-        let interval = setInterval(() => {
-          retries--;
-          if (retries === 0 || this._notifications) {
-            clearInterval(interval);
-            this.notifications(types)
-              .then(n => {
-                resolve(n);
-              })
-              .done();
-          }
-        }, 50);
-      });
-    }
-
-    return new Promise(resolve => {
-      if (!this.authToken) {
-        resolve([]);
-        return;
-      }
-
-      let silent = !(options && options.silent === false);
-      // avoid json call when no unread
-      silent = silent || this.unreadNotifications === 0;
-
-      if (this._notifications && silent) {
-        let filtered = this._notifications;
-        let minId = options && options.minId;
-        if (types || minId) {
-          filtered = _.filter(filtered, notification => {
-            // for new always show unread PMs and suppress read
-            if (minId) {
-              if (notification.read) {
-                return false;
-              }
-              if (!notification.read && notification.notification_type === 6) {
-                return true;
-              }
-            }
-            if (minId && minId >= notification.id) {
-              return false;
-            }
-            return !types || _.includes(types, notification.notification_type);
-          });
-        }
-        resolve(filtered);
-        return;
-      }
-
-      this._loadingNotifications = true;
-      this.jsonApi(
-        "/notifications.json?recent=true&limit=25" +
-          (options && options.silent === false ? "" : "&silent=true")
-      )
-        .then(results => {
-          this._loadingNotifications = false;
-          this._notifications = (results && results.notifications) || [];
-          this._seenNotificationId = results && results.seen_notification_id;
-          this.notifications(types, _.merge(options, { silent: true }))
-            .then(n => resolve(n))
-            .done();
-        })
-        .catch(e => {
-          console.log("failed to fetch notifications " + e);
-          resolve([]);
-        })
-        .finally(() => {
-          this._loadingNotifications = false;
-        })
-        .done();
-    });
   }
 
   toJSON() {

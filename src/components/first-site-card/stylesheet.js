@@ -19,8 +19,8 @@ export default StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.grayBackground,
     padding: 10,
-    borderRadius: 5,
     borderColor: colors.grayBorder,
-    borderWidth: 1
+    borderTopWidth: 1,
+    borderBottomWidth: 1
   }
 });

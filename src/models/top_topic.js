@@ -4,66 +4,83 @@ import _ from "lodash";
 export default class TopTopic {
   constructor(site) {
     this.site = site;
-    this._apiClient = new Api(site);
+    this.apiClient = new Api(site);
   }
 
-  static startTracking(site) {
+  static startTracking(site, lists = ["unread", "new"]) {
     const topTopic = new TopTopic(site);
 
-    return Promise.all([topTopic._fetchUnread(), topTopic._fetchNew()]).then(
-      responses => {
-        if (Array.isArray(responses[0]) || Array.isArray(responses[1])) {
-          return [];
-        }
+    const promises = lists.map(list => topTopic._fetchFilter(list));
 
-        const topics = responses[0].topic_list.topics
-          .concat(responses[1].topic_list.topics)
-          .sort((t1, t2) => {
-            return new Date(t2.bumped_at) - new Date(t1.bumped_at);
-          });
-
-        const users = _.uniq(responses[0].users.concat(responses[1].users));
-
-        return topics.map(topic => {
-          const lastPosterId = topic.posters.find(
-            poster => poster.extras && poster.extras.includes("latest")
-          ).user_id;
-
-          const lastPoster = users.find(user => user.id === lastPosterId);
-
-          const avatarURL = lastPoster.avatar_template.replace("{size}", 120);
-
-          return {
-            id: topic.id,
-            title: topic.title,
-            mostRecentPosterAvatar: avatarURL.includes("http")
-              ? avatarURL
-              : `${site.url}${avatarURL}`,
-            unreadPosts: topic.unread || topic.highest_post_number,
-            newPosts: topic.new_posts
+    return new Promise((resolve, reject) => {
+      Promise.all(promises)
+        .then(async responses => {
+          const defaultResponse = {
+            topic_list: {
+              topics: []
+            },
+            users: []
           };
-        });
-      }
-    );
+
+          const unreads = responses[0] || defaultResponse;
+          const news = responses[1] || defaultResponse;
+
+          if (Array.isArray(unreads) || Array.isArray(news)) {
+            return [];
+          }
+
+          let topics = unreads.topic_list.topics
+            .concat(news.topic_list.topics)
+            .sort((t1, t2) => {
+              return new Date(t2.bumped_at) - new Date(t1.bumped_at);
+            });
+
+          let users = _.uniq((unreads.users || []).concat(news.users || []));
+
+          if (topics.length) {
+            resolve(topTopic._formatList(site, topics, users));
+          } else {
+            reject();
+          }
+        })
+        .catch(e => resolve(site.topics));
+    });
   }
 
   _fetchFilter(filter) {
     return new Promise((resolve, reject) => {
-      const endpoint = `${this.site.url}/${filter}.json`;
+      const endpoint = `/${filter}.json`;
 
-      this._apiClient
+      this.apiClient
         .fetch(endpoint)
         .then(topics => resolve(topics))
-        .catch(() => resolve([]))
+        .catch(e => reject(e))
         .done();
     });
   }
 
-  _fetchUnread() {
-    return this._fetchFilter("unread");
-  }
+  _formatList(site, topics, users) {
+    return topics.map(topic => {
+      const lastPosterId = topic.posters.find(
+        poster => poster.extras && poster.extras.includes("latest")
+      ).user_id;
 
-  _fetchNew() {
-    return this._fetchFilter("new");
+      const lastPoster = users.find(user => user.id === lastPosterId);
+
+      const avatarURL = lastPoster.avatar_template.replace("{size}", 120);
+
+      return {
+        id: topic.id,
+        title: topic.title,
+        notificationLevel: topic.notification_level,
+        highestPostNumber: topic.highest_post_number,
+        mostRecentPosterAvatar: avatarURL.includes("http")
+          ? avatarURL
+          : `${site.url}${avatarURL}`,
+        unreadPosts: topic.unread || topic.highest_post_number,
+        newPosts: topic.new_posts,
+        lastReadPostNumber: topic.last_read_post_number
+      };
+    });
   }
 }

@@ -7,7 +7,7 @@ export default StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.blueCallToAction,
+    backgroundColor: colors.grayUI,
     borderRadius: 21,
     width: 42,
     height: 42

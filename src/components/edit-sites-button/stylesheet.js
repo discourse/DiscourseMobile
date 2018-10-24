@@ -10,9 +10,10 @@ export default StyleSheet.create({
     justifyContent: "center"
   },
   button: {
-    borderColor: colors.grayUI,
+    borderColor: colors.grayBorder,
     borderWidth: 1,
-    padding: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     borderRadius: 3
   },
   buttonText: {

@@ -7,7 +7,8 @@ import {
   View,
   Text
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+
+import PropTypes from "prop-types";
 import style from "./stylesheet";
 import { material } from "react-native-typography";
 import SortableListView from "react-native-sortable-listview";
@@ -15,16 +16,16 @@ import Site from "Models/site";
 import Colors from "Root/colors";
 import EditSiteRowComponent from "Components/edit-site-row";
 
-export default class extends React.Component {
-  constructor(props) {
-    super(props);
-    // this.sites = props.siteManager.toObject();
-  }
-
+export default class EditSitesModalComponent extends React.Component {
   _onRemoveSite(site) {
     Alert.alert(site.title, "Are you sure you want to remove this site?", [
       { text: "Cancel", style: "cancel" },
-      { text: "OK", onPress: () => this.props.siteManager.remove(site) }
+      {
+        text: "OK",
+        onPress: () => {
+          this.props.siteManager.remove(site).then(() => this.forceUpdate());
+        }
+      }
     ]);
   }
 
@@ -42,6 +43,7 @@ export default class extends React.Component {
 
               <TouchableHighlight
                 onPress={() => this.props.onClose()}
+                underlayColor={Colors.yellowUIFeedback}
                 style={style.closeModalButton}
               >
                 <Text style={[material.button, style.closeModalButtonText]}>
@@ -81,3 +83,9 @@ export default class extends React.Component {
     );
   }
 }
+
+EditSitesModalComponent.propTypes = {
+  visible: PropTypes.bool,
+  siteManager: PropTypes.object,
+  onClose: PropTypes.func
+};

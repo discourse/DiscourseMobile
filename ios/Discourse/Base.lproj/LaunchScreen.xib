@@ -15,36 +15,11 @@
         <view clipsSubviews="YES" contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1mq-Df-bgd">
-                    <rect key="frame" x="0.0" y="0.0" width="480" height="64"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nav-icon-gray.png" translatesAutoresizingMaskIntoConstraints="NO" id="Pvs-Il-OE9">
-                            <rect key="frame" x="219" y="20" width="42" height="44"/>
-                        </imageView>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="64" id="2Cw-Q2-rGF"/>
-                        <constraint firstItem="Pvs-Il-OE9" firstAttribute="centerX" secondItem="1mq-Df-bgd" secondAttribute="centerX" id="JYh-nG-n7F"/>
-                        <constraint firstAttribute="bottom" secondItem="Pvs-Il-OE9" secondAttribute="bottom" id="aBC-gm-Dco"/>
-                        <constraint firstItem="Pvs-Il-OE9" firstAttribute="top" secondItem="1mq-Df-bgd" secondAttribute="top" constant="20" id="mIx-PT-VTM"/>
-                    </constraints>
-                </view>
-            </subviews>
             <color key="backgroundColor" red="0.96078431372549022" green="0.97254901960784312" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <constraints>
-                <constraint firstItem="1mq-Df-bgd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="5Bc-6N-mnl"/>
-                <constraint firstAttribute="trailing" secondItem="1mq-Df-bgd" secondAttribute="trailing" id="j8a-Tp-L8l"/>
-                <constraint firstItem="1mq-Df-bgd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mKW-Cc-5pY"/>
-            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="bGN-oE-jli"/>
             <point key="canvasLocation" x="472" y="-46"/>
         </view>
     </objects>
-    <resources>
-        <image name="nav-icon-gray.png" width="42" height="30"/>
-    </resources>
 </document>

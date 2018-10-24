@@ -4,6 +4,7 @@ import React from "react";
 
 import {
   Alert,
+  AppState,
   RefreshControl,
   ScrollView,
   View,
@@ -12,7 +13,8 @@ import {
   AlertIOS,
   PushNotificationIOS,
   Platform,
-  FlatList
+  FlatList,
+  StatusBar
 } from "react-native";
 
 import { material } from "react-native-typography";
@@ -35,34 +37,39 @@ export default class HubScreen extends React.Component {
 
     this.urlHandler = new Urlhandler(this.siteManager);
 
-    this.onChangeSitesHandler = e => this.onChangeSites(e);
-
     this.state = {
+      appState: AppState.currentState,
       isEditSitesModalVisible: false,
       loadingSites: false,
-      sites: []
+      sites: this.props.siteManager.sites,
+      addedSite: null
     };
 
     if (Platform.OS === "ios") {
       PushNotificationIOS.addEventListener("notification", e => {
-        this.urlHandler.open(e._data.discourse_url);
+        if (this.state.appState !== "active") {
+          this.urlHandler.open(e._data.discourse_url);
+        }
       });
 
       PushNotificationIOS.addEventListener("register", s => {
         this.siteManager.registerClientId(s);
       });
 
-      PushNotificationIOS.addEventListener("localNotification", e => {
-        this.urlHandler.open(e.discourse_url);
-      });
+      // PushNotificationIOS.addEventListener("localNotification", e => {
+      // });
     }
   }
 
   onAddSite(existingInput) {
     AlertIOS.prompt(
-      "Enter a forum URL",
-      null,
-      input => this._addSiteFromInput(input),
+      "Enter a site URL",
+      "eg: meta.discourse.org",
+      input => {
+        this._addSiteFromInput(input).then(site => {
+          this.onConnect(site);
+        });
+      },
       "plain-text",
       existingInput
     );
@@ -81,18 +88,8 @@ export default class HubScreen extends React.Component {
             if (split.length === 2) {
               siteAuthenticator
                 .handleAuthenticationPayload(split[1])
-                .then(site => {
-                  // // // cause we want to stop rendering connect
-                  // this.onChangeSites();
-                  // //
-                  // site
-                  //   .refresh()
-                  //   .then(() => {
-                  //     this.onChangeSites();
-                  //   })
-
-                  // console.log("WILL REFFHSDJSHJDHKSDHKS");
-                  this.siteManager.refreshSites({ background: false });
+                .then(() => {
+                  this.siteManager.forceRefreshSites();
                 })
                 .catch(error => Alert.alert(error));
             }
@@ -107,36 +104,27 @@ export default class HubScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.siteManager.subscribe(this.onChangeSitesHandler);
-    this.onChangeSites();
+    AppState.addEventListener("change", this._handleAppStateChange.bind(this));
 
     PushNotificationIOS.checkPermissions(p => {
       if (p.badge) {
         const total = this.siteManager.totalUnread();
         PushNotificationIOS.setApplicationIconBadgeNumber(total);
       }
-
-      // BackgroundFetch.done(true);
     });
   }
 
   componentWillUnmount() {
-    this.siteManager.unsubscribe(this.onChangeSitesHandler);
-  }
-
-  onChangeSites(e) {
-    if (this.siteManager.isLoading() !== this.state.loadingSites) {
-      this.setState({ loadingSites: this.siteManager.isLoading() });
-    }
-
-    if (e && e.event === "change") {
-      this.setState({ sites: this.siteManager.sites });
-    }
+    AppState.removeEventListener(
+      "change",
+      this._handleAppStateChange.bind(this)
+    );
   }
 
   render() {
     return (
       <SafeAreaView style={style.container}>
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
         <EditSitesModalComponent
           siteManager={this.siteManager}
           onClose={this._onEditSites.bind(this)}
@@ -152,9 +140,10 @@ export default class HubScreen extends React.Component {
           }
         >
           <View style={style.header}>
-            <Text style={material.display1}>DiscourseHub</Text>
+            <Text style={[material.display1, style.title]}>Discourse Hub</Text>
             <AddSiteButtonComponent onPress={this.onAddSite.bind(this)} />
           </View>
+          {this._renderAddingSiteIndicator(this.state.addedSite)}
           {this._renderFirstSiteCard(this.state.sites.length)}
           {this._renderSites(this.state.sites)}
           {this._renderEditSites(this.state.sites.length)}
@@ -163,18 +152,39 @@ export default class HubScreen extends React.Component {
     );
   }
 
-  openUrl(url) {
-    this.urlHandler.open(url);
+  openUrl(url, options = {}) {
+    this.urlHandler.open(url).then(e => {
+      if (e && e.event && e.event === "success") {
+        this.siteManager.siteForUrl(url).then(site => {
+          site.shouldRefreshOnEnterForeground = false;
+        });
+      }
+
+      if (e && e.event && e.event === "closing") {
+        this.siteManager.refreshStalledSites({ fast: true });
+      }
+    });
   }
 
   _onRefreshSites() {
-    this.siteManager.refreshSites({ background: false });
+    this.siteManager.forceRefreshSites({ fast: true });
   }
 
   _onEditSites() {
     this.setState({
       isEditSitesModalVisible: !this.state.isEditSitesModalVisible
     });
+  }
+
+  _renderAddingSiteIndicator(addedSite) {
+    if (addedSite) {
+      const text = `Adding ${addedSite}...`;
+      return (
+        <View style={style.addingSiteContainer}>
+          <Text style={style.addingSiteText}>{text}</Text>
+        </View>
+      );
+    }
   }
 
   _renderEditSites(sitesLength) {
@@ -207,15 +217,26 @@ export default class HubScreen extends React.Component {
   }
 
   _renderFirstSiteCard(sitesLength) {
-    if (!sitesLength) {
-      return <FirstSiteCardComponent />;
+    if (!sitesLength && !this.state.addedSite) {
+      return <FirstSiteCardComponent onPress={this.onAddSite.bind(this)} />;
     }
   }
 
   _addSiteFromInput(input) {
-    Site.fromTerm(input, this.siteManager)
-      .then(site => this.siteManager.add(site))
-      .catch(e => this._handleRejectedSite(e));
+    this.setState({ addedSite: input });
+
+    return new Promise(resolve => {
+      Site.fromTerm(input, this.siteManager)
+        .then(site => {
+          this.siteManager.add(site);
+          resolve(site);
+        })
+        .catch(e => {
+          this._handleRejectedSite(e, input);
+        })
+        .finally(() => this.setState({ addedSite: null }))
+        .done();
+    });
   }
 
   _handleRejectedSite(exception, input) {
@@ -231,6 +252,17 @@ export default class HubScreen extends React.Component {
     if (exception instanceof DupeSite || exception instanceof BadApi) {
       Alert.alert(null, exception.message);
     }
+  }
+
+  _handleAppStateChange(nextAppState) {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+      this.siteManager.refreshStalledSites({ fast: true });
+    }
+
+    this.setState({ appState: nextAppState });
   }
 }
 

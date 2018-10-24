@@ -2,6 +2,7 @@ import React from "react";
 import { TouchableHighlight, View, Text } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import style from "./stylesheet";
+import Colors from "Root/colors";
 
 export default class extends React.Component {
   render() {

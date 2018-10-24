@@ -1,35 +1,52 @@
 import React from "react";
 import { Image, TouchableHighlight, View, Text } from "react-native";
-
+import PropTypes from "prop-types";
 import style from "./stylesheet";
 import TopicsComponent from "Components/topics";
-import TopTopic from "Models/top_topic";
-import Colors from "../../colors";
+import Colors from "Root/colors";
 import { material } from "react-native-typography";
+import Icon from "react-native-vector-icons/FontAwesome";
+import I18n from "I18n";
 
-export default class extends React.Component {
+export default class CardComponent extends React.Component {
   constructor(props) {
     super(props);
 
-    this.site = props.site;
-
     this.state = {
-      showMore: false
+      isLoading: props.site.isLoading,
+      isExpanded: false,
+      totalUnread: props.site.totalUnread,
+      totalNew: props.site.totalNew
     };
   }
 
-  // componentDidMount() {
-  //   if (this.site.authToken) {
-  //     this.setState({ isLoadingTopics: true });
-  //
-  //     TopTopic.startTracking(this.site).then(topics => {
-  //       this.setState({ topics, isLoadingTopics: false });
-  //     });
-  //   }
-  // }
+  componentDidMount() {
+    this.props.site.subscribe(this.onChangeSite.bind(this));
+  }
+
+  componentWillUnmount() {
+    this.props.site.unsubscribe(this.onChangeSite.bind(this));
+  }
+
+  onChangeSite(state) {
+    this.setState({
+      isLoading: state.isLoading || false,
+      totalUnread: state.totalUnread || this.props.site.totalUnread,
+      totalNew: state.totalNew || this.props.site.totalNew
+    });
+  }
+
+  _onPressCard() {
+    if (this.props.site.authToken) {
+      this.props.site.shouldRefreshOnEnterForeground = true;
+      return this.props.onOpenUrl(this.props.site.url);
+    } else {
+      return this.props.onConnect(this.props.site);
+    }
+  }
 
   _renderShowMore() {
-    if (this.state.showMore || this.props.site.topics.length <= 4) {
+    if (this.state.isExpanded || this.props.site.topics.length <= 4) {
       return;
     }
 
@@ -37,9 +54,28 @@ export default class extends React.Component {
       <View style={style.showMore}>
         <TouchableHighlight
           style={style.showMoreButtonWrapper}
-          onPress={() => this.setState({ showMore: true })}
+          underlayColor={Colors.yellowUIFeedback}
+          onPress={() => this.setState({ isExpanded: true })}
         >
-          <Text style={[material.button, style.showMoreButton]}>Show more</Text>
+          <Icon name="angle-down" style={style.icon} size={16} />
+        </TouchableHighlight>
+      </View>
+    );
+  }
+
+  _renderShowCollapse() {
+    if (!this.state.isExpanded || this.props.site.topics.length <= 4) {
+      return;
+    }
+
+    return (
+      <View style={style.showMore}>
+        <TouchableHighlight
+          underlayColor={Colors.yellowUIFeedback}
+          style={style.showMoreButtonWrapper}
+          onPress={() => this.setState({ isExpanded: false })}
+        >
+          <Icon name="angle-up" style={style.icon} size={16} />
         </TouchableHighlight>
       </View>
     );
@@ -56,10 +92,10 @@ export default class extends React.Component {
   _openUserPage(page) {
     const username = this.props.site.username;
     if (username) {
-      const url = `${this.site.url}/u/${username}/${page}`;
-      this.props.onOpenUrl(url, this.site.authToken);
+      const url = `${this.props.site.url}/u/${username}/${page}`;
+      this.props.onOpenUrl(url);
     } else {
-      this.props.onOpenUrl(this.site.url, this.site.authToken);
+      this.props.onOpenUrl(this.props.site.url);
     }
   }
 
@@ -78,7 +114,9 @@ export default class extends React.Component {
                 {unreadNotificationsCount}
               </Text>
             </View>
-            <Text style={style.unreadNotificationsText}>notification(s)</Text>
+            <Text style={style.unreadNotificationsText}>
+              {I18n.t("notifications", { count: unreadNotificationsCount })}
+            </Text>
           </View>
         </TouchableHighlight>
       );
@@ -100,7 +138,11 @@ export default class extends React.Component {
                 {unreadPrivateMessagesCount}
               </Text>
             </View>
-            <Text style={style.unreadPrivateMessagesText}>message(s)</Text>
+            <Text style={style.unreadPrivateMessagesText}>
+              {I18n.t("private_messages", {
+                count: unreadPrivateMessagesCount
+              })}
+            </Text>
           </View>
         </TouchableHighlight>
       );
@@ -114,18 +156,25 @@ export default class extends React.Component {
       }
     };
 
-    if (site.unreadNotifications > 0 || site.unreadPrivateMessages > 0) {
+    if (
+      this.props.site.topics.length > 4 ||
+      site.unreadNotifications > 0 ||
+      site.unreadPrivateMessages > 0
+    ) {
       return (
-        <View style={style.notifications}>
+        <View
+          style={[
+            style.notifications,
+            this.notificationsStyle(this.props.site.topics.length)
+          ]}
+        >
           {_renderNotificationSeparator(this.props.site.topics.length)}
-          <View
-            style={[
-              style.notificationsCount,
-              this.notificationsCountStyle(this.props.site.topics.length)
-            ]}
-          >
+          <View style={[style.notificationsCount]}>
             {this._renderUnreadNotifications(site.unreadNotifications)}
             {this._renderUnreadPrivateMessages(site.unreadPrivateMessages)}
+
+            {this._renderShowMore()}
+            {this._renderShowCollapse()}
           </View>
         </View>
       );
@@ -141,11 +190,11 @@ export default class extends React.Component {
       <View style={[style.connect]}>
         <TouchableHighlight
           style={style.connectButtonWrapper}
-          onPress={() => this.props.onConnect(site)}
+          onPress={() => this._onPressCard()}
         >
           <View style={style.connectButton}>
             <Text style={[material.button, style.connectButtonText]}>
-              Connect
+              {I18n.t("connect")}
             </Text>
           </View>
         </TouchableHighlight>
@@ -160,42 +209,25 @@ export default class extends React.Component {
 
     let back = site.headerBackgroundColor || Colors.grayBackground;
 
-    if (site.url === "https://www.minerva-group.org") {
-      back = "#d97d49";
-    }
-
     if (back === "#ffffff") {
       back = Colors.grayBackground;
     }
 
     let styles = {
-      borderTopLeftRadius: 5,
-      borderBottomLeftRadius: 5,
-      borderTopRightRadius: 5,
-      borderBottomRightRadius: 5,
       backgroundColor: back
     };
-
-    if (site.authToken) {
-      styles.borderBottomLeftRadius = 0;
-      styles.borderBottomRightRadius = 0;
-    }
 
     return styles;
   }
 
   cardHeaderTitleStyle(site) {
-    if (site.url === "https://www.minerva-group.org") {
-      return { color: "white" };
-    } else {
-      return { color: site.headerPrimaryColor };
-    }
+    return { color: site.headerPrimaryColor };
   }
 
-  notificationsCountStyle(topicsLength) {
+  notificationsStyle(topicsLength) {
     if (!topicsLength) {
       return {
-        marginVertical: 10
+        marginTop: 10
       };
     }
   }
@@ -203,15 +235,20 @@ export default class extends React.Component {
   topicsStyle(topicsLength) {
     if (topicsLength) {
       return {
-        marginVertical: 10
+        marginTop: 5
       };
     }
   }
 
-  _renderUnreadAndNew(site) {
+  cardStyle(site) {
+    let styles = {};
+    return styles;
+  }
+
+  _renderUnreadAndNew() {
     const values = [
-      site.totalNew > 0 ? `${site.totalNew} new` : null,
-      site.totalUnread > 0 ? `${site.totalUnread} unread` : null
+      this.state.totalNew > 0 ? `${this.state.totalNew} new` : null,
+      this.state.totalUnread > 0 ? `${this.state.totalUnread} unread` : null
     ].filter(x => x);
     return (
       <Text style={[material.caption, style.unreadAndNew]}>
@@ -225,31 +262,34 @@ export default class extends React.Component {
       <TouchableHighlight
         activeOpacity={0.8}
         underlayColor={"transparent"}
-        onPress={() => this.props.onOpenUrl(this.site.url, this.site.authToken)}
+        onPress={() => this._onPressCard()}
       >
-        <View style={style.card}>
+        <View style={[style.card, this.cardStyle(this.props.site)]}>
           <View
             style={[
               style.cardHeader,
-              { backgroundColor: this.site.headerBackgroundColor },
-              this.cardHeaderStyle(this.site)
+              { backgroundColor: this.props.site.headerBackgroundColor },
+              this.cardHeaderStyle(this.props.site)
             ]}
           >
             <View style={style.site}>
-              <Image style={style.logo} source={{ uri: this.site.icon }} />
+              <Image
+                style={style.logo}
+                source={{ uri: this.props.site.icon }}
+              />
               <Text
                 style={[
                   material.title,
                   style.title,
-                  this.cardHeaderTitleStyle(this.site)
+                  this.cardHeaderTitleStyle(this.props.site)
                 ]}
               >
-                {this.site.title}
+                {this.props.site.title}
               </Text>
             </View>
 
-            {this._renderUnreadAndNew(this.site)}
-            {this._renderConnect(this.site)}
+            {this._renderUnreadAndNew()}
+            {this._renderConnect(this.props.site)}
           </View>
           <View
             style={[
@@ -258,17 +298,22 @@ export default class extends React.Component {
             ]}
           >
             <TopicsComponent
-              isLoadingTopics={this.props.site.isLoadingTopics}
-              site={this.site}
-              showMore={this.state.showMore}
+              isLoading={this.state.isLoading}
+              site={this.props.site}
+              isExpanded={this.state.isExpanded}
               topics={this.props.site.topics}
               onOpenUrl={this.props.onOpenUrl}
             />
-            {this._renderShowMore()}
-            {this._renderNotifications(this.site)}
+            {this._renderNotifications(this.props.site)}
           </View>
         </View>
       </TouchableHighlight>
     );
   }
 }
+
+CardComponent.propTypes = {
+  site: PropTypes.object,
+  onOpenUrl: PropTypes.func,
+  onConnect: PropTypes.func
+};

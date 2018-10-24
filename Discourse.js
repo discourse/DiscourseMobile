@@ -1,4 +1,4 @@
-import { Platform, PushNotificationIOS, Settings } from "react-native";
+import { View, Platform, PushNotificationIOS, Settings } from "react-native";
 
 import React from "react";
 
@@ -8,6 +8,10 @@ import HubScreen from "Screens/hub";
 export default class Discourse extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      sitesPreloaded: false
+    };
 
     this.siteManager = new SiteManager();
   }
@@ -24,9 +28,18 @@ export default class Discourse extends React.Component {
         Settings.set({ open_notifications_in_safari: 1 });
       }
     }
+
+    this.siteManager
+      .preloadSites()
+      .then(() => this.setState({ sitesPreloaded: true }))
+      .then(() => this.siteManager.forceRefreshSites());
   }
 
   render() {
-    return <HubScreen siteManager={this.siteManager} />;
+    if (this.state.sitesPreloaded) {
+      return <HubScreen siteManager={this.siteManager} />;
+    } else {
+      return <View />;
+    }
   }
 }

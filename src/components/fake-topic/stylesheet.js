@@ -7,18 +7,18 @@ export default StyleSheet.create({
     flex: 1,
     margin: 5,
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     flexDirection: "row"
   },
 
   title: {
     height: 15,
-    width: 200,
     marginVertical: 5,
     backgroundColor: colors.grayBackground
   },
 
   avatar: {
+    marginRight: 10,
     height: 24,
     width: 24,
     borderRadius: 12,

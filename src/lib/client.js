@@ -18,8 +18,8 @@ export default class Client {
     });
   }
 
-  getId() {
-    return new Promise(resolve => {
+  async getId() {
+    return await new Promise(resolve => {
       if (this._id) {
         console.log(`[CLIENT] get id from current object: ${this._id}`);
         resolve(this._id);

@@ -162,7 +162,7 @@ repositories {
 }
 
 dependencies {
-    compile project(':react-native-linear-gradient')
+    compile project(':react-native-i18n')
     compile 'com.android.support:multidex:1.0.3'
     compile project(':react-native-orientation')
     compile project(':react-native-vector-icons')
@@ -173,7 +173,7 @@ dependencies {
     compile 'com.android.support:customtabs:25.3.1'
     compile 'com.google.firebase:firebase-core:16.0.1'
     compile 'com.google.firebase:firebase-messaging:17.0.0'
-    compile 'com.google.android.gms:play-services-gcm:15.0.1'
+    compile 'com.google.android.gms:play-services-gcm:16.0.0'
     compile('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
       transitive = true;
     }

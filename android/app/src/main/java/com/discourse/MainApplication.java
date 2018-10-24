@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.smixx.fabric.FabricPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -32,6 +34,8 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
+            new FabricPackage(),
+            new RNI18nPackage(),
             new LinearGradientPackage(),
         new OrientationPackage(),
         new RNDeviceInfo(),

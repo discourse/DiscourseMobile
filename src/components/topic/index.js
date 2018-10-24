@@ -1,46 +1,47 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Image, View, Text } from "react-native";
 import style from "./stylesheet";
 import { material } from "react-native-typography";
+import Colors from "Root/colors";
 
-export default class extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.topic = props.topic;
-  }
-
+export default class TopicComponent extends React.Component {
   render() {
     return (
       <View style={style.topic}>
-        {this._renderTopicState(this.topic)}
-        <Text numberOfLines={1} style={[material.body1, style.topicTitle]}>
-          {this.topic.title}
-        </Text>
-        {this._renderPostsState(this.topic)}
-
         <Image
           style={style.topicMostRecentPoster}
-          source={{ uri: this.topic.mostRecentPosterAvatar }}
+          source={{ uri: this.props.topic.mostRecentPosterAvatar }}
         />
+
+        <Text numberOfLines={1} style={[material.subheading, style.topicTitle]}>
+          {this.props.topic.title}
+        </Text>
+
+        {this._renderTopicState(this.props.topic)}
+
+        {this._renderPostsState(this.props.topic)}
       </View>
     );
   }
 
   _renderPostsState(topic) {
-    if (topic.newPosts) {
+    if (
+      topic.lastReadPostNumber &&
+      topic.highestPostNumber - topic.lastReadPostNumber > 0
+    ) {
       return (
         <View style={style.newPostsIndicator}>
           <Text style={[material.caption, { color: "white" }]}>
-            {topic.newPosts}
+            {topic.highestPostNumber - topic.lastReadPostNumber}
           </Text>
         </View>
       );
-    } else if (topic.unreadPosts) {
+    } else if (!topic.lastReadPostNumber) {
       return (
         <View style={style.unreadPostsIndicator}>
-          <Text style={[material.caption, { color: "black" }]}>
-            {topic.unreadPosts}
+          <Text style={[material.caption, { color: Colors.grayUI }]}>
+            {topic.highestPostNumber}
           </Text>
         </View>
       );
@@ -48,8 +49,12 @@ export default class extends React.Component {
   }
 
   _renderTopicState(topic) {
-    if (topic.unreadPosts && !topic.newPosts) {
+    if (!topic.lastReadPostNumber) {
       return <View style={style.newTopicIndicator} />;
     }
   }
 }
+
+TopicComponent.propTypes = {
+  topic: PropTypes.object
+};

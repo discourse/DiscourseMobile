@@ -1,31 +1,31 @@
 import { Platform } from "react-native";
+import Client from "Libs/client";
+import { RateLimit } from "Libs/errors";
 
 export default class Api {
   constructor(site) {
     this.site = site;
-    this._currentFetch = null;
+    this.clientId = null;
   }
 
-  fetch(path, method, data) {
+  async fetch(path, method, data) {
     method = method || "GET";
+
+    path = `${this.site.url}${path}`;
+
+    this.clientId = this.clientId || (await new Client().getId());
 
     let headers = {
       "User-Api-Key": this.site.authToken,
       "User-Agent": `Discourse ${Platform.OS} App / 1.0`,
       "Content-Type": "application/json",
       "Dont-Chunk": "true",
-      "User-Api-Client-Id": this.site.clientId || ""
+      "User-Api-Client-Id": this.clientId
     };
 
     if (data) {
       data = JSON.stringify(data);
     }
-
-    // if (this._background) {
-    //   return new Promise((resolve, reject) =>
-    //     reject("In background mode aborting start request!")
-    //   );
-    // }
 
     return new Promise((resolve, reject) => {
       let req = new Request(path, {
@@ -33,9 +33,15 @@ export default class Api {
         method,
         body: data
       });
-      this._currentFetch = fetch(req);
-      this._currentFetch
+
+      console.log(`[API] ${method} ${path}`, headers, data);
+
+      fetch(req)
         .then(r1 => {
+          if (r1.status === 429) {
+            throw new RateLimit();
+          }
+
           // if (this._background) {
           //   throw "In Background mode aborting request!";
           // }
@@ -51,9 +57,9 @@ export default class Api {
           }
         })
         .then(result => resolve(result))
-        .catch(e => reject(e))
-        .finally(() => {
-          this._currentFetch = undefined;
+        .catch(e => {
+          console.log(`[API] Failed ${method} ${path} : ${e.message}`);
+          reject(e);
         })
         .done();
     });

@@ -1,25 +1,30 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { TouchableHighlight, SectionList } from "react-native";
 import style from "./stylesheet";
 import Colors from "Root/colors";
 import FakeTopicComponent from "Components/fake-topic";
 import TopicComponent from "Components/topic";
 
-export default class extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+export default class TopicsComponent extends React.Component {
+  openUrl(topic) {
+    this.props.site.shouldRefreshOnEnterForeground = true;
 
-  openUrl(item) {
-    const url = `${this.props.site.url}/t/${item.id}`;
-    this.props.onOpenUrl(url, this.props.site.authToken);
+    let url = `${this.props.site.url}/t/${topic.id}`;
+
+    const lastReadPostNumber = topic.lastReadPostNumber;
+    if (lastReadPostNumber) {
+      url += `/${lastReadPostNumber + 1}`;
+    }
+
+    this.props.onOpenUrl(url);
   }
 
   render() {
     return (
       <SectionList
         renderItem={({ item, index, section }) => {
-          if (this.props.isLoadingTopics) {
+          if (this.props.isLoading) {
             return <FakeTopicComponent />;
           } else {
             return (
@@ -37,9 +42,7 @@ export default class extends React.Component {
         }}
         sections={[
           {
-            data: this.props.isLoadingTopics
-              ? [0, 1, 2, 3]
-              : this._displayedTopics()
+            data: this.props.isLoading ? [0, 1, 2, 3] : this._displayedTopics()
           }
         ]}
         keyExtractor={(item, index) => `${index}-${item.id}`}
@@ -48,10 +51,18 @@ export default class extends React.Component {
   }
 
   _displayedTopics() {
-    if (this.props.showMore) {
+    if (this.props.isExpanded) {
       return this.props.topics;
     }
 
     return this.props.topics.slice(0, 4);
   }
 }
+
+TopicsComponent.propTypes = {
+  isLoading: PropTypes.bool,
+  isExpanded: PropTypes.bool,
+  topics: PropTypes.array,
+  site: PropTypes.object,
+  onOpenUrl: PropTypes.func
+};
