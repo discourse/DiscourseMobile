@@ -14,7 +14,14 @@ export default class TopicComponent extends React.Component {
           source={{ uri: this.props.topic.mostRecentPosterAvatar }}
         />
 
-        <Text numberOfLines={1} style={[material.subheading, style.topicTitle]}>
+        <Text
+          numberOfLines={1}
+          style={[
+            material.subheading,
+            style.topicTitle,
+            this._topicTitleStyle(this.props.topic)
+          ]}
+        >
           {this.props.topic.title}
         </Text>
 
@@ -23,6 +30,17 @@ export default class TopicComponent extends React.Component {
         {this._renderPostsState(this.props.topic)}
       </View>
     );
+  }
+
+  _topicTitleStyle(topic) {
+    if (
+      topic.lastReadPostNumber &&
+      topic.highestPostNumber - topic.lastReadPostNumber === 0
+    ) {
+      return {
+        color: Colors.grayUI
+      };
+    }
   }
 
   _renderPostsState(topic) {

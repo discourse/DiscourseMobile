@@ -10,7 +10,7 @@ export default class extends React.Component {
         <View style={style.card}>
           <Image style={style.logo} source={require("./nav-icon-gray.png")} />
 
-          <Text style={[style.text, material.body1]}>
+          <Text style={[material.body1, style.text]}>
             You don’t have any sites yet.
             {"\n"}
             Add Discourse sites to keep track of.

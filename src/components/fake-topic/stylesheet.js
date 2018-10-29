@@ -19,8 +19,8 @@ export default StyleSheet.create({
 
   avatar: {
     marginRight: 10,
-    height: 24,
-    width: 24,
+    height: 22,
+    width: 22,
     borderRadius: 12,
     backgroundColor: colors.grayBackground
   }

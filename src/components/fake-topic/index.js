@@ -11,7 +11,7 @@ export default class extends React.Component {
           style={[
             style.title,
             {
-              width: Math.floor(Math.random() * (280 - 120 + 1)) + 120
+              width: "85%"
             }
           ]}
         />

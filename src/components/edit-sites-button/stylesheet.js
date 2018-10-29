@@ -11,10 +11,9 @@ export default StyleSheet.create({
   },
   button: {
     borderColor: colors.grayBorder,
-    borderWidth: 1,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 3
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingVertical: 8,
+    paddingHorizontal: 12
   },
   buttonText: {
     color: colors.grayUI

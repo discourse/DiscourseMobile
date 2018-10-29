@@ -63,7 +63,7 @@ class Site {
         }
 
         let version = userApiKeyResponse.headers.get("Auth-Api-Version");
-        if (parseInt(version, 10) < 2) {
+        if (parseInt(version, 10) < 3) {
           throw new BadApi();
         }
 
@@ -101,6 +101,7 @@ class Site {
         }
       })
       .catch(e => {
+        console.error(e);
         if (e instanceof TypeError && e.message === "Network request failed") {
           throw new DomainError();
         } else {
@@ -146,8 +147,6 @@ class Site {
   }
 
   loadTopics(lists = []) {
-    // this. = true;
-
     if (this.totalNew) {
       lists.push("new");
     }
@@ -320,8 +319,10 @@ class Site {
       } else if (message.channel === "/queue_counts") {
         if (this.queueCount !== message.data.post_queue_new_count) {
           // yes this is weird, we have some real coupled code here
-          this.flagCount -=
-            (this.queueCount || 0) - message.data.post_queue_new_count;
+          this.flagCount -= Math.max(
+            (this.queueCount || 0) - message.data.post_queue_new_count,
+            0
+          );
           this.queueCount = message.data.post_queue_new_count;
           rval.notifications = true;
         }
@@ -438,9 +439,9 @@ class Site {
   }
 
   checkBus() {
-    return this.messageBus(this.channels).then(messages =>
-      this.processMessages(messages)
-    );
+    return this.messageBus(this.channels).then(messages => {
+      return this.processMessages(messages);
+    });
   }
 
   setState(state) {
@@ -501,7 +502,7 @@ class Site {
           this.apiClient
             .fetch("/session/current.json")
             .then(json => {
-              let currentUser = json.current_user;
+              const currentUser = json.current_user;
 
               let changed =
                 this.userId !== currentUser.id ||
@@ -535,13 +536,13 @@ class Site {
               }
 
               if (this.isStaff) {
-                let newFlagCount = currentUser.post_queue_new_count;
+                const newFlagCount = currentUser.site_flagged_posts_count;
                 if (newFlagCount !== this.flagCount) {
                   this.flagCount = newFlagCount;
                   changed = true;
                 }
 
-                let newQueueCount = currentUser.post_queue_new_count;
+                const newQueueCount = currentUser.post_queue_new_count;
                 if (newQueueCount !== this.queueCount) {
                   this.queueCount = newQueueCount;
                   changed = true;
@@ -553,6 +554,16 @@ class Site {
             .catch(e => resolve(stateAfterRefresh()));
         })
         .catch(e => resolve(stateAfterRefresh()));
+    }).then(event => {
+      this.setState({
+        totalUnread: this.totalUnread,
+        totalNew: this.totalNew,
+        flagCount: this.flagCount,
+        unreadPrivateMessages: this.unreadPrivateMessages,
+        unreadNotifications: this.unreadNotifications
+      });
+
+      return event;
     });
   }
 

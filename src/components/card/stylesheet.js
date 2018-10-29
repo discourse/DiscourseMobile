@@ -9,14 +9,14 @@ export default StyleSheet.create({
     height: 32,
     width: 32
   },
-  title: { color: "#333", marginLeft: 10 },
+  title: { color: "#333", marginLeft: 10, maxWidth: "65%" },
   card: {
     marginTop: 10,
     display: "flex",
     backgroundColor: "white",
     borderColor: colors.grayBorder,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: "column"
   },
   cardBody: { display: "flex", flex: 1 },
@@ -51,71 +51,35 @@ export default StyleSheet.create({
   },
   connectButtonWrapper: {},
 
-  notifications: {
+  notificationsWrapper: {
     display: "flex",
     flex: 1,
-    flexDirection: "column",
-    marginHorizontal: 5,
-    marginTop: 5,
-    marginBottom: 10
+    flexDirection: "row",
+    flexWrap: "wrap"
+  },
+
+  notifications: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    marginRight: 10,
+    marginVertical: 5
   },
 
   notificationsCount: {
     display: "flex",
     alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "flex-start"
-  },
-
-  unreadNotifications: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    marginRight: 10
-  },
-  unreadNotificationsCount: {
-    minWidth: 22,
-    display: "flex",
-    alignItems: "center",
     justifyContent: "center",
     textAlign: "center",
+    marginRight: 2,
     borderRadius: 3,
     borderWidth: 1,
-    borderColor: "transparent",
-    marginRight: 5,
-    padding: 2,
-    backgroundColor: colors.blueUnread
+    borderColor: "white"
   },
-  unreadNotificationsCountText: {
-    color: "white"
-  },
-  unreadNotificationsText: {
-    color: colors.blueUnread
-  },
-
-  unreadPrivateMessages: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row"
-  },
-  unreadPrivateMessagesCount: {
-    minWidth: 22,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "center",
-    borderRadius: 3,
-    borderWidth: 1,
-    borderColor: "transparent",
-    marginRight: 5,
-    padding: 2,
-    backgroundColor: colors.greenPrivateUnread
-  },
-  unreadPrivateMessagesCountText: {
-    color: "white"
-  },
-  unreadPrivateMessagesText: {
-    color: colors.greenPrivateUnread
+  notificationsCountText: {
+    color: "white",
+    paddingVertical: 6,
+    paddingHorizontal: 8
   },
 
   topics: {
@@ -129,17 +93,29 @@ export default StyleSheet.create({
   },
   showMoreButtonWrapper: {
     backgroundColor: colors.grayUILight,
-    paddingVertical: 8,
-    paddingHorizontal: 10
+    paddingVertical: 10,
+    paddingHorizontal: 15
   },
   showMoreButton: { color: colors.graySubtitle, textAlign: "center" },
 
   notificationsSeparator: {
     display: "flex",
     flex: 1,
-    height: 1,
-    backgroundColor: colors.grayBorder,
-    marginBottom: 10,
-    marginTop: 0
+    height: 0,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.grayUILight,
+    marginBottom: 8,
+    marginTop: 8
+  },
+
+  footer: {
+    display: "flex"
+  },
+
+  footerActions: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5
   }
 });

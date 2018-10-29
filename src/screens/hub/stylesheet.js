@@ -6,7 +6,10 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: "white"
   },
-  list: {},
+  list: {
+    flex: 1,
+    paddingBottom: 15
+  },
   header: {
     display: "flex",
     flexDirection: "row",
@@ -31,5 +34,87 @@ export default StyleSheet.create({
   addingSiteContainer: {
     display: "flex",
     backgroundColor: colors.blueCallToAction
+  },
+
+  text: {
+    fontSize: 16,
+    padding: 32,
+    textAlign: "center"
+  },
+  addSiteButtonText: {
+    backgroundColor: colors.blueCallToAction,
+    color: "white",
+    fontSize: 16,
+    fontWeight: "500",
+    padding: 8,
+    textAlign: "center"
+  },
+  title: {
+    color: colors.grayTitle,
+    fontWeight: "500"
+  },
+  subtitle: {
+    color: colors.graySubtitle
+  },
+  rowWrapper: {
+    marginRight: 16,
+    marginLeft: 16
+  },
+  row: {
+    borderLeftColor: colors.grayBorder,
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    borderRightColor: colors.grayBorder,
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.grayBorder,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    flexDirection: "row",
+    padding: 12,
+    backgroundColor: "white"
+  },
+  icon: {
+    alignSelf: "center",
+    height: 40,
+    width: 40
+  },
+  info: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    paddingLeft: 12
+  },
+  url: {
+    color: colors.grayTitle,
+    fontSize: 16,
+    fontWeight: "normal"
+  },
+  description: {
+    color: colors.graySubtitle,
+    flex: 10,
+    fontSize: 14
+  },
+  connect: {
+    alignSelf: "flex-start",
+    backgroundColor: colors.blueCallToAction,
+    color: "white",
+    fontSize: 14,
+    fontWeight: "500",
+    marginLeft: 6,
+    marginBottom: 6,
+    overflow: "hidden",
+    padding: 6
+  },
+  suggestedSitesContainer: {},
+  addSiteContainer: {
+    marginTop: 15
+  },
+  addFirstSiteContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    backgroundColor: colors.grayBackground
+  },
+
+  addSiteButtonWrapper: {
+    marginBottom: 32
   }
 });

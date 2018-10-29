@@ -12,16 +12,6 @@ class SiteManager {
     this._subscribers = [];
     this.sites = [];
     this.client = new Client();
-    // this.firstFetch = new Date();
-    // this.lastFetch = new Date();
-    // this.fetchCount = 0;
-    //
-    // AsyncStorage.getItem("@Discourse.lastRefresh").then(date => {
-    //   if (date) {
-    //     this.lastRefresh = new Date(date);
-    //     this._onRefresh;
-    //   }
-    // });
   }
 
   authenticatedSites() {
@@ -34,6 +24,8 @@ class SiteManager {
     this.sites.forEach(site => {
       if (site.shouldRefreshOnEnterForeground) {
         stalledSites.push(site);
+      } else {
+        site.setState({ isLoading: false });
       }
     });
 
@@ -56,6 +48,7 @@ class SiteManager {
             .loadTopics()
             .then(() => resolve())
             .finally(() => {
+              event.site.shouldRefreshOnEnterForeground = false;
               event.site.setState({ isLoading: false });
             });
         });

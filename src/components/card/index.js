@@ -16,7 +16,10 @@ export default class CardComponent extends React.Component {
       isLoading: props.site.isLoading,
       isExpanded: false,
       totalUnread: props.site.totalUnread,
-      totalNew: props.site.totalNew
+      totalNew: props.site.totalNew,
+      flagCount: props.site.flagCount,
+      unreadPrivateMessages: props.site.unreadPrivateMessages,
+      unreadNotifications: props.site.unreadNotifications
     };
   }
 
@@ -32,7 +35,12 @@ export default class CardComponent extends React.Component {
     this.setState({
       isLoading: state.isLoading || false,
       totalUnread: state.totalUnread || this.props.site.totalUnread,
-      totalNew: state.totalNew || this.props.site.totalNew
+      totalNew: state.totalNew || this.props.site.totalNew,
+      flagCount: state.flagCount || this.props.site.flagCount,
+      unreadPrivateMessages:
+        state.unreadPrivateMessages || this.props.site.unreadPrivateMessages,
+      unreadNotifications:
+        state.unreadNotifications || this.props.site.unreadNotifications
     });
   }
 
@@ -89,7 +97,14 @@ export default class CardComponent extends React.Component {
     this._openUserPage("messages");
   }
 
+  _openFlags() {
+    this.props.site.shouldRefreshOnEnterForeground = true;
+    this.props.onOpenUrl(`${this.props.site.url}/admin/flags/active`);
+  }
+
   _openUserPage(page) {
+    this.props.site.shouldRefreshOnEnterForeground = true;
+
     const username = this.props.site.username;
     if (username) {
       const url = `${this.props.site.url}/u/${username}/${page}`;
@@ -99,83 +114,71 @@ export default class CardComponent extends React.Component {
     }
   }
 
-  _renderUnreadNotifications(unreadNotificationsCount) {
-    if (unreadNotificationsCount > 0) {
-      return (
-        <TouchableHighlight
-          underlayColor={"transparent"}
-          onPress={this._openNotifications.bind(this)}
-        >
-          <View style={style.unreadNotifications}>
-            <View style={style.unreadNotificationsCount}>
-              <Text
-                style={[material.caption, style.unreadNotificationsCountText]}
-              >
-                {unreadNotificationsCount}
-              </Text>
-            </View>
-            <Text style={style.unreadNotificationsText}>
-              {I18n.t("notifications", { count: unreadNotificationsCount })}
+  _renderNotification(count, i18nkey, handler, color) {
+    if (count === 0) {
+      return;
+    }
+
+    return (
+      <TouchableHighlight underlayColor={"transparent"} onPress={handler}>
+        <View style={style.notifications}>
+          <View style={[style.notificationsCount, { backgroundColor: color }]}>
+            <Text style={[material.caption, style.notificationsCountText]}>
+              {count > 99 ? "99+" : count}
             </Text>
           </View>
-        </TouchableHighlight>
-      );
-    }
+          <Text style={[material.body1, style.notificationsText, { color }]}>
+            {I18n.t(i18nkey, { count })}
+          </Text>
+        </View>
+      </TouchableHighlight>
+    );
   }
 
-  _renderUnreadPrivateMessages(unreadPrivateMessagesCount) {
-    if (unreadPrivateMessagesCount > 0) {
-      return (
-        <TouchableHighlight
-          underlayColor={"transparent"}
-          onPress={this._openMessages.bind(this)}
-        >
-          <View style={style.unreadPrivateMessages}>
-            <View style={style.unreadPrivateMessagesCount}>
-              <Text
-                style={[material.caption, style.unreadPrivateMessagesCountText]}
-              >
-                {unreadPrivateMessagesCount}
-              </Text>
-            </View>
-            <Text style={style.unreadPrivateMessagesText}>
-              {I18n.t("private_messages", {
-                count: unreadPrivateMessagesCount
-              })}
-            </Text>
-          </View>
-        </TouchableHighlight>
-      );
-    }
+  _renderFlags(count) {
+    return this._renderNotification(
+      count,
+      "flags",
+      this._openFlags.bind(this),
+      Colors.redDanger
+    );
+  }
+
+  _renderUnreadNotifications(count) {
+    return this._renderNotification(
+      count,
+      "notifications",
+      this._openNotifications.bind(this),
+      Colors.blueUnread
+    );
+  }
+
+  _renderUnreadPrivateMessages(count) {
+    return this._renderNotification(
+      count,
+      "private_messages",
+      this._openMessages.bind(this),
+      Colors.greenPrivateUnread
+    );
   }
 
   _renderNotifications(site) {
-    const _renderNotificationSeparator = topicsLength => {
-      if (topicsLength) {
-        return <View style={style.notificationsSeparator} />;
-      }
-    };
-
     if (
       this.props.site.topics.length > 4 ||
       site.unreadNotifications > 0 ||
-      site.unreadPrivateMessages > 0
+      site.unreadPrivateMessages > 0 ||
+      site.flagCount > 0
     ) {
       return (
         <View
           style={[
-            style.notifications,
+            style.notificationsWrapper,
             this.notificationsStyle(this.props.site.topics.length)
           ]}
         >
-          {_renderNotificationSeparator(this.props.site.topics.length)}
-          <View style={[style.notificationsCount]}>
-            {this._renderUnreadNotifications(site.unreadNotifications)}
-            {this._renderUnreadPrivateMessages(site.unreadPrivateMessages)}
-
-            {this._renderShowMore()}
-            {this._renderShowCollapse()}
-          </View>
+          {this._renderFlags(site.flagCount)}
+          {this._renderUnreadNotifications(site.unreadNotifications)}
+          {this._renderUnreadPrivateMessages(site.unreadPrivateMessages)}
         </View>
       );
     }
@@ -225,7 +228,7 @@ export default class CardComponent extends React.Component {
   }
 
   notificationsStyle(topicsLength) {
-    if (!topicsLength) {
+    if (!topicsLength && !this.state.isLoading) {
       return {
         marginTop: 10
       };
@@ -239,12 +242,6 @@ export default class CardComponent extends React.Component {
       };
     }
   }
-
-  cardStyle(site) {
-    let styles = {};
-    return styles;
-  }
-
   _renderUnreadAndNew() {
     const values = [
       this.state.totalNew > 0 ? `${this.state.totalNew} new` : null,
@@ -257,6 +254,32 @@ export default class CardComponent extends React.Component {
     );
   }
 
+  _renderFooter() {
+    const _renderNotificationsSeparator = () => {
+      if (
+        this.props.site.topics.length > 4 ||
+        (this.state.totalNew > 0 ||
+          this.state.totalUnread > 0 ||
+          this.state.flagCount > 0)
+      ) {
+        return <View style={style.notificationsSeparator} />;
+      }
+    };
+
+    return (
+      <View style={style.footer}>
+        {_renderNotificationsSeparator()}
+
+        <View style={style.footerActions}>
+          {this._renderNotifications(this.props.site)}
+
+          {this._renderShowMore()}
+          {this._renderShowCollapse()}
+        </View>
+      </View>
+    );
+  }
+
   render() {
     return (
       <TouchableHighlight
@@ -264,7 +287,7 @@ export default class CardComponent extends React.Component {
         underlayColor={"transparent"}
         onPress={() => this._onPressCard()}
       >
-        <View style={[style.card, this.cardStyle(this.props.site)]}>
+        <View style={style.card}>
           <View
             style={[
               style.cardHeader,
@@ -278,6 +301,7 @@ export default class CardComponent extends React.Component {
                 source={{ uri: this.props.site.icon }}
               />
               <Text
+                numberOfLines={1}
                 style={[
                   material.title,
                   style.title,
@@ -304,7 +328,8 @@ export default class CardComponent extends React.Component {
               topics={this.props.site.topics}
               onOpenUrl={this.props.onOpenUrl}
             />
-            {this._renderNotifications(this.props.site)}
+
+            {this._renderFooter()}
           </View>
         </View>
       </TouchableHighlight>

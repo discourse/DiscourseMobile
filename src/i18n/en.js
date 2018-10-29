@@ -7,5 +7,9 @@ export default {
   notifications: {
     one: "notification",
     other: "notifications"
+  },
+  flags: {
+    one: "flag",
+    other: "flags"
   }
 };

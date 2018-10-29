@@ -14,12 +14,16 @@ import {
   PushNotificationIOS,
   Platform,
   FlatList,
-  StatusBar
+  StatusBar,
+  Image,
+  TouchableHighlight,
+  TouchableOpacity,
+  ListView,
+  StyleSheet
 } from "react-native";
 
 import { material } from "react-native-typography";
 import AddSiteButtonComponent from "Components/add-site-button";
-import FirstSiteCardComponent from "Components/first-site-card";
 import EditSitesModalComponent from "Components/edit-sites-modal";
 import CardComponent from "Components/card";
 import EditSitesButtonComponent from "Components/edit-sites-button";
@@ -27,6 +31,7 @@ import Site from "Models/site";
 import SiteAuthenticator from "Libs/site_authenticator";
 import Urlhandler from "Libs/url_handler";
 import style from "./stylesheet";
+import Colors from "Root/colors";
 import { DomainError, DupeSite, BadApi } from "Libs/errors";
 
 export default class HubScreen extends React.Component {
@@ -37,12 +42,18 @@ export default class HubScreen extends React.Component {
 
     this.urlHandler = new Urlhandler(this.siteManager);
 
+    const dataSource = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
+
     this.state = {
       appState: AppState.currentState,
       isEditSitesModalVisible: false,
       loadingSites: false,
       sites: this.props.siteManager.sites,
-      addedSite: null
+      addedSite: null,
+      dataSource,
+      suggestedSitesLoaded: false
     };
 
     if (Platform.OS === "ios") {
@@ -59,6 +70,8 @@ export default class HubScreen extends React.Component {
       // PushNotificationIOS.addEventListener("localNotification", e => {
       // });
     }
+
+    this._fetchSuggestedSites(suggestedSites);
   }
 
   onAddSite(existingInput) {
@@ -141,12 +154,15 @@ export default class HubScreen extends React.Component {
         >
           <View style={style.header}>
             <Text style={[material.display1, style.title]}>Discourse Hub</Text>
-            <AddSiteButtonComponent onPress={this.onAddSite.bind(this)} />
+            <AddSiteButtonComponent
+              sitesLength={this.state.sites.length}
+              onPress={this.onAddSite.bind(this)}
+            />
           </View>
           {this._renderAddingSiteIndicator(this.state.addedSite)}
-          {this._renderFirstSiteCard(this.state.sites.length)}
           {this._renderSites(this.state.sites)}
           {this._renderEditSites(this.state.sites.length)}
+          {this._renderOnboarding(this.state.sites.length)}
         </ScrollView>
       </SafeAreaView>
     );
@@ -166,8 +182,130 @@ export default class HubScreen extends React.Component {
     });
   }
 
+  _renderOnboarding(sitesLength) {
+    if (sitesLength > 0) {
+      return;
+    }
+
+    return (
+      <ListView
+        style={style.list}
+        enableEmptySections={true}
+        dataSource={this.state.dataSource}
+        renderHeader={() => this._renderOnBoardingHeader()}
+        renderRow={site => this._renderOnBoardingRow(site)}
+      />
+    );
+  }
+
+  _fetchSuggestedSites(suggestedSites) {
+    const sitesFetchPromises = suggestedSites.map(function(url) {
+      return fetch(`${url}/site/basic-info.json`)
+        .then(response => response.json())
+        .then(info => {
+          return { info, url };
+        });
+    });
+
+    Promise.all(sitesFetchPromises)
+      .then(responses => {
+        return responses.map(response => {
+          return new Site({
+            url: response.url,
+            title: response.info.title,
+            description: response.info.description,
+            icon: response.info.apple_touch_icon_url
+          });
+        });
+      })
+      .then(sites => {
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(sites),
+          suggestedSitesLoaded: true
+        });
+      })
+      .catch(error => console.log(error));
+  }
+
+  _renderOnBoardingHeader() {
+    return (
+      <View style={style.addSiteContainer}>
+        <View style={style.addFirstSiteContainer}>
+          <Text style={style.text}>
+            <Text style={style.title}>You don’t have any sites yet.</Text>
+            {"\n"}
+            <Text style={style.subtitle}>
+              Add Discourse sites to keep track of.
+            </Text>
+          </Text>
+
+          <TouchableOpacity
+            style={style.addSiteButtonWrapper}
+            onPress={() => this.onAddSite()}
+          >
+            <Text style={style.addSiteButtonText}>+ Add your first site</Text>
+          </TouchableOpacity>
+        </View>
+
+        {this._renderSuggestedSitesIntro()}
+      </View>
+    );
+  }
+
+  _renderOnBoardingRow(site) {
+    const lastRow = site.url === suggestedSites[suggestedSites.length - 1];
+    let lastRowStyle = {};
+
+    if (lastRow) {
+      lastRowStyle.borderBottomColor = Colors.grayBorder;
+      lastRowStyle.borderBottomWidth = StyleSheet.hairlineWidth;
+    }
+
+    return (
+      <TouchableHighlight
+        underlayColor={Colors.yellowUIFeedback}
+        style={style.rowWrapper}
+        onPress={() => this.onAddSite(site.url)}
+      >
+        <View accessibilityTraits="link" style={[style.row, lastRowStyle]}>
+          <Image style={style.icon} source={{ uri: site.icon }} />
+          <View style={style.info}>
+            <Text ellipsizeMode="tail" numberOfLines={1} style={style.url}>
+              {site.url.replace(/^https?:\/\//, "")}
+            </Text>
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              style={style.description}
+            >
+              {site.description}
+            </Text>
+          </View>
+
+          <Text style={style.connect}>+ Add</Text>
+        </View>
+      </TouchableHighlight>
+    );
+  }
+
+  _renderSuggestedSitesIntro() {
+    if (this.state.suggestedSitesLoaded) {
+      return (
+        <View style={style.suggestedSitesContainer}>
+          <Text style={style.text}>
+            <Text style={style.title}>Don’t know where to start?</Text>
+            {"\n"}
+            <Text style={style.subtitle}>
+              Check out these popular communities.
+            </Text>
+          </Text>
+        </View>
+      );
+    }
+  }
+
   _onRefreshSites() {
-    this.siteManager.forceRefreshSites({ fast: true });
+    this.siteManager.forceRefreshSites();
   }
 
   _onEditSites() {
@@ -216,12 +354,6 @@ export default class HubScreen extends React.Component {
     );
   }
 
-  _renderFirstSiteCard(sitesLength) {
-    if (!sitesLength && !this.state.addedSite) {
-      return <FirstSiteCardComponent onPress={this.onAddSite.bind(this)} />;
-    }
-  }
-
   _addSiteFromInput(input) {
     this.setState({ addedSite: input });
 
@@ -262,9 +394,25 @@ export default class HubScreen extends React.Component {
       this.siteManager.refreshStalledSites({ fast: true });
     }
 
+    if (
+      nextAppState.match(/inactive|background/) &&
+      this.state.appState === "active"
+    ) {
+      this.siteManager.sites.forEach(site =>
+        site.setState({ isLoading: true })
+      );
+    }
+
     this.setState({ appState: nextAppState });
   }
 }
+
+const suggestedSites = [
+  "https://meta.discourse.org",
+  "https://community.cartalk.com",
+  "https://community.imgur.com",
+  "https://bbs.boingboing.net"
+];
 
 HubScreen.propTypes = {
   siteManager: PropTypes.object

@@ -40,6 +40,8 @@ export default class UrlHandler {
   }
 
   openUrl(url, authToken = false, options) {
+    console.log(`[URL HANDLER] Opening ${url}`);
+
     options = options || {};
 
     const notification = options.notification || false;
