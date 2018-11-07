@@ -96,7 +96,7 @@ RCT_EXPORT_METHOD(openBrowserAsync:(NSString *)authURL
   // This is a hack to present the SafariViewController modally
   UINavigationController *safariHackVC = [[UINavigationController alloc] initWithRootViewController:safariVC];
   [safariHackVC setNavigationBarHidden:true animated:false];
-  [RCTPresentedViewController() presentViewController:safariHackVC animated:true completion:nil];
+  [RCTPresentedViewController() presentViewController:safariVC animated:true completion:nil];
 }
 
 - (BOOL)initializeWebBrowserWithResolver:(RCTPromiseResolveBlock)resolve andRejecter:(RCTPromiseRejectBlock)reject {

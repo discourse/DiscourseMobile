@@ -171,6 +171,11 @@ class Site {
     this.userId = null;
     this.username = null;
     this.isStaff = null;
+    this.totalUnread = null;
+    this.totalNew = null;
+    this.unreadNotifications = null;
+    this.unreadPrivateMessages = null;
+    this.topics = [];
   }
 
   ensureLatestApi() {
@@ -556,11 +561,11 @@ class Site {
         .catch(e => resolve(stateAfterRefresh()));
     }).then(event => {
       this.setState({
-        totalUnread: this.totalUnread,
-        totalNew: this.totalNew,
-        flagCount: this.flagCount,
-        unreadPrivateMessages: this.unreadPrivateMessages,
-        unreadNotifications: this.unreadNotifications
+        totalUnread: this.totalUnread || 0,
+        totalNew: this.totalNew || 0,
+        flagCount: this.flagCount || 0,
+        unreadPrivateMessages: this.unreadPrivateMessages || 0,
+        unreadNotifications: this.unreadNotifications || 0
       });
 
       return event;

@@ -14,7 +14,7 @@
 			<key>Key</key>
 			<string>open_links_in_safari</string>
 			<key>DefaultValue</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -24,7 +24,7 @@
 			<key>Key</key>
 			<string>open_notifications_in_safari</string>
 			<key>DefaultValue</key>
-			<true/>
+			<false/>
 		</dict>
 	</array>
 </dict>

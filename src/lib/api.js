@@ -42,14 +42,11 @@ export default class Api {
             throw new RateLimit();
           }
 
-          // if (this._background) {
-          //   throw "In Background mode aborting request!";
-          // }
           if (r1.status === 200) {
             return r1.json();
           } else {
             if (r1.status === 403) {
-              // this.logoff();
+              this.site.logoff();
               throw "User was logged off!";
             } else {
               throw "Error during fetch status code:" + r1.status;

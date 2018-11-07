@@ -163,11 +163,15 @@ export default class CardComponent extends React.Component {
   }
 
   _renderNotifications(site) {
+    const flagCount = site.flagCount || 0;
+    const unreadNotifications = site.unreadNotifications || 0;
+    const unreadPrivateMessages = site.unreadPrivateMessages || 0;
+
     if (
       this.props.site.topics.length > 4 ||
-      site.unreadNotifications > 0 ||
-      site.unreadPrivateMessages > 0 ||
-      site.flagCount > 0
+      unreadNotifications > 0 ||
+      unreadPrivateMessages > 0 ||
+      flagCount > 0
     ) {
       return (
         <View
@@ -176,9 +180,9 @@ export default class CardComponent extends React.Component {
             this.notificationsStyle(this.props.site.topics.length)
           ]}
         >
-          {this._renderFlags(site.flagCount)}
-          {this._renderUnreadNotifications(site.unreadNotifications)}
-          {this._renderUnreadPrivateMessages(site.unreadPrivateMessages)}
+          {this._renderFlags(flagCount)}
+          {this._renderUnreadNotifications(unreadNotifications)}
+          {this._renderUnreadPrivateMessages(unreadPrivateMessages)}
         </View>
       );
     }
@@ -247,8 +251,15 @@ export default class CardComponent extends React.Component {
       this.state.totalNew > 0 ? `${this.state.totalNew} new` : null,
       this.state.totalUnread > 0 ? `${this.state.totalUnread} unread` : null
     ].filter(x => x);
+
     return (
-      <Text style={[material.caption, style.unreadAndNew]}>
+      <Text
+        style={[
+          material.caption,
+          style.unreadAndNew,
+          { color: this.props.site.headerPrimaryColor }
+        ]}
+      >
         {values.join(" | ")}
       </Text>
     );

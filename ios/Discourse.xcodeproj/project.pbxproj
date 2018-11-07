@@ -46,6 +46,7 @@
 		D04173051EE98A0F004B7E2F /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04173031EE98A0F004B7E2F /* Fabric.framework */; };
 		D04173061EE98A0F004B7E2F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04173041EE98A0F004B7E2F /* Crashlytics.framework */; };
 		D0753A142170BC8100C4BA83 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D0753A132170BC8100C4BA83 /* Settings.bundle */; };
+		D082BEC52189CBFA004EE46E /* libfishhook.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BC0A171FA6A77B00045C3D /* libfishhook.a */; };
 		D086E1C1215252FA00012B08 /* DiscourseSafariViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D086E1C0215252FA00012B08 /* DiscourseSafariViewManager.m */; };
 		D088D2A32154DF410086E7EC /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = D088D2A22154DF410086E7EC /* NotificationService.m */; };
 		D088D2D72154E00A0086E7EC /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
@@ -499,6 +500,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D082BEC52189CBFA004EE46E /* libfishhook.a in Frameworks */,
 				D03ED4D7213D64C700E228AB /* libRCTPushNotification.a in Frameworks */,
 				D09E47801F2C9D6100AFDCBE /* AVFoundation.framework in Frameworks */,
 				D09E47561F2C996500AFDCBE /* Photos.framework in Frameworks */,
@@ -1519,7 +1521,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 181;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1570,7 +1572,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 181;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

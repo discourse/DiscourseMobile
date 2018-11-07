@@ -21,11 +21,11 @@ export default class Discourse extends React.Component {
       PushNotificationIOS.requestPermissions({ alert: true, badge: true });
 
       if (typeof Settings.get("open_links_in_safari") === "undefined") {
-        Settings.set({ open_links_in_safari: 1 });
+        Settings.set({ open_links_in_safari: 0 });
       }
 
       if (typeof Settings.get("open_notifications_in_safari") === "undefined") {
-        Settings.set({ open_notifications_in_safari: 1 });
+        Settings.set({ open_notifications_in_safari: 0 });
       }
     }
 
