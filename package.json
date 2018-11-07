@@ -16,11 +16,12 @@
     ]
   },
   "dependencies": {
+    "invariant": "^2.2",
     "lodash": "^4.17",
     "moment": "^2.22",
     "prop-types": "^15.6.0",
-    "react": "16.5.1",
-    "react-native": "0.57.0",
+    "react": "16.6.0-alpha.8af6728",
+    "react-native": "0.57.4",
     "react-native-device-info": "^0.22",
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair.git",
     "react-native-orientation": "git+https://github.com/yamill/react-native-orientation.git",
@@ -28,14 +29,12 @@
     "react-native-sortable-listview": "github:deanmcpherson/react-native-sortable-listview",
     "react-native-swipeout": "^2.3",
     "react-native-vector-icons": "^5.0",
-    "react-navigation": "^1.5",
-    "invariant": "^2.2"
+    "react-navigation": "^1.5"
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^7",
-    "babel-polyfill": "^7",
-    "metro-react-native-babel-preset": "^0.45.0",
+    "babel-preset-react-native": "^4",
     "eslint": "^5.6",
     "eslint-plugin-react": "^7.11",
     "eslint-plugin-react-native": "^3.3",
