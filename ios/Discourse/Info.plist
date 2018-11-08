@@ -57,11 +57,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Upload images from your camera</string>
+	<string>Allows the app to upload images from your camera into a Discourse post.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Upload images from your library</string>
+	<string>Allows the app to upload images from your library into a Discourse post.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>FontAwesome.ttf</string>
