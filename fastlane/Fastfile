@@ -148,6 +148,12 @@ platform :ios do
 
     gym(
       scheme: PROJECT_NAME,
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "org.discourse.DiscourseApp" => "match AppStore org.discourse.DiscourseApp"
+        }
+      },
       clean: true,
       project: "./ios/#{PROJECT_NAME}.xcodeproj"
     )
