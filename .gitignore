@@ -62,3 +62,4 @@ fastlane/google-play-api-secret.json
 
 # Bundle artifact
 *.jsbundle
+fastlane/report.xml
