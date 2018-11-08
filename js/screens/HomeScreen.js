@@ -21,7 +21,7 @@ import {
 
 import { SafeAreaView } from "react-navigation";
 import SortableListView from "react-native-sortable-listview";
-import DiscourseSafariViewManager from "../../lib/discourse-safari-view-manager";
+import SafariView from "react-native-safari-view";
 import BackgroundFetch from "../../lib/background-fetch";
 
 import Site from "../site";
@@ -74,6 +74,15 @@ class HomeScreen extends React.Component {
     }
 
     if (Platform.OS === "ios") {
+      SafariView.addEventListener("onShow", () => {
+        this._siteManager.refreshInterval(60000);
+      });
+
+      SafariView.addEventListener("onDismiss", () => {
+        this._siteManager.refreshInterval(15000);
+        this._siteManager.refreshSites({ ui: false, fast: true });
+      });
+
       PushNotificationIOS.addEventListener("notification", e =>
         this._handleRemoteNotification(e)
       );
@@ -96,7 +105,7 @@ class HomeScreen extends React.Component {
       e._data.discourse_url
     ) {
       console.log("open safari view");
-      DiscourseSafariViewManager.openAuthSessionAsync(e._data.discourse_url);
+      SafariView.show({ url: e._data.discourse_url });
     }
   }
 
@@ -105,7 +114,7 @@ class HomeScreen extends React.Component {
     console.log(e);
     if (e._data && e._data.AppState === "inactive" && e._data.discourse_url) {
       console.log("open safari view");
-      DiscourseSafariViewManager.openAuthSessionAsync(e._data.discourse_url);
+      SafariView.show({ url: e._data.discourse_url });
     }
 
     // TODO if we are active we should try to notify user somehow that a notification
@@ -115,18 +124,18 @@ class HomeScreen extends React.Component {
 
   visitSite(site) {
     if (site.authToken) {
-      this.props.screenProps.openUrl(site.url, true);
+      this.props.screenProps.openUrl(site.url);
       return;
     }
 
-    this._siteManager.generateAuthURL(site).then(async url => {
+    this._siteManager.generateAuthURL(site).then(url => {
       this.props.screenProps.openUrl(url);
     });
   }
 
   closeBrowser() {
     if (Platform.OS === "ios") {
-      DiscourseSafariViewManager.dismissBrowser();
+      SafariView.dismiss();
     } else {
       // TODO decide if we need this for android, probably not, its just a hack
     }
