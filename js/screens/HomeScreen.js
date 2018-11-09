@@ -124,7 +124,7 @@ class HomeScreen extends React.Component {
 
   visitSite(site) {
     if (site.authToken) {
-      this.props.screenProps.openUrl(site.url);
+      this.props.screenProps.openUrl(`${site.url}?discourse_app=1`);
       return;
     }
 

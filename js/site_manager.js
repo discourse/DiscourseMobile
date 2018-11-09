@@ -482,7 +482,8 @@ class SiteManager {
             push_url: basePushUrl + "/api/publish_" + Platform.OS,
             auth_redirect: "discourse://auth_redirect",
             application_name: "Discourse - " + deviceName,
-            public_key: this.rsaKeys.public
+            public_key: this.rsaKeys.public,
+            discourse_app: 1
           };
 
           return `${site.url}/user-api-key/new?${this.serializeParams(params)}`;
