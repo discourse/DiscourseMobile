@@ -142,7 +142,11 @@
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-  return [Orientation getOrientation];
+  if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+    return UIInterfaceOrientationMaskAll;
+  } else {
+    return [Orientation getOrientation];
+  }
 }
 
 @end
