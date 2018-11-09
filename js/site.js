@@ -71,7 +71,8 @@ class Site {
         // we also replace any trailing slash
         url = userApiKeyResponse.url
           .replace("/user-api-key/new", "")
-          .replace(/\/+$/, "");
+          .replace(/\/+$/, "")
+          .replace(/:\d+/, "");
 
         return fetch(`${url}/site/basic-info.json`).then(basicInfoResponse =>
           basicInfoResponse.json()
