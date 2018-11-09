@@ -20,6 +20,7 @@
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4",
     "react-native-device-info": "^0.24.3",
+    "react-native-fabric": "^0.5.2",
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair.git",
     "react-native-orientation": "git+https://github.com/yamill/react-native-orientation.git",
     "react-native-progress": "^3.5",
