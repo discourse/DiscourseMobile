@@ -251,6 +251,7 @@ class HomeScreen extends React.Component {
             }
             this._siteManager.add(site);
           }
+
           resolve(site);
         })
         .catch(e => {
