@@ -2,7 +2,7 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "1.3.0"
+IOS_APP_VERSION = "1.4.2"
 ANDROID_APP_VERSION = "1.3.0"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
