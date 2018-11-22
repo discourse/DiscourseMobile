@@ -62,7 +62,7 @@ class NavigationBar extends React.Component {
         <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer}>
           <TouchableHighlight
-            underlayColor={"white"}
+            underlayColor={"transparent"}
             style={[styles.button]}
             onPress={this.props.onDidPressLeftButton}
           >
@@ -94,7 +94,7 @@ class NavigationBar extends React.Component {
         </View>
         <View style={styles.rightContainer}>
           <TouchableHighlight
-            underlayColor={"white"}
+            underlayColor={"transparent"}
             style={styles.button}
             onPress={this.props.onDidPressRightButton}
           >
