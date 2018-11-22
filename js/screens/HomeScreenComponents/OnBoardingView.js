@@ -73,12 +73,12 @@ class OnBoardingView extends React.Component {
     if (lastRow) {
       lastRowStyle.borderBottomColor = colors.grayBorder;
       lastRowStyle.borderBottomWidth = StyleSheet.hairlineWidth;
-      lastRowStyle.marginBottom = 16;
     }
 
     return (
       <TouchableHighlight
         underlayColor={colors.yellowUIFeedback}
+        style={[styles.rowWrapper]}
         onPress={() => this.props.onDidPressSuggestedSite(site)}
       >
         <View accessibilityTraits="link" style={[styles.row, lastRowStyle]}>
@@ -182,6 +182,10 @@ const styles = StyleSheet.create({
   subtitle: {
     color: colors.graySubtitle
   },
+  rowWrapper: {
+    marginRight: 16,
+    marginLeft: 16
+  },
   row: {
     borderLeftColor: colors.grayBorder,
     borderLeftWidth: StyleSheet.hairlineWidth,
@@ -191,8 +195,6 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     flexDirection: "row",
     padding: 12,
-    marginRight: 16,
-    marginLeft: 16,
     backgroundColor: "white"
   },
   icon: {
