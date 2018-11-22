@@ -93,8 +93,19 @@ class Site {
       Site.FIELDS.forEach(prop => {
         this[prop] = props[prop];
       });
+
+      if (this.icon) {
+        this.icon = this.addhttps(this.icon);
+      }
     }
     this._timeout = 10000;
+  }
+
+  addhttps(url) {
+    if (!/^(f|ht)tps?:/i.test(url)) {
+      url = "https:" + url;
+    }
+    return url;
   }
 
   jsonApi(path, method, data) {
