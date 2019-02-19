@@ -18,7 +18,7 @@
     "moment": "^2.22",
     "prop-types": "^15.6.0",
     "react": "16.6.1",
-    "react-native": "0.57.6",
+    "react-native": "0.57.7",
     "react-native-device-info": "^0.24.3",
     "react-native-fabric": "^0.5.2",
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair.git",
