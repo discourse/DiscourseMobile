@@ -23,6 +23,7 @@ class DiscourseUtils {
       case 14:
       case 15:
       case 17:
+      case 18:
         endpoint = `/t/${notification.slug}/${notification.topic_id}/${
           notification.post_number
         }`;
@@ -80,6 +81,8 @@ class DiscourseUtils {
         return "group";
       case 17:
         return "dot-circle-o";
+      case 18:
+        return "clock-o";
       default:
         console.log(
           "Couldn’t generaaate an icon name for notification",
