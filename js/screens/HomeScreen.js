@@ -21,7 +21,7 @@ import {
 
 import { SafeAreaView } from "react-navigation";
 import SortableListView from "react-native-sortable-listview";
-import SafariView from "react-native-safari-view";
+import SafariWebAuth from "react-native-safari-web-auth";
 import BackgroundFetch from "../../lib/background-fetch";
 
 import Site from "../site";
@@ -30,8 +30,6 @@ import colors from "../colors";
 
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
-
-const AndroidToken = NativeModules.AndroidToken;
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -56,94 +54,37 @@ class HomeScreen extends React.Component {
     };
 
     this._onChangeSites = e => this.onChangeSites(e);
-
-    this._handleOpenUrl = event => {
-      console.log("handling incoming url");
-      console.log(event);
-      let split = event.url.split("payload=");
-      if (split.length === 2) {
-        this.closeBrowser();
-        this._siteManager.handleAuthPayload(decodeURIComponent(split[1]));
-      }
-    };
-
-    if (Platform.OS === "android") {
-      AndroidToken.GetInstanceId(id => {
-        this._siteManager.registerClientId(id);
-      });
-    }
-
-    if (Platform.OS === "ios") {
-      SafariView.addEventListener("onShow", () => {
-        this._siteManager.refreshInterval(60000);
-      });
-
-      SafariView.addEventListener("onDismiss", () => {
-        this._siteManager.refreshInterval(15000);
-        this._siteManager.refreshSites({ ui: false, fast: true });
-      });
-
-      PushNotificationIOS.addEventListener("notification", e =>
-        this._handleRemoteNotification(e)
-      );
-      PushNotificationIOS.addEventListener("localNotification", e =>
-        this._handleLocalNotification(e)
-      );
-
-      PushNotificationIOS.addEventListener("register", s => {
-        this._siteManager.registerClientId(s);
-      });
-    }
-  }
-
-  _handleLocalNotification(e) {
-    console.log("got local notification");
-    console.log(e);
-    if (
-      AppState.currentState !== "active" &&
-      e._data &&
-      e._data.discourse_url
-    ) {
-      console.log("open safari view");
-      SafariView.show({ url: e._data.discourse_url });
-    }
-  }
-
-  _handleRemoteNotification(e) {
-    console.log("got remote notification");
-    console.log(e);
-    if (e._data && e._data.AppState === "inactive" && e._data.discourse_url) {
-      console.log("open safari view");
-      SafariView.show({ url: e._data.discourse_url });
-    }
-
-    // TODO if we are active we should try to notify user somehow that a notification
-    // just landed .. tricky thing though is that safari view may be showing so we have
-    // no way of presenting anything to the user in that case
   }
 
   visitSite(site) {
+    this._siteManager.setActiveSite(site);
+
     if (site.authToken) {
-      this.props.screenProps.openUrl(`${site.url}?discourse_app=1`);
+      if (site.oneTimePassword) {
+        this.props.screenProps.openUrl(`${site.url}/session/otp/${site.oneTimePassword}`);
+        this._siteManager.setOneTimePassword(site, null);
+      } else {
+        if (this._siteManager.supportsDelegatedAuth(site)) {
+          this._siteManager.generateURLParams(site).then(params => {
+            this.props.screenProps.openUrl(`${site.url}?${params}`);
+          });
+        } else {
+          this.props.screenProps.openUrl(`${site.url}?discourse_app=1`);
+        }
+      }
       return;
     }
 
     this._siteManager.generateAuthURL(site).then(url => {
-      this.props.screenProps.openUrl(url);
+      if (this._siteManager.supportsDelegatedAuth(site)) {
+        SafariWebAuth.requestAuth(url);
+      } else {
+        this.props.screenProps.openUrl(url);
+      }
     });
   }
 
-  closeBrowser() {
-    if (Platform.OS === "ios") {
-      SafariView.dismiss();
-    } else {
-      // TODO decide if we need this for android, probably not, its just a hack
-    }
-  }
-
   componentDidMount() {
-    Linking.addEventListener("url", this._handleOpenUrl);
-
     if (Platform.OS === "ios") {
       let doRefresh = () => {
         console.log("Background fetch Called!");
@@ -212,7 +153,6 @@ class HomeScreen extends React.Component {
   }
 
   componentWillUnmount() {
-    Linking.removeEventListener("url", this._handleOpenUrl);
     this._siteManager.unsubscribe(this._onChangeSites);
   }
 

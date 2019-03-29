@@ -39,6 +39,7 @@
 		B587A4EF1E5549A8003AAE26 /* RNBackgroundFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = B587A4EC1E5549A8003AAE26 /* RNBackgroundFetch.m */; };
 		B587A4F01E5549A8003AAE26 /* RNBackgroundJob.m in Sources */ = {isa = PBXBuildFile; fileRef = B587A4EE1E5549A8003AAE26 /* RNBackgroundJob.m */; };
 		B5BE5C04DCE640A2935B51D2 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 93878C5DFDE7482D9BE57D4D /* FontAwesome.ttf */; };
+		BD4716A4224E7E9E0001EFC2 /* libSafariWebAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD4715E7224E7B130001EFC2 /* libSafariWebAuth.a */; };
 		CD8C22ACE1FA47FDB1ADC85F /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 460EF239AD964FD3B38E3432 /* Ionicons.ttf */; };
 		D03ED4D7213D64C700E228AB /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B50D1D901E554ADA0013CA06 /* libRCTPushNotification.a */; };
 		D04173051EE98A0F004B7E2F /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04173031EE98A0F004B7E2F /* Fabric.framework */; };
@@ -269,6 +270,13 @@
 			remoteGlobalIDString = 3D05745F1DE6004600184BB4;
 			remoteInfo = "RCTPushNotification-tvOS";
 		};
+		BD4715E6224E7B130001EFC2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B788012EC4934BF6A23241EE /* SafariWebAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = SafariWebAuth;
+		};
 		D04172FB1EE989E6004B7E2F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -388,6 +396,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Discourse/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		166A657DB70E456BA93F9778 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		357FA305DA2F4D07B7572674 /* libSafariWebAuth.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariWebAuth.a; sourceTree = "<group>"; };
 		43DF0EA989FE4EB69F94DF3A /* libSMXCrashlytics.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSMXCrashlytics.a; sourceTree = "<group>"; };
 		460EF239AD964FD3B38E3432 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		4AAF97ACF5E143619BB10750 /* libSafariViewManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariViewManager.a; sourceTree = "<group>"; };
@@ -417,6 +426,7 @@
 		B587A4ED1E5549A8003AAE26 /* RNBackgroundJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNBackgroundJob.h; sourceTree = "<group>"; };
 		B587A4EE1E5549A8003AAE26 /* RNBackgroundJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNBackgroundJob.m; sourceTree = "<group>"; };
 		B587A4F11E5549B8003AAE26 /* Discourse.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Discourse.entitlements; path = Discourse/Discourse.entitlements; sourceTree = "<group>"; };
+		B788012EC4934BF6A23241EE /* SafariWebAuth.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SafariWebAuth.xcodeproj; path = "../node_modules/react-native-safari-web-auth/ios/SafariWebAuth.xcodeproj"; sourceTree = "<group>"; };
 		BAEFCC01321644799518320D /* SortableTests.xctest */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SortableTests.xctest; sourceTree = "<group>"; };
 		CAA90F8E98084C94A22F8309 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		D04173031EE98A0F004B7E2F /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -456,6 +466,7 @@
 				19BD4843AA434E0C9DBB4782 /* Sortable.app in Frameworks */,
 				E608EAFD420F4EDE95A688E3 /* SortableTests.xctest in Frameworks */,
 				79847EAF338644DD916D401D /* libSMXCrashlytics.a in Frameworks */,
+				BD4716A4224E7E9E0001EFC2 /* libSafariWebAuth.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,6 +618,7 @@
 				CAA90F8E98084C94A22F8309 /* RNVectorIcons.xcodeproj */,
 				166A657DB70E456BA93F9778 /* RNDeviceInfo.xcodeproj */,
 				E745C37056AC45E0A223043B /* SMXCrashlytics.xcodeproj */,
+				B788012EC4934BF6A23241EE /* SafariWebAuth.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -683,6 +695,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		BD4715E3224E7B130001EFC2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BD4715E7224E7B130001EFC2 /* libSafariWebAuth.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D0661FDD2195EB9100626483 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -712,6 +732,7 @@
 				7FA85C10090240AB955A3487 /* Sortable.app */,
 				BAEFCC01321644799518320D /* SortableTests.xctest */,
 				43DF0EA989FE4EB69F94DF3A /* libSMXCrashlytics.a */,
+				357FA305DA2F4D07B7572674 /* libSafariWebAuth.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -786,6 +807,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -860,6 +882,10 @@
 				{
 					ProductGroup = B50D1D5B1E5549FC0013CA06 /* Products */;
 					ProjectRef = 06E2C9A7287F4536BCC5A13F /* SafariViewManager.xcodeproj */;
+				},
+				{
+					ProductGroup = BD4715E3224E7B130001EFC2 /* Products */;
+					ProjectRef = B788012EC4934BF6A23241EE /* SafariWebAuth.xcodeproj */;
 				},
 				{
 					ProductGroup = D0661FDD2195EB9100626483 /* Products */;
@@ -1091,6 +1117,13 @@
 			remoteRef = B50D1D911E554ADA0013CA06 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		BD4715E7224E7B130001EFC2 /* libSafariWebAuth.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSafariWebAuth.a;
+			remoteRef = BD4715E6224E7B130001EFC2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D04172FC1EE989E6004B7E2F /* libthird-party.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1279,9 +1312,10 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 102;
+				CURRENT_PROJECT_VERSION = 109;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1295,14 +1329,14 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-sortable-listview/Sortable/ios/Sortable",
 					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
+					"$(SRCROOT)/../node_modules/react-native-safari-web-auth/ios",
 				);
 				INFOPLIST_FILE = Discourse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Discourse\"",
-					"\"$(SRCROOT)/Discourse\"",
+					"\"$(SRCROOT)/Discourse\"/**",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1324,8 +1358,9 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 102;
+				CURRENT_PROJECT_VERSION = 109;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1339,14 +1374,14 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-sortable-listview/Sortable/ios/Sortable",
 					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
+					"$(SRCROOT)/../node_modules/react-native-safari-web-auth/ios",
 				);
 				INFOPLIST_FILE = Discourse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Discourse\"",
-					"\"$(SRCROOT)/Discourse\"",
+					"\"$(SRCROOT)/Discourse\"/**",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",

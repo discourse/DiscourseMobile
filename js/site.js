@@ -25,7 +25,8 @@ class Site {
     "username",
     "hasPush",
     "isStaff",
-    "apiVersion"
+    "apiVersion",
+    "oneTimePassword"
   ];
 
   static fromTerm(term) {
@@ -50,6 +51,8 @@ class Site {
       method: "HEAD"
     });
 
+    let apiVersion;
+
     return fetch(req)
       .then(userApiKeyResponse => {
         if (userApiKeyResponse.status === 404) {
@@ -61,7 +64,8 @@ class Site {
         }
 
         let version = userApiKeyResponse.headers.get("Auth-Api-Version");
-        if (parseInt(version, 10) < 2) {
+        apiVersion = parseInt(version, 10);
+        if (apiVersion < 2) {
           throw "bad api";
         }
 
@@ -83,7 +87,8 @@ class Site {
           url: url,
           title: info.title,
           description: info.description,
-          icon: info.apple_touch_icon_url
+          icon: info.apple_touch_icon_url,
+          apiVersion: apiVersion
         });
       });
   }

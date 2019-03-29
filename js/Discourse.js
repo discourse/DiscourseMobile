@@ -18,8 +18,10 @@ import { StackNavigator, NavigationActions } from "react-navigation";
 import Screens from "./screens";
 import SiteManager from "./site_manager";
 import SafariView from "react-native-safari-view";
+import SafariWebAuth from "react-native-safari-web-auth";
 
 const ChromeCustomTab = NativeModules.ChromeCustomTab;
+const AndroidToken = NativeModules.AndroidToken;
 
 const AppNavigator = StackNavigator(
   {
@@ -55,6 +57,97 @@ class Discourse extends React.Component {
         this._siteManager.refreshSites({ ui: false, fast: true });
       }
     };
+
+    this._handleOpenUrl = this._handleOpenUrl.bind(this);
+
+    if (Platform.OS === "ios") {
+      SafariView.addEventListener("onShow", () => {
+        this._siteManager.refreshInterval(60000);
+      });
+
+      SafariView.addEventListener("onDismiss", () => {
+        this._siteManager.refreshInterval(15000);
+        this._siteManager.refreshSites({ ui: false, fast: true });
+      });
+
+      PushNotificationIOS.addEventListener("notification", e =>
+        this._handleRemoteNotification(e)
+      );
+      PushNotificationIOS.addEventListener("localNotification", e =>
+        this._handleLocalNotification(e)
+      );
+
+      PushNotificationIOS.addEventListener("register", s => {
+        this._siteManager.registerClientId(s);
+      });
+    }
+
+    if (Platform.OS === "android") {
+      AndroidToken.GetInstanceId(id => {
+        this._siteManager.registerClientId(id);
+      });
+    }
+  }
+
+  _handleLocalNotification(e) {
+    console.log("got local notification");
+    console.log(e);
+    if (
+      AppState.currentState !== "active" &&
+      e._data &&
+      e._data.discourse_url
+    ) {
+      this.openUrl(e._data.discourse_url);
+    }
+  }
+
+  _handleRemoteNotification(e) {
+    console.log("got remote notification");
+    console.log(e);
+    if (e._data && e._data.AppState === "inactive" && e._data.discourse_url) {
+      this.openUrl(e._data.discourse_url);
+    }
+
+    // TODO if we are active we should try to notify user somehow that a notification
+    // just landed .. tricky thing though is that safari view may be showing so we have
+    // no way of presenting anything to the user in that case
+  }
+
+  _handleOpenUrl(event) {
+    if (event.url.startsWith('discourse://')) {
+      let params = this.parseURLparameters(event.url);
+      let site = this._siteManager.activeSite;
+      if (Platform.OS === "ios") {
+        SafariView.dismiss();
+      }
+
+      // initial auth payload
+      if (params.payload) {
+        if (this._siteManager.supportsDelegatedAuth(site) && params.oneTimePassword) {
+          this._siteManager.handleAuthPayload(params.payload, params.oneTimePassword);
+        } else {
+          this._siteManager.handleAuthPayload(params.payload);
+        }
+      }
+
+      // received one-time-password request from SafariView
+      if (params.otp) {
+        this._siteManager.generateURLParams(site, "full").then(params => {
+          SafariWebAuth.requestAuth(`${site.url}/user-api-key/otp?${params}`);
+        });
+      }
+
+      // one-time-password received from ASWebAuthentication
+      if (params.oneTimePassword && !params.payload) {
+        this._siteManager.setOneTimePassword(site, params.oneTimePassword);
+        // We could also load the SVC with the oneTimePassword URL
+        // but due to React interactions, this only works after a hacky delay
+        // setTimeout(() => {
+        //   let oneTimePassword = this._siteManager.decryptHelper(params.oneTimePassword);
+        //   this.openUrl(`${site.url}/session/otp/${oneTimePassword}`);
+        // }, 400);
+      }
+    }
   }
 
   resetToTop() {
@@ -70,6 +163,7 @@ class Discourse extends React.Component {
 
   componentDidMount() {
     AppState.addEventListener("change", this._handleAppStateChange);
+    Linking.addEventListener("url", this._handleOpenUrl);
 
     if (Platform.OS === "ios") {
       PushNotificationIOS.requestPermissions({ alert: true, badge: true });
@@ -78,6 +172,19 @@ class Discourse extends React.Component {
 
   componentWillUnmount() {
     AppState.removeEventListener("change", this._handleAppStateChange);
+    Linking.removeEventListener("url", this._handleOpenUrl);
+  }
+
+  parseURLparameters(string) {
+    let parsed = {};
+    (string.split('?')[1] || string).split('&')
+    .map((item) => {
+        return item.split('=');
+    })
+    .forEach((item) => {
+        parsed[item[0]] = decodeURIComponent(item[1]);
+    });
+    return parsed;
   }
 
   openUrl(url) {
