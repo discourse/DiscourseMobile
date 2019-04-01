@@ -1312,7 +1312,7 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 109;
+				CURRENT_PROJECT_VERSION = 116;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				ENABLE_BITCODE = YES;
@@ -1358,7 +1358,7 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 109;
+				CURRENT_PROJECT_VERSION = 116;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (

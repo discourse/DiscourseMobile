@@ -80,6 +80,12 @@ class Discourse extends React.Component {
       PushNotificationIOS.addEventListener("register", s => {
         this._siteManager.registerClientId(s);
       });
+
+      PushNotificationIOS.getInitialNotification().then((e) => {
+        console.log('coldLaunchPush:', e);
+        this._handleRemoteNotification(e);
+      });
+
     }
 
     if (Platform.OS === "android") {
@@ -90,8 +96,7 @@ class Discourse extends React.Component {
   }
 
   _handleLocalNotification(e) {
-    console.log("got local notification");
-    console.log(e);
+    console.log("got local notification", e);
     if (
       AppState.currentState !== "active" &&
       e._data &&
@@ -102,11 +107,14 @@ class Discourse extends React.Component {
   }
 
   _handleRemoteNotification(e) {
-    console.log("got remote notification");
-    console.log(e);
-    if (e._data && e._data.AppState === "inactive" && e._data.discourse_url) {
+    console.log("got remote notification", e);
+    if (e._data && e._data.discourse_url) {
       this.openUrl(e._data.discourse_url);
     }
+
+    // if (e._data && e._data.openedInForeground && e._data.discourse_url) {
+    //   this.openUrl(e._data.discourse_url);
+    // }
 
     // TODO if we are active we should try to notify user somehow that a notification
     // just landed .. tricky thing though is that safari view may be showing so we have

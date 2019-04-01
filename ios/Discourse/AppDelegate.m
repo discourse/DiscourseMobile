@@ -18,6 +18,7 @@
 #import "Orientation.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import <UserNotifications/UserNotifications.h>
 
 @import Photos;
 @import AVFoundation;
@@ -58,6 +59,11 @@
   // config BG fetch
   [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
 
+  // define UNUserNotificationCenter
+  // see https://github.com/zo0r/react-native-push-notification/issues/275
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  center.delegate = self;
+
   return YES;
 }
 
@@ -88,6 +94,23 @@
 {
   [RCTPushNotificationManager didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
+
+// From: https://github.com/zo0r/react-native-push-notification/issues/275
+// Called when a notification is delivered to a foreground app.
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
+  NSLog(@"Discourse notification is delivered to a foreground app");
+  completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
+}
+
+// Called when a user taps on a notification in the foreground
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
+{
+  NSMutableDictionary *userData = [NSMutableDictionary dictionaryWithDictionary:response.notification.request.content.userInfo];
+  [userData setObject:@(1) forKey:@"openedInForeground"];
+  [RCTPushNotificationManager didReceiveRemoteNotification:userData];
+  completionHandler();
+}
+
 
 -(void)applicationDidEnterBackground:(UIApplication *)application {
 }
