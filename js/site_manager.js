@@ -167,19 +167,31 @@ class SiteManager {
     AsyncStorage.getItem("@Discourse.sites")
       .then(json => {
         if (json) {
-          this.sites = JSON.parse(json).map(obj => {
-            let site = new Site(obj);
-            // we require latest API
-            site.ensureLatestApi();
-            return site;
+          this.sites = JSON.parse(json).map((obj) => {
+            return new Site(obj);
           });
-          this._loading = false;
-          this._onChange();
-          this.refreshSites({ ui: false, fast: true })
+
+          let promises = [];
+
+          this.sites.forEach((site, index) => {
+            // we require latest API
+            promises.push(site.ensureLatestApi().then((site) => {
+              this.sites[index] = site;
+            }));
+          });
+
+          Promise.all(promises)
             .then(() => {
-              this._onChange();
+              this.save();
+              this.refreshSites({ ui: false, fast: true })
+                .then(() => {
+                  this._onChange();
+                })
+                .done();
             })
-            .done();
+            .catch((e) => {
+                console.log(e);
+            });
         }
       })
       .finally(() => {

@@ -82,8 +82,9 @@ class Discourse extends React.Component {
       });
 
       PushNotificationIOS.getInitialNotification().then((e) => {
-        console.log('coldLaunchPush:', e);
-        this._handleRemoteNotification(e);
+        if (e) {
+          this._handleRemoteNotification(e);
+        }
       });
 
     }
@@ -111,14 +112,6 @@ class Discourse extends React.Component {
     if (e._data && e._data.discourse_url) {
       this.openUrl(e._data.discourse_url);
     }
-
-    // if (e._data && e._data.openedInForeground && e._data.discourse_url) {
-    //   this.openUrl(e._data.discourse_url);
-    // }
-
-    // TODO if we are active we should try to notify user somehow that a notification
-    // just landed .. tricky thing though is that safari view may be showing so we have
-    // no way of presenting anything to the user in that case
   }
 
   _handleOpenUrl(event) {

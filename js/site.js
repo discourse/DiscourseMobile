@@ -43,10 +43,10 @@ class Site {
       url = term;
     }
 
-    return Site.fromURL(url, term);
+    return Site.fromURL(url);
   }
 
-  static fromURL(url, term) {
+  static fromURL(url) {
     let req = new Request(`${url}/user-api-key/new`, {
       method: "HEAD"
     });
@@ -181,6 +181,25 @@ class Site {
   ensureLatestApi() {
     if (this.apiVersion < 2) {
       this.logoff();
+    }
+
+    if (this.apiVersion < 4) {
+      return new Promise((resolve, reject) => {
+        Site.fromURL(this.url)
+          .then(site => {
+            console.log('fromUrl request for', this.url);
+            resolve(site);
+          })
+          .catch(e => {
+            console.log(e);
+            reject("failure");
+          })
+          .done();
+      });
+    } else {
+      return new Promise((resolve, reject) => {
+        resolve(this);
+      });
     }
   }
 
