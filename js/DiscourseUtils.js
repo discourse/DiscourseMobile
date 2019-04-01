@@ -85,7 +85,7 @@ class DiscourseUtils {
         return "clock-o";
       default:
         console.log(
-          "Couldn’t generaaate an icon name for notification",
+          "Couldn’t generate an icon name for notification",
           notification
         );
         return "exclamation-circle";
