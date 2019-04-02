@@ -8,11 +8,11 @@ const { Answers } = Fabric;
 
 import {
   Alert,
-  AsyncStorage,
   Platform,
   PushNotificationIOS
 } from "react-native";
 
+import AsyncStorage from '@react-native-community/async-storage';
 import Site from "./site";
 import RNKeyPair from "react-native-key-pair";
 import DeviceInfo from "react-native-device-info";
