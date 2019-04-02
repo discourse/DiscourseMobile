@@ -174,9 +174,11 @@ class SiteManager {
           let promises = [];
 
           this.sites.forEach((site, index) => {
-            // we require latest API
+            // check for updated API version
             promises.push(site.ensureLatestApi().then((site) => {
-              this.sites[index] = site;
+              if (site.apiVersion) {
+                this.sites[index].apiVersion = site.apiVersion;
+              }
             }));
           });
 
