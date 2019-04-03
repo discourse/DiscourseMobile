@@ -159,9 +159,8 @@ class SiteManager {
   }
 
   load() {
-    this.ensureRSAKeys().then(() => {
-      console.log(this.rsaKeys);
-    });
+    // generate RSA Keys on load, they'll be needed
+    this.ensureRSAKeys().done();
     this._loading = true;
     AsyncStorage.getItem("@Discourse.sites")
       .then(json => {
