@@ -7,12 +7,14 @@ import TermBar from "./TermBar";
 import DebugRow from "./DebugRow";
 import NavigationBar from "./NavigationBar";
 import Notification from "./Notification";
+import Overlay from "./Overlay";
 
 module.exports = {
-  OnBoardingView: OnBoardingView,
-  TermBar: TermBar,
-  SiteRow: SiteRow,
-  DebugRow: DebugRow,
-  NavigationBar: NavigationBar,
-  Notification: Notification
+	OnBoardingView: OnBoardingView,
+	TermBar: TermBar,
+	SiteRow: SiteRow,
+	DebugRow: DebugRow,
+	NavigationBar: NavigationBar,
+	Notification: Notification,
+	Overlay: Overlay
 };

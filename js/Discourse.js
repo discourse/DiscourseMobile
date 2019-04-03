@@ -19,6 +19,7 @@ import Screens from "./screens";
 import SiteManager from "./site_manager";
 import SafariView from "react-native-safari-view";
 import SafariWebAuth from "react-native-safari-web-auth";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const ChromeCustomTab = NativeModules.ChromeCustomTab;
 const AndroidToken = NativeModules.AndroidToken;
@@ -26,7 +27,8 @@ const AndroidToken = NativeModules.AndroidToken;
 const AppNavigator = StackNavigator(
   {
     Home: { screen: Screens.Home },
-    Notifications: { screen: Screens.Notifications }
+    Notifications: { screen: Screens.Notifications },
+    WebView: { screen: Screens.WebView }
   },
   {
     mode: "modal",
@@ -81,12 +83,11 @@ class Discourse extends React.Component {
         this._siteManager.registerClientId(s);
       });
 
-      PushNotificationIOS.getInitialNotification().then((e) => {
+      PushNotificationIOS.getInitialNotification().then(e => {
         if (e) {
           this._handleRemoteNotification(e);
         }
       });
-
     }
 
     if (Platform.OS === "android") {
@@ -115,17 +116,24 @@ class Discourse extends React.Component {
   }
 
   _handleOpenUrl(event) {
-    if (event.url.startsWith('discourse://')) {
+    if (event.url.startsWith("discourse://")) {
       let params = this.parseURLparameters(event.url);
       let site = this._siteManager.activeSite;
+
       if (Platform.OS === "ios") {
         SafariView.dismiss();
       }
 
       // initial auth payload
       if (params.payload) {
-        if (this._siteManager.supportsDelegatedAuth(site) && params.oneTimePassword) {
-          this._siteManager.handleAuthPayload(params.payload, params.oneTimePassword);
+        if (
+          this._siteManager.supportsDelegatedAuth(site) &&
+          params.oneTimePassword
+        ) {
+          this._siteManager.handleAuthPayload(
+            params.payload,
+            params.oneTimePassword
+          );
         } else {
           this._siteManager.handleAuthPayload(params.payload);
         }
@@ -178,19 +186,28 @@ class Discourse extends React.Component {
 
   parseURLparameters(string) {
     let parsed = {};
-    (string.split('?')[1] || string).split('&')
-    .map((item) => {
-        return item.split('=');
-    })
-    .forEach((item) => {
+    (string.split("?")[1] || string)
+      .split("&")
+      .map(item => {
+        return item.split("=");
+      })
+      .forEach(item => {
         parsed[item[0]] = decodeURIComponent(item[1]);
-    });
+      });
     return parsed;
   }
 
   openUrl(url) {
     if (Platform.OS === "ios") {
-      SafariView.show({ url });
+      AsyncStorage.getItem("@Discourse.useWebView").then(useWebView => {
+        if (useWebView === "true") {
+          this._navigation.navigate("WebView", {
+            url: url
+          });
+        } else {
+          SafariView.show({ url });
+        }
+      });
     } else {
       if (this.props.simulator) {
         Linking.openURL(url);

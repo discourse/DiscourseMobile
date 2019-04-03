@@ -4,7 +4,7 @@
 import React from "react";
 import Immutable from "immutable";
 
-import { InteractionManager, ListView, StyleSheet, View } from "react-native";
+import { InteractionManager, StyleSheet, View } from "react-native";
 import { ImmutableListView } from "react-native-immutable-list-view";
 
 import { SafeAreaView } from "react-navigation";
