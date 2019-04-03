@@ -3,16 +3,12 @@
 
 import _ from "lodash";
 
-const Fabric =  require("react-native-fabric");
+const Fabric = require("react-native-fabric");
 const { Answers } = Fabric;
 
-import {
-  Alert,
-  Platform,
-  PushNotificationIOS
-} from "react-native";
+import { Alert, Platform, PushNotificationIOS } from "react-native";
 
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from "@react-native-community/async-storage";
 import Site from "./site";
 import RNKeyPair from "react-native-key-pair";
 import DeviceInfo from "react-native-device-info";
@@ -163,11 +159,14 @@ class SiteManager {
   }
 
   load() {
+    this.ensureRSAKeys().then(() => {
+      console.log(this.rsaKeys);
+    });
     this._loading = true;
     AsyncStorage.getItem("@Discourse.sites")
       .then(json => {
         if (json) {
-          this.sites = JSON.parse(json).map((obj) => {
+          this.sites = JSON.parse(json).map(obj => {
             return new Site(obj);
           });
 
@@ -175,11 +174,13 @@ class SiteManager {
 
           this.sites.forEach((site, index) => {
             // check for updated API version
-            promises.push(site.ensureLatestApi().then((site) => {
-              if (site.apiVersion) {
-                this.sites[index].apiVersion = site.apiVersion;
-              }
-            }));
+            promises.push(
+              site.ensureLatestApi().then(site => {
+                if (site.apiVersion) {
+                  this.sites[index].apiVersion = site.apiVersion;
+                }
+              })
+            );
           });
 
           Promise.all(promises)
@@ -191,8 +192,8 @@ class SiteManager {
                 })
                 .done();
             })
-            .catch((e) => {
-                console.log(e);
+            .catch(e => {
+              console.log(e);
             });
         }
       })
@@ -541,14 +542,14 @@ class SiteManager {
       let params = {
         auth_redirect: this.urlScheme,
         user_api_public_key: this.rsaKeys.public
-      }
+      };
 
       if (type === "full") {
         params = {
           auth_redirect: this.urlScheme,
           application_name: this.deviceName(),
           public_key: this.rsaKeys.public
-        }
+        };
       }
 
       return this.serializeParams(params);
@@ -642,14 +643,18 @@ class SiteManager {
       // on android maybe this can fail?
     }
 
-    return "Discourse - " + deviceName;    
+    return "Discourse - " + deviceName;
   }
 
   supportsDelegatedAuth(site) {
     // delegated auth library is currently iOS 12+ only
     // site needs user api >= 4
 
-    if (Platform.OS !== "ios" || parseInt(Platform.Version, 10) <= 11 || site.apiVersion < 4) {
+    if (
+      Platform.OS !== "ios" ||
+      parseInt(Platform.Version, 10) <= 11 ||
+      site.apiVersion < 4
+    ) {
       return false;
     }
 

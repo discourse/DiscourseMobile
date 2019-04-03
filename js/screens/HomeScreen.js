@@ -9,7 +9,6 @@ import {
   Animated,
   Easing,
   Linking,
-  ListView,
   NativeModules,
   Platform,
   PushNotificationIOS,
@@ -47,10 +46,7 @@ class HomeScreen extends React.Component {
       scrollEnabled: true,
       refreshingEnabled: true,
       rightButtonIconColor: colors.grayUI,
-      loadingSites: this._siteManager.isLoading(),
-      suggestionsDataSource: new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 !== r2
-      })
+      loadingSites: this._siteManager.isLoading()
     };
 
     this._onChangeSites = e => this.onChangeSites(e);
@@ -61,7 +57,9 @@ class HomeScreen extends React.Component {
 
     if (site.authToken) {
       if (site.oneTimePassword) {
-        this.props.screenProps.openUrl(`${site.url}/session/otp/${site.oneTimePassword}`);
+        this.props.screenProps.openUrl(
+          `${site.url}/session/otp/${site.oneTimePassword}`
+        );
         this._siteManager.setOneTimePassword(site, null);
       } else {
         if (this._siteManager.supportsDelegatedAuth(site)) {
@@ -246,15 +244,6 @@ class HomeScreen extends React.Component {
       !this.state.isRefreshing &&
       this.state.addSiteProgress === 0 &&
       !this.state.displayTermBar
-    );
-  }
-
-  renderSuggestions() {
-    return (
-      <ListView
-        dataSource={this.state.suggestionsDataSource}
-        renderRow={rowData => <View>{rowData}</View>}
-      />
     );
   }
 

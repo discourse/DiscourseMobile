@@ -2,8 +2,10 @@
 "use strict";
 
 import React from "react";
+import Immutable from "immutable";
 
 import { InteractionManager, ListView, StyleSheet, View } from "react-native";
+import { ImmutableListView } from "react-native-immutable-list-view";
 
 import { SafeAreaView } from "react-navigation";
 
@@ -20,10 +22,7 @@ class NotificationsScreen extends React.Component {
     this.state = {
       progress: 0,
       renderPlaceholderOnly: true,
-      selectedIndex: 0,
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 !== r2
-      })
+      selectedIndex: 0
     };
 
     this._onSiteChange = e => {
@@ -110,7 +109,7 @@ class NotificationsScreen extends React.Component {
   }
 
   _renderEmptyNotifications() {
-    if (this.state.dataSource.getRowCount() === 0) {
+    if (this.state.dataSource.size < 1) {
       let text;
       switch (this.state.selectedIndex) {
         case 0:
@@ -134,11 +133,12 @@ class NotificationsScreen extends React.Component {
 
   _renderList() {
     return (
-      <ListView
+      <ImmutableListView
         enableEmptySections={true}
-        dataSource={this.state.dataSource}
+        immutableData={this.state.dataSource}
         renderHeader={() => this._renderListHeader()}
         renderRow={rowData => this._renderListRow(rowData)}
+        renderEmptyInList={""}
       />
     );
   }
@@ -247,7 +247,7 @@ class NotificationsScreen extends React.Component {
           }
 
           this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(notifications)
+            dataSource: Immutable.fromJS(notifications)
           });
 
           this.removePlaceholder();
