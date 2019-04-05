@@ -79,7 +79,30 @@ class SiteManager {
   }
 
   setActiveSite(site) {
-    this.activeSite = site;
+    return new Promise((resolve, reject) => {
+      if (typeof site === "string" || site instanceof String) {
+        let url = site;
+        AsyncStorage.getItem("@Discourse.sites")
+          .then(json => {
+            let activeSite = null;
+            if (json) {
+              let tSites = JSON.parse(json).map(obj => {
+                return new Site(obj);
+              });
+
+              activeSite = tSites.find(s => url.startsWith(s.url) === true);
+              this.activeSite = activeSite;
+            }
+
+            resolve({ activeSite: activeSite });
+          })
+          .done();
+      } else {
+        this.activeSite = site;
+        resolve({ activeSite: site });
+        return;
+      }
+    });
   }
 
   setOneTimePassword(site, value) {
@@ -484,9 +507,9 @@ class SiteManager {
     this._nonceSite.hasPush = decrypted.push;
     this._nonceSite.apiVersion = decrypted.api;
 
-    if (oneTimePassword) {
-      this._nonceSite.oneTimePassword = this.decryptHelper(oneTimePassword);
-    }
+    // if (oneTimePassword) {
+    //   this._nonceSite.oneTimePassword = this.decryptHelper(oneTimePassword);
+    // }
 
     // cause we want to stop rendering connect
     this._onChange();
@@ -658,6 +681,11 @@ class SiteManager {
     }
 
     return true;
+  }
+
+  urlInSites(url) {
+    let siteUrls = this.sites.map(s => s.url);
+    return siteUrls.find(siteUrl => url.startsWith(siteUrl) === true);
   }
 }
 

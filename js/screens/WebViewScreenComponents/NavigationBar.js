@@ -6,6 +6,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import {
+  Animated,
   Platform,
   StyleSheet,
   Text,
@@ -14,7 +15,7 @@ import {
 } from "react-native";
 
 import { SafeAreaView } from "react-navigation";
-import Icon from "react-native-vector-icons/FontAwesome";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import ProgressBar from "../../ProgressBar";
 import colors from "../../colors";
@@ -25,24 +26,42 @@ class NavigationBar extends React.Component {
     onDidPressRightButton: PropTypes.func
   };
 
+  state = {
+    headerAnim: new Animated.Value(Platform.OS === "ios" ? 44 : 55)
+  };
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.scrollDirection !== this.props.scrollDirection) {
+      let toValue = 0;
+      if (nextProps.scrollDirection === "up") {
+        toValue = Platform.OS === "ios" ? 44 : 55;
+      }
+
+      Animated.timing(this.state.headerAnim, {
+        toValue: toValue,
+        duration: 300
+      }).start();
+    }
+  }
+
   render() {
+    let { headerAnim } = this.state;
+
     return (
-      <SafeAreaView
-        style={styles.container}
+      <Animated.View
+        style={{ ...styles.container, height: headerAnim }}
         forceInset={{ top: "always", bottom: "never" }}
       >
         <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer}>
           {this._renderButton(this.props.onDidPressLeftButton, "angle-left")}
         </View>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title} />
-        </View>
+        <View style={styles.titleContainer} />
         <View style={styles.rightContainer}>
-          {this._renderButton(this.props.onDidPressRightButton, "close")}
+          {this._renderButton(this.props.onDidPressRightButton, "times")}
         </View>
         <View style={styles.separator} />
-      </SafeAreaView>
+      </Animated.View>
     );
   }
 
@@ -53,7 +72,7 @@ class NavigationBar extends React.Component {
         style={styles.button}
         onPress={callback}
       >
-        <Icon name={iconName} size={20} color={colors.grayUI} />
+        <FontAwesome5 name={iconName} size={20} color={colors.grayUI} />
       </TouchableHighlight>
     );
   }
@@ -62,8 +81,7 @@ class NavigationBar extends React.Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.grayBackground,
-    flexDirection: "row",
-    height: Platform.OS === "ios" ? 44 : 55
+    flexDirection: "row"
   },
   leftContainer: {
     flex: 1

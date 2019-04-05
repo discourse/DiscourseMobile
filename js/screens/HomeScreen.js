@@ -61,7 +61,7 @@ class HomeScreen extends React.Component {
         this.props.screenProps.openUrl(
           `${site.url}/session/otp/${site.oneTimePassword}`
         );
-        this._siteManager.setOneTimePassword(site, null);
+        // this._siteManager.setOneTimePassword(site, null);
       } else {
         if (this._siteManager.supportsDelegatedAuth(site)) {
           this._siteManager.generateURLParams(site).then(params => {

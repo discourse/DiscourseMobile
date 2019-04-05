@@ -51,7 +51,7 @@ class Discourse extends React.Component {
       if (AppState.currentState === "inactive") {
         this._siteManager.enterBackground();
         this._seenNotificationMap = null;
-        this.resetToTop();
+        // this.resetToTop();
       }
 
       if (AppState.currentState === "active") {
@@ -75,9 +75,9 @@ class Discourse extends React.Component {
       PushNotificationIOS.addEventListener("notification", e =>
         this._handleRemoteNotification(e)
       );
-      PushNotificationIOS.addEventListener("localNotification", e =>
-        this._handleLocalNotification(e)
-      );
+      // PushNotificationIOS.addEventListener("localNotification", e =>
+      //   this._handleLocalNotification(e)
+      // );
 
       PushNotificationIOS.addEventListener("register", s => {
         this._siteManager.registerClientId(s);
@@ -97,25 +97,30 @@ class Discourse extends React.Component {
     }
   }
 
-  _handleLocalNotification(e) {
-    console.log("got local notification", e);
-    if (
-      AppState.currentState !== "active" &&
-      e._data &&
-      e._data.discourse_url
-    ) {
-      this.openUrl(e._data.discourse_url);
-    }
-  }
+  // _handleLocalNotification(e) {
+  //   console.log("got local notification", e);
+  //   if (
+  //     AppState.currentState !== "active" &&
+  //     e._data &&
+  //     e._data.discourse_url
+  //   ) {
+  //     this.openUrl(e._data.discourse_url);
+  //   }
+  // }
 
   _handleRemoteNotification(e) {
     console.log("got remote notification", e);
     if (e._data && e._data.discourse_url) {
-      this.openUrl(e._data.discourse_url);
+      this._siteManager
+        .setActiveSite(e._data.discourse_url)
+        .then(activeSite => {
+          this.openUrl(e._data.discourse_url);
+        });
     }
   }
 
   _handleOpenUrl(event) {
+    console.log("_handleOpenUrl", event);
     if (event.url.startsWith("discourse://")) {
       let params = this.parseURLparameters(event.url);
       let site = this._siteManager.activeSite;
@@ -146,15 +151,10 @@ class Discourse extends React.Component {
         });
       }
 
-      // one-time-password received from ASWebAuthentication
-      if (params.oneTimePassword && !params.payload) {
-        this._siteManager.setOneTimePassword(site, params.oneTimePassword);
-        // We could also load the SVC with the oneTimePassword URL
-        // but due to React interactions, this only works after a hacky delay
-        // setTimeout(() => {
-        //   let oneTimePassword = this._siteManager.decryptHelper(params.oneTimePassword);
-        //   this.openUrl(`${site.url}/session/otp/${oneTimePassword}`);
-        // }, 400);
+      // one-time-password received, launch site with it
+      if (params.oneTimePassword) {
+        const OTP = this._siteManager.decryptHelper(params.oneTimePassword);
+        this.openUrl(`${site.url}/session/otp/${OTP}`);
       }
     }
   }
@@ -180,8 +180,10 @@ class Discourse extends React.Component {
   }
 
   componentWillUnmount() {
+    console.log("componentWillUnmount Discourse");
     AppState.removeEventListener("change", this._handleAppStateChange);
     Linking.removeEventListener("url", this._handleOpenUrl);
+    clearTimeout(this.safariViewTimeout);
   }
 
   parseURLparameters(string) {
@@ -205,7 +207,10 @@ class Discourse extends React.Component {
             url: url
           });
         } else {
-          SafariView.show({ url });
+          this.safariViewTimeout = setTimeout(
+            () => SafariView.show({ url }),
+            400
+          );
         }
       });
     } else {
@@ -231,6 +236,7 @@ class Discourse extends React.Component {
         screenProps={{
           resetToTop: this.resetToTop.bind(this),
           openUrl: this.openUrl.bind(this),
+          _handleOpenUrl: this._handleOpenUrl,
           seenNotificationMap: this._seenNotificationMap,
           setSeenNotificationMap: map => {
             this._seenNotificationMap = map;

@@ -144,15 +144,6 @@ class NotificationsScreen extends React.Component {
   }
 
   _openNotificationForSite(notification, site) {
-    // lets try without collapsing, it gets a bit confusing
-    // setTimeout(()=>{
-    //   InteractionManager.runAfterInteractions(()=>{
-    //     // simulate behavior on site
-    //     // when visiting a notification the notification
-    //     // list is collapsed
-    //     this.props.screenProps.resetToTop()
-    //   })
-    // }, 400)
     site
       .readNotification(notification)
       .catch(e => {
@@ -160,6 +151,7 @@ class NotificationsScreen extends React.Component {
       })
       .done();
     let url = DiscourseUtils.endpointForSiteNotification(site, notification);
+    this._siteManager.setActiveSite(site);
     this.props.screenProps.openUrl(url);
   }
 
@@ -171,7 +163,8 @@ class NotificationsScreen extends React.Component {
     this.props.navigation.goBack();
   }
 
-  _renderListRow(rowData) {
+  _renderListRow(rowDataSource) {
+    let rowData = rowDataSource.toJS();
     return (
       <Components.Row
         site={rowData.site}

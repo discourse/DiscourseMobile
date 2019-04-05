@@ -15,7 +15,7 @@ import {
 } from "react-native";
 
 import { SafeAreaView } from "react-navigation";
-import Icon from "react-native-vector-icons/FontAwesome";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import ProgressBar from "../../ProgressBar";
 import colors from "../../colors";
@@ -91,10 +91,7 @@ class NavigationBar extends React.Component {
             underlayColor={"transparent"}
             onPress={this.props.onDidPressMiddleLogo}
           >
-            <Image
-              style={styles.icon}
-              source={require("../../../img/nav-icon-gray.png")}
-            />
+            <FontAwesome5 name={"discourse"} size={20} brand />
           </TouchableHighlight>
         </View>
         <View style={styles.rightContainer}>
@@ -103,10 +100,11 @@ class NavigationBar extends React.Component {
             style={styles.button}
             onPress={this.props.onDidPressRightButton}
           >
-            <Icon
+            <FontAwesome5
               name={"bell"}
               color={this.props.rightButtonIconColor}
               size={20}
+              solid
             />
           </TouchableHighlight>
         </View>
@@ -116,7 +114,7 @@ class NavigationBar extends React.Component {
   }
 }
 
-const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+const AnimatedIcon = Animated.createAnimatedComponent(FontAwesome5);
 
 const styles = StyleSheet.create({
   container: {

@@ -187,7 +187,7 @@ class Site {
       return new Promise((resolve, reject) => {
         Site.fromURL(this.url)
           .then(site => {
-            console.log('fromUrl request for', this.url);
+            console.log("fromUrl request for", this.url);
             resolve(site);
           })
           .catch(e => {
@@ -489,8 +489,8 @@ class Site {
           if (opts.fast || !busState.wasReady) {
             this.checkBus()
               .then(changes => {
-                console.log(`changes detected on ${this.url}`);
-                console.log(changes);
+                // console.log(`changes detected on ${this.url}`);
+                // console.log(changes);
 
                 if (!busState.wasReady) {
                   this.updateTotals();
