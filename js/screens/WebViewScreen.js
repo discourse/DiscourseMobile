@@ -4,12 +4,25 @@
 import React from "react";
 import Immutable from "immutable";
 
-import { StyleSheet, View, Text, Linking } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import {
+  Animated,
+  StyleSheet,
+  View,
+  Text,
+  Linking,
+  Platform,
+  Dimensions,
+  Share,
+  StatusBar
+} from "react-native";
+
 import { WebView } from "react-native-webview";
+import { SafeAreaView } from "react-navigation";
 
 import Components from "./WebViewScreenComponents";
 import colors from "../colors";
+import ProgressBar from "../ProgressBar";
+import TinyColor from "../../lib/tinycolor";
 
 class WebViewScreen extends React.Component {
   constructor(props) {
@@ -17,58 +30,56 @@ class WebViewScreen extends React.Component {
     this.startUrl = this.props.navigation.getParam("url");
     this.siteManager = this.props.screenProps.siteManager;
 
+    this.routes = [];
+    this.backForwardAction = null;
+    this.currentIndex = 0;
+
     this.state = {
       progress: 0,
-      scrollDirection: ""
+      scrollDirection: "",
+      headerBg: colors.grayBackground,
+      headerBgAnim: new Animated.Value(0),
+      buttonColor: colors.grayUI,
+      headerShadowColor: colors.grayUI,
+      barStyle: "dark-content",
+      currentUrl: "",
+      canGoBack: false,
+      canGoForward: false
     };
   }
 
-  render() {
-    let injectedJs = `
-    var mobileLastScroll = 0;
-    var mobileScrollDirection = '';
-
-    function webviewScrollDirectionCheck() {
-      let offset = document.body.scrollTop;
-      const delta = Math.floor(offset - mobileLastScroll);
-
-      if (delta <= 10 && delta >= -10)
-        return true;
-
-      if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 5) {
-        return true;
-      }
-
-      const currDirection = delta > 0 ? 'down' : 'up';
-
-      if (currDirection !== mobileScrollDirection) {
-        mobileScrollDirection = currDirection;
-        window.ReactNativeWebView.postMessage(JSON.stringify({'scrollDirection': currDirection, 'offset': offset}));
-      }
-      mobileLastScroll = Math.floor(offset);
-
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState.headerBg !== this.state.headerBg) {
+      Animated.timing(this.state.headerBgAnim, {
+        toValue: 1,
+        duration: 250
+      }).start();
     }
+  }
 
-    document.addEventListener('scroll', function (event) {
-      webviewScrollDirectionCheck();
-    });
-
-    true;`;
+  render() {
+    let canGoBack = this.currentIndex > 1 ? true : false;
+    let canGoForward = this.currentIndex < this.routes.length ? true : false;
 
     return (
-      <SafeAreaView
-        style={styles.container}
-        forceInset={{ top: "always", bottom: "never" }}
+      <Animated.View
+        style={{
+          ...styles.container,
+          paddingTop: this._isIphoneX() ? 35 : 20,
+          backgroundColor: this.state.headerBgAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [colors.grayBackground, this.state.headerBg]
+          })
+        }}
       >
-        <Components.NavigationBar
-          onDidPressRightButton={() => this._onDidPressRightButton()}
-          onDidPressLeftButton={() => this._onDidPressLeftButton()}
-          progress={this.state.progress}
-          scrollDirection={this.state.scrollDirection}
-        />
+        <StatusBar barStyle={this.state.barStyle} />
+        <View style={styles.progressHolder}>
+          <ProgressBar progress={this.state.progress} />
+        </View>
         <WebView
           ref={ref => (this.webview = ref)}
           source={{ uri: this.startUrl }}
+          contentInset={{ top: 24 }}
           useWebkit={true}
           allowsBackForwardNavigationGestures={true}
           onShouldStartLoadWithRequest={request => {
@@ -106,9 +117,21 @@ class WebViewScreen extends React.Component {
             }
           }}
           onMessage={event => this._onMessage(event)}
-          injectedJavaScript={injectedJs}
         />
-      </SafeAreaView>
+        <Components.NavigationBar
+          onDidPressCloseButton={() => this._onDidPressCloseButton()}
+          onDidPressBackButton={() => this._onDidPressBackButton()}
+          onDidPressForwardButton={() => this._onDidPressForwardButton()}
+          onDidPressShareButton={() => this._onDidPressShareButton()}
+          isIphoneX={() => this._isIphoneX()}
+          headerBg={this.state.headerBg}
+          headerShadowColor={this.state.headerShadowColor}
+          buttonColor={this.state.buttonColor}
+          scrollDirection={this.state.scrollDirection}
+          canGoBack={canGoBack}
+          canGoForward={canGoForward}
+        />
+      </Animated.View>
     );
   }
 
@@ -116,34 +139,92 @@ class WebViewScreen extends React.Component {
     clearTimeout(this.progressTimeout);
   }
 
-  _onDidPressRightButton() {
+  _onDidPressCloseButton() {
     // react-navigation back action (exits webview)
     this.props.navigation.goBack();
   }
 
-  _onDidPressLeftButton() {
+  _onDidPressBackButton() {
     // back button navigation in webview
     this.webview.goBack();
+    this.backForwardAction = "back";
+    this.currentIndex -= 1;
+  }
+
+  _onDidPressForwardButton() {
+    // forward button navigation in webview
+    this.webview.goForward();
+    this.backForwardAction = "forward";
+    this.currentIndex += 1;
+  }
+
+  _onDidPressShareButton() {
+    Share.share({
+      url: this.state.currentUrl
+    });
   }
 
   _onMessage(event) {
     let data = JSON.parse(event.nativeEvent.data);
-    if (data.scrollDirection) {
-      let direction = data.scrollDirection;
-      if (data.offset && data.offset < 50) {
-        direction = "up";
-      }
+    console.log("_onMessage", data);
+
+    let {
+      scrollDirection,
+      headerBg,
+      buttonColor,
+      currentUrl,
+      headerShadowColor
+    } = data;
+
+    if (scrollDirection) this.setState({ scrollDirection: scrollDirection });
+    if (buttonColor) this.setState({ buttonColor: data.buttonColor });
+    if (currentUrl) this._updateRouteState(currentUrl);
+
+    if (headerBg) {
+      this.setState({ headerBg: headerBg });
+      let color = TinyColor(data.headerBg);
       this.setState({
-        scrollDirection: direction
+        barStyle: color.getBrightness() < 125 ? "light-content" : "dark-content"
       });
     }
+
+    if (headerShadowColor)
+      this.setState({ headerShadowColor: headerShadowColor });
+  }
+
+  _updateRouteState(url) {
+    this.setState({
+      currentUrl: url
+    });
+
+    if (this.backForwardAction) {
+      this.backForwardAction = null;
+      return;
+    }
+
+    this.routes.push(url);
+    this.currentIndex = this.routes.length;
+  }
+
+  _isIphoneX() {
+    const dimen = Dimensions.get("window");
+    return (
+      Platform.OS === "ios" &&
+      !Platform.isPad &&
+      !Platform.isTVOS &&
+      (dimen.height === 812 ||
+        dimen.width === 812 ||
+        (dimen.height === 896 || dimen.width === 896))
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.grayBackground
+    flex: 1
+  },
+  progressHolder: {
+    position: "relative"
   }
 });
 

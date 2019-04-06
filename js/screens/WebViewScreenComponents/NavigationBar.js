@@ -7,17 +7,13 @@ import PropTypes from "prop-types";
 
 import {
   Animated,
-  Platform,
   StyleSheet,
   Text,
   TouchableHighlight,
   View
 } from "react-native";
 
-import { SafeAreaView } from "react-navigation";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-
-import ProgressBar from "../../ProgressBar";
+import Icon from "react-native-vector-icons/Ionicons";
 import colors from "../../colors";
 
 class NavigationBar extends React.Component {
@@ -27,52 +23,86 @@ class NavigationBar extends React.Component {
   };
 
   state = {
-    headerAnim: new Animated.Value(Platform.OS === "ios" ? 44 : 55)
+    heightAnim: new Animated.Value(this.props.isIphoneX() ? 70 : 50),
+    paddingAnim: new Animated.Value(this.props.isIphoneX() ? 24 : 0),
+    bgAnim: new Animated.Value(0)
   };
 
   componentWillUpdate(nextProps) {
     if (nextProps.scrollDirection !== this.props.scrollDirection) {
-      let toValue = 0;
+      let heightValue = 0;
+      let paddingValue = 0;
       if (nextProps.scrollDirection === "up") {
-        toValue = Platform.OS === "ios" ? 44 : 55;
+        heightValue = this.props.isIphoneX() ? 70 : 50;
+        paddingValue = this.props.isIphoneX() ? 24 : 0;
       }
 
-      Animated.timing(this.state.headerAnim, {
-        toValue: toValue,
-        duration: 300
+      Animated.parallel([
+        Animated.timing(this.state.heightAnim, {
+          toValue: heightValue,
+          duration: 250
+        }),
+        Animated.timing(this.state.paddingAnim, {
+          toValue: paddingValue,
+          duration: 250
+        })
+      ]).start();
+    }
+
+    if (nextProps.headerBg !== this.props.headerBg) {
+      Animated.timing(this.state.bgAnim, {
+        toValue: 1,
+        duration: 250
       }).start();
     }
   }
 
   render() {
-    let { headerAnim } = this.state;
+    let { heightAnim, paddingAnim, bgAnim } = this.state;
 
     return (
       <Animated.View
-        style={{ ...styles.container, height: headerAnim }}
-        forceInset={{ top: "always", bottom: "never" }}
+        style={{
+          ...styles.container,
+          height: heightAnim,
+          paddingBottom: paddingAnim,
+          backgroundColor: bgAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [colors.grayBackground, this.props.headerBg]
+          }),
+          shadowColor: this.props.headerShadowColor,
+          shadowOffset: { width: 0, height: 3 },
+          shadowOpacity: 0.75
+        }}
       >
-        <ProgressBar progress={this.props.progress} />
-        <View style={styles.leftContainer}>
-          {this._renderButton(this.props.onDidPressLeftButton, "angle-left")}
-        </View>
-        <View style={styles.titleContainer} />
-        <View style={styles.rightContainer}>
-          {this._renderButton(this.props.onDidPressRightButton, "times")}
-        </View>
-        <View style={styles.separator} />
+        {this._renderButton(
+          this.props.onDidPressBackButton,
+          "ios-arrow-back",
+          !this.props.canGoBack
+        )}
+        {this._renderButton(
+          this.props.onDidPressForwardButton,
+          "ios-arrow-forward",
+          !this.props.canGoForward
+        )}
+        {this._renderButton(this.props.onDidPressShareButton, "ios-share")}
+        {this._renderButton(this.props.onDidPressCloseButton, "ios-arrow-down")}
       </Animated.View>
     );
   }
 
-  _renderButton(callback, iconName) {
+  _renderButton(callback, iconName, disabled = false) {
     return (
       <TouchableHighlight
         underlayColor={"transparent"}
-        style={styles.button}
+        style={{
+          ...styles.button,
+          opacity: disabled ? 0.5 : 1
+        }}
         onPress={callback}
+        disabled={disabled}
       >
-        <FontAwesome5 name={iconName} size={20} color={colors.grayUI} />
+        <Icon name={iconName} size={26} color={this.props.buttonColor} />
       </TouchableHighlight>
     );
   }
@@ -80,37 +110,14 @@ class NavigationBar extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.grayBackground,
-    flexDirection: "row"
-  },
-  leftContainer: {
-    flex: 1
-  },
-  rightContainer: {
-    flex: 1,
-    alignItems: "flex-end"
-  },
-  titleContainer: {
-    flex: 1,
-    justifyContent: "center",
+    flex: 0,
+    flexDirection: "row",
+    justifyContent: "space-around",
     alignItems: "center"
   },
-  separator: {
-    height: 1,
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: colors.grayBackground
-  },
-  title: {
-    color: colors.grayUI,
-    fontSize: 16
-  },
   button: {
-    width: Platform.OS === "ios" ? 44 : 55,
-    height: Platform.OS === "ios" ? 44 : 55,
-    justifyContent: "center",
+    paddingTop: 6,
+    flex: 1,
     alignItems: "center"
   }
 });
