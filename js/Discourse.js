@@ -41,17 +41,12 @@ class Discourse extends React.Component {
     super(props);
     this._siteManager = new SiteManager();
 
-    if (this.props.url) {
-      this.openUrl(this.props.url);
-    }
-
     this._handleAppStateChange = () => {
       console.log("Detected appstate change " + AppState.currentState);
 
       if (AppState.currentState === "inactive") {
         this._siteManager.enterBackground();
         this._seenNotificationMap = null;
-        // this.resetToTop();
       }
 
       if (AppState.currentState === "active") {
@@ -114,7 +109,12 @@ class Discourse extends React.Component {
       this._siteManager
         .setActiveSite(e._data.discourse_url)
         .then(activeSite => {
-          this.openUrl(e._data.discourse_url);
+          this.resetToTop(); // close any open webviews
+          let supportsDelegatedAuth = false;
+          if (this._siteManager.supportsDelegatedAuth(activeSite)) {
+            supportsDelegatedAuth = true;
+          }
+          this.openUrl(e._data.discourse_url, supportsDelegatedAuth);
         });
     }
   }
@@ -180,7 +180,6 @@ class Discourse extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log("componentWillUnmount Discourse");
     AppState.removeEventListener("change", this._handleAppStateChange);
     Linking.removeEventListener("url", this._handleOpenUrl);
     clearTimeout(this.safariViewTimeout);
@@ -199,18 +198,18 @@ class Discourse extends React.Component {
     return parsed;
   }
 
-  openUrl(url) {
+  openUrl(url, supportsDelegatedAuth = true) {
     if (Platform.OS === "ios") {
-      AsyncStorage.getItem("@Discourse.useWebView").then(useWebView => {
-        if (useWebView === "true") {
-          this._navigation.navigate("WebView", {
-            url: url
-          });
-        } else {
+      AsyncStorage.getItem("@Discourse.useSVC").then(useSVCglobally => {
+        if (useSVCglobally === "true" || !supportsDelegatedAuth) {
           this.safariViewTimeout = setTimeout(
             () => SafariView.show({ url }),
             400
           );
+        } else {
+          this._navigation.navigate("WebView", {
+            url: url
+          });
         }
       });
     } else {

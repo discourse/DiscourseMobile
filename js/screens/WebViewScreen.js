@@ -39,12 +39,13 @@ class WebViewScreen extends React.Component {
       scrollDirection: "",
       headerBg: colors.grayBackground,
       headerBgAnim: new Animated.Value(0),
-      buttonColor: colors.grayUI,
-      headerShadowColor: colors.grayUI,
+      // buttonColor: colors.grayUI,
+      // headerShadowColor: colors.grayUI,
       barStyle: "dark-content",
-      currentUrl: "",
-      canGoBack: false,
-      canGoForward: false
+      errorData: null
+      // currentUrl: "",
+      // canGoBack: false,
+      // canGoForward: false
     };
   }
 
@@ -58,8 +59,8 @@ class WebViewScreen extends React.Component {
   }
 
   render() {
-    let canGoBack = this.currentIndex > 1 ? true : false;
-    let canGoForward = this.currentIndex < this.routes.length ? true : false;
+    // let canGoBack = this.currentIndex > 1 ? true : false;
+    // let canGoForward = this.currentIndex < this.routes.length ? true : false;
 
     return (
       <Animated.View
@@ -82,6 +83,18 @@ class WebViewScreen extends React.Component {
           contentInset={{ top: 24 }}
           useWebkit={true}
           allowsBackForwardNavigationGestures={true}
+          onError={syntheticEvent => {
+            const { nativeEvent } = syntheticEvent;
+            this.setState({ errorData: nativeEvent });
+          }}
+          renderError={errorName => (
+            <Components.ErrorScreen
+              errorName={errorName}
+              errorData={this.state.errorData}
+              onRefresh={() => this._onRefresh()}
+              onClose={() => this._onClose()}
+            />
+          )}
           onShouldStartLoadWithRequest={request => {
             console.log("onShouldStartLoadWithRequest", request);
             if (request.url.startsWith("discourse://")) {
@@ -118,19 +131,19 @@ class WebViewScreen extends React.Component {
           }}
           onMessage={event => this._onMessage(event)}
         />
-        <Components.NavigationBar
-          onDidPressCloseButton={() => this._onDidPressCloseButton()}
-          onDidPressBackButton={() => this._onDidPressBackButton()}
-          onDidPressForwardButton={() => this._onDidPressForwardButton()}
-          onDidPressShareButton={() => this._onDidPressShareButton()}
-          isIphoneX={() => this._isIphoneX()}
-          headerBg={this.state.headerBg}
-          headerShadowColor={this.state.headerShadowColor}
-          buttonColor={this.state.buttonColor}
-          scrollDirection={this.state.scrollDirection}
-          canGoBack={canGoBack}
-          canGoForward={canGoForward}
-        />
+        {/*<Components.NavigationBar
+                  onDidPressCloseButton={() => this._onDidPressCloseButton()}
+                  onDidPressBackButton={() => this._onDidPressBackButton()}
+                  onDidPressForwardButton={() => this._onDidPressForwardButton()}
+                  onDidPressShareButton={() => this._onDidPressShareButton()}
+                  isIphoneX={() => this._isIphoneX()}
+                  headerBg={this.state.headerBg}
+                  headerShadowColor={this.state.headerShadowColor}
+                  buttonColor={this.state.buttonColor}
+                  scrollDirection={this.state.scrollDirection}
+                  canGoBack={canGoBack}
+                  canGoForward={canGoForward}
+                />*/}
       </Animated.View>
     );
   }
@@ -139,72 +152,95 @@ class WebViewScreen extends React.Component {
     clearTimeout(this.progressTimeout);
   }
 
-  _onDidPressCloseButton() {
-    // react-navigation back action (exits webview)
+  _onRefresh() {
+    this.webview.reload();
+  }
+
+  _onClose() {
     this.props.navigation.goBack();
   }
 
-  _onDidPressBackButton() {
-    // back button navigation in webview
-    this.webview.goBack();
-    this.backForwardAction = "back";
-    this.currentIndex -= 1;
-  }
+  // _onDidPressCloseButton() {
+  //   // react-navigation back action (exits webview)
+  //   this.props.navigation.goBack();
+  // }
 
-  _onDidPressForwardButton() {
-    // forward button navigation in webview
-    this.webview.goForward();
-    this.backForwardAction = "forward";
-    this.currentIndex += 1;
-  }
+  // _onDidPressBackButton() {
+  //   // back button navigation in webview
+  //   this.webview.goBack();
+  //   this.backForwardAction = "back";
+  //   this.currentIndex -= 1;
+  // }
 
-  _onDidPressShareButton() {
-    Share.share({
-      url: this.state.currentUrl
-    });
-  }
+  // _onDidPressForwardButton() {
+  //   // forward button navigation in webview
+  //   this.webview.goForward();
+  //   this.backForwardAction = "forward";
+  //   this.currentIndex += 1;
+  // }
+
+  // _onDidPressShareButton() {
+  //   Share.share({
+  //     url: this.state.currentUrl
+  //   });
+  // }
 
   _onMessage(event) {
     let data = JSON.parse(event.nativeEvent.data);
     console.log("_onMessage", data);
 
     let {
-      scrollDirection,
+      // scrollDirection,
+      // buttonColor,
+      // currentUrl,
+      // headerShadowColor,
       headerBg,
-      buttonColor,
-      currentUrl,
-      headerShadowColor
+      shareUrl,
+      dismiss
     } = data;
 
-    if (scrollDirection) this.setState({ scrollDirection: scrollDirection });
-    if (buttonColor) this.setState({ buttonColor: data.buttonColor });
-    if (currentUrl) this._updateRouteState(currentUrl);
+    // if (scrollDirection) this.setState({ scrollDirection: scrollDirection });
+    // if (buttonColor) this.setState({ buttonColor: data.buttonColor });
+    // if (currentUrl) this._updateRouteState(currentUrl);
 
     if (headerBg) {
-      this.setState({ headerBg: headerBg });
-      let color = TinyColor(data.headerBg);
       this.setState({
-        barStyle: color.getBrightness() < 125 ? "light-content" : "dark-content"
+        headerBg: headerBg,
+        barStyle:
+          TinyColor(headerBg).getBrightness() < 125
+            ? "light-content"
+            : "dark-content"
       });
     }
 
-    if (headerShadowColor)
-      this.setState({ headerShadowColor: headerShadowColor });
-  }
+    // if (headerShadowColor)
+    //   this.setState({ headerShadowColor: headerShadowColor });
 
-  _updateRouteState(url) {
-    this.setState({
-      currentUrl: url
-    });
-
-    if (this.backForwardAction) {
-      this.backForwardAction = null;
-      return;
+    if (shareUrl) {
+      Share.share({
+        url: shareUrl
+      });
     }
 
-    this.routes.push(url);
-    this.currentIndex = this.routes.length;
+    if (dismiss) {
+      // react-navigation back action (exits webview)
+      this.props.navigation.goBack();
+    }
   }
+
+  // _updateRouteState(url) {
+  //   this.setState({
+  //     currentUrl: url
+  //   });
+
+  //   if (this.backForwardAction) {
+  //     this.backForwardAction = null;
+  //     return;
+  //   }
+
+  //   this.routes.push(url);
+  //   this.currentIndex = this.routes.length;
+  // }
 
   _isIphoneX() {
     const dimen = Dimensions.get("window");

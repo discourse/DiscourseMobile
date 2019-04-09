@@ -13,6 +13,7 @@ import {
   Platform,
   PushNotificationIOS,
   RefreshControl,
+  StatusBar,
   StyleSheet,
   UIManager,
   View
@@ -61,14 +62,13 @@ class HomeScreen extends React.Component {
         this.props.screenProps.openUrl(
           `${site.url}/session/otp/${site.oneTimePassword}`
         );
-        // this._siteManager.setOneTimePassword(site, null);
       } else {
         if (this._siteManager.supportsDelegatedAuth(site)) {
           this._siteManager.generateURLParams(site).then(params => {
             this.props.screenProps.openUrl(`${site.url}?${params}`);
           });
         } else {
-          this.props.screenProps.openUrl(`${site.url}?discourse_app=1`);
+          this.props.screenProps.openUrl(`${site.url}?discourse_app=1`, false);
         }
       }
       return;
@@ -78,7 +78,7 @@ class HomeScreen extends React.Component {
       if (this._siteManager.supportsDelegatedAuth(site)) {
         SafariWebAuth.requestAuth(url);
       } else {
-        this.props.screenProps.openUrl(url);
+        this.props.screenProps.openUrl(url, false);
       }
     });
   }
@@ -385,6 +385,7 @@ class HomeScreen extends React.Component {
         style={styles.container}
         forceInset={{ top: "never", bottom: "always" }}
       >
+        <StatusBar barStyle={"dark-content"} />
         <Components.NavigationBar
           leftButtonIconRotated={this.state.displayTermBar ? true : false}
           anim={this.state.anim}

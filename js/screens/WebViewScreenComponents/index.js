@@ -2,7 +2,9 @@
 "use strict";
 
 import NavigationBar from "./NavigationBar";
+import ErrorScreen from "./ErrorScreen";
 
 module.exports = {
-	NavigationBar: NavigationBar
+	NavigationBar: NavigationBar,
+	ErrorScreen: ErrorScreen
 };

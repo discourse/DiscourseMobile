@@ -15,18 +15,18 @@ class Overlay extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { useWebView: false };
+    this.state = { useSVC: false };
 
     this.toggleSwitch = value => {
-      AsyncStorage.setItem("@Discourse.useWebView", JSON.stringify(value)).then(
+      AsyncStorage.setItem("@Discourse.useSVC", JSON.stringify(value)).then(
         v => {
-          this.setState({ useWebView: value });
+          this.setState({ useSVC: value });
         }
       );
     };
 
-    AsyncStorage.getItem("@Discourse.useWebView").then(value => {
-      this.setState({ useWebView: JSON.parse(value) });
+    AsyncStorage.getItem("@Discourse.useSVC").then(value => {
+      this.setState({ useSVC: JSON.parse(value) });
     });
   }
 
@@ -37,11 +37,11 @@ class Overlay extends React.Component {
         style={styles.overlay}
       >
         <View style={styles.inner}>
-          <Text style={styles.text}>Experimental: Use WebView browser</Text>
+          <Text style={styles.text}>Legacy: use SafariViewController</Text>
           <Switch
             style={{ marginTop: 10 }}
             onValueChange={this.toggleSwitch}
-            value={this.state.useWebView}
+            value={this.state.useSVC}
           />
         </View>
       </TouchableHighlight>
