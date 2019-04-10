@@ -474,7 +474,7 @@ class SiteManager {
           } else {
             this.clientId = randomBytes(32);
             AsyncStorage.setItem("@ClientId", this.clientId);
-            resolve(clientId);
+            resolve(this.clientId);
           }
         });
       }

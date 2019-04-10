@@ -10,6 +10,7 @@ import {
   NativeModules,
   Platform,
   PushNotificationIOS,
+  StatusBar,
   StyleSheet
 } from "react-native";
 
@@ -50,6 +51,7 @@ class Discourse extends React.Component {
       }
 
       if (AppState.currentState === "active") {
+        StatusBar.setHidden(false);
         this._siteManager.exitBackground();
         this._siteManager.refreshSites({ ui: false, fast: true });
       }
@@ -75,6 +77,7 @@ class Discourse extends React.Component {
       // );
 
       PushNotificationIOS.addEventListener("register", s => {
+        console.log("registered for push notifications", s);
         this._siteManager.registerClientId(s);
       });
 

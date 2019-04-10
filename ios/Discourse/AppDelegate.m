@@ -26,7 +26,6 @@
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
@@ -57,6 +56,9 @@
   // see https://github.com/zo0r/react-native-push-notification/issues/275
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
+  
+  // show statusbar when returning from a fullscreen video
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoExitFullScreen:) name:@"UIWindowDidBecomeHiddenNotification" object:nil];
 
   return YES;
 }
@@ -177,6 +179,11 @@
   } else {
     return [Orientation getOrientation];
   }
+}
+
+- (void)videoExitFullScreen:(id)sender
+{
+  [[UIApplication sharedApplication] setStatusBarHidden:NO animated:YES];
 }
 
 @end

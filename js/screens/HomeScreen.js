@@ -13,7 +13,6 @@ import {
   Platform,
   PushNotificationIOS,
   RefreshControl,
-  StatusBar,
   StyleSheet,
   UIManager,
   View
@@ -385,7 +384,6 @@ class HomeScreen extends React.Component {
         style={styles.container}
         forceInset={{ top: "never", bottom: "always" }}
       >
-        <StatusBar barStyle={"dark-content"} />
         <Components.NavigationBar
           leftButtonIconRotated={this.state.displayTermBar ? true : false}
           anim={this.state.anim}
