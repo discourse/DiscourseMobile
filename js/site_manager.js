@@ -2,6 +2,7 @@
 "use strict";
 
 import _ from "lodash";
+import Moment from "moment";
 
 const Fabric = require("react-native-fabric");
 const { Answers } = Fabric;
@@ -195,12 +196,17 @@ class SiteManager {
           let promises = [];
 
           this.sites.forEach((site, index) => {
-            // check for updated API version
+            // check for updated API version and updated icon
             promises.push(
-              site.ensureLatestApi().then(site => {
-                if (site.apiVersion) {
-                  this.sites[index].apiVersion = site.apiVersion;
+              site.ensureLatestApi().then(s => {
+                if (s.apiVersion !== this.sites[index].apiVersion) {
+                  this.sites[index].apiVersion = s.apiVersion;
                 }
+                if (s.icon && s.icon !== this.sites[index].icon) {
+                  this.sites[index].icon = s.icon;
+                }
+
+                this.sites[index].lastChecked = Moment().format();
               })
             );
           });

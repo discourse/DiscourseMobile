@@ -3,6 +3,7 @@
 
 import { Platform } from "react-native";
 import _ from "lodash";
+import Moment from "moment";
 
 const fetch = require("./../lib/fetch");
 import randomBytes from "./../lib/random-bytes";
@@ -26,7 +27,8 @@ class Site {
     "hasPush",
     "isStaff",
     "apiVersion",
-    "oneTimePassword"
+    "oneTimePassword",
+    "lastChecked"
   ];
 
   static fromTerm(term) {
@@ -183,8 +185,10 @@ class Site {
       this.logoff();
     }
 
-    if (this.apiVersion < 4) {
-      return new Promise((resolve, reject) => {
+    var yesterday = new Moment().subtract(12, "hours").format();
+
+    return new Promise((resolve, reject) => {
+      if (!this.lastChecked || Moment(this.lastChecked).isBefore(yesterday)) {
         Site.fromURL(this.url)
           .then(site => {
             console.log("fromUrl request for", this.url);
@@ -195,12 +199,10 @@ class Site {
             reject("failure");
           })
           .done();
-      });
-    } else {
-      return new Promise((resolve, reject) => {
+      } else {
         resolve(this);
-      });
-    }
+      }
+    });
   }
 
   revokeApiKey() {
