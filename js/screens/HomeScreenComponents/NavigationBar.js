@@ -87,10 +87,7 @@ class NavigationBar extends React.Component {
           </TouchableHighlight>
         </View>
         <View style={styles.titleContainer}>
-          <TouchableHighlight
-            underlayColor={"transparent"}
-            onPress={this.props.onDidPressMiddleLogo}
-          >
+          <TouchableHighlight underlayColor={"transparent"}>
             <FontAwesome5 name={"discourse"} size={20} brand />
           </TouchableHighlight>
         </View>

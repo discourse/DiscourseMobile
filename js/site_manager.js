@@ -106,19 +106,6 @@ class SiteManager {
     });
   }
 
-  setOneTimePassword(site, value) {
-    let decryptedValue = this.decryptHelper(value);
-
-    this.sites.forEach(s => {
-      if (s == site) {
-        s.oneTimePassword = decryptedValue;
-      }
-    });
-
-    this.save();
-    this._onChange();
-  }
-
   updateOrder(from, to) {
     this.sites.splice(to, 0, this.sites.splice(from, 1)[0]);
     this.save();
@@ -501,7 +488,7 @@ class SiteManager {
     return crypt.decrypt(payload);
   }
 
-  handleAuthPayload(payload, oneTimePassword = false) {
+  handleAuthPayload(payload) {
     let decrypted = JSON.parse(this.decryptHelper(payload));
 
     if (decrypted.nonce !== this._nonce) {
@@ -512,10 +499,6 @@ class SiteManager {
     this._nonceSite.authToken = decrypted.key;
     this._nonceSite.hasPush = decrypted.push;
     this._nonceSite.apiVersion = decrypted.api;
-
-    // if (oneTimePassword) {
-    //   this._nonceSite.oneTimePassword = this.decryptHelper(oneTimePassword);
-    // }
 
     // cause we want to stop rendering connect
     this._onChange();

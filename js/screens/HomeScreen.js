@@ -46,8 +46,7 @@ class HomeScreen extends React.Component {
       scrollEnabled: true,
       refreshingEnabled: true,
       rightButtonIconColor: colors.grayUI,
-      loadingSites: this._siteManager.isLoading(),
-      displayOverlay: false
+      loadingSites: this._siteManager.isLoading()
     };
 
     this._onChangeSites = e => this.onChangeSites(e);
@@ -253,25 +252,6 @@ class HomeScreen extends React.Component {
     }
   }
 
-  _renderOverlay() {
-    if (this.state.displayOverlay) {
-      return (
-        <Components.Overlay
-          siteManager={this._siteManager}
-          onOverlayClick={() => this._onOverlayClick()}
-        />
-      );
-    }
-
-    return null;
-  }
-
-  _onOverlayClick() {
-    this.setState({
-      displayOverlay: false
-    });
-  }
-
   _renderSites() {
     if (this.state.loadingSites) {
       return <View style={{ flex: 1 }} />;
@@ -368,10 +348,6 @@ class HomeScreen extends React.Component {
     this.props.navigation.navigate("Notifications");
   }
 
-  onDidPressMiddleLogo() {
-    this.setState({ displayOverlay: !this.state.displayOverlay });
-  }
-
   render() {
     // left 500 on refresh control so it does not render incorrectly when
     // not refreshing
@@ -390,7 +366,6 @@ class HomeScreen extends React.Component {
           rightButtonIconColor={this.state.rightButtonIconColor}
           onDidPressLeftButton={() => this.onDidPressLeftButton()}
           onDidPressRightButton={() => this.onDidPressRighButton()}
-          onDidPressMiddleLogo={() => this.onDidPressMiddleLogo()}
           progress={this.state.addSiteProgress}
         />
         <Components.TermBar
@@ -403,7 +378,6 @@ class HomeScreen extends React.Component {
         >
           {this._renderSites()}
           {this._renderDebugRow()}
-          {this._renderOverlay()}
         </Animated.View>
       </SafeAreaView>
     );

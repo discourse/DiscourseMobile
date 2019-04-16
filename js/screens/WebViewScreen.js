@@ -39,13 +39,8 @@ class WebViewScreen extends React.Component {
       scrollDirection: "",
       headerBg: colors.grayBackground,
       headerBgAnim: new Animated.Value(0),
-      // buttonColor: colors.grayUI,
-      // headerShadowColor: colors.grayUI,
       barStyle: "dark-content",
       errorData: null
-      // currentUrl: "",
-      // canGoBack: false,
-      // canGoForward: false
     };
   }
 
@@ -59,9 +54,6 @@ class WebViewScreen extends React.Component {
   }
 
   render() {
-    // let canGoBack = this.currentIndex > 1 ? true : false;
-    // let canGoForward = this.currentIndex < this.routes.length ? true : false;
-
     return (
       <Animated.View
         style={{
@@ -82,6 +74,7 @@ class WebViewScreen extends React.Component {
           source={{ uri: this.startUrl }}
           contentInset={{ top: 24 }}
           useWebkit={true}
+          applicationNameForUserAgent={"DiscourseHub"}
           allowsBackForwardNavigationGestures={true}
           onError={syntheticEvent => {
             const { nativeEvent } = syntheticEvent;
@@ -131,19 +124,6 @@ class WebViewScreen extends React.Component {
           }}
           onMessage={event => this._onMessage(event)}
         />
-        {/*<Components.NavigationBar
-                  onDidPressCloseButton={() => this._onDidPressCloseButton()}
-                  onDidPressBackButton={() => this._onDidPressBackButton()}
-                  onDidPressForwardButton={() => this._onDidPressForwardButton()}
-                  onDidPressShareButton={() => this._onDidPressShareButton()}
-                  isIphoneX={() => this._isIphoneX()}
-                  headerBg={this.state.headerBg}
-                  headerShadowColor={this.state.headerShadowColor}
-                  buttonColor={this.state.buttonColor}
-                  scrollDirection={this.state.scrollDirection}
-                  canGoBack={canGoBack}
-                  canGoForward={canGoForward}
-                />*/}
       </Animated.View>
     );
   }
@@ -160,48 +140,11 @@ class WebViewScreen extends React.Component {
     this.props.navigation.goBack();
   }
 
-  // _onDidPressCloseButton() {
-  //   // react-navigation back action (exits webview)
-  //   this.props.navigation.goBack();
-  // }
-
-  // _onDidPressBackButton() {
-  //   // back button navigation in webview
-  //   this.webview.goBack();
-  //   this.backForwardAction = "back";
-  //   this.currentIndex -= 1;
-  // }
-
-  // _onDidPressForwardButton() {
-  //   // forward button navigation in webview
-  //   this.webview.goForward();
-  //   this.backForwardAction = "forward";
-  //   this.currentIndex += 1;
-  // }
-
-  // _onDidPressShareButton() {
-  //   Share.share({
-  //     url: this.state.currentUrl
-  //   });
-  // }
-
   _onMessage(event) {
     let data = JSON.parse(event.nativeEvent.data);
     console.log("_onMessage", data);
 
-    let {
-      // scrollDirection,
-      // buttonColor,
-      // currentUrl,
-      // headerShadowColor,
-      headerBg,
-      shareUrl,
-      dismiss
-    } = data;
-
-    // if (scrollDirection) this.setState({ scrollDirection: scrollDirection });
-    // if (buttonColor) this.setState({ buttonColor: data.buttonColor });
-    // if (currentUrl) this._updateRouteState(currentUrl);
+    let { headerBg, shareUrl, dismiss } = data;
 
     if (headerBg) {
       this.setState({
@@ -212,9 +155,6 @@ class WebViewScreen extends React.Component {
             : "dark-content"
       });
     }
-
-    // if (headerShadowColor)
-    //   this.setState({ headerShadowColor: headerShadowColor });
 
     if (shareUrl) {
       Share.share({
@@ -227,20 +167,6 @@ class WebViewScreen extends React.Component {
       this.props.navigation.goBack();
     }
   }
-
-  // _updateRouteState(url) {
-  //   this.setState({
-  //     currentUrl: url
-  //   });
-
-  //   if (this.backForwardAction) {
-  //     this.backForwardAction = null;
-  //     return;
-  //   }
-
-  //   this.routes.push(url);
-  //   this.currentIndex = this.routes.length;
-  // }
 
   _isIphoneX() {
     const dimen = Dimensions.get("window");

@@ -28,7 +28,7 @@
     "react-native-sortable-listview": "github:deanmcpherson/react-native-sortable-listview",
     "react-native-swipeout": "^2.3",
     "react-native-vector-icons": "^6.4.2",
-    "react-native-webview": "^5.6.1",
+    "react-native-webview": "git+https://github.com/pmusaraj/react-native-webview#pending-PRs",
     "react-navigation": "^1.5"
   },
   "devDependencies": {

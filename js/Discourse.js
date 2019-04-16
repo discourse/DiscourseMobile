@@ -134,17 +134,7 @@ class Discourse extends React.Component {
 
       // initial auth payload
       if (params.payload) {
-        if (
-          this._siteManager.supportsDelegatedAuth(site) &&
-          params.oneTimePassword
-        ) {
-          this._siteManager.handleAuthPayload(
-            params.payload,
-            params.oneTimePassword
-          );
-        } else {
-          this._siteManager.handleAuthPayload(params.payload);
-        }
+        this._siteManager.handleAuthPayload(params.payload);
       }
 
       // received one-time-password request from SafariView
@@ -203,18 +193,16 @@ class Discourse extends React.Component {
 
   openUrl(url, supportsDelegatedAuth = true) {
     if (Platform.OS === "ios") {
-      AsyncStorage.getItem("@Discourse.useSVC").then(useSVCglobally => {
-        if (useSVCglobally === "true" || !supportsDelegatedAuth) {
-          this.safariViewTimeout = setTimeout(
-            () => SafariView.show({ url }),
-            400
-          );
-        } else {
-          this._navigation.navigate("WebView", {
-            url: url
-          });
-        }
-      });
+      if (!supportsDelegatedAuth) {
+        this.safariViewTimeout = setTimeout(
+          () => SafariView.show({ url }),
+          400
+        );
+      } else {
+        this._navigation.navigate("WebView", {
+          url: url
+        });
+      }
     } else {
       if (this.props.simulator) {
         Linking.openURL(url);

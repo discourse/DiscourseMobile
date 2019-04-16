@@ -27,7 +27,6 @@ class Site {
     "hasPush",
     "isStaff",
     "apiVersion",
-    "oneTimePassword",
     "lastChecked"
   ];
 
@@ -185,10 +184,10 @@ class Site {
       this.logoff();
     }
 
-    var yesterday = new Moment().subtract(12, "hours").format();
+    var timeOffset = new Moment().subtract(1, "hours").format();
 
     return new Promise((resolve, reject) => {
-      if (!this.lastChecked || Moment(this.lastChecked).isBefore(yesterday)) {
+      if (!this.lastChecked || Moment(this.lastChecked).isBefore(timeOffset)) {
         Site.fromURL(this.url)
           .then(site => {
             console.log("fromUrl request for", this.url);
