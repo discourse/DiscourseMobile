@@ -149,6 +149,15 @@ class Discourse extends React.Component {
         const OTP = this._siteManager.decryptHelper(params.oneTimePassword);
         this.openUrl(`${site.url}/session/otp/${OTP}`);
       }
+
+      // handle URL passed via app-argument
+      if (params.siteUrl) {
+        if (this._siteManager.exists(params.siteUrl)) {
+          this.openUrl(params.siteUrl);
+        } else {
+          this._siteManager.add(params.siteUrl);
+        }
+      }
     }
   }
 
