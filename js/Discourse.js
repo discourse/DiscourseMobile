@@ -17,6 +17,7 @@ import {
 import { StackNavigator, NavigationActions } from "react-navigation";
 
 import Screens from "./screens";
+import Site from "./site";
 import SiteManager from "./site_manager";
 import SafariView from "react-native-safari-view";
 import SafariWebAuth from "react-native-safari-web-auth";
@@ -150,12 +151,23 @@ class Discourse extends React.Component {
         this.openUrl(`${site.url}/session/otp/${OTP}`);
       }
 
-      // handle URL passed via app-argument
+      // handle site URL passed via app-argument
       if (params.siteUrl) {
-        if (this._siteManager.exists(params.siteUrl)) {
+        if (this._siteManager.exists({ url: params.siteUrl })) {
+          console.log(`${params.siteUrl} exists!`);
           this.openUrl(params.siteUrl);
         } else {
-          this._siteManager.add(params.siteUrl);
+          console.log(`${params.siteUrl} does not exist, attempt adding`);
+          Site.fromTerm(params.siteUrl)
+            .then(site => {
+              if (site) {
+                this._siteManager.add(site);
+              }
+            })
+            .catch(e => {
+              console.log("Error adding site via app-argument:", e);
+            })
+            .done();
         }
       }
     }
