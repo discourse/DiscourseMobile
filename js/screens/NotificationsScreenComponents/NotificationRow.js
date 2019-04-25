@@ -11,7 +11,7 @@ import {
   View
 } from "react-native";
 
-import Icon from "react-native-vector-icons/FontAwesome";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import DiscourseUtils from "../../DiscourseUtils";
 
@@ -37,12 +37,19 @@ class NotificationRow extends React.Component {
 
   _iconForNotification(notification) {
     let name = DiscourseUtils.iconNameForNotification(notification);
+    let FA5types = {};
+
+    if (name === "heart" || name === "dot-circle") {
+      FA5types.solid = true;
+    }
+
     return (
-      <Icon
+      <FontAwesome5
         style={styles.notificationIcon}
         name={name}
         size={14}
         color="#919191"
+        {...FA5types}
       />
     );
   }
@@ -80,6 +87,7 @@ class NotificationRow extends React.Component {
       case 14:
       case 15:
       case 17:
+      case 18:
         innerText = (
           <Text>
             {displayName}
@@ -103,6 +111,17 @@ class NotificationRow extends React.Component {
         innerText = (
           <Text style={styles.notificationText}>
             {`${data.inbox_count} ${messages} in your ${data.group_name} inbox`}
+          </Text>
+        );
+        break;
+      case 19:
+        innerText = (
+          <Text>
+            {displayName}
+            <Text style={styles.notificationText}>
+              {" "}
+              {`liked ${data.count} of your posts`}
+            </Text>
           </Text>
         );
         break;

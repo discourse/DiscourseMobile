@@ -2,8 +2,10 @@
 "use strict";
 
 import React from "react";
+import Immutable from "immutable";
 
-import { InteractionManager, ListView, StyleSheet, View } from "react-native";
+import { InteractionManager, StyleSheet, View } from "react-native";
+import { ImmutableListView } from "react-native-immutable-list-view";
 
 import { SafeAreaView } from "react-navigation";
 
@@ -20,10 +22,7 @@ class NotificationsScreen extends React.Component {
     this.state = {
       progress: 0,
       renderPlaceholderOnly: true,
-      selectedIndex: 0,
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 !== r2
-      })
+      selectedIndex: 0
     };
 
     this._onSiteChange = e => {
@@ -110,7 +109,7 @@ class NotificationsScreen extends React.Component {
   }
 
   _renderEmptyNotifications() {
-    if (this.state.dataSource.getRowCount() === 0) {
+    if (this.state.dataSource.size < 1) {
       let text;
       switch (this.state.selectedIndex) {
         case 0:
@@ -134,25 +133,17 @@ class NotificationsScreen extends React.Component {
 
   _renderList() {
     return (
-      <ListView
+      <ImmutableListView
         enableEmptySections={true}
-        dataSource={this.state.dataSource}
+        immutableData={this.state.dataSource}
         renderHeader={() => this._renderListHeader()}
         renderRow={rowData => this._renderListRow(rowData)}
+        renderEmptyInList={""}
       />
     );
   }
 
   _openNotificationForSite(notification, site) {
-    // lets try without collapsing, it gets a bit confusing
-    // setTimeout(()=>{
-    //   InteractionManager.runAfterInteractions(()=>{
-    //     // simulate behavior on site
-    //     // when visiting a notification the notification
-    //     // list is collapsed
-    //     this.props.screenProps.resetToTop()
-    //   })
-    // }, 400)
     site
       .readNotification(notification)
       .catch(e => {
@@ -160,6 +151,7 @@ class NotificationsScreen extends React.Component {
       })
       .done();
     let url = DiscourseUtils.endpointForSiteNotification(site, notification);
+    this._siteManager.setActiveSite(site);
     this.props.screenProps.openUrl(url);
   }
 
@@ -171,7 +163,8 @@ class NotificationsScreen extends React.Component {
     this.props.navigation.goBack();
   }
 
-  _renderListRow(rowData) {
+  _renderListRow(rowDataSource) {
+    let rowData = rowDataSource.toJS();
     return (
       <Components.Row
         site={rowData.site}
@@ -247,7 +240,7 @@ class NotificationsScreen extends React.Component {
           }
 
           this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(notifications)
+            dataSource: Immutable.fromJS(notifications)
           });
 
           this.removePlaceholder();

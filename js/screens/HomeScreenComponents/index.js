@@ -9,10 +9,10 @@ import NavigationBar from "./NavigationBar";
 import Notification from "./Notification";
 
 module.exports = {
-  OnBoardingView: OnBoardingView,
-  TermBar: TermBar,
-  SiteRow: SiteRow,
-  DebugRow: DebugRow,
-  NavigationBar: NavigationBar,
-  Notification: Notification
+	OnBoardingView: OnBoardingView,
+	TermBar: TermBar,
+	SiteRow: SiteRow,
+	DebugRow: DebugRow,
+	NavigationBar: NavigationBar,
+	Notification: Notification
 };

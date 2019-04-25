@@ -3,6 +3,7 @@
 
 import { Platform } from "react-native";
 import _ from "lodash";
+import Moment from "moment";
 
 const fetch = require("./../lib/fetch");
 import randomBytes from "./../lib/random-bytes";
@@ -25,7 +26,8 @@ class Site {
     "username",
     "hasPush",
     "isStaff",
-    "apiVersion"
+    "apiVersion",
+    "lastChecked"
   ];
 
   static fromTerm(term) {
@@ -42,13 +44,15 @@ class Site {
       url = term;
     }
 
-    return Site.fromURL(url, term);
+    return Site.fromURL(url);
   }
 
-  static fromURL(url, term) {
+  static fromURL(url) {
     let req = new Request(`${url}/user-api-key/new`, {
       method: "HEAD"
     });
+
+    let apiVersion;
 
     return fetch(req)
       .then(userApiKeyResponse => {
@@ -61,7 +65,8 @@ class Site {
         }
 
         let version = userApiKeyResponse.headers.get("Auth-Api-Version");
-        if (parseInt(version, 10) < 2) {
+        apiVersion = parseInt(version, 10);
+        if (apiVersion < 2) {
           throw "bad api";
         }
 
@@ -83,7 +88,8 @@ class Site {
           url: url,
           title: info.title,
           description: info.description,
-          icon: info.apple_touch_icon_url
+          icon: info.apple_touch_icon_url,
+          apiVersion: apiVersion
         });
       });
   }
@@ -177,6 +183,25 @@ class Site {
     if (this.apiVersion < 2) {
       this.logoff();
     }
+
+    var timeOffset = new Moment().subtract(1, "hours").format();
+
+    return new Promise((resolve, reject) => {
+      if (!this.lastChecked || Moment(this.lastChecked).isBefore(timeOffset)) {
+        Site.fromURL(this.url)
+          .then(site => {
+            console.log("fromUrl request for", this.url);
+            resolve(site);
+          })
+          .catch(e => {
+            console.log(e);
+            reject("failure");
+          })
+          .done();
+      } else {
+        resolve(this);
+      }
+    });
   }
 
   revokeApiKey() {
@@ -465,8 +490,8 @@ class Site {
           if (opts.fast || !busState.wasReady) {
             this.checkBus()
               .then(changes => {
-                console.log(`changes detected on ${this.url}`);
-                console.log(changes);
+                // console.log(`changes detected on ${this.url}`);
+                // console.log(changes);
 
                 if (!busState.wasReady) {
                   this.updateTotals();
