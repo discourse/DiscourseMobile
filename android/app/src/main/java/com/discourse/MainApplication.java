@@ -5,9 +5,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
+import com.github.yamill.orientation.OrientationPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.smixx.fabric.FabricPackage;
-import com.github.yamill.orientation.OrientationPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
@@ -33,9 +34,10 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
-            new AsyncStoragePackage(),
-            new FabricPackage(),
+        new RNCWebViewPackage(),
         new OrientationPackage(),
+        new AsyncStoragePackage(),
+        new FabricPackage(),
         new RNDeviceInfo(),
         new VectorIconsPackage(),
         new RNKeyPairPackage(),

@@ -105,7 +105,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 48
+        versionCode 50
         versionName MYAPP_VERSION
     }
 
@@ -161,10 +161,11 @@ repositories {
 }
 
 dependencies {
+    implementation project(':react-native-webview')
+    implementation project(':react-native-orientation')
     implementation project(':@react-native-community_async-storage')
     compile project(':react-native-fabric')
     compile 'com.android.support:multidex:1.0.3'
-    compile project(':react-native-orientation')
     compile project(':react-native-vector-icons')
     compile project(':react-native-key-pair')
     compile project(':react-native-device-info')
