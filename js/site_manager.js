@@ -2,17 +2,14 @@
 "use strict";
 
 import _ from "lodash";
+import Moment from "moment";
 
-const Fabric =  require("react-native-fabric");
+const Fabric = require("react-native-fabric");
 const { Answers } = Fabric;
 
-import {
-  Alert,
-  AsyncStorage,
-  Platform,
-  PushNotificationIOS
-} from "react-native";
+import { Alert, Platform, PushNotificationIOS } from "react-native";
 
+import AsyncStorage from "@react-native-community/async-storage";
 import Site from "./site";
 import RNKeyPair from "react-native-key-pair";
 import DeviceInfo from "react-native-device-info";
@@ -24,6 +21,9 @@ class SiteManager {
   constructor() {
     this._subscribers = [];
     this.sites = [];
+    this.activeSite = null;
+    this.urlScheme = "discourse://auth_redirect";
+
     this.load();
 
     this.firstFetch = new Date();
@@ -77,6 +77,33 @@ class SiteManager {
       this._onChange();
       this.updateUnreadBadge();
     }
+  }
+
+  setActiveSite(site) {
+    return new Promise((resolve, reject) => {
+      if (typeof site === "string" || site instanceof String) {
+        let url = site;
+        AsyncStorage.getItem("@Discourse.sites")
+          .then(json => {
+            let activeSite = null;
+            if (json) {
+              let tSites = JSON.parse(json).map(obj => {
+                return new Site(obj);
+              });
+
+              activeSite = tSites.find(s => url.startsWith(s.url) === true);
+              this.activeSite = activeSite;
+            }
+
+            resolve({ activeSite: activeSite });
+          })
+          .done();
+      } else {
+        this.activeSite = site;
+        resolve({ activeSite: site });
+        return;
+      }
+    });
   }
 
   updateOrder(from, to) {
@@ -143,23 +170,46 @@ class SiteManager {
   }
 
   load() {
+    // generate RSA Keys on load, they'll be needed
+    this.ensureRSAKeys().done();
     this._loading = true;
     AsyncStorage.getItem("@Discourse.sites")
       .then(json => {
         if (json) {
           this.sites = JSON.parse(json).map(obj => {
-            let site = new Site(obj);
-            // we require latest API
-            site.ensureLatestApi();
-            return site;
+            return new Site(obj);
           });
-          this._loading = false;
-          this._onChange();
-          this.refreshSites({ ui: false, fast: true })
+
+          let promises = [];
+
+          this.sites.forEach((site, index) => {
+            // check for updated API version and updated icon
+            promises.push(
+              site.ensureLatestApi().then(s => {
+                if (s.apiVersion !== this.sites[index].apiVersion) {
+                  this.sites[index].apiVersion = s.apiVersion;
+                }
+                if (s.icon && s.icon !== this.sites[index].icon) {
+                  this.sites[index].icon = s.icon;
+                }
+
+                this.sites[index].lastChecked = Moment().format();
+              })
+            );
+          });
+
+          Promise.all(promises)
             .then(() => {
-              this._onChange();
+              this.save();
+              this.refreshSites({ ui: false, fast: true })
+                .then(() => {
+                  this._onChange();
+                })
+                .done();
             })
-            .done();
+            .catch(e => {
+              console.log(e);
+            });
         }
       })
       .finally(() => {
@@ -417,7 +467,7 @@ class SiteManager {
           } else {
             this.clientId = randomBytes(32);
             AsyncStorage.setItem("@ClientId", this.clientId);
-            resolve(clientId);
+            resolve(this.clientId);
           }
         });
       }
@@ -432,11 +482,14 @@ class SiteManager {
     });
   }
 
-  handleAuthPayload(payload) {
+  decryptHelper(payload) {
     let crypt = new JSEncrypt();
-
     crypt.setKey(this.rsaKeys.private);
-    let decrypted = JSON.parse(crypt.decrypt(payload));
+    return crypt.decrypt(payload);
+  }
+
+  handleAuthPayload(payload) {
+    let decrypted = JSON.parse(this.decryptHelper(payload));
 
     if (decrypted.nonce !== this._nonce) {
       Alert.alert("We were not expecting this reply, please try again!");
@@ -470,24 +523,22 @@ class SiteManager {
           return this.generateNonce(site);
         })
         .then(nonce => {
-          let deviceName = "Unknown Mobile Device";
-
-          try {
-            deviceName = DeviceInfo.getDeviceName();
-          } catch (e) {
-            // on android maybe this can fail?
-          }
-
           let basePushUrl = "https://api.discourse.org";
           //let basePushUrl = "http://l.discourse:3000"
 
+          let scopes = "notifications,session_info";
+
+          if (this.supportsDelegatedAuth(site)) {
+            scopes = `${scopes},one_time_password`;
+          }
+
           let params = {
-            scopes: "notifications,session_info",
+            scopes: scopes,
             client_id: clientId,
             nonce: nonce,
             push_url: basePushUrl + "/api/publish_" + Platform.OS,
-            auth_redirect: "discourse://auth_redirect",
-            application_name: "Discourse - " + deviceName,
+            auth_redirect: this.urlScheme,
+            application_name: this.deviceName(),
             public_key: this.rsaKeys.public,
             discourse_app: 1
           };
@@ -495,6 +546,25 @@ class SiteManager {
           return `${site.url}/user-api-key/new?${this.serializeParams(params)}`;
         })
     );
+  }
+
+  generateURLParams(site, type = "basic") {
+    return this.ensureRSAKeys().then(() => {
+      let params = {
+        auth_redirect: this.urlScheme,
+        user_api_public_key: this.rsaKeys.public
+      };
+
+      if (type === "full") {
+        params = {
+          auth_redirect: this.urlScheme,
+          application_name: this.deviceName(),
+          public_key: this.rsaKeys.public
+        };
+      }
+
+      return this.serializeParams(params);
+    });
   }
 
   getSeenNotificationMap() {
@@ -573,6 +643,38 @@ class SiteManager {
 
   _onChange() {
     this._subscribers.forEach(sub => sub({ event: "change" }));
+  }
+
+  deviceName() {
+    let deviceName = "Unknown Mobile Device";
+
+    try {
+      deviceName = DeviceInfo.getDeviceName();
+    } catch (e) {
+      // on android maybe this can fail?
+    }
+
+    return "Discourse - " + deviceName;
+  }
+
+  supportsDelegatedAuth(site) {
+    // delegated auth library is currently iOS 12+ only
+    // site needs user api >= 4
+
+    if (
+      Platform.OS !== "ios" ||
+      parseInt(Platform.Version, 10) <= 11 ||
+      site.apiVersion < 4
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
+  urlInSites(url) {
+    let siteUrls = this.sites.map(s => s.url);
+    return siteUrls.find(siteUrl => url.startsWith(siteUrl) === true);
   }
 }
 

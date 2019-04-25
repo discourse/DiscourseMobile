@@ -18,6 +18,9 @@ import Notification from "./Notification";
 
 class SiteRow extends React.Component {
   render() {
+    let iconPath = this.props.site.icon
+      ? { uri: this.props.site.icon }
+      : require("../../../img/nav-icon-gray.png");
     return (
       <Swipeout
         sensitivity={2}
@@ -37,7 +40,7 @@ class SiteRow extends React.Component {
           {...this.props.sortHandlers}
         >
           <View accessibilityTraits="link" style={styles.row}>
-            <Image style={styles.icon} source={{ uri: this.props.site.icon }} />
+            <Image style={styles.icon} source={iconPath} />
             <View style={styles.info}>
               <Text ellipsizeMode="tail" numberOfLines={1} style={styles.url}>
                 {this.props.site.url.replace(/^https?:\/\//, "")}

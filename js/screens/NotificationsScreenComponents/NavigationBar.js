@@ -14,7 +14,7 @@ import {
 } from "react-native";
 
 import { SafeAreaView } from "react-navigation";
-import Icon from "react-native-vector-icons/FontAwesome";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import ProgressBar from "../../ProgressBar";
 import colors from "../../colors";
@@ -39,7 +39,7 @@ class NavigationBar extends React.Component {
           <Text style={styles.title}>Notifications</Text>
         </View>
         <View style={styles.rightContainer}>
-          {this._renderButton(this.props.onDidPressRightButton, "close")}
+          {this._renderButton(this.props.onDidPressRightButton, "times")}
         </View>
         <View style={styles.separator} />
       </SafeAreaView>
@@ -53,7 +53,7 @@ class NavigationBar extends React.Component {
         style={styles.button}
         onPress={callback}
       >
-        <Icon name={iconName} size={20} color={colors.grayUI} />
+        <FontAwesome5 name={iconName} size={20} color={colors.grayUI} />
       </TouchableHighlight>
     );
   }

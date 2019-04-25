@@ -2,11 +2,11 @@
 "use strict";
 
 import React from "react";
+import Immutable from "immutable";
 
 import PropTypes from "prop-types";
 
 import {
-  ListView,
   Image,
   StyleSheet,
   Text,
@@ -14,6 +14,8 @@ import {
   TouchableHighlight,
   View
 } from "react-native";
+
+import { ImmutableListView } from "react-native-immutable-list-view";
 
 import colors from "../../colors";
 
@@ -28,12 +30,7 @@ class OnBoardingView extends React.Component {
   constructor(props) {
     super(props);
 
-    const dataSource = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
-
-    this.state = { dataSource, suggestedSitesLoaded: false };
-
+    this.state = { dataSource: [], suggestedSitesLoaded: false };
     this._fetchSuggestedSites(suggestedSites);
   }
 
@@ -59,7 +56,7 @@ class OnBoardingView extends React.Component {
       })
       .then(sites => {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(sites),
+          dataSource: Immutable.fromJS(sites),
           suggestedSitesLoaded: true
         });
       })
@@ -142,22 +139,25 @@ class OnBoardingView extends React.Component {
   }
 
   render() {
-    return (
-      <ListView
-        style={styles.list}
-        enableEmptySections={true}
-        dataSource={this.state.dataSource}
-        renderHeader={() => this._renderOnBoardingHeader()}
-        renderRow={site => this._renderOnBoardingRow(site)}
-      />
-    );
+    if (this.state.dataSource.size > 0) {
+      return (
+        <ImmutableListView
+          style={styles.list}
+          enableEmptySections={true}
+          immutableData={this.state.dataSource}
+          renderHeader={() => this._renderOnBoardingHeader()}
+          renderRow={site => this._renderOnBoardingRow(site)}
+        />
+      );
+    }
+    return null;
   }
 }
 
 const suggestedSites = [
   "https://meta.discourse.org",
   "https://community.cartalk.com",
-  "https://community.imgur.com",
+  // "https://community.imgur.com",
   "https://bbs.boingboing.net"
 ];
 

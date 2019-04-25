@@ -34,6 +34,11 @@ class DiscourseUtils {
       case 16:
         endpoint = `/users/${data.username}/messages/group/${data.group_name}`;
         break;
+      case 19:
+        endpoint = `/u/${
+          site.username
+        }/notifications/likes-received?acting_username=${data.username}`;
+        break;
       default:
         console.log(
           "Couldn’t generate an endpoint for notification",
@@ -58,9 +63,9 @@ class DiscourseUtils {
       case 5:
         return "heart";
       case 6:
-        return "envelope-o";
+        return "envelope";
       case 7:
-        return "envelope-o";
+        return "envelope";
       case 8:
         return "user";
       case 9:
@@ -72,20 +77,22 @@ class DiscourseUtils {
       case 12:
         return "certificate";
       case 13:
-        return "hand-o-right";
+        return "hand-point-right";
       case 14:
         return "check-square";
       case 15:
         return "at";
       case 16:
-        return "group";
+        return "users";
       case 17:
-        return "dot-circle-o";
+        return "dot-circle";
       case 18:
-        return "clock-o";
+        return "clock";
+      case 19:
+        return "heart";
       default:
         console.log(
-          "Couldn’t generaaate an icon name for notification",
+          "Couldn’t generate an icon name for notification",
           notification
         );
         return "exclamation-circle";
