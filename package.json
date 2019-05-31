@@ -6,7 +6,8 @@
     "clean-ios": "cd ios && xcodebuild -scheme Discourse -destination 'platform=iOS Simulator,name=iPhone 6' clean",
     "prettier": "prettier --write \"js/**/*.js\"",
     "lint": "eslint ./js",
-    "test": "jest"
+    "test": "jest",
+    "build-rn-webview": "cd node_modules/react-native-webview/ && yarn install && yarn tsc && rm -rf node_modules/react-native-webview/node_modules/"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.2.2",
@@ -28,7 +29,7 @@
     "react-native-sortable-listview": "github:deanmcpherson/react-native-sortable-listview",
     "react-native-swipeout": "^2.3",
     "react-native-vector-icons": "^6.4.2",
-    "react-native-webview": "^5.7.0",
+    "react-native-webview": "git+https://github.com/pmusaraj/react-native-webview#pending-PRs",
     "react-navigation": "^1.5"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "1.5.0"
+IOS_APP_VERSION = "1.5.1"
 ANDROID_APP_VERSION = "1.4.0"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
@@ -151,7 +151,7 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-          "org.discourse.DiscourseApp" => "match AppStore org.discourse.DiscourseApp"
+          "org.discourse.DiscourseApp" => "match AppStore org.discourse.DiscourseApp 1558979768"
         }
       },
       clean: true,

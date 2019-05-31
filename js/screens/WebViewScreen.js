@@ -66,7 +66,7 @@ class WebViewScreen extends React.Component {
         }}
       >
         <StatusBar barStyle={this.state.barStyle} />
-        <View style={styles.progressHolder}>
+        <View style={{marginTop: this._isIphoneX() ? 8 : 0 }}>
           <ProgressBar progress={this.state.progress} />
         </View>
         <WebView
@@ -84,6 +84,13 @@ class WebViewScreen extends React.Component {
             <Components.ErrorScreen
               errorName={errorName}
               errorData={this.state.errorData}
+              onRefresh={() => this._onRefresh()}
+              onClose={() => this._onClose()}
+            />
+          )}
+          startInLoadingState={true}
+          renderLoading={() => (
+            <Components.ErrorScreen
               onRefresh={() => this._onRefresh()}
               onClose={() => this._onClose()}
             />
@@ -184,9 +191,6 @@ class WebViewScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
-  progressHolder: {
-    position: "relative"
   }
 });
 
