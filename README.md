@@ -34,11 +34,6 @@ react-native run-ios
 react-native run-android
 ```
 
-We are temporarily using a fork of react-native-webview. Please run 
-```
-
-```
-
 Note, on Android your localhost may not be accessible from the simulator, read the error message carefully and consider running:
 
 ```
