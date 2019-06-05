@@ -3,7 +3,7 @@ fastlane_require "fileutils"
 fastlane_require "json"
 
 IOS_APP_VERSION = "1.5.1"
-ANDROID_APP_VERSION = "1.4.0"
+ANDROID_APP_VERSION = "1.5.0"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
@@ -59,6 +59,8 @@ MYAPP_RELEASE_STORE_FILE=my-release-key.keystore
 MYAPP_RELEASE_KEY_ALIAS=discourse
 MYAPP_RELEASE_STORE_PASSWORD=#{google_key_store_password}
 MYAPP_RELEASE_KEY_PASSWORD=#{google_key_store_password}
+android.useAndroidX=true
+android.enableJetifier=true
 TEMPLATE
   File.write(File.expand_path("../android/gradle.properties"), gradle_properties)
 

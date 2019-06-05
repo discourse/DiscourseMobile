@@ -4822,6 +4822,11 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
+opencollective-postinstall@^2.0.0:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.2.tgz#5657f1bede69b6e33a45939b061eb53d3c6c3a89"
+  integrity sha512-pVOEP16TrAO2/fjej1IdOyupJY8KDUM1CvsaScRbw6oddvpQoOfGk4ywha0HKKVAD6RkW4x6Q+tNBwhf3Bgpuw==
+
 opn@^3.0.2:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/opn/-/opn-3.0.3.tgz#b6d99e7399f78d65c3baaffef1fb288e9b85243a"
@@ -5315,6 +5320,14 @@ react-native-fabric@^0.5.2:
   resolved "https://registry.yarnpkg.com/react-native-fabric/-/react-native-fabric-0.5.2.tgz#6eb728cb4f55652c60eab4fbfe1ab6bc3841805f"
   integrity sha512-uarBq3XtADCJIGwzeHMzG7LCTfElGuqUj4UqMxsWbPsXaYForfNw+EMkEQ+6eBq/a2k4PKfuVQXQAC7rfgo/Vg==
 
+react-native-firebase@^5.4.2:
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.4.2.tgz#6a66fea38724a7e76d9486b87e02129fda266290"
+  integrity sha512-xeluQo/dDYGKPvPLL0CH51T+rPVkKmEoR/aYDTDgJXXgiDwqSGAq9v414uF4p6SALLCDcNeb4IA6HA8TcFKcrQ==
+  dependencies:
+    opencollective-postinstall "^2.0.0"
+    prop-types "^15.6.2"
+
 react-native-immutable-list-view@^0.7.5:
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/react-native-immutable-list-view/-/react-native-immutable-list-view-0.7.5.tgz#64cfe2d43dc5a1370d850c401bfbc29da47c6478"
@@ -5381,9 +5394,10 @@ react-native-vector-icons@^6.4.2:
     prop-types "^15.6.2"
     yargs "^13.2.2"
 
-"react-native-webview@git+https://github.com/pmusaraj/react-native-webview#pending-PRs":
-  version "6.1.0"
-  resolved "git+https://github.com/pmusaraj/react-native-webview#64d6da062057f3a738d300a99fe9e9f415979258"
+react-native-webview@6.2.2:
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-6.2.2.tgz#44c6385557c65c6cc262e09d5099162124c35890"
+  integrity sha512-FFAluemliGEONytY1wp8/goHnvY/N1lZG/scCixlNa8d8sEaksGTiZSTVg29IgueWaNYDMR8KTm044kcf9X9DQ==
   dependencies:
     escape-string-regexp "1.0.5"
     invariant "2.2.4"

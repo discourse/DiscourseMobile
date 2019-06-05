@@ -23,10 +23,7 @@ Ensure you install all the latest and greatest packages:
 ```
 cd DiscourseMobile
 % yarn
-% yarn build-rn-webview
 ```
-
-(Note: the `yarn build-rn-webview` step is temporary. it will be removed on react-native-webview merges our PRs.)
 
 Once installed you can get started with:
 

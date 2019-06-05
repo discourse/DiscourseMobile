@@ -24,7 +24,9 @@ import SafariWebAuth from "react-native-safari-web-auth";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const ChromeCustomTab = NativeModules.ChromeCustomTab;
-const AndroidToken = NativeModules.AndroidToken;
+import firebase from 'react-native-firebase';
+import type { Notification, NotificationOpen } from 'react-native-firebase';
+import bgMessaging from './bgMessagingAndroid';
 
 const AppNavigator = StackNavigator(
   {
@@ -90,8 +92,22 @@ class Discourse extends React.Component {
     }
 
     if (Platform.OS === "android") {
-      AndroidToken.GetInstanceId(id => {
-        this._siteManager.registerClientId(id);
+      const channel = new firebase.notifications.Android.Channel('discourse', 'Discourse', firebase.notifications.Android.Importance.Max)
+        .setDescription('Discourse notifications channel.');
+
+      // Create the channel
+      firebase.notifications().android.createChannel(channel);
+
+      firebase.messaging().getToken().then(fcmToken => {
+          if (fcmToken) {
+            this._siteManager.registerClientId(fcmToken);
+          } 
+        });
+
+      this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
+        if (fcmToken) {
+          this._siteManager.registerClientId(fcmToken);
+        }
       });
     }
   }
@@ -191,12 +207,46 @@ class Discourse extends React.Component {
     if (Platform.OS === "ios") {
       PushNotificationIOS.requestPermissions({ alert: true, badge: true });
     }
+
+    if (Platform.OS === "android") {
+      // open notification if app is in foreground/background
+      this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
+          const notification: Notification = notificationOpen.notification;
+
+          if (notification._data && notification._data.url) {
+            this.openUrl(notification._data.url);
+          }
+          notification.android.setAutoCancel(true);
+      });
+
+      // open notification from closed app
+      firebase.notifications().getInitialNotification()
+        .then((notificationOpen: NotificationOpen) => {
+          if (notificationOpen) {
+            const notification: Notification = notificationOpen.notification;
+            if (notification._data && notification._data.url) {
+              this.openUrl(notification._data.url);
+            }
+            notification.android.setAutoCancel(true);
+          }
+        });
+
+      // notification received as message while app is in foreground
+      this.messageListener = firebase.messaging().onMessage((message: RemoteMessage) => {
+        bgMessaging(message);
+      });
+
+    }
   }
 
   componentWillUnmount() {
     AppState.removeEventListener("change", this._handleAppStateChange);
     Linking.removeEventListener("url", this._handleOpenUrl);
     clearTimeout(this.safariViewTimeout);
+    if (Platform.OS === "android") {
+      this.removeNotificationOpenedListener();
+      this.messageListener();
+    }
   }
 
   parseURLparameters(string) {

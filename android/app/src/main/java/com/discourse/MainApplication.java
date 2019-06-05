@@ -1,10 +1,11 @@
 package com.discourse;
 
-import android.support.multidex.MultiDexApplication;
-import android.content.Context;
-import android.util.Log;
+import androidx.multidex.MultiDexApplication;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
@@ -34,6 +35,9 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
+        new RNFirebasePackage(),
+        new RNFirebaseMessagingPackage(),
+        new RNFirebaseNotificationsPackage(),
         new RNCWebViewPackage(),
         new OrientationPackage(),
         new AsyncStoragePackage(),

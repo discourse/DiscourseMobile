@@ -20,6 +20,7 @@
     "react-native": "0.59.3",
     "react-native-device-info": "^0.24.3",
     "react-native-fabric": "^0.5.2",
+    "react-native-firebase": "^5.4.2",
     "react-native-immutable-list-view": "^0.7.5",
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair.git",
     "react-native-orientation": "git+https://github.com/yamill/react-native-orientation.git",
@@ -29,7 +30,7 @@
     "react-native-sortable-listview": "github:deanmcpherson/react-native-sortable-listview",
     "react-native-swipeout": "^2.3",
     "react-native-vector-icons": "^6.4.2",
-    "react-native-webview": "git+https://github.com/pmusaraj/react-native-webview#pending-PRs",
+    "react-native-webview": "6.2.2",
     "react-navigation": "^1.5"
   },
   "devDependencies": {

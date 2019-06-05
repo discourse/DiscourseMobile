@@ -20,7 +20,7 @@ import io.fabric.sdk.android.Fabric;
 import java.net.URLEncoder;
 
 import javax.annotation.Nullable;
-
+import android.util.Log;
 
 public class MainActivity extends ReactActivity {
 
@@ -34,9 +34,9 @@ public class MainActivity extends ReactActivity {
 
         @Override
         protected @Nullable Bundle getLaunchOptions(){
-
             Bundle bundle = new Bundle();
             if (mActivity.initUrl != null) {
+                Log.d("Discourse", "initUrl: " + mActivity.initUrl);
                 bundle.putString("url", mActivity.initUrl);
                 mActivity.initUrl = null;
             }
@@ -54,9 +54,12 @@ public class MainActivity extends ReactActivity {
         MainApplication.running = false;
     }
 
+    public String initUrl = null;
+
     @Override
     protected void onResume(){
         super.onResume();
+        Log.d("Discourse", "onResume");
 
         MainApplication.running = true;
 
@@ -73,8 +76,6 @@ public class MainActivity extends ReactActivity {
 
     }
 
-    public String initUrl = null;
-
     @Override
     protected ReactActivityDelegate createReactActivityDelegate(){
         return new MyDelegate(this, getMainComponentName());
@@ -82,18 +83,10 @@ public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        initUrl = null;
-
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            initUrl = bundle.getString("discourse_url");
-        }
-
         super.onCreate(savedInstanceState);
 
         Fabric.with(this, new Crashlytics());
     }
-
 
     /**
      * Returns the name of the main component registered from JavaScript.
