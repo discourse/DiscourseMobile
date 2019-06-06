@@ -8,7 +8,7 @@ export default async (message: RemoteMessage) => {
 	  .setTitle(message.data.title)
 	  .setBody(message.data.body)
 	  .setData({
-	    url: message.data.discourse_url,
+	    discourse_url: message.data.discourse_url,
 	    topic_title: message.data.topic_title,
 	  });
 	

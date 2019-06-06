@@ -209,29 +209,20 @@ class Discourse extends React.Component {
     }
 
     if (Platform.OS === "android") {
-      // open notification if app is in foreground/background
+      // notification opened while app is in foreground or background
       this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
-          const notification: Notification = notificationOpen.notification;
-
-          if (notification._data && notification._data.url) {
-            this.openUrl(notification._data.url);
-          }
-          notification.android.setAutoCancel(true);
+          console.log("onNotificationOpened");
+          this.handleAndroidOpeNotification(notificationOpen);
       });
 
-      // open notification from closed app
+      // notification opened from closed app
       firebase.notifications().getInitialNotification()
         .then((notificationOpen: NotificationOpen) => {
-          if (notificationOpen) {
-            const notification: Notification = notificationOpen.notification;
-            if (notification._data && notification._data.url) {
-              this.openUrl(notification._data.url);
-            }
-            notification.android.setAutoCancel(true);
-          }
+          console.log("getInitialNotification");
+          this.handleAndroidOpeNotification(notificationOpen);
         });
 
-      // notification received as message while app is in foreground
+      // notification received as message while app is in foreground (not yet opened)
       this.messageListener = firebase.messaging().onMessage((message: RemoteMessage) => {
         bgMessaging(message);
       });
@@ -260,6 +251,13 @@ class Discourse extends React.Component {
         parsed[item[0]] = decodeURIComponent(item[1]);
       });
     return parsed;
+  }
+
+  handleAndroidOpeNotification(notificationOpen) {
+    const notification: Notification = notificationOpen.notification;
+    if (notification && notification._data && notification._data.discourse_url) {
+      this.openUrl(notification._data.discourse_url);
+    }
   }
 
   openUrl(url, supportsDelegatedAuth = true) {
