@@ -24,9 +24,10 @@ import SafariWebAuth from "react-native-safari-web-auth";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const ChromeCustomTab = NativeModules.ChromeCustomTab;
-import firebase from 'react-native-firebase';
-import type { Notification, NotificationOpen } from 'react-native-firebase';
-import bgMessaging from './bgMessagingAndroid';
+
+import firebase from './firebase/helper';
+import type { Notification, NotificationOpen } from './firebase/helper';
+import bgMessaging from './firebase/bgMessaging';
 
 const AppNavigator = StackNavigator(
   {
@@ -254,9 +255,11 @@ class Discourse extends React.Component {
   }
 
   handleAndroidOpeNotification(notificationOpen) {
-    const notification: Notification = notificationOpen.notification;
-    if (notification && notification._data && notification._data.discourse_url) {
-      this.openUrl(notification._data.discourse_url);
+    if (notificationOpen && notificationOpen.notification) {
+      const notification: Notification = notificationOpen.notification;
+      if (notification._data && notification._data.discourse_url) {
+        this.openUrl(notification._data.discourse_url);
+      }
     }
   }
 
