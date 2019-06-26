@@ -47,6 +47,7 @@ android/app/libs
 */fastlane/screenshots
 *.swp
 android/app/fabric.properties
+android/gradle.properties
 fastlane/screenshots
 *dSym.zip
 *dSYM.zip
