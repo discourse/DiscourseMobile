@@ -3,7 +3,7 @@ fastlane_require "fileutils"
 fastlane_require "json"
 
 IOS_APP_VERSION = "1.5.1"
-ANDROID_APP_VERSION = "1.5.0"
+ANDROID_APP_VERSION = "1.5.1"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
@@ -194,16 +194,14 @@ platform :android do
   desc "Submit a build to Google Play Store"
   lane :release do
     gradle(
-      task: "assemble",
+      task: "bundle",
       build_type: "Release",
       project_dir: "android/"
     )
 
-    `cp ../android/app/build/outputs/apk/app-release.apk ../releases/discourse-mobile.apk`
-
     supply(
       track: "alpha",
-      apk: "#{lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]}"
+      skip_upload_apk: true
     )
   end
 end
