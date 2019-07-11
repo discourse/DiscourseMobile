@@ -39,7 +39,7 @@ class Site {
     }
 
     if (!term.match(/^https?:\/\//)) {
-      url = `http://${term}`;
+      url = `https://${term}`;
     } else {
       url = term;
     }

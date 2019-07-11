@@ -66,7 +66,7 @@ class WebViewScreen extends React.Component {
         }}
       >
         <StatusBar barStyle={this.state.barStyle} />
-        <View style={{marginTop: this._isIphoneX() ? 8 : 0 }}>
+        <View style={{ marginTop: this._isIphoneX() ? 8 : 0 }}>
           <ProgressBar progress={this.state.progress} />
         </View>
         <WebView
@@ -76,6 +76,7 @@ class WebViewScreen extends React.Component {
           useWebkit={true}
           applicationNameForUserAgent={"DiscourseHub"}
           allowsBackForwardNavigationGestures={true}
+          allowsInlineMediaPlayback={true}
           onError={syntheticEvent => {
             const { nativeEvent } = syntheticEvent;
             this.setState({ errorData: nativeEvent });
