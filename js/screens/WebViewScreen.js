@@ -12,6 +12,7 @@ import {
   Linking,
   Platform,
   Dimensions,
+  Settings,
   Share,
   StatusBar
 } from "react-native";
@@ -23,7 +24,7 @@ import Components from "./WebViewScreenComponents";
 import colors from "../colors";
 import ProgressBar from "../ProgressBar";
 import TinyColor from "../../lib/tinycolor";
-
+import SafariView from "react-native-safari-view";
 class WebViewScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -72,7 +73,6 @@ class WebViewScreen extends React.Component {
         <WebView
           ref={ref => (this.webview = ref)}
           source={{ uri: this.startUrl }}
-          contentInset={{ top: 24 }}
           useWebkit={true}
           applicationNameForUserAgent={"DiscourseHub"}
           allowsBackForwardNavigationGestures={true}
@@ -110,7 +110,12 @@ class WebViewScreen extends React.Component {
 
               // launch Safari (and stop loading request) if external link
               if (!this.siteManager.urlInSites(request.url)) {
-                Linking.openURL(request.url);
+                const useSVC = Settings.get("external_links_svc");
+                if (useSVC) {
+                  SafariView.show({ url: request.url });
+                } else {
+                  Linking.openURL(request.url);
+                }
                 return false;
               }
               return true;
