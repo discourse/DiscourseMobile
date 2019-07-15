@@ -25,9 +25,9 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 const ChromeCustomTab = NativeModules.ChromeCustomTab;
 
-import firebase from './firebase/helper';
-import type { Notification, NotificationOpen } from './firebase/helper';
-import bgMessaging from './firebase/bgMessaging';
+import firebase from "./firebase/helper";
+import type { Notification, NotificationOpen } from "./firebase/helper";
+import bgMessaging from "./firebase/bgMessaging";
 
 const AppNavigator = StackNavigator(
   {
@@ -64,15 +64,6 @@ class Discourse extends React.Component {
     this._handleOpenUrl = this._handleOpenUrl.bind(this);
 
     if (Platform.OS === "ios") {
-      SafariView.addEventListener("onShow", () => {
-        this._siteManager.refreshInterval(60000);
-      });
-
-      SafariView.addEventListener("onDismiss", () => {
-        this._siteManager.refreshInterval(15000);
-        this._siteManager.refreshSites({ ui: false, fast: true });
-      });
-
       PushNotificationIOS.addEventListener("notification", e =>
         this._handleRemoteNotification(e)
       );
@@ -93,23 +84,31 @@ class Discourse extends React.Component {
     }
 
     if (Platform.OS === "android") {
-      const channel = new firebase.notifications.Android.Channel('discourse', 'Discourse', firebase.notifications.Android.Importance.Max)
-        .setDescription('Discourse notifications channel.');
+      const channel = new firebase.notifications.Android.Channel(
+        "discourse",
+        "Discourse",
+        firebase.notifications.Android.Importance.Max
+      ).setDescription("Discourse notifications channel.");
 
       // Create the channel
       firebase.notifications().android.createChannel(channel);
 
-      firebase.messaging().getToken().then(fcmToken => {
+      firebase
+        .messaging()
+        .getToken()
+        .then(fcmToken => {
           if (fcmToken) {
             this._siteManager.registerClientId(fcmToken);
-          } 
+          }
         });
 
-      this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
-        if (fcmToken) {
-          this._siteManager.registerClientId(fcmToken);
-        }
-      });
+      this.onTokenRefreshListener = firebase
+        .messaging()
+        .onTokenRefresh(fcmToken => {
+          if (fcmToken) {
+            this._siteManager.registerClientId(fcmToken);
+          }
+        });
     }
   }
 
@@ -142,6 +141,9 @@ class Discourse extends React.Component {
 
   _handleOpenUrl(event) {
     console.log("_handleOpenUrl", event);
+    if (event.url.startsWith("discourse://testing-something")) {
+      this.openUrl(`https://auth-images.curiousfish.org/`);
+    }
     if (event.url.startsWith("discourse://")) {
       let params = this.parseURLparameters(event.url);
       let site = this._siteManager.activeSite;
@@ -211,23 +213,28 @@ class Discourse extends React.Component {
 
     if (Platform.OS === "android") {
       // notification opened while app is in foreground or background
-      this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
+      this.removeNotificationOpenedListener = firebase
+        .notifications()
+        .onNotificationOpened((notificationOpen: NotificationOpen) => {
           console.log("onNotificationOpened");
           this.handleAndroidOpeNotification(notificationOpen);
-      });
+        });
 
       // notification opened from closed app
-      firebase.notifications().getInitialNotification()
+      firebase
+        .notifications()
+        .getInitialNotification()
         .then((notificationOpen: NotificationOpen) => {
           console.log("getInitialNotification");
           this.handleAndroidOpeNotification(notificationOpen);
         });
 
       // notification received as message while app is in foreground (not yet opened)
-      this.messageListener = firebase.messaging().onMessage((message: RemoteMessage) => {
-        bgMessaging(message);
-      });
-
+      this.messageListener = firebase
+        .messaging()
+        .onMessage((message: RemoteMessage) => {
+          bgMessaging(message);
+        });
     }
   }
 
@@ -271,6 +278,8 @@ class Discourse extends React.Component {
           400
         );
       } else {
+        SafariView.dismiss();
+
         this._navigation.navigate("WebView", {
           url: url
         });
