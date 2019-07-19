@@ -34,6 +34,15 @@ class WebViewScreen extends React.Component {
     this.routes = [];
     this.backForwardAction = null;
     this.currentIndex = 0;
+    this.safariViewVisible = false;
+
+    SafariView.addEventListener("onShow", () => {
+      this.safariViewVisible = true;
+    });
+
+    SafariView.addEventListener("onDismiss", () => {
+      this.safariViewVisible = false;
+    });
 
     this.state = {
       progress: 0,
@@ -108,11 +117,13 @@ class WebViewScreen extends React.Component {
                 return true;
               }
 
-              // launch Safari (and stop loading request) if external link
+              // launch externally and stop loading request if external link
               if (!this.siteManager.urlInSites(request.url)) {
                 const useSVC = Settings.get("external_links_svc");
                 if (useSVC) {
-                  SafariView.show({ url: request.url });
+                  if (!this.safariViewVisible) {
+                    SafariView.show({ url: request.url });
+                  }
                 } else {
                   Linking.openURL(request.url);
                 }
