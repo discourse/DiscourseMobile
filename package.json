@@ -7,12 +7,14 @@
     "prettier": "prettier --write \"js/**/*.js\"",
     "lint": "eslint ./js",
     "test": "jest",
-    "build-rn-webview": "cd node_modules/react-native-webview/ && yarn install && yarn tsc && rm -rf node_modules/react-native-webview/node_modules/"
+    "build-rn-webview": "cd node_modules/react-native-webview/ && yarn install && yarn tsc && rm -rf node_modules/react-native-webview/node_modules/",
+    "postinstall": "npx jetify"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.2.2",
     "immutable": "^4.0.0-rc.12",
     "invariant": "^2.2",
+    "jetifier": "^1.6.3",
     "lodash": "^4.17",
     "moment": "^2.22",
     "prop-types": "^15.6.0",
