@@ -19,7 +19,7 @@
     "moment": "^2.22",
     "prop-types": "^15.6.0",
     "react": "16.8.3",
-    "react-native": "0.59.3",
+    "react-native": "0.59.10",
     "react-native-device-info": "^0.24.3",
     "react-native-fabric": "^0.5.2",
     "react-native-firebase": "^5.4.2",
@@ -36,13 +36,13 @@
     "react-navigation": "^1.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.0",
-    "@babel/runtime": "^7.4.2",
+    "@babel/core": "^7.4.5",
+    "@babel/runtime": "^7.4.5",
     "@react-native-community/eslint-config": "^0.0.3",
-    "babel-jest": "^24.6.0",
+    "babel-jest": "^24.8.0",
     "eslint": "^5.16.0",
-    "jest": "^24.6.0",
-    "metro-react-native-babel-preset": "^0.53.1",
+    "jest": "^24.8.0",
+    "metro-react-native-babel-preset": "^0.54.1",
     "prettier": "^1.14",
     "react-test-renderer": "16.8.3"
   }
