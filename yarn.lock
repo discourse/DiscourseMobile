@@ -5477,9 +5477,10 @@ react-native-progress@^3.5:
   version "1.0.2"
   resolved "git+https://github.com/samsaffron/react-native-safari-view.git#fa5fcb17a73435dd870e45c13818dbd8ebb909e7"
 
-"react-native-safari-web-auth@git+https://github.com/pmusaraj/react-native-safari-web-auth.git":
-  version "1.0.0"
-  resolved "git+https://github.com/pmusaraj/react-native-safari-web-auth.git#0ee76c182093483536d143b1c1e02a6ea31cd06d"
+react-native-safari-web-auth@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-safari-web-auth/-/react-native-safari-web-auth-1.0.1.tgz#3d7d082475e329c75a4d161b1219bd783cccb626"
+  integrity sha512-/gZXW/kSy7mZ+IP01FKj/4XF3PGEEh3eNK7Pz8IPgGYUIBseV2mKW3fO4+wQyOSBW7rkQop9d6ZyLwPfX+FnJg==
 
 react-native-safe-area-view@0.11.0:
   version "0.11.0"
