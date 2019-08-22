@@ -25,7 +25,6 @@ class DiscourseUtils {
       case 17:
       case 18:
       case 20:
-      case 21:
         endpoint = `/t/${notification.slug}/${notification.topic_id}/${
           notification.post_number
         }`;
@@ -40,6 +39,15 @@ class DiscourseUtils {
         endpoint = `/u/${
           site.username
         }/notifications/likes-received?acting_username=${data.username}`;
+        break;
+      case 21:
+        if (notification.fancy_title !== undefined) {
+          endpoint = `/t/${notification.slug}/${notification.topic_id}/${
+            notification.post_number
+          }`;
+        } else {
+          endpoint = `/u/${site.username}/activity/approval-given`;
+        }
         break;
       case 22:
         endpoint = `/g/${data.group_name}`;

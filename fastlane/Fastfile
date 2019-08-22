@@ -10,6 +10,8 @@ KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
 
 fastlane_version "2.89.0"
 
+# xcode_select "/Applications/Xcode11-beta.app"
+
 default_platform :ios
 
 desc "Generate icons"
@@ -153,7 +155,7 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-          "org.discourse.DiscourseApp" => "match AppStore org.discourse.DiscourseApp 1558979768"
+          "org.discourse.DiscourseApp" => "match AppStore org.discourse.DiscourseApp 1566494554"
         }
       },
       clean: true,

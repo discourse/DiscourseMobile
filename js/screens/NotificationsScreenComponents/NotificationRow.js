@@ -126,7 +126,6 @@ class NotificationRow extends React.Component {
         );
         break;
       case 20:
-      case 21:
         innerText = (
           <Text>
             <Text style={styles.notificationText}>
@@ -134,6 +133,25 @@ class NotificationRow extends React.Component {
             </Text>
           </Text>
         );
+        break;
+      case 21:
+        if (notification.fancy_title !== undefined) {
+          innerText = (
+            <Text>
+              <Text style={styles.notificationText}>
+                {`"${notification.fancy_title}" approved`}
+              </Text>
+            </Text>
+          );
+        } else {
+          innerText = (
+            <Text>
+              <Text style={styles.notificationText}>
+                {`${notification.data.num_approved_commits} commits approved`}
+              </Text>
+            </Text>
+          );
+        }
         break;
       case 22:
         innerText = (

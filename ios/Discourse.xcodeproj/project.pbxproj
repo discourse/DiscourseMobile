@@ -1375,7 +1375,7 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 173;
+				CURRENT_PROJECT_VERSION = 178;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				ENABLE_BITCODE = YES;
@@ -1410,7 +1410,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.discourse.DiscourseApp;
 				PRODUCT_NAME = Discourse;
-				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc org.discourse.DiscourseApp";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.discourse.DiscourseApp 1566494554";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1423,7 +1423,7 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 173;
+				CURRENT_PROJECT_VERSION = 178;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1458,7 +1458,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.discourse.DiscourseApp;
 				PRODUCT_NAME = Discourse;
 				PROVISIONING_PROFILE = "8a5dde79-abbd-4707-a921-2b4412ef65ad";
-				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc org.discourse.DiscourseApp";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.discourse.DiscourseApp 1566494554";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
