@@ -105,7 +105,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 72
+        versionCode 74
         versionName MYAPP_VERSION
     }
 
