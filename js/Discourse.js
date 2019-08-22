@@ -291,9 +291,8 @@ class Discourse extends React.Component {
         ChromeCustomTab.show(url)
           .then(() => {})
           .catch(e => {
-            Alert.alert(
-              "Discourse requires that Google Chrome Stable is installed."
-            );
+            // if Chrome is not installed, use any other available browser
+            Linking.openURL(url);
           });
       }
     }
