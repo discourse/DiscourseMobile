@@ -125,6 +125,25 @@ class NotificationRow extends React.Component {
           </Text>
         );
         break;
+      case 20:
+      case 21:
+        innerText = (
+          <Text>
+            <Text style={styles.notificationText}>
+              {`"${notification.fancy_title}" approved`}
+            </Text>
+          </Text>
+        );
+        break;
+      case 22:
+        innerText = (
+          <Text>
+            <Text style={styles.notificationText}>
+              {`Membership accepted in "${notification.data.group_name}"`}
+            </Text>
+          </Text>
+        );
+        break;
       default:
         console.log("Couldn’t generate text for notification", notification);
         innerText = (

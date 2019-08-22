@@ -24,6 +24,8 @@ class DiscourseUtils {
       case 15:
       case 17:
       case 18:
+      case 20:
+      case 21:
         endpoint = `/t/${notification.slug}/${notification.topic_id}/${
           notification.post_number
         }`;
@@ -38,6 +40,9 @@ class DiscourseUtils {
         endpoint = `/u/${
           site.username
         }/notifications/likes-received?acting_username=${data.username}`;
+        break;
+      case 22:
+        endpoint = `/g/${data.group_name}`;
         break;
       default:
         console.log(
@@ -59,7 +64,7 @@ class DiscourseUtils {
       case 3:
         return "quote-right";
       case 4:
-        return "pencil";
+        return "pencil-alt";
       case 5:
         return "heart";
       case 6:
@@ -90,6 +95,11 @@ class DiscourseUtils {
         return "clock";
       case 19:
         return "heart";
+      case 20:
+      case 21:
+        return "check";
+      case 22:
+        return "user-plus";
       default:
         console.log(
           "Couldn’t generate an icon name for notification",
