@@ -47,9 +47,12 @@ class Discourse extends React.Component {
     this._siteManager = new SiteManager();
 
     this._handleAppStateChange = () => {
-      console.log("Detected appstate change " + AppState.currentState);
+      console.log("Detected appstate change: " + AppState.currentState);
 
-      if (AppState.currentState === "inactive") {
+      if (
+        AppState.currentState === "inactive" ||
+        AppState.currentState === "background"
+      ) {
         this._siteManager.enterBackground();
         this._seenNotificationMap = null;
       }
@@ -141,9 +144,7 @@ class Discourse extends React.Component {
 
   _handleOpenUrl(event) {
     console.log("_handleOpenUrl", event);
-    if (event.url.startsWith("discourse://testing-something")) {
-      this.openUrl(`https://auth-images.curiousfish.org/`);
-    }
+
     if (event.url.startsWith("discourse://")) {
       let params = this.parseURLparameters(event.url);
       let site = this._siteManager.activeSite;
@@ -229,11 +230,11 @@ class Discourse extends React.Component {
           this.handleAndroidOpeNotification(notificationOpen);
         });
 
-      // notification received as message while app is in foreground (not yet opened)
-      this.messageListener = firebase
-        .messaging()
-        .onMessage((message: RemoteMessage) => {
-          bgMessaging(message);
+      // notification received while in foreground
+      this.foregroundNNotificationListener = firebase
+        .notifications()
+        .onNotification(notification => {
+          bgMessaging(notification);
         });
     }
   }
@@ -244,7 +245,7 @@ class Discourse extends React.Component {
     clearTimeout(this.safariViewTimeout);
     if (Platform.OS === "android") {
       this.removeNotificationOpenedListener();
-      this.messageListener();
+      this.foregroundNNotificationListener();
     }
   }
 
