@@ -36,6 +36,12 @@ class SiteManager {
         this._onRefresh;
       }
     });
+
+    this.deviceName = "Discourse - Unknown Mobile Device";
+
+    DeviceInfo.getDeviceName().then(name => {
+      this.deviceName = `Discourse - ${name}`;
+    });
   }
 
   refreshInterval(interval) {
@@ -538,7 +544,7 @@ class SiteManager {
             nonce: nonce,
             push_url: basePushUrl + "/api/publish_" + Platform.OS,
             auth_redirect: this.urlScheme,
-            application_name: this.deviceName(),
+            application_name: this.deviceName,
             public_key: this.rsaKeys.public,
             discourse_app: 1
           };
@@ -558,7 +564,7 @@ class SiteManager {
       if (type === "full") {
         params = {
           auth_redirect: this.urlScheme,
-          application_name: this.deviceName(),
+          application_name: this.deviceName,
           public_key: this.rsaKeys.public
         };
       }
@@ -643,18 +649,6 @@ class SiteManager {
 
   _onChange() {
     this._subscribers.forEach(sub => sub({ event: "change" }));
-  }
-
-  deviceName() {
-    let deviceName = "Unknown Mobile Device";
-
-    try {
-      deviceName = DeviceInfo.getDeviceName();
-    } catch (e) {
-      // on android maybe this can fail?
-    }
-
-    return "Discourse - " + deviceName;
   }
 
   supportsDelegatedAuth(site) {

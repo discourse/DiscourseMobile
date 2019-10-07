@@ -22,6 +22,7 @@ import SiteManager from "./site_manager";
 import SafariView from "react-native-safari-view";
 import SafariWebAuth from "react-native-safari-web-auth";
 import AsyncStorage from "@react-native-community/async-storage";
+import DeviceInfo from "react-native-device-info";
 
 const ChromeCustomTab = NativeModules.ChromeCustomTab;
 
@@ -113,6 +114,16 @@ class Discourse extends React.Component {
           }
         });
     }
+
+    this.state = {
+      hasNotch: true
+    };
+
+    DeviceInfo.hasNotch().then(hasNotch => {
+      if (hasNotch === false) {
+        this.setState({ hasNotch: false });
+      }
+    });
   }
 
   // _handleLocalNotification(e) {
@@ -301,20 +312,24 @@ class Discourse extends React.Component {
 
   render() {
     return (
-      <AppNavigator
-        ref={ref => (this._navigation = ref && ref._navigation)}
-        style={styles.app}
-        screenProps={{
-          resetToTop: this.resetToTop.bind(this),
-          openUrl: this.openUrl.bind(this),
-          _handleOpenUrl: this._handleOpenUrl,
-          seenNotificationMap: this._seenNotificationMap,
-          setSeenNotificationMap: map => {
-            this._seenNotificationMap = map;
-          },
-          siteManager: this._siteManager
-        }}
-      />
+      <React.Fragment>
+        <StatusBar barStyle="dark-content" />
+        <AppNavigator
+          ref={ref => (this._navigation = ref && ref._navigation)}
+          style={styles.app}
+          screenProps={{
+            resetToTop: this.resetToTop.bind(this),
+            openUrl: this.openUrl.bind(this),
+            _handleOpenUrl: this._handleOpenUrl,
+            seenNotificationMap: this._seenNotificationMap,
+            setSeenNotificationMap: map => {
+              this._seenNotificationMap = map;
+            },
+            siteManager: this._siteManager,
+            hasNotch: this.state.hasNotch
+          }}
+        />
+      </React.Fragment>
     );
   }
 }

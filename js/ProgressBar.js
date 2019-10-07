@@ -2,13 +2,9 @@
 "use strict";
 
 import React from "react";
-
 import { View } from "react-native";
-
 import Dimensions from "Dimensions";
-
 import { Bar } from "react-native-progress";
-
 import colors from "./colors";
 
 class ProgressBar extends React.Component {

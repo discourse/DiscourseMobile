@@ -6,7 +6,6 @@ import Immutable from "immutable";
 
 import {
   Animated,
-  StyleSheet,
   View,
   Text,
   Linking,
@@ -25,11 +24,22 @@ import colors from "../colors";
 import ProgressBar from "../ProgressBar";
 import TinyColor from "../../lib/tinycolor";
 import SafariView from "react-native-safari-view";
+
 class WebViewScreen extends React.Component {
+  static navigationOptions = ({ screenProps }) => {
+    // avoid accidental scroll down to dismiss action on devices without a notch
+    return {
+      gestureResponseDistance: {
+        vertical: screenProps.hasNotch ? 135 : 75
+      }
+    };
+  };
+
   constructor(props) {
     super(props);
     this.startUrl = this.props.navigation.getParam("url");
     this.siteManager = this.props.screenProps.siteManager;
+    this.hasNotch = this.props.screenProps.hasNotch;
 
     this.routes = [];
     this.backForwardAction = null;
@@ -67,8 +77,8 @@ class WebViewScreen extends React.Component {
     return (
       <Animated.View
         style={{
-          ...styles.container,
-          paddingTop: this._isIphoneX() ? 35 : 20,
+          flex: 1,
+          paddingTop: this.hasNotch ? 35 : 20,
           backgroundColor: this.state.headerBgAnim.interpolate({
             inputRange: [0, 1],
             outputRange: [colors.grayBackground, this.state.headerBg]
@@ -76,10 +86,13 @@ class WebViewScreen extends React.Component {
         }}
       >
         <StatusBar barStyle={this.state.barStyle} />
-        <View style={{ marginTop: this._isIphoneX() ? 8 : 0 }}>
+        <View style={{ marginTop: this.hasNotch ? 8 : 0 }}>
           <ProgressBar progress={this.state.progress} />
         </View>
         <WebView
+          style={{
+            marginTop: -1 // hacky fix to a 1px overflow just above header
+          }}
           ref={ref => (this.webview = ref)}
           source={{ uri: this.startUrl }}
           useWebkit={true}
@@ -191,24 +204,6 @@ class WebViewScreen extends React.Component {
       this.props.navigation.goBack();
     }
   }
-
-  _isIphoneX() {
-    const dimen = Dimensions.get("window");
-    return (
-      Platform.OS === "ios" &&
-      !Platform.isPad &&
-      !Platform.isTVOS &&
-      (dimen.height === 812 ||
-        dimen.width === 812 ||
-        (dimen.height === 896 || dimen.width === 896))
-    );
-  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-});
 
 export default WebViewScreen;
