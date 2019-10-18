@@ -116,13 +116,18 @@ class Discourse extends React.Component {
     }
 
     this.state = {
-      hasNotch: true
+      hasNotch: true,
+      deviceId: ""
     };
 
     DeviceInfo.hasNotch().then(hasNotch => {
       if (hasNotch === false) {
         this.setState({ hasNotch: false });
       }
+    });
+
+    DeviceInfo.getDeviceId().then(deviceId => {
+      this.setState({ deviceId: deviceId });
     });
   }
 
@@ -326,7 +331,8 @@ class Discourse extends React.Component {
               this._seenNotificationMap = map;
             },
             siteManager: this._siteManager,
-            hasNotch: this.state.hasNotch
+            hasNotch: this.state.hasNotch,
+            deviceId: this.state.deviceId
           }}
         />
       </React.Fragment>

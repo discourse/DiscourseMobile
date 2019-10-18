@@ -40,6 +40,7 @@ class WebViewScreen extends React.Component {
     this.startUrl = this.props.navigation.getParam("url");
     this.siteManager = this.props.screenProps.siteManager;
     this.hasNotch = this.props.screenProps.hasNotch;
+    this.userAgentSuffix = `DiscourseHub ${this.props.screenProps.deviceId}`;
 
     this.routes = [];
     this.backForwardAction = null;
@@ -96,7 +97,7 @@ class WebViewScreen extends React.Component {
           ref={ref => (this.webview = ref)}
           source={{ uri: this.startUrl }}
           useWebkit={true}
-          applicationNameForUserAgent={"DiscourseHub"}
+          applicationNameForUserAgent={this.userAgentSuffix}
           allowsBackForwardNavigationGestures={true}
           allowsInlineMediaPlayback={true}
           onError={syntheticEvent => {
