@@ -10,7 +10,6 @@ import {
   Text,
   Linking,
   Platform,
-  Dimensions,
   Settings,
   Share,
   StatusBar
@@ -40,7 +39,6 @@ class WebViewScreen extends React.Component {
     this.startUrl = this.props.navigation.getParam("url");
     this.siteManager = this.props.screenProps.siteManager;
     this.hasNotch = this.props.screenProps.hasNotch;
-    this.userAgentSuffix = `DiscourseHub ${this.props.screenProps.deviceId}`;
 
     this.routes = [];
     this.backForwardAction = null;
@@ -61,7 +59,9 @@ class WebViewScreen extends React.Component {
       headerBg: colors.grayBackground,
       headerBgAnim: new Animated.Value(0),
       barStyle: "dark-content",
-      errorData: null
+      errorData: null,
+      userAgentSuffix: "DiscourseHub",
+      layoutCalculated: false
     };
   }
 
@@ -72,6 +72,22 @@ class WebViewScreen extends React.Component {
         duration: 250
       }).start();
     }
+  }
+
+  _onLayout(event) {
+    // The iPad user agent string no longer includes "iPad".
+    // We want to serve desktop version on fullscreen iPad app
+    // and mobile version on split view.
+    // That's why we append the device ID (which includes "iPad" on large window sizes only.
+    var { width } = event.nativeEvent.layout;
+
+    this.setState({
+      userAgentSuffix:
+        width > 767
+          ? `DiscourseHub ${this.props.screenProps.deviceId}`
+          : "DiscourseHub",
+      layoutCalculated: true
+    });
   }
 
   render() {
@@ -87,81 +103,86 @@ class WebViewScreen extends React.Component {
         }}
       >
         <StatusBar barStyle={this.state.barStyle} />
-        <View style={{ marginTop: this.hasNotch ? 8 : 0 }}>
+        <View
+          onLayout={e => this._onLayout(e)}
+          style={{ marginTop: this.hasNotch ? 8 : 0 }}
+        >
           <ProgressBar progress={this.state.progress} />
         </View>
-        <WebView
-          style={{
-            marginTop: -1 // hacky fix to a 1px overflow just above header
-          }}
-          ref={ref => (this.webview = ref)}
-          source={{ uri: this.startUrl }}
-          useWebkit={true}
-          applicationNameForUserAgent={this.userAgentSuffix}
-          allowsBackForwardNavigationGestures={true}
-          allowsInlineMediaPlayback={true}
-          onError={syntheticEvent => {
-            const { nativeEvent } = syntheticEvent;
-            this.setState({ errorData: nativeEvent });
-          }}
-          renderError={errorName => (
-            <Components.ErrorScreen
-              errorName={errorName}
-              errorData={this.state.errorData}
-              onRefresh={() => this._onRefresh()}
-              onClose={() => this._onClose()}
-            />
-          )}
-          startInLoadingState={true}
-          renderLoading={() => (
-            <Components.ErrorScreen
-              onRefresh={() => this._onRefresh()}
-              onClose={() => this._onClose()}
-            />
-          )}
-          onShouldStartLoadWithRequest={request => {
-            console.log("onShouldStartLoadWithRequest", request);
-            if (request.url.startsWith("discourse://")) {
-              this.props.navigation.goBack();
-              return false;
-            } else {
-              // onShouldStartLoadWithRequest is sometimes triggered by ajax requests (ads, etc.)
-              // this is a workaround to avoid launching Safari for these events
-              if (request.url !== request.mainDocumentURL) {
+        {this.state.layoutCalculated && (
+          <WebView
+            style={{
+              marginTop: -1 // hacky fix to a 1px overflow just above header
+            }}
+            ref={ref => (this.webview = ref)}
+            source={{ uri: this.startUrl }}
+            useWebkit={true}
+            applicationNameForUserAgent={this.state.userAgentSuffix}
+            allowsBackForwardNavigationGestures={true}
+            allowsInlineMediaPlayback={true}
+            onError={syntheticEvent => {
+              const { nativeEvent } = syntheticEvent;
+              this.setState({ errorData: nativeEvent });
+            }}
+            renderError={errorName => (
+              <Components.ErrorScreen
+                errorName={errorName}
+                errorData={this.state.errorData}
+                onRefresh={() => this._onRefresh()}
+                onClose={() => this._onClose()}
+              />
+            )}
+            startInLoadingState={true}
+            renderLoading={() => (
+              <Components.ErrorScreen
+                onRefresh={() => this._onRefresh()}
+                onClose={() => this._onClose()}
+              />
+            )}
+            onShouldStartLoadWithRequest={request => {
+              console.log("onShouldStartLoadWithRequest", request);
+              if (request.url.startsWith("discourse://")) {
+                this.props.navigation.goBack();
+                return false;
+              } else {
+                // onShouldStartLoadWithRequest is sometimes triggered by ajax requests (ads, etc.)
+                // this is a workaround to avoid launching Safari for these events
+                if (request.url !== request.mainDocumentURL) {
+                  return true;
+                }
+
+                // launch externally and stop loading request if external link
+                if (!this.siteManager.urlInSites(request.url)) {
+                  const useSVC = Settings.get("external_links_svc");
+                  if (useSVC) {
+                    if (!this.safariViewVisible) {
+                      SafariView.show({ url: request.url });
+                    }
+                  } else {
+                    Linking.openURL(request.url);
+                  }
+                  return false;
+                }
                 return true;
               }
+            }}
+            decelerationRate={"normal"}
+            onLoadProgress={({ nativeEvent }) => {
+              const progress = nativeEvent.progress;
+              this.setState({
+                progress: progress
+              });
 
-              // launch externally and stop loading request if external link
-              if (!this.siteManager.urlInSites(request.url)) {
-                const useSVC = Settings.get("external_links_svc");
-                if (useSVC) {
-                  if (!this.safariViewVisible) {
-                    SafariView.show({ url: request.url });
-                  }
-                } else {
-                  Linking.openURL(request.url);
-                }
-                return false;
+              if (progress === 1) {
+                this.progressTimeout = setTimeout(
+                  () => this.setState({ progress: 0 }),
+                  400
+                );
               }
-              return true;
-            }
-          }}
-          decelerationRate={"normal"}
-          onLoadProgress={({ nativeEvent }) => {
-            const progress = nativeEvent.progress;
-            this.setState({
-              progress: progress
-            });
-
-            if (progress === 1) {
-              this.progressTimeout = setTimeout(
-                () => this.setState({ progress: 0 }),
-                400
-              );
-            }
-          }}
-          onMessage={event => this._onMessage(event)}
-        />
+            }}
+            onMessage={event => this._onMessage(event)}
+          />
+        )}
       </Animated.View>
     );
   }
