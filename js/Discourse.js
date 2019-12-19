@@ -54,14 +54,15 @@ class Discourse extends React.Component {
         AppState.currentState === "inactive" ||
         AppState.currentState === "background"
       ) {
-        this._siteManager.enterBackground();
         this._seenNotificationMap = null;
       }
 
       if (AppState.currentState === "active") {
         StatusBar.setHidden(false);
-        this._siteManager.exitBackground();
-        this._siteManager.refreshSites({ ui: false, fast: true });
+        this._siteManager.refreshSites({
+          ui: false,
+          fast: true
+        });
       }
     };
 

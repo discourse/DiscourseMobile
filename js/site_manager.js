@@ -7,7 +7,7 @@ import Moment from "moment";
 const Fabric = require("react-native-fabric");
 const { Answers } = Fabric;
 
-import { Alert, Platform, PushNotificationIOS } from "react-native";
+import { Alert, AppState, Platform, PushNotificationIOS } from "react-native";
 
 import AsyncStorage from "@react-native-community/async-storage";
 import Site from "./site";
@@ -15,7 +15,6 @@ import RNKeyPair from "react-native-key-pair";
 import DeviceInfo from "react-native-device-info";
 import JSEncrypt from "./../lib/jsencrypt";
 import randomBytes from "./../lib/random-bytes";
-import BackgroundJob from "./../lib/background-job";
 
 class SiteManager {
   constructor() {
@@ -207,7 +206,7 @@ class SiteManager {
           Promise.all(promises)
             .then(() => {
               this.save();
-              this.refreshSites({ ui: false, fast: true })
+              this.refreshSites({ ui: false, fast: false })
                 .then(() => {
                   this._onChange();
                 })
@@ -258,71 +257,23 @@ class SiteManager {
     });
   }
 
-  enterBackground() {
-    let enterBg = id => {
-      if (id) {
-        BackgroundJob.finish(id);
-      }
-      this._background = true;
-      this.sites.forEach(s => s.enterBackground());
-    };
-
-    if (this._refresher) {
-      clearInterval(this._refresher);
-      this._refresher = null;
-    }
-
-    if (this.refreshing) {
-      // let it finish
-      BackgroundJob.start()
-        .then(id => {
-          this.waitFor(20000, () => !this.refreshing).finally(() => {
-            enterBg(id);
-          });
-        })
-        .catch(() => {
-          // not implemented on android yet
-          enterBg();
-        });
-    } else {
-      BackgroundJob.start()
-        .then(id => {
-          this.refreshSites({
-            ui: false,
-            background: true,
-            forceRefresh: true
-          }).finally(() => enterBg(id));
-        })
-        .catch(() => {
-          // android fallback
-          enterBg();
-        });
-    }
-  }
-
-  exitBackground() {
-    this._background = false;
-    this.sites.forEach(s => s.exitBackground());
-    this.refreshInterval(this._refreshInterval);
-    // in case UI did not pick up changes
-    this._onChange();
-    this._onRefresh();
-  }
+  // exitBackground() {
+  //   this.sites.forEach(s => s.exitBackground());
+  //   this.refreshInterval(this._refreshInterval);
+  //   // in case UI did not pick up changes
+  //   this._onChange();
+  //   this._onRefresh();
+  // }
 
   refreshSites(opts) {
-    if (opts.background) {
-      this.lastFetch = new Date();
-      this.fetchCount++;
-    }
-
     let sites = this.sites.slice(0);
     opts = opts || {};
 
     console.log("refresh sites was called on " + sites.length + " sites!");
 
     return new Promise((resolve, reject) => {
-      if (this._background && !opts.background) {
-        console.log("skip refresh cause app is in background!");
+      if (AppState.currentState !== "active") {
+        console.log("skip refresh cause app is not active");
         resolve({ changed: false });
         return;
       }
@@ -347,15 +298,15 @@ class SiteManager {
         return;
       }
 
-      if (this.refreshing && refreshDelta < 60000) {
+      if (this.refreshing && refreshDelta < 30000) {
         console.log("not refreshing cause already refreshing!");
         resolve({ changed: false });
         return;
       }
 
-      if (this.refreshing && refreshDelta >= 60000) {
+      if (this.refreshing && refreshDelta >= 30000) {
         console.log(
-          "WARNING: a previous refresh went missing, resetting cause 1 minute is too long"
+          "WARNING: a previous refresh went missing, resetting after 30 seconds"
         );
       }
 
@@ -369,10 +320,6 @@ class SiteManager {
       sites.forEach(site => {
         if (opts.ui) {
           site.resetBus();
-        }
-
-        if (opts.background) {
-          site.exitBackground();
         }
 
         let errors = 0;
@@ -394,23 +341,16 @@ class SiteManager {
             errors++;
           })
           .finally(() => {
-            if (this._background) {
-              site.enterBackground();
-            }
-
             processedSites++;
 
             if (processedSites === sites.length) {
               // Don't save stuff in the background
-              if (!this._background) {
+              if (AppState.currentState === "active") {
                 this.save();
               }
 
-              if (somethingChanged && this._background) {
-                this.updateUnreadBadge();
-              }
-
               if (somethingChanged) {
+                this.updateUnreadBadge();
                 this._onChange();
               }
 
@@ -418,7 +358,7 @@ class SiteManager {
                 this.lastRefresh = new Date();
               }
 
-              if (!this._background && this.lastRefresh) {
+              if (this.lastRefresh) {
                 AsyncStorage.setItem(
                   "@Discourse.lastRefresh",
                   this.lastRefresh.toJSON()

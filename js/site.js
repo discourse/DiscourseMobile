@@ -1,7 +1,7 @@
 /* @flow */
 "use strict";
 
-import { Platform } from "react-native";
+import { AppState, Platform } from "react-native";
 import _ from "lodash";
 import Moment from "moment";
 
@@ -130,7 +130,7 @@ class Site {
       data = JSON.stringify(data);
     }
 
-    if (this._background) {
+    if (AppState.currentState !== "active") {
       return new Promise((resolve, reject) =>
         reject("In background mode aborting start request!")
       );
@@ -145,7 +145,7 @@ class Site {
       this._currentFetch = fetch(req);
       this._currentFetch
         .then(r1 => {
-          if (this._background) {
+          if (AppState.currentState !== "active") {
             throw "In Background mode aborting request!";
           }
           if (r1.status === 200) {
@@ -490,9 +490,6 @@ class Site {
           if (opts.fast || !busState.wasReady) {
             this.checkBus()
               .then(changes => {
-                // console.log(`changes detected on ${this.url}`);
-                // console.log(changes);
-
                 if (!busState.wasReady) {
                   this.updateTotals();
 
@@ -517,7 +514,9 @@ class Site {
                 reject(e);
               });
 
-            return;
+            if (opts.fast) {
+              return;
+            }
           }
 
           this.jsonApi("/session/current.json")
@@ -582,18 +581,18 @@ class Site {
     });
   }
 
-  enterBackground() {
-    this._background = true;
-    if (this._currentFetch && this._currentFetch.abort) {
-      this._currentFetch.abort();
-    }
-    this._timeout = 5000;
-  }
+  // enterBackground() {
+  //   this._background = true;
+  //   if (this._currentFetch && this._currentFetch.abort) {
+  //     this._currentFetch.abort();
+  //   }
+  //   this._timeout = 5000;
+  // }
 
-  exitBackground() {
-    this._background = false;
-    this._timeout = 10000;
-  }
+  // exitBackground() {
+  //   this._background = false;
+  //   this._timeout = 10000;
+  // }
 
   readNotification(notification) {
     return new Promise((resolve, reject) => {

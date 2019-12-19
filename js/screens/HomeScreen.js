@@ -87,7 +87,7 @@ class HomeScreen extends React.Component {
         console.log("Background fetch Called!");
 
         this._siteManager
-          .refreshSites({ ui: false, fast: true, background: true })
+          .refreshSites({ ui: false })
           .then(state => {
             console.log("Finished refreshing sites in BG fetch!");
             console.log(state);

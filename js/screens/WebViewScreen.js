@@ -38,7 +38,6 @@ class WebViewScreen extends React.Component {
     super(props);
     this.startUrl = this.props.navigation.getParam("url");
     this.siteManager = this.props.screenProps.siteManager;
-    this.hasNotch = this.props.screenProps.hasNotch;
 
     this.routes = [];
     this.backForwardAction = null;
@@ -61,7 +60,8 @@ class WebViewScreen extends React.Component {
       barStyle: "dark-content",
       errorData: null,
       userAgentSuffix: "DiscourseHub",
-      layoutCalculated: false
+      layoutCalculated: false,
+      hasNotch: this.props.screenProps.hasNotch
     };
   }
 
@@ -79,7 +79,7 @@ class WebViewScreen extends React.Component {
     // We want to serve desktop version on fullscreen iPad app
     // and mobile version on split view.
     // That's why we append the device ID (which includes "iPad" on large window sizes only.
-    var { width } = event.nativeEvent.layout;
+    var { width, height } = event.nativeEvent.layout;
 
     this.setState({
       userAgentSuffix:
@@ -88,14 +88,17 @@ class WebViewScreen extends React.Component {
           : "DiscourseHub",
       layoutCalculated: true
     });
+
+    // TODO: disable notch spacing in landscape mode
   }
 
   render() {
     return (
       <Animated.View
+        onLayout={e => this._onLayout(e)}
         style={{
           flex: 1,
-          paddingTop: this.hasNotch ? 35 : 20,
+          paddingTop: this.state.hasNotch ? 35 : 20,
           backgroundColor: this.state.headerBgAnim.interpolate({
             inputRange: [0, 1],
             outputRange: [colors.grayBackground, this.state.headerBg]
@@ -103,10 +106,7 @@ class WebViewScreen extends React.Component {
         }}
       >
         <StatusBar barStyle={this.state.barStyle} />
-        <View
-          onLayout={e => this._onLayout(e)}
-          style={{ marginTop: this.hasNotch ? 8 : 0 }}
-        >
+        <View style={{ marginTop: this.state.hasNotch ? 8 : 0 }}>
           <ProgressBar progress={this.state.progress} />
         </View>
         {this.state.layoutCalculated && (
@@ -189,6 +189,11 @@ class WebViewScreen extends React.Component {
 
   componentWillUnmount() {
     clearTimeout(this.progressTimeout);
+
+    this.siteManager.refreshSites({
+      ui: false,
+      fast: true
+    });
   }
 
   _onRefresh() {
