@@ -2,7 +2,7 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "1.5.4"
+IOS_APP_VERSION = "1.5.6"
 ANDROID_APP_VERSION = "1.5.4"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
@@ -118,7 +118,7 @@ platform :ios do
 
     match(force: true, type: "appstore", git_url: KEYS_REPOSITORY)
     match(force: true, type: "adhoc", git_url: KEYS_REPOSITORY)
-    match(force: true, type: "development", git_url: KEYS_REPOSITORY)
+    # match(force: true, type: "development", git_url: KEYS_REPOSITORY)
   end
 
   desc "Submit a new Beta Build to Fabric -> Beta"
@@ -173,6 +173,23 @@ platform :ios do
       username: apple_id,
       beta_app_feedback_email: apple_id
     )
+  end
+
+  desc "Install on connected device"
+  lane :install do
+    gym(
+      scheme: PROJECT_NAME,
+      export_method: "ad-hoc",
+      export_options: {
+        provisioningProfiles: {
+          "org.discourse.DiscourseApp" => "match AdHoc org.discourse.DiscourseApp"
+        }
+      },
+      clean: true,
+      project: "./ios/#{PROJECT_NAME}.xcodeproj"
+    )
+
+    install_on_device
   end
 end
 
