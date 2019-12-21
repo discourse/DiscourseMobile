@@ -1,10 +1,10 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import React from "react";
-import Immutable from "immutable";
+import React from 'react';
+import Immutable from 'immutable';
 
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 import {
   Image,
@@ -12,25 +12,25 @@ import {
   Text,
   TouchableOpacity,
   TouchableHighlight,
-  View
-} from "react-native";
+  View,
+} from 'react-native';
 
-import { ImmutableListView } from "react-native-immutable-list-view";
+import {ImmutableVirtualizedList} from 'react-native-immutable-list-view';
 
-import colors from "../../colors";
+import colors from '../../colors';
 
-import Site from "../../site";
+import Site from '../../site';
 
 class OnBoardingView extends React.Component {
   static propTypes = {
     onDidPressAddSite: PropTypes.func.isRequired,
-    onDidPressSuggestedSite: PropTypes.func.isRequired
+    onDidPressSuggestedSite: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
-    this.state = { dataSource: [], suggestedSitesLoaded: false };
+    this.state = {dataSource: [], suggestedSitesLoaded: false};
     this._fetchSuggestedSites(suggestedSites);
   }
 
@@ -39,7 +39,7 @@ class OnBoardingView extends React.Component {
       return fetch(`${url}/site/basic-info.json`)
         .then(response => response.json())
         .then(info => {
-          return { info, url };
+          return {info, url};
         });
     });
 
@@ -50,20 +50,21 @@ class OnBoardingView extends React.Component {
             url: response.url,
             title: response.info.title,
             description: response.info.description,
-            icon: response.info.apple_touch_icon_url
+            icon: response.info.apple_touch_icon_url,
           });
         });
       })
       .then(sites => {
         this.setState({
           dataSource: Immutable.fromJS(sites),
-          suggestedSitesLoaded: true
+          suggestedSitesLoaded: true,
         });
       })
       .catch(error => console.log(error));
   }
 
-  _renderOnBoardingRow(site) {
+  _renderOnBoardingRow(item) {
+    const site = item.item;
     const lastRow = site.url === suggestedSites[suggestedSites.length - 1];
     let lastRowStyle = {};
 
@@ -71,24 +72,21 @@ class OnBoardingView extends React.Component {
       lastRowStyle.borderBottomColor = colors.grayBorder;
       lastRowStyle.borderBottomWidth = StyleSheet.hairlineWidth;
     }
-
     return (
       <TouchableHighlight
         underlayColor={colors.yellowUIFeedback}
         style={[styles.rowWrapper]}
-        onPress={() => this.props.onDidPressSuggestedSite(site)}
-      >
+        onPress={() => this.props.onDidPressSuggestedSite(site)}>
         <View accessibilityTraits="link" style={[styles.row, lastRowStyle]}>
-          <Image style={styles.icon} source={{ uri: site.icon }} />
+          <Image style={styles.icon} source={{uri: site.icon}} />
           <View style={styles.info}>
             <Text ellipsizeMode="tail" numberOfLines={1} style={styles.url}>
-              {site.url.replace(/^https?:\/\//, "")}
+              {site.url.replace(/^https?:\/\//, '')}
             </Text>
             <Text
               ellipsizeMode="tail"
               numberOfLines={2}
-              style={styles.description}
-            >
+              style={styles.description}>
               {site.description}
             </Text>
           </View>
@@ -105,7 +103,7 @@ class OnBoardingView extends React.Component {
         <View style={styles.suggestedSitesContainer}>
           <Text style={styles.text}>
             <Text style={styles.title}>Don’t know where to start?</Text>
-            {"\n"}
+            {'\n'}
             <Text style={styles.subtitle}>
               Check out these popular communities.
             </Text>
@@ -120,7 +118,7 @@ class OnBoardingView extends React.Component {
       <View style={styles.addSiteContainer}>
         <Text style={styles.text}>
           <Text style={styles.title}>You don’t have any sites yet.</Text>
-          {"\n"}
+          {'\n'}
           <Text style={styles.subtitle}>
             Add Discourse sites to keep track of.
           </Text>
@@ -128,8 +126,7 @@ class OnBoardingView extends React.Component {
 
         <TouchableOpacity
           style={styles.test}
-          onPress={() => this.props.onDidPressAddSite()}
-        >
+          onPress={() => this.props.onDidPressAddSite()}>
           <Text style={styles.addSiteButtonText}>+ Add your first site</Text>
         </TouchableOpacity>
 
@@ -141,12 +138,12 @@ class OnBoardingView extends React.Component {
   render() {
     if (this.state.dataSource.size > 0) {
       return (
-        <ImmutableListView
+        <ImmutableVirtualizedList
           style={styles.list}
-          enableEmptySections={true}
           immutableData={this.state.dataSource}
-          renderHeader={() => this._renderOnBoardingHeader()}
-          renderRow={site => this._renderOnBoardingRow(site)}
+          ListHeaderComponent={() => this._renderOnBoardingHeader()}
+          renderItem={site => this._renderOnBoardingRow(site)}
+          keyExtractor={site => site.url}
         />
       );
     }
@@ -155,36 +152,36 @@ class OnBoardingView extends React.Component {
 }
 
 const suggestedSites = [
-  "https://meta.discourse.org",
-  "https://community.cartalk.com",
+  'https://meta.discourse.org',
+  'https://community.cartalk.com',
   // "https://community.imgur.com",
-  "https://bbs.boingboing.net"
+  'https://bbs.boingboing.net',
 ];
 
 const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     padding: 32,
-    textAlign: "center"
+    textAlign: 'center',
   },
   addSiteButtonText: {
     backgroundColor: colors.blueCallToAction,
-    color: "white",
+    color: 'white',
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
     padding: 8,
-    textAlign: "center"
+    textAlign: 'center',
   },
   title: {
     color: colors.grayTitle,
-    fontWeight: "500"
+    fontWeight: '500',
   },
   subtitle: {
-    color: colors.graySubtitle
+    color: colors.graySubtitle,
   },
   rowWrapper: {
     marginRight: 16,
-    marginLeft: 16
+    marginLeft: 16,
   },
   row: {
     borderLeftColor: colors.grayBorder,
@@ -193,51 +190,51 @@ const styles = StyleSheet.create({
     borderRightWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.grayBorder,
     borderTopWidth: StyleSheet.hairlineWidth,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 12,
-    backgroundColor: "white"
+    backgroundColor: 'white',
   },
   icon: {
-    alignSelf: "center",
+    alignSelf: 'center',
     height: 40,
-    width: 40
+    width: 40,
   },
   info: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    paddingLeft: 12
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingLeft: 12,
   },
   url: {
     color: colors.grayTitle,
     fontSize: 16,
-    fontWeight: "normal"
+    fontWeight: 'normal',
   },
   description: {
     color: colors.graySubtitle,
     flex: 10,
-    fontSize: 14
+    fontSize: 14,
   },
   connect: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     backgroundColor: colors.blueCallToAction,
-    color: "white",
+    color: 'white',
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: '500',
     marginLeft: 6,
     marginBottom: 6,
-    overflow: "hidden",
-    padding: 6
+    overflow: 'hidden',
+    padding: 6,
   },
   suggestedSitesContainer: {
-    marginTop: 64
+    marginTop: 64,
   },
   addSiteContainer: {
     marginTop: 32,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column"
-  }
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
 });
 
 export default OnBoardingView;

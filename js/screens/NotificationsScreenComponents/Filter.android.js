@@ -1,24 +1,29 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import { Animated, Easing, Text, TouchableHighlight, View } from "react-native";
+import {
+  Animated,
+  Dimensions,
+  Easing,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 
-import Dimensions from "Dimensions";
+import _ from 'lodash';
+import Orientation from 'react-native-orientation';
 
-import _ from "lodash";
-import Orientation from "react-native-orientation";
-
-import colors from "../../colors";
+import colors from '../../colors';
 
 class Filter extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     selectedIndex: PropTypes.number.isRequired,
-    tabs: PropTypes.array
+    tabs: PropTypes.array,
   };
 
   constructor(props) {
@@ -27,8 +32,8 @@ class Filter extends React.Component {
     this.initialOrientation = Orientation.getInitialOrientation();
 
     this.state = {
-      indicatorWidth: Dimensions.get("window").width / this.props.tabs.length,
-      selectedIndex: new Animated.Value(props.selectedIndex)
+      indicatorWidth: Dimensions.get('window').width / this.props.tabs.length,
+      selectedIndex: new Animated.Value(props.selectedIndex),
     };
   }
 
@@ -45,7 +50,7 @@ class Filter extends React.Component {
       easing: Easing.inOut(Easing.ease),
       duration: 250,
       toValue: index,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start();
 
     this.props.onChange(index);
@@ -60,8 +65,8 @@ class Filter extends React.Component {
             styles.indicator,
             {
               width: this.state.indicatorWidth,
-              transform: [{ translateX: this._indicatorLeftPosition() }]
-            }
+              transform: [{translateX: this._indicatorLeftPosition()}],
+            },
           ]}
         />
       </View>
@@ -75,8 +80,7 @@ class Filter extends React.Component {
           key={tab}
           underlayColor={colors.yellowUIFeedback}
           style={[styles.button]}
-          onPress={() => this.onDidSelect(tabIndex)}
-        >
+          onPress={() => this.onDidSelect(tabIndex)}>
           <Text style={styles.buttonText}>{tab.toUpperCase()}</Text>
         </TouchableHighlight>
       );
@@ -86,7 +90,7 @@ class Filter extends React.Component {
   _indicatorLeftPosition() {
     return this.state.selectedIndex.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, this.state.indicatorWidth]
+      outputRange: [0, this.state.indicatorWidth],
     });
   }
 
@@ -94,41 +98,41 @@ class Filter extends React.Component {
     let width;
 
     if (newOrientation === this.initialOrientation) {
-      width = Dimensions.get("window").width / this.props.tabs.length;
+      width = Dimensions.get('window').width / this.props.tabs.length;
     } else {
-      width = Dimensions.get("window").height / this.props.tabs.length;
+      width = Dimensions.get('window').height / this.props.tabs.length;
     }
 
-    this.setState({ indicatorWidth: width });
+    this.setState({indicatorWidth: width});
   }
 }
 
 const styles = {
   container: {
-    alignItems: "flex-end",
-    justifyContent: "center",
+    alignItems: 'flex-end',
+    justifyContent: 'center',
     backgroundColor: colors.grayUILight,
-    flexDirection: "row"
+    flexDirection: 'row',
   },
   button: {
     flex: 1,
-    flexDirection: "column",
-    backgroundColor: colors.grayUILight
+    flexDirection: 'column',
+    backgroundColor: colors.grayUILight,
   },
   buttonText: {
     padding: 12,
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: '500',
     color: colors.grayUI,
-    textAlign: "center"
+    textAlign: 'center',
   },
   indicator: {
     backgroundColor: colors.grayUI,
     height: 3,
-    position: "absolute",
+    position: 'absolute',
     left: 0,
-    bottom: 0
-  }
+    bottom: 0,
+  },
 };
 
 export default Filter;

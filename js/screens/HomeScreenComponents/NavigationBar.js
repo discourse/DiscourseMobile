@@ -43,7 +43,7 @@ class NavigationBar extends React.Component {
     );
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     if (this.props.leftButtonIconRotated !== props.leftButtonIconRotated) {
       Animated.spring(this.state.rotationValue, {
         toValue: props.leftButtonIconRotated ? 1 : 0,

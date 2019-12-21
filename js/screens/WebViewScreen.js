@@ -65,7 +65,7 @@ class WebViewScreen extends React.Component {
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
     if (nextState.headerBg !== this.state.headerBg) {
       Animated.timing(this.state.headerBgAnim, {
         toValue: 1,

@@ -20,7 +20,6 @@ DerivedData
 *.hmap
 /Discourse.ipa
 *.xcuserstate
-project.xcworkspace
 
 # Android/IntelliJ
 #
@@ -60,8 +59,12 @@ ios/Discourse-tvOS
 ios/Discourse-tvOSTests
 ios/DiscourseTests
 *.keystore
+!debug.keystore
 fastlane/google-play-api-secret.json
 
 # Bundle artifact
 *.jsbundle
 fastlane/report.xml
+
+# CocoaPods
+/ios/Pods/

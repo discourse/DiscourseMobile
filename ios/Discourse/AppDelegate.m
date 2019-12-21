@@ -13,13 +13,14 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
-#import <React/RCTPushNotificationManager.h>
+// #import <React/RCTPushNotificationManager.h>
 #import <React/RCTLog.h>
 #import "RNBackgroundFetch.h"
 #import "Orientation.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import <UserNotifications/UserNotifications.h>
+#import <RNCPushNotificationIOS.h>
 
 @import Photos;
 @import AVFoundation;
@@ -92,63 +93,70 @@
 // Required to register for notifications
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
-  [RCTPushNotificationManager didRegisterUserNotificationSettings:notificationSettings];
+  [RNCPushNotificationIOS didRegisterUserNotificationSettings:notificationSettings];
 }
 // Required for the register event.
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-  [RCTPushNotificationManager didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+  [RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
 // From: https://github.com/zo0r/react-native-push-notification/issues/275
 // Called when a notification is delivered to a foreground app.
--(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
-  NSLog(@"Discourse notification is delivered to a foreground app");
-  completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
-}
+// -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
+//   NSLog(@"Discourse notification is delivered to a foreground app");
+//   completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
+// }
 
 // Called when a user taps on a notification in the foreground
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
+// - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
+// {
+//   NSMutableDictionary *userData = [NSMutableDictionary dictionaryWithDictionary:response.notification.request.content.userInfo];
+//   [userData setObject:@(1) forKey:@"openedInForeground"];
+//   [RCTPushNotificationManager didReceiveRemoteNotification:userData];
+//   completionHandler();
+// }
+
+
+// -(void)applicationDidEnterBackground:(UIApplication *)application {
+// }
+// -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+
+//   NSMutableDictionary *notification = [NSMutableDictionary dictionaryWithDictionary: userInfo];
+
+//   NSString *state = nil;
+
+//   if(application.applicationState == UIApplicationStateInactive) {
+//     state = @"inactive";
+//   } else if(application.applicationState == UIApplicationStateBackground){
+//     state = @"background";
+//   } else {
+//     state = @"foreground";
+//   }
+
+//   [notification setObject: state forKey: @"AppState"];
+
+//   [RCTPushNotificationManager didReceiveRemoteNotification:notification];
+
+//   completionHandler(UIBackgroundFetchResultNoData);
+// }
+
+
+// Required for the notification event. You must call the completion handler after handling the remote notification.
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-  NSMutableDictionary *userData = [NSMutableDictionary dictionaryWithDictionary:response.notification.request.content.userInfo];
-  [userData setObject:@(1) forKey:@"openedInForeground"];
-  [RCTPushNotificationManager didReceiveRemoteNotification:userData];
-  completionHandler();
+  [RNCPushNotificationIOS didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
 }
-
-
--(void)applicationDidEnterBackground:(UIApplication *)application {
+// Required for the registrationError event.
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+  [RNCPushNotificationIOS didFailToRegisterForRemoteNotificationsWithError:error];
 }
--(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-
-  NSMutableDictionary *notification = [NSMutableDictionary dictionaryWithDictionary: userInfo];
-
-  NSString *state = nil;
-
-  if(application.applicationState == UIApplicationStateInactive) {
-    state = @"inactive";
-  } else if(application.applicationState == UIApplicationStateBackground){
-    state = @"background";
-  } else {
-    state = @"foreground";
-  }
-
-  [notification setObject: state forKey: @"AppState"];
-
-  [RCTPushNotificationManager didReceiveRemoteNotification:notification];
-
-  completionHandler(UIBackgroundFetchResultNoData);
-}
-
-
 // Required for the localNotification event.
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-  [RCTPushNotificationManager didReceiveLocalNotification:notification];
-}
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
-{
-  NSLog(@"%@", error);
+  [RNCPushNotificationIOS didReceiveLocalNotification:notification];
 }
 
 
