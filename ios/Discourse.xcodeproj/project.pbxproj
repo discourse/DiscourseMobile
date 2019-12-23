@@ -12,27 +12,14 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7777F444524E4395B25BC6ED /* libSafariWebAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDA5FD96B7940B4AB7EC108 /* libSafariWebAuth.a */; };
 		B52583FE1E5551D7001E9B7C /* nav-icon-gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B52583FD1E5551D7001E9B7C /* nav-icon-gray@3x.png */; };
 		B587A4EF1E5549A8003AAE26 /* RNBackgroundFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = B587A4EC1E5549A8003AAE26 /* RNBackgroundFetch.m */; };
 		B587A4F01E5549A8003AAE26 /* RNBackgroundJob.m in Sources */ = {isa = PBXBuildFile; fileRef = B587A4EE1E5549A8003AAE26 /* RNBackgroundJob.m */; };
 		BDEA363522D818BC0040787F /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BDEA363422D818BC0040787F /* Settings.bundle */; };
-		D04173051EE98A0F004B7E2F /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04173031EE98A0F004B7E2F /* Fabric.framework */; };
-		D04173061EE98A0F004B7E2F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04173041EE98A0F004B7E2F /* Crashlytics.framework */; };
 		D09E47561F2C996500AFDCBE /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09E47551F2C996500AFDCBE /* Photos.framework */; };
 		D09E47801F2C9D6100AFDCBE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09E477F1F2C9D6100AFDCBE /* AVFoundation.framework */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		BD9F2EE022540B78000C880D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B94A7020288A4F49B849E568 /* SafariWebAuth.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = SafariWebAuth;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -43,7 +30,6 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Discourse/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Discourse/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Discourse/main.m; sourceTree = "<group>"; };
-		2EDA5FD96B7940B4AB7EC108 /* libSafariWebAuth.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariWebAuth.a; sourceTree = "<group>"; };
 		431021E0869CE9E251F30339 /* libPods-Discourse.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Discourse.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52583FD1E5551D7001E9B7C /* nav-icon-gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "nav-icon-gray@3x.png"; path = "../img/nav-icon-gray@3x.png"; sourceTree = "<group>"; };
 		B587A4EB1E5549A8003AAE26 /* RNBackgroundFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNBackgroundFetch.h; sourceTree = "<group>"; };
@@ -51,11 +37,8 @@
 		B587A4ED1E5549A8003AAE26 /* RNBackgroundJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNBackgroundJob.h; sourceTree = "<group>"; };
 		B587A4EE1E5549A8003AAE26 /* RNBackgroundJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNBackgroundJob.m; sourceTree = "<group>"; };
 		B587A4F11E5549B8003AAE26 /* Discourse.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Discourse.entitlements; path = Discourse/Discourse.entitlements; sourceTree = "<group>"; };
-		B94A7020288A4F49B849E568 /* SafariWebAuth.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SafariWebAuth.xcodeproj; path = "../node_modules/react-native-safari-web-auth/ios/SafariWebAuth.xcodeproj"; sourceTree = "<group>"; };
 		BDEA363422D818BC0040787F /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		C78F74B0B169EF82BF34D3E0 /* Pods-Discourse.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Discourse.debug.xcconfig"; path = "Target Support Files/Pods-Discourse/Pods-Discourse.debug.xcconfig"; sourceTree = "<group>"; };
-		D04173031EE98A0F004B7E2F /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
-		D04173041EE98A0F004B7E2F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		D09E47551F2C996500AFDCBE /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		D09E477F1F2C9D6100AFDCBE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E5DEEAEEE972B25699649F0A /* Pods-Discourse.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Discourse.release.xcconfig"; path = "Target Support Files/Pods-Discourse/Pods-Discourse.release.xcconfig"; sourceTree = "<group>"; };
@@ -71,9 +54,6 @@
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				D09E47801F2C9D6100AFDCBE /* AVFoundation.framework in Frameworks */,
 				D09E47561F2C996500AFDCBE /* Photos.framework in Frameworks */,
-				D04173061EE98A0F004B7E2F /* Crashlytics.framework in Frameworks */,
-				D04173051EE98A0F004B7E2F /* Fabric.framework in Frameworks */,
-				7777F444524E4395B25BC6ED /* libSafariWebAuth.a in Frameworks */,
 				0B04C30F1E1A60FB435F2061 /* libPods-Discourse.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,16 +86,12 @@
 				C78F74B0B169EF82BF34D3E0 /* Pods-Discourse.debug.xcconfig */,
 				E5DEEAEEE972B25699649F0A /* Pods-Discourse.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				D04173031EE98A0F004B7E2F /* Fabric.framework */,
-				D04173041EE98A0F004B7E2F /* Crashlytics.framework */,
-				B94A7020288A4F49B849E568 /* SafariWebAuth.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -144,14 +120,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BD9F2EDD22540B77000C880D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BD9F2EE122540B78000C880D /* libSafariWebAuth.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		D09E47541F2C996500AFDCBE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,7 +135,6 @@
 		D0BC09FF1FA6A77900045C3D /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				2EDA5FD96B7940B4AB7EC108 /* libSafariWebAuth.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -192,7 +159,6 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				D04172DC1EE989E6004B7E2F /* ShellScript */,
 				46BE464AA78FA84C725A55DC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -210,7 +176,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 610;
+				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
@@ -221,38 +187,21 @@
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Discourse" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = BD9F2EDD22540B77000C880D /* Products */;
-					ProjectRef = B94A7020288A4F49B849E568 /* SafariWebAuth.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* Discourse */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		BD9F2EE122540B78000C880D /* libSafariWebAuth.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSafariWebAuth.a;
-			remoteRef = BD9F2EE022540B78000C880D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		13B07F8E1A680F5B00A75B9A /* Resources */ = {
@@ -353,19 +302,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Discourse/Pods-Discourse-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D04172DC1EE989E6004B7E2F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./Fabric.framework/run f1fad9d488bbe6a5a5434d2511423aae3aa653d2 5d253490433495e50092115fa84e293c99bdd7c733fb6d8f62896ace2078af33\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -403,7 +339,7 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 198;
+				CURRENT_PROJECT_VERSION = 204;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				ENABLE_BITCODE = YES;
@@ -411,10 +347,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-safari-web-auth/ios",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Discourse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -443,17 +376,14 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 198;
+				CURRENT_PROJECT_VERSION = 204;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-safari-web-auth/ios",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Discourse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -483,20 +413,32 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -524,13 +466,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -538,6 +490,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

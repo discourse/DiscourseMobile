@@ -211,7 +211,6 @@ class Site {
   getUserInfo() {
     return new Promise((resolve, reject) => {
       if (this.userId && this.username) {
-        console.log("we have user id and user name");
         resolve({
           userId: this.userId,
           username: this.username,

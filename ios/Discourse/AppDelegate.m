@@ -15,10 +15,8 @@
 #import <React/RCTLinkingManager.h>
 // #import <React/RCTPushNotificationManager.h>
 #import <React/RCTLog.h>
-#import "RNBackgroundFetch.h"
+// #import <RNBackgroundFetch.h>
 #import "Orientation.h"
-#import <Fabric/Fabric.h>
-#import <Crashlytics/Crashlytics.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
 
@@ -33,8 +31,6 @@
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
     moduleName:@"Discourse"
     initialProperties:nil];
-
-  [Fabric with:@[[Crashlytics class]]];
 
   [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {}];
   [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {}];
@@ -177,7 +173,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
     [application endBackgroundTask:bgTask];
   };
 
-  [RNBackgroundFetch gotBackgroundFetch:wrappedCompletionHandler];
+//  [RNBackgroundFetch gotBackgroundFetch:wrappedCompletionHandler];
 
 }
 

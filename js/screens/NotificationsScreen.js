@@ -135,9 +135,9 @@ class NotificationsScreen extends React.Component {
       <ImmutableVirtualizedList
         enableEmptySections={true}
         immutableData={this.state.dataSource}
-        renderHeader={() => this._renderListHeader()}
-        renderRow={rowData => this._renderListRow(rowData)}
-        renderEmptyInList={''}
+        ListHeaderComponent={() => this._renderListHeader()}
+        renderItem={rowData => this._renderListRow(rowData)}
+        ListEmptyComponent={''}
       />
     );
   }
@@ -162,8 +162,9 @@ class NotificationsScreen extends React.Component {
     this.props.navigation.goBack();
   }
 
-  _renderListRow(rowDataSource) {
-    let rowData = rowDataSource.toJS();
+  _renderListRow(row) {
+    let rowData = row.item.toJS();
+    console.log(rowData);
     return (
       <Components.Row
         site={rowData.site}

@@ -186,7 +186,7 @@ platform :ios do
         }
       },
       clean: true,
-      project: "./ios/#{PROJECT_NAME}.xcodeproj"
+      workspace: "./ios/#{PROJECT_NAME}.xcworkspace"
     )
 
     install_on_device

@@ -4,9 +4,6 @@
 import _ from 'lodash';
 import Moment from 'moment';
 
-// const Fabric = require("react-native-fabric");
-// const { Answers } = Fabric;
-
 import {Alert, AppState, Platform} from 'react-native';
 
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
@@ -64,8 +61,6 @@ class SiteManager {
   }
 
   add(site) {
-    // Answers.logCustom("Added site", { url: site.url, title: site.title });
-
     this.sites.push(site);
     this.save();
     this._onChange();
@@ -78,7 +73,6 @@ class SiteManager {
       removableSite.revokeApiKey().catch(e => {
         console.log(`Failed to revoke API Key ${e}`);
       });
-      // Answers.logCustom("Removed site", { url: site.url, title: site.title });
       this.save();
       this._onChange();
       this.updateUnreadBadge();
