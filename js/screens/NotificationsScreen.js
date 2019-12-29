@@ -164,7 +164,6 @@ class NotificationsScreen extends React.Component {
 
   _renderListRow(row) {
     let rowData = row.item.toJS();
-    console.log(rowData);
     return (
       <Components.Row
         site={rowData.site}

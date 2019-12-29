@@ -5549,13 +5549,13 @@ react-native-drawer-layout@1.3.2:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
-react-native-firebase@^5.4.2:
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.4.2.tgz#6a66fea38724a7e76d9486b87e02129fda266290"
-  integrity sha512-xeluQo/dDYGKPvPLL0CH51T+rPVkKmEoR/aYDTDgJXXgiDwqSGAq9v414uF4p6SALLCDcNeb4IA6HA8TcFKcrQ==
+react-native-firebase@^5.5.7:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.6.0.tgz#6f6123f53cb73477915dd55c55f3e1de91db38d2"
+  integrity sha512-I+o3zNLdIz4pxWTCSZH70M1BcPl+SdqKQfurOT0sWcaMSL2ecDqVy0PCTmN7ORt7/Z879Er6PLgA/psjArQlmw==
   dependencies:
     opencollective-postinstall "^2.0.0"
-    prop-types "^15.6.2"
+    prop-types "^15.7.2"
 
 react-native-immutable-list-view@^2.0.0:
   version "2.0.0"
@@ -5568,10 +5568,6 @@ react-native-immutable-list-view@^2.0.0:
 "react-native-key-pair@https://github.com/samsaffron/react-native-key-pair":
   version "1.1.0"
   resolved "https://github.com/samsaffron/react-native-key-pair#ef221c010b1a276e5dc18d5d9a3be34223842f1d"
-
-"react-native-orientation@git+https://github.com/yamill/react-native-orientation.git":
-  version "3.1.3"
-  resolved "git+https://github.com/yamill/react-native-orientation.git#b45830cce0837fa668838554e023979497673c82"
 
 react-native-progress@^4.0.3:
   version "4.0.3"

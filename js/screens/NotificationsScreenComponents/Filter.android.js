@@ -2,20 +2,11 @@
 'use strict';
 
 import React from 'react';
-
 import PropTypes from 'prop-types';
 
-import {
-  Animated,
-  Dimensions,
-  Easing,
-  Text,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import {Text, TouchableHighlight, View} from 'react-native';
 
 import _ from 'lodash';
-import Orientation from 'react-native-orientation';
 
 import colors from '../../colors';
 
@@ -29,86 +20,56 @@ class Filter extends React.Component {
   constructor(props) {
     super(props);
 
-    this.initialOrientation = Orientation.getInitialOrientation();
-
     this.state = {
-      indicatorWidth: Dimensions.get('window').width / this.props.tabs.length,
-      selectedIndex: new Animated.Value(props.selectedIndex),
+      selectedIndex: props.selectedIndex,
     };
-  }
-
-  componentDidMount() {
-    Orientation.addOrientationListener(this._orientationDidChange.bind(this));
-  }
-
-  componentWillUnmount() {
-    Orientation.removeOrientationListener(this._orientationDidChange);
-  }
-
-  onDidSelect(index) {
-    Animated.timing(this.state.selectedIndex, {
-      easing: Easing.inOut(Easing.ease),
-      duration: 250,
-      toValue: index,
-      useNativeDriver: true,
-    }).start();
-
-    this.props.onChange(index);
   }
 
   render() {
     return (
       <View style={styles.container}>
         {this._renderTabs(this.props.tabs)}
-        <Animated.View
-          style={[
-            styles.indicator,
-            {
-              width: this.state.indicatorWidth,
-              transform: [{translateX: this._indicatorLeftPosition()}],
-            },
-          ]}
-        />
+        <View style={styles.indicator} />
       </View>
     );
   }
 
   _renderTabs(tabs) {
     return _.map(tabs, (tab, tabIndex) => {
+      const selected = this.props.selectedIndex === tabIndex;
+
       return (
         <TouchableHighlight
           key={tab}
           underlayColor={colors.yellowUIFeedback}
-          style={[styles.button]}
-          onPress={() => this.onDidSelect(tabIndex)}>
-          <Text style={styles.buttonText}>{tab.toUpperCase()}</Text>
+          style={styles.button}
+          onPress={() => this.props.onChange(tabIndex)}>
+          <Text
+            style={[
+              styles.buttonText,
+              {
+                color: selected ? colors.blueCallToAction : colors.grayUI,
+                backgroundColor: selected ? 'white' : colors.grayUILight,
+              },
+            ]}>
+            {tab.toUpperCase()}
+          </Text>
         </TouchableHighlight>
       );
     });
   }
 
-  _indicatorLeftPosition() {
+  _indicatorColor() {
     return this.state.selectedIndex.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, this.state.indicatorWidth],
+      outputRange: ['black', 'blue'],
     });
-  }
-
-  _orientationDidChange(newOrientation) {
-    let width;
-
-    if (newOrientation === this.initialOrientation) {
-      width = Dimensions.get('window').width / this.props.tabs.length;
-    } else {
-      width = Dimensions.get('window').height / this.props.tabs.length;
-    }
-
-    this.setState({indicatorWidth: width});
   }
 }
 
 const styles = {
   container: {
+    width: '100%',
     alignItems: 'flex-end',
     justifyContent: 'center',
     backgroundColor: colors.grayUILight,
