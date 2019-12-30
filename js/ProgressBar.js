@@ -4,16 +4,25 @@
 import React from 'react';
 import {Dimensions, View} from 'react-native';
 import {Bar} from 'react-native-progress';
-import colors from './colors';
+
+import {ThemeContext} from './ThemeContext';
 
 class ProgressBar extends React.Component {
   render() {
     let height = this.props.progress === 0 ? 0 : 3;
+    const theme = this.context;
 
     return (
-      <View style={[styles.container, {height: height}]}>
+      <View
+        style={[
+          styles.container,
+          {
+            height: height,
+            backgroundColor: theme.grayBackground,
+          },
+        ]}>
         <Bar
-          color={colors.blueCallToAction}
+          color={theme.blueCallToAction}
           borderWidth={0}
           borderRadius={0}
           height={height}
@@ -24,6 +33,7 @@ class ProgressBar extends React.Component {
     );
   }
 }
+ProgressBar.contextType = ThemeContext;
 
 const styles = {
   container: {
@@ -31,7 +41,6 @@ const styles = {
     position: 'absolute',
     bottom: 0,
     left: 0,
-    backgroundColor: colors.grayBackground,
   },
 };
 

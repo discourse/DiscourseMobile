@@ -4,14 +4,14 @@
 import React from 'react';
 import Immutable from 'immutable';
 
-import {InteractionManager, StyleSheet, View} from 'react-native';
+import {InteractionManager, View} from 'react-native';
 import {ImmutableVirtualizedList} from 'react-native-immutable-list-view';
-
 import {SafeAreaView} from 'react-navigation';
 
-import DiscourseUtils from '../DiscourseUtils';
 import Components from './NotificationsScreenComponents';
-import colors from '../colors';
+
+import DiscourseUtils from '../DiscourseUtils';
+import {ThemeContext} from '../ThemeContext';
 
 class NotificationsScreen extends React.Component {
   static replyTypes = [1, 2, 3, 6, 9, 11, 15, 16, 17];
@@ -81,9 +81,11 @@ class NotificationsScreen extends React.Component {
   }
 
   render() {
+    const theme = this.context;
+
     if (this.state.renderPlaceholderOnly) {
       return (
-        <View style={styles.container}>
+        <View style={{flex: 1, backgroundColor: theme.grayBackground}}>
           <Components.NavigationBar onDidPressRightButton={() => {}} />
           <View style={{height: 50, marginTop: 0, paddingTop: 0}}>
             {this._renderListHeader()}
@@ -94,40 +96,40 @@ class NotificationsScreen extends React.Component {
 
     return (
       <SafeAreaView
-        style={styles.container}
+        style={{flex: 1, backgroundColor: theme.grayBackground}}
         forceInset={{top: 'never', bottom: 'always'}}>
         <Components.NavigationBar
           onDidPressRightButton={() => this._onDidPressRightButton()}
           onDidPressLeftButton={() => this._onDidPressLeftButton()}
           progress={this.state.progress}
         />
-        {this._renderList()}
-        {this._renderEmptyNotifications()}
+
+        {this._renderListHeader()}
+
+        {this.state.dataSource.size > 0
+          ? this._renderList()
+          : this._renderEmptyNotifications()}
       </SafeAreaView>
     );
   }
 
   _renderEmptyNotifications() {
-    if (this.state.dataSource.size < 1) {
-      let text;
-      switch (this.state.selectedIndex) {
-        case 0:
-          text = 'No new notifications.';
-          break;
-        case 1:
-          text = 'No replies.';
-          break;
-        case 2:
-          text = 'No notifications.';
-          break;
-        default:
-          text = '';
-      }
-
-      return <Components.EmptyNotificationsView text={text} />;
+    let text;
+    switch (this.state.selectedIndex) {
+      case 0:
+        text = 'No new notifications.';
+        break;
+      case 1:
+        text = 'No replies.';
+        break;
+      case 2:
+        text = 'No notifications.';
+        break;
+      default:
+        text = '';
     }
 
-    return null;
+    return <Components.EmptyNotificationsView text={text} />;
   }
 
   _renderList() {
@@ -135,7 +137,6 @@ class NotificationsScreen extends React.Component {
       <ImmutableVirtualizedList
         enableEmptySections={true}
         immutableData={this.state.dataSource}
-        ListHeaderComponent={() => this._renderListHeader()}
         renderItem={rowData => this._renderListRow(rowData)}
         ListEmptyComponent={''}
       />
@@ -250,12 +251,6 @@ class NotificationsScreen extends React.Component {
       });
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.grayBackground,
-  },
-});
+NotificationsScreen.contextType = ThemeContext;
 
 export default NotificationsScreen;

@@ -1,9 +1,9 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 import {
   Animated,
@@ -11,28 +11,28 @@ import {
   Platform,
   StyleSheet,
   TouchableHighlight,
-  View
-} from "react-native";
+  View,
+} from 'react-native';
 
-import { SafeAreaView } from "react-navigation";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import {SafeAreaView} from 'react-navigation';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import ProgressBar from "../../ProgressBar";
-import colors from "../../colors";
+import ProgressBar from '../../ProgressBar';
+
+import {ThemeContext} from '../../ThemeContext';
 
 class NavigationBar extends React.Component {
   static propTypes = {
     leftButtonIconRotated: PropTypes.bool.isRequired,
     rightButtonIconColor: PropTypes.string.isRequired,
     onDidPressRightButton: PropTypes.func.isRequired,
-    onDidPressLeftButton: PropTypes.func.isRequired
+    onDidPressLeftButton: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
-
     this.state = {
-      rotationValue: new Animated.Value(props.leftButtonIconRotated ? 1 : 0)
+      rotationValue: new Animated.Value(props.leftButtonIconRotated ? 1 : 0),
     };
   }
 
@@ -48,27 +48,26 @@ class NavigationBar extends React.Component {
       Animated.spring(this.state.rotationValue, {
         toValue: props.leftButtonIconRotated ? 1 : 0,
         duration: 50,
-        useNativeDriver: true
+        useNativeDriver: true,
       }).start();
     }
   }
 
   render() {
+    const theme = this.context;
     return (
       <SafeAreaView
-        style={styles.container}
-        forceInset={{ top: "always", bottom: "never" }}
-      >
+        style={[styles.container, {backgroundColor: theme.background}]}
+        forceInset={{top: 'always', bottom: 'never'}}>
         <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer}>
           <TouchableHighlight
-            underlayColor={"transparent"}
+            underlayColor={'transparent'}
             style={[styles.button]}
-            onPress={this.props.onDidPressLeftButton}
-          >
+            onPress={this.props.onDidPressLeftButton}>
             <AnimatedIcon
               name="plus"
-              color={colors.grayUI}
+              color={theme.grayUI}
               size={20}
               style={[
                 styles.animatedIcon,
@@ -77,77 +76,82 @@ class NavigationBar extends React.Component {
                     {
                       rotate: this.state.rotationValue.interpolate({
                         inputRange: [0, 1],
-                        outputRange: ["0deg", "225deg"]
-                      })
-                    }
-                  ]
-                }
+                        outputRange: ['0deg', '225deg'],
+                      }),
+                    },
+                  ],
+                },
               ]}
             />
           </TouchableHighlight>
         </View>
         <View style={styles.titleContainer}>
-          <TouchableHighlight underlayColor={"transparent"}>
-            <FontAwesome5 name={"discourse"} size={20} brand />
+          <TouchableHighlight underlayColor={'transparent'}>
+            <FontAwesome5
+              name={'discourse'}
+              size={20}
+              brand
+              style={{color: theme.grayTitle}}
+            />
           </TouchableHighlight>
         </View>
         <View style={styles.rightContainer}>
           <TouchableHighlight
-            underlayColor={"transparent"}
+            underlayColor={'transparent'}
             style={styles.button}
-            onPress={this.props.onDidPressRightButton}
-          >
+            onPress={this.props.onDidPressRightButton}>
             <FontAwesome5
-              name={"bell"}
+              name={'bell'}
               color={this.props.rightButtonIconColor}
               size={20}
               solid
             />
           </TouchableHighlight>
         </View>
-        <View style={styles.separator} />
+        <View
+          style={[styles.separator, {backgroundColor: theme.grayBackground}]}
+        />
       </SafeAreaView>
     );
   }
 }
+NavigationBar.contextType = ThemeContext;
 
 const AnimatedIcon = Animated.createAnimatedComponent(FontAwesome5);
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-    flexDirection: "row",
-    height: Platform.OS === "ios" ? 40 : 55
+    flexDirection: 'row',
+    height: Platform.OS === 'ios' ? 40 : 55,
   },
   leftContainer: {
-    flex: 1
+    flex: 1,
   },
   rightContainer: {
-    alignItems: "flex-end",
-    flex: 1
+    alignItems: 'flex-end',
+    flex: 1,
   },
   titleContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   separator: {
-    backgroundColor: colors.grayBackground,
     bottom: 0,
     height: 1,
     left: 0,
-    position: "absolute",
-    right: 0
+    position: 'absolute',
+    right: 0,
   },
   animatedIcon: {
-    backgroundColor: "transparent"
+    backgroundColor: 'transparent',
   },
   button: {
-    width: Platform.OS === "ios" ? 44 : 55,
-    height: Platform.OS === "ios" ? 44 : 55,
-    justifyContent: "center",
-    alignItems: "center"
-  }
+    width: Platform.OS === 'ios' ? 44 : 55,
+    height: Platform.OS === 'ios' ? 44 : 55,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default NavigationBar;

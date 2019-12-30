@@ -5,12 +5,14 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 
 import {SwipeRow} from 'react-native-swipe-list-view';
-import colors from '../../colors';
 import Notification from './Notification';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {ThemeContext} from '../../ThemeContext';
 
 class SiteRow extends React.Component {
   render() {
+    const theme = this.context;
+
     let iconPath = this.props.site.icon
       ? {uri: this.props.site.icon}
       : require('../../../img/nav-icon-gray.png');
@@ -19,30 +21,39 @@ class SiteRow extends React.Component {
         disableRightSwipe={true}
         stopRightSwipe={-80}
         rightOpenValue={-80}>
-        <View style={styles.hiddenRow}>
+        <View style={{...styles.hiddenRow, backgroundColor: theme.redDanger}}>
           <TouchableHighlight
             style={{paddingRight: 25}}
-            underlayColor={colors.redDanger}
+            underlayColor={theme.redDanger}
             onPress={this.props.onDelete}
             {...this.props.sortHandlers}>
-            <FontAwesome5 name={'trash-alt'} size={20} color={'white'} />
+            <FontAwesome5
+              name={'trash-alt'}
+              size={20}
+              color={theme.buttonTextColor}
+            />
           </TouchableHighlight>
         </View>
-        <View style={styles.visibleRow}>
+        <View style={{backgroundColor: theme.background}}>
           <TouchableHighlight
-            underlayColor={colors.yellowUIFeedback}
+            underlayColor={theme.yellowUIFeedback}
             onPress={() => this.props.onClick()}
             {...this.props.sortHandlers}>
-            <View accessibilityTraits="link" style={styles.row}>
+            <View
+              accessibilityTraits="link"
+              style={{...styles.row, borderBottomColor: theme.grayBorder}}>
               <Image style={styles.icon} source={iconPath} />
               <View style={styles.info}>
-                <Text ellipsizeMode="tail" numberOfLines={1} style={styles.url}>
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={{...styles.url, color: theme.grayTitle}}>
                   {this.props.site.url.replace(/^https?:\/\//, '')}
                 </Text>
                 <Text
                   ellipsizeMode="tail"
                   numberOfLines={2}
-                  style={styles.description}>
+                  style={{...styles.description, color: theme.graySubtitle}}>
                   {this.props.site.description}
                 </Text>
                 {this._renderCounts(this.props.site)}
@@ -57,16 +68,18 @@ class SiteRow extends React.Component {
   }
 
   _renderNotifications(site) {
+    const theme = this.context;
+
     if (site.authToken) {
       return (
         <View style={styles.notifications}>
-          <Notification color={colors.redDanger} count={site.flagCount} />
+          <Notification color={theme.redDanger} count={site.flagCount} />
           <Notification
-            color={colors.greenPrivateUnread}
+            color={theme.greenPrivateUnread}
             count={site.unreadPrivateMessages}
           />
           <Notification
-            color={colors.blueUnread}
+            color={theme.blueUnread}
             count={site.unreadNotifications}
           />
         </View>
@@ -75,10 +88,19 @@ class SiteRow extends React.Component {
   }
 
   _renderShouldLogin(site) {
+    const theme = this.context;
+
     if (!site.authToken) {
       return (
         <View style={styles.notifications}>
-          <Text style={styles.connect}>connect</Text>
+          <Text
+            style={{
+              ...styles.connect,
+              backgroundColor: theme.blueCallToAction,
+              color: theme.buttonTextColor,
+            }}>
+            connect
+          </Text>
         </View>
       );
     }
@@ -86,6 +108,7 @@ class SiteRow extends React.Component {
 
   _renderCounts(site) {
     var counts = [];
+    const theme = this.context;
     if (site.authToken) {
       if (site.totalNew > 0) {
         counts.push('new (' + site.totalNew + ')');
@@ -98,28 +121,24 @@ class SiteRow extends React.Component {
     if (counts.length > 0) {
       return (
         <View style={styles.counts}>
-          <Text style={styles.countsText}>{counts.join('  ')}</Text>
+          <Text style={{color: theme.blueUnread}}>{counts.join('  ')}</Text>
         </View>
       );
     }
   }
 }
+SiteRow.contextType = ThemeContext;
 
 const styles = StyleSheet.create({
   row: {
-    borderBottomColor: colors.grayBorder,
     borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     padding: 12,
   },
   hiddenRow: {
-    backgroundColor: colors.redDanger,
     height: '100%',
     alignItems: 'flex-end',
     justifyContent: 'center',
-  },
-  visibleRow: {
-    backgroundColor: 'white',
   },
   icon: {
     alignSelf: 'center',
@@ -133,12 +152,10 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
   },
   url: {
-    color: colors.grayTitle,
     fontSize: 16,
     fontWeight: 'normal',
   },
   description: {
-    color: colors.graySubtitle,
     flex: 10,
     fontSize: 14,
   },
@@ -148,8 +165,6 @@ const styles = StyleSheet.create({
   },
   connect: {
     alignSelf: 'flex-start',
-    backgroundColor: colors.blueCallToAction,
-    color: 'white',
     fontSize: 14,
     fontWeight: '500',
     marginLeft: 6,
@@ -159,10 +174,6 @@ const styles = StyleSheet.create({
   },
   counts: {
     marginTop: 6,
-  },
-  countsText: {
-    color: colors.blueUnread,
-    fontSize: 14,
   },
 });
 

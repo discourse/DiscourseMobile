@@ -8,7 +8,7 @@ import {Text, TouchableHighlight, View} from 'react-native';
 
 import _ from 'lodash';
 
-import colors from '../../colors';
+import {ThemeContext} from '../../ThemeContext';
 
 class Filter extends React.Component {
   static propTypes = {
@@ -26,30 +26,34 @@ class Filter extends React.Component {
   }
 
   render() {
+    const theme = this.context;
     return (
-      <View style={styles.container}>
+      <View style={{...styles.container, backgroundColor: theme.grayUILight}}>
         {this._renderTabs(this.props.tabs)}
-        <View style={styles.indicator} />
+        <View style={{...styles.indicator, backgroundColor: theme.grayUI}} />
       </View>
     );
   }
 
   _renderTabs(tabs) {
+    const theme = this.context;
     return _.map(tabs, (tab, tabIndex) => {
       const selected = this.props.selectedIndex === tabIndex;
 
       return (
         <TouchableHighlight
           key={tab}
-          underlayColor={colors.yellowUIFeedback}
-          style={styles.button}
+          underlayColor={theme.yellowUIFeedback}
+          style={{...styles.button, backgroundColor: theme.grayUILight}}
           onPress={() => this.props.onChange(tabIndex)}>
           <Text
             style={[
               styles.buttonText,
               {
-                color: selected ? colors.blueCallToAction : colors.grayUI,
-                backgroundColor: selected ? 'white' : colors.grayUILight,
+                color: selected ? theme.blueCallToAction : theme.grayUI,
+                backgroundColor: selected
+                  ? theme.background
+                  : theme.grayUILight,
               },
             ]}>
             {tab.toUpperCase()}
@@ -66,29 +70,26 @@ class Filter extends React.Component {
     });
   }
 }
+Filter.contextType = ThemeContext;
 
 const styles = {
   container: {
     width: '100%',
     alignItems: 'flex-end',
     justifyContent: 'center',
-    backgroundColor: colors.grayUILight,
     flexDirection: 'row',
   },
   button: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: colors.grayUILight,
   },
   buttonText: {
     padding: 12,
     fontSize: 14,
     fontWeight: '500',
-    color: colors.grayUI,
     textAlign: 'center',
   },
   indicator: {
-    backgroundColor: colors.grayUI,
     height: 3,
     position: 'absolute',
     left: 0,

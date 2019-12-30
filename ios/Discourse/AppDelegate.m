@@ -16,7 +16,6 @@
 // #import <React/RCTPushNotificationManager.h>
 #import <React/RCTLog.h>
 // #import <RNBackgroundFetch.h>
-#import "Orientation.h"
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
 
@@ -99,19 +98,19 @@
 
 // From: https://github.com/zo0r/react-native-push-notification/issues/275
 // Called when a notification is delivered to a foreground app.
-// -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
-//   NSLog(@"Discourse notification is delivered to a foreground app");
-//   completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
-// }
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
+  NSLog(@"Discourse notification is delivered to a foreground app");
+  completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
+}
 
 // Called when a user taps on a notification in the foreground
-// - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
-// {
-//   NSMutableDictionary *userData = [NSMutableDictionary dictionaryWithDictionary:response.notification.request.content.userInfo];
-//   [userData setObject:@(1) forKey:@"openedInForeground"];
-//   [RCTPushNotificationManager didReceiveRemoteNotification:userData];
-//   completionHandler();
-// }
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
+{
+  NSMutableDictionary *userData = [NSMutableDictionary dictionaryWithDictionary:response.notification.request.content.userInfo];
+  [userData setObject:@(1) forKey:@"openedInForeground"];
+  [RNCPushNotificationIOS didReceiveRemoteNotification:userData];
+  completionHandler();
+}
 
 
 // -(void)applicationDidEnterBackground:(UIApplication *)application {
@@ -175,14 +174,6 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 
 //  [RNBackgroundFetch gotBackgroundFetch:wrappedCompletionHandler];
 
-}
-
-- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-  if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-    return UIInterfaceOrientationMaskAll;
-  } else {
-    return [Orientation getOrientation];
-  }
 }
 
 - (void)videoExitFullScreen:(id)sender

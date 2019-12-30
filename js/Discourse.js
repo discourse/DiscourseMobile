@@ -2,6 +2,7 @@
 'use strict';
 
 import React from 'react';
+import {ThemeContext, themes} from './ThemeContext';
 
 import {
   Alert,
@@ -10,11 +11,11 @@ import {
   NativeModules,
   Platform,
   StatusBar,
-  StyleSheet,
 } from 'react-native';
 
 import {StackNavigator, NavigationActions} from 'react-navigation';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import {AppearanceProvider, Appearance} from 'react-native-appearance';
 
 import Screens from './screens';
 import Site from './site';
@@ -116,9 +117,12 @@ class Discourse extends React.Component {
         });
     }
 
+    const colorScheme = Appearance.getColorScheme();
+
     this.state = {
       hasNotch: true,
       deviceId: '',
+      theme: colorScheme === 'dark' ? themes.dark : themes.light,
     };
 
     DeviceInfo.hasNotch().then(hasNotch => {
@@ -129,6 +133,12 @@ class Discourse extends React.Component {
 
     DeviceInfo.getDeviceId().then(deviceId => {
       this.setState({deviceId: deviceId});
+    });
+
+    this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+      this.setState({
+        theme: colorScheme === 'dark' ? themes.dark : themes.light,
+      });
     });
   }
 
@@ -264,6 +274,7 @@ class Discourse extends React.Component {
       this.removeNotificationOpenedListener();
       this.foregroundNNotificationListener();
     }
+    this.subscription.remove();
   }
 
   parseURLparameters(string) {
@@ -315,37 +326,29 @@ class Discourse extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        <StatusBar barStyle="dark-content" />
-        <AppNavigator
-          ref={ref => (this._navigation = ref && ref._navigation)}
-          style={styles.app}
-          screenProps={{
-            resetToTop: this.resetToTop.bind(this),
-            openUrl: this.openUrl.bind(this),
-            _handleOpenUrl: this._handleOpenUrl,
-            seenNotificationMap: this._seenNotificationMap,
-            setSeenNotificationMap: map => {
-              this._seenNotificationMap = map;
-            },
-            siteManager: this._siteManager,
-            hasNotch: this.state.hasNotch,
-            deviceId: this.state.deviceId,
-          }}
-        />
-      </React.Fragment>
+      <ThemeContext.Provider value={this.state.theme}>
+        <AppearanceProvider>
+          <StatusBar barStyle={this.state.theme.barStyle} />
+          <AppNavigator
+            ref={ref => (this._navigation = ref && ref._navigation)}
+            style={{flex: 1}}
+            screenProps={{
+              resetToTop: this.resetToTop.bind(this),
+              openUrl: this.openUrl.bind(this),
+              _handleOpenUrl: this._handleOpenUrl,
+              seenNotificationMap: this._seenNotificationMap,
+              setSeenNotificationMap: map => {
+                this._seenNotificationMap = map;
+              },
+              siteManager: this._siteManager,
+              hasNotch: this.state.hasNotch,
+              deviceId: this.state.deviceId,
+            }}
+          />
+        </AppearanceProvider>
+      </ThemeContext.Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  app: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  screenContainer: {
-    flex: 1,
-  },
-});
 
 export default Discourse;

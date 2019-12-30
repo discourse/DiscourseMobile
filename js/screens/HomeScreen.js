@@ -25,7 +25,8 @@ import BackgroundFetch from '../../lib/background-fetch';
 
 import Site from '../site';
 import Components from './HomeScreenComponents';
-import colors from '../colors';
+
+import {ThemeContext} from '../ThemeContext';
 
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -45,7 +46,6 @@ class HomeScreen extends React.Component {
       lastRefreshTime: null,
       scrollEnabled: true,
       refreshingEnabled: true,
-      rightButtonIconColor: colors.grayUI,
       loadingSites: this._siteManager.isLoading(),
     };
 
@@ -251,6 +251,7 @@ class HomeScreen extends React.Component {
   }
 
   _renderSites() {
+    const theme = this.context;
     if (this.state.loadingSites) {
       return <View style={{flex: 1}} />;
     }
@@ -305,7 +306,7 @@ class HomeScreen extends React.Component {
               refreshing={this.state.isRefreshing}
               onRefresh={() => this.refreshSites({ui: true, fast: false})}
               title="Loading..."
-              titleColor={colors.graySubtitle}
+              titleColor={theme.graySubtitle}
             />
           }
           renderRow={site => (
@@ -347,20 +348,19 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    // left 500 on refresh control so it does not render incorrectly when
-    // not refreshing
+    const theme = this.context;
     const translateY = this.state.anim.interpolate({
       inputRange: [0, 1],
       outputRange: [0, Components.TermBar.Height],
     });
     return (
       <SafeAreaView
-        style={styles.container}
+        style={[styles.container, {backgroundColor: theme.background}]}
         forceInset={{top: 'never', bottom: 'always'}}>
         <Components.NavigationBar
           leftButtonIconRotated={this.state.displayTermBar ? true : false}
           anim={this.state.anim}
-          rightButtonIconColor={this.state.rightButtonIconColor}
+          rightButtonIconColor={theme.grayUI}
           onDidPressLeftButton={() => this.onDidPressLeftButton()}
           onDidPressRightButton={() => this.onDidPressRighButton()}
           progress={this.state.addSiteProgress}
@@ -379,6 +379,7 @@ class HomeScreen extends React.Component {
     );
   }
 }
+HomeScreen.contextType = ThemeContext;
 
 const styles = StyleSheet.create({
   list: {
@@ -386,7 +387,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: colors.grayBackground,
   },
   sitesContainer: {
     flex: 1,

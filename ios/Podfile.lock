@@ -182,9 +182,9 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
   - React-jsinspector (0.61.5)
-  - react-native-key-pair (1.1.0):
+  - react-native-appearance (0.3.1):
     - React
-  - react-native-orientation (3.1.3):
+  - react-native-key-pair (1.1.0):
     - React
   - react-native-safari-view (1.0.0):
     - React
@@ -254,8 +254,8 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-appearance (from `../node_modules/react-native-appearance`)
   - react-native-key-pair (from `../node_modules/react-native-key-pair`)
-  - react-native-orientation (from `../node_modules/react-native-orientation`)
   - react-native-safari-view (from `../node_modules/react-native-safari-view`)
   - react-native-safari-web-auth (from `../node_modules/react-native-safari-web-auth`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -309,10 +309,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-appearance:
+    :path: "../node_modules/react-native-appearance"
   react-native-key-pair:
     :path: "../node_modules/react-native-key-pair"
-  react-native-orientation:
-    :path: "../node_modules/react-native-orientation"
   react-native-safari-view:
     :path: "../node_modules/react-native-safari-view"
   react-native-safari-web-auth:
@@ -366,8 +366,8 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
+  react-native-appearance: 368f9d1160e3f1d7ecb5945e704affe018deef46
   react-native-key-pair: ad134c3458f430d5677259b124af9f78bc0d5417
-  react-native-orientation: f1caf84d65f1a4fd4511a18f2b924e634ad7a628
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
   react-native-safari-web-auth: b6642abaa8084a8e5addba1cba4521fd30b95b64
   react-native-webview: db4682f1698ab4b17a5e88f951031d203ff8aea8
@@ -387,6 +387,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: a836f3a81478f00f17b4b8ce7bdf0126c72f7e06
+PODFILE CHECKSUM: ae00a331e057317dc1e8092d4fb852ddeaa3b6e3
 
 COCOAPODS: 1.8.4

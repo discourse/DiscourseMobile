@@ -1,33 +1,33 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 import {
   Animated,
   StyleSheet,
   Text,
   TouchableHighlight,
-  View
-} from "react-native";
+  View,
+} from 'react-native';
 
-import Icon from "react-native-vector-icons/Ionicons";
-import colors from "../../colors";
-import { SafeAreaView } from "react-navigation";
+import Icon from 'react-native-vector-icons/Ionicons';
+import {SafeAreaView} from 'react-navigation';
+import {ThemeContext} from '../../ThemeContext';
 
 class ErrorScreen extends React.Component {
   static propTypes = {
     onRefresh: PropTypes.func,
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      fade: new Animated.Value(0)
+      fade: new Animated.Value(0),
     };
   }
 
@@ -35,21 +35,21 @@ class ErrorScreen extends React.Component {
     Animated.timing(this.state.fade, {
       toValue: 0.75,
       duration: 500,
-      delay: 6000
+      delay: 6000,
     }).start();
   }
 
   render() {
-    let { errorName, errorData } = this.props;
+    let {errorName, errorData} = this.props;
+    const theme = this.context;
     return (
       <SafeAreaView
-        style={styles.container}
-        forceInset={{ top: "always", bottom: "always" }}
-      >
+        style={[styles.container, {backgroundColor: theme.grayBackground}]}
+        forceInset={{top: 'always', bottom: 'always'}}>
         {errorName ? (
-          <View style={styles.box}>
+          <View style={[styles.box, {backgroundColor: theme.background}]}>
             <View>
-              <Text style={{ fontSize: 24 }}>Oops, there was an error.</Text>
+              <Text style={{fontSize: 24}}>Oops, there was an error.</Text>
             </View>
             <View style={styles.section}>
               <Text>
@@ -59,23 +59,28 @@ class ErrorScreen extends React.Component {
               </Text>
             </View>
             <View style={styles.section}>
-              {this._renderButton(this.props.onRefresh, "ios-refresh")}
+              {this._renderButton(this.props.onRefresh, 'ios-refresh')}
               {this._renderButton(
                 this.props.onClose,
-                "ios-close-circle-outline"
+                'ios-close-circle-outline',
               )}
             </View>
           </View>
         ) : (
-          <Animated.View style={{ ...styles.box, opacity: this.state.fade }}>
+          <Animated.View
+            style={{
+              ...styles.box,
+              opacity: this.state.fade,
+              backgroundColor: theme.background,
+            }}>
             <View>
-              <Text style={{ fontSize: 20 }}>Still loading...</Text>
+              <Text style={{fontSize: 20}}>Still loading...</Text>
             </View>
             <View style={styles.section}>
-              {this._renderButton(this.props.onRefresh, "ios-refresh")}
+              {this._renderButton(this.props.onRefresh, 'ios-refresh')}
               {this._renderButton(
                 this.props.onClose,
-                "ios-close-circle-outline"
+                'ios-close-circle-outline',
               )}
             </View>
           </Animated.View>
@@ -87,42 +92,40 @@ class ErrorScreen extends React.Component {
   _renderButton(callback, iconName) {
     return (
       <TouchableHighlight
-        underlayColor={"transparent"}
+        underlayColor={'transparent'}
         style={styles.button}
-        onPress={callback}
-      >
+        onPress={callback}>
         <Icon name={iconName} size={42} />
       </TouchableHighlight>
     );
   }
 }
+ErrorScreen.contextType = ThemeContext;
 
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.grayBackground,
     position: 'absolute',
     height: '100%',
-    width: '100%'
+    width: '100%',
   },
   box: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "80%",
-    height: "50%",
-    backgroundColor: "white",
-    padding: 10
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    height: '50%',
+    padding: 10,
   },
   section: {
-    flexDirection: "row",
-    margin: 10
+    flexDirection: 'row',
+    margin: 10,
   },
   button: {
     padding: 20,
     flex: 1,
-    alignItems: "center"
-  }
+    alignItems: 'center',
+  },
 });
 
 export default ErrorScreen;

@@ -9,5 +9,6 @@
   "blueCallToAction": "#08c",
   "blueUnread": "#0aadff",
   "redDanger": "#ee512a",
-  "greenPrivateUnread": "#01a84c"
+  "greenPrivateUnread": "#01a84c",
+  "background": "#FFFFFF"
 }
