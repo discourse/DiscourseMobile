@@ -14,7 +14,6 @@ import {
   View,
 } from 'react-native';
 
-import {SafeAreaView} from 'react-navigation';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import ProgressBar from '../../ProgressBar';
@@ -56,7 +55,7 @@ class NavigationBar extends React.Component {
   render() {
     const theme = this.context;
     return (
-      <SafeAreaView
+      <View
         style={[styles.container, {backgroundColor: theme.background}]}
         forceInset={{top: 'always', bottom: 'never'}}>
         <ProgressBar progress={this.props.progress} />
@@ -111,7 +110,7 @@ class NavigationBar extends React.Component {
         <View
           style={[styles.separator, {backgroundColor: theme.grayBackground}]}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 }

@@ -4,12 +4,10 @@
 import React from 'react';
 import Immutable from 'immutable';
 
-import {InteractionManager, View} from 'react-native';
+import {InteractionManager, SafeAreaView, View} from 'react-native';
 import {ImmutableVirtualizedList} from 'react-native-immutable-list-view';
-import {SafeAreaView} from 'react-navigation';
 
 import Components from './NotificationsScreenComponents';
-
 import DiscourseUtils from '../DiscourseUtils';
 import {ThemeContext} from '../ThemeContext';
 
@@ -96,7 +94,7 @@ class NotificationsScreen extends React.Component {
 
     return (
       <SafeAreaView
-        style={{flex: 1, backgroundColor: theme.grayBackground}}
+        style={{flex: 1, backgroundColor: theme.background}}
         forceInset={{top: 'never', bottom: 'always'}}>
         <Components.NavigationBar
           onDidPressRightButton={() => this._onDidPressRightButton()}
@@ -138,6 +136,7 @@ class NotificationsScreen extends React.Component {
         enableEmptySections={true}
         immutableData={this.state.dataSource}
         renderItem={rowData => this._renderListRow(rowData)}
+        keyExtractor={rowData => this._listIndex(rowData)}
         ListEmptyComponent={''}
       />
     );
@@ -163,8 +162,14 @@ class NotificationsScreen extends React.Component {
     this.props.navigation.goBack();
   }
 
+  _listIndex(row) {
+    let rowData = row.toJS();
+    return rowData.notification.id.toString();
+  }
+
   _renderListRow(row) {
     let rowData = row.item.toJS();
+
     return (
       <Components.Row
         site={rowData.site}

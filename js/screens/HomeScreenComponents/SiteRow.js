@@ -19,17 +19,17 @@ class SiteRow extends React.Component {
     return (
       <SwipeRow
         disableRightSwipe={true}
-        stopRightSwipe={-80}
-        rightOpenValue={-80}>
-        <View style={{...styles.hiddenRow, backgroundColor: theme.redDanger}}>
+        rightOpenValue={-80}
+        style={{backgroundColor: theme.redDanger}}>
+        <View style={{...styles.hiddenRow}}>
           <TouchableHighlight
-            style={{paddingRight: 25}}
+            style={{paddingHorizontal: 28, backgroundColor: theme.redDanger}}
             underlayColor={theme.redDanger}
             onPress={this.props.onDelete}
             {...this.props.sortHandlers}>
             <FontAwesome5
               name={'trash-alt'}
-              size={20}
+              size={24}
               color={theme.buttonTextColor}
             />
           </TouchableHighlight>
@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     overflow: 'hidden',
     padding: 6,
+    borderRadius: 6,
   },
   counts: {
     marginTop: 6,

@@ -12,16 +12,14 @@ import {
   NativeModules,
   Platform,
   RefreshControl,
+  SafeAreaView,
   StyleSheet,
   UIManager,
   View,
 } from 'react-native';
 
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import {SafeAreaView} from 'react-navigation';
 import SortableListView from 'react-native-sortable-listview';
 import SafariWebAuth from 'react-native-safari-web-auth';
-import BackgroundFetch from '../../lib/background-fetch';
 
 import Site from '../site';
 import Components from './HomeScreenComponents';
@@ -41,7 +39,7 @@ class HomeScreen extends React.Component {
       addSiteProgress: 0,
       displayTermBar: false,
       anim: new Animated.Value(0),
-      data: this._siteManager.toObject(),
+      data: false,
       isRefreshing: false,
       lastRefreshTime: null,
       scrollEnabled: true,
@@ -82,70 +80,7 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    if (Platform.OS === 'ios') {
-      let doRefresh = () => {
-        console.log('Background fetch Called!');
-
-        this._siteManager
-          .refreshSites({ui: false})
-          .then(state => {
-            console.log('Finished refreshing sites in BG fetch!');
-            console.log(state);
-
-            if (state.alerts) {
-              console.log('Got ' + state.alerts.length + ' alert in BG fetch');
-
-              state.alerts.forEach(a => {
-                if (a.excerpt) {
-                  let excerpt = a.username + ': ' + a.excerpt;
-                  excerpt = excerpt.substr(0, 250);
-
-                  if (!a.site.hasPush) {
-                    console.log(
-                      `publishing local notifications for ${a.site.url}`,
-                    );
-                    PushNotificationIOS.presentLocalNotification({
-                      alertBody: excerpt,
-                      userInfo: {discourse_url: a.url},
-                    });
-                  }
-                }
-              });
-            }
-          })
-          .catch(e => {
-            console.log('WARN: failed in bg fetch');
-            console.log(e);
-          })
-          .finally(() => {
-            PushNotificationIOS.checkPermissions(p => {
-              if (p.badge) {
-                let total = this._siteManager.totalUnread();
-                console.log('Setting badge to ' + total);
-                PushNotificationIOS.setApplicationIconBadgeNumber(total);
-              }
-
-              console.log('finishing up background fetch');
-              BackgroundFetch.done(true);
-            });
-          });
-      };
-
-      BackgroundFetch.addEventListener('backgroundFetch', () => {
-        if (this._siteManager.refreshing) {
-          // assume prviously aborted and force allow a refresh
-          console.log(
-            'WARNING: forcing refresh cause _siteManager was stuck refreshing',
-          );
-          this._siteManager.refreshing = false;
-        }
-
-        doRefresh();
-      });
-    }
-
     this._siteManager.subscribe(this._onChangeSites);
-    this._siteManager.refreshInterval(15000);
     this._onChangeSites();
   }
 
@@ -157,7 +92,7 @@ class HomeScreen extends React.Component {
     if (this._siteManager.isLoading() !== this.state.loadingSites) {
       this.setState({loadingSites: this._siteManager.isLoading()});
     }
-    if (e && e.event === 'change') {
+    if (e && e.event) {
       this.setState({data: this._siteManager.toObject()});
     }
   }
@@ -217,20 +152,11 @@ class HomeScreen extends React.Component {
     });
   }
 
-  refreshSites(opts) {
-    if (this.refreshing) {
-      return false;
-    }
-
-    if (opts.ui) {
-      this.setState({isRefreshing: true});
-    }
+  pullDownToRefresh(opts) {
+    this.setState({isRefreshing: true});
 
     this._siteManager.refreshSites(opts).then(() => {
-      this.refreshing = false;
-      this.setState({
-        isRefreshing: false,
-      });
+      this.setState({isRefreshing: false});
     });
   }
 
@@ -304,7 +230,7 @@ class HomeScreen extends React.Component {
               style={{left: 500}}
               enabled={this.state.refreshingEnabled}
               refreshing={this.state.isRefreshing}
-              onRefresh={() => this.refreshSites({ui: true, fast: false})}
+              onRefresh={() => this.pullDownToRefresh({ui: true, fast: false})}
               title="Loading..."
               titleColor={theme.graySubtitle}
             />

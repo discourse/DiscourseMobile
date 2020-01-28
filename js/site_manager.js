@@ -41,21 +41,6 @@ class SiteManager {
     });
   }
 
-  refreshInterval(interval) {
-    if (this._refresher) {
-      clearInterval(this._refresher);
-      this._refresher = null;
-    }
-
-    this._refreshInterval = interval;
-
-    if (interval > 0) {
-      this._refresher = setInterval(() => {
-        this.refreshSites({ui: false, fast: true});
-      }, interval);
-    }
-  }
-
   exists(site) {
     return !!_.find(this.sites, {url: site.url});
   }
@@ -252,14 +237,6 @@ class SiteManager {
     });
   }
 
-  // exitBackground() {
-  //   this.sites.forEach(s => s.exitBackground());
-  //   this.refreshInterval(this._refreshInterval);
-  //   // in case UI did not pick up changes
-  //   this._onChange();
-  //   this._onRefresh();
-  // }
-
   refreshSites(opts) {
     let sites = this.sites.slice(0);
     opts = opts || {};
@@ -267,12 +244,6 @@ class SiteManager {
     console.log('refresh sites was called on ' + sites.length + ' sites!');
 
     return new Promise((resolve, reject) => {
-      if (AppState.currentState !== 'active') {
-        console.log('skip refresh cause app is not active');
-        resolve({changed: false});
-        return;
-      }
-
       if (sites.length === 0) {
         console.log('no sites defined nothing to refresh!');
         resolve({changed: false});
@@ -293,26 +264,24 @@ class SiteManager {
         return;
       }
 
-      if (this.refreshing && refreshDelta < 30000) {
+      if (this.refreshing && refreshDelta < 20000) {
         console.log('not refreshing cause already refreshing!');
         resolve({changed: false});
         return;
       }
 
-      if (this.refreshing && refreshDelta >= 30000) {
+      if (this.refreshing && refreshDelta >= 20000) {
         console.log(
-          'WARNING: a previous refresh went missing, resetting after 30 seconds',
+          'WARNING: a previous refresh went missing, resetting after 20 seconds',
         );
       }
 
       this.refreshing = true;
       this._lastRefreshStart = new Date();
 
-      let processedSites = 0;
       let somethingChanged = false;
-      let alerts = [];
 
-      sites.forEach(site => {
+      sites.forEach((site, siteIndex) => {
         if (opts.ui) {
           site.resetBus();
         }
@@ -322,9 +291,18 @@ class SiteManager {
         site
           .refresh(opts)
           .then(state => {
-            somethingChanged = somethingChanged || state.changed;
-            if (state.alerts) {
-              alerts = alerts.concat(state.alerts);
+            // present local notification for self-hosted sites
+            // this will also trigger when background fetch runs
+            if (!site.hasPush && state.alerts && state.alerts.length > 0) {
+              state.alerts.forEach(a => {
+                let excerpt = '@' + a.username + ': ' + a.excerpt;
+                excerpt = excerpt.substr(0, 250);
+                console.log(`publishing local notifications for ${a.site.url}`);
+                PushNotificationIOS.presentLocalNotification({
+                  alertBody: excerpt,
+                  userInfo: {discourse_url: a.url},
+                });
+              });
             }
           })
           .catch(e => {
@@ -336,13 +314,8 @@ class SiteManager {
             errors++;
           })
           .finally(() => {
-            processedSites++;
-
-            if (processedSites === sites.length) {
-              // Don't save stuff in the background
-              if (AppState.currentState === 'active') {
-                this.save();
-              }
+            if (siteIndex === sites.length - 1) {
+              this.save();
 
               if (somethingChanged) {
                 this.updateUnreadBadge();
@@ -362,7 +335,7 @@ class SiteManager {
 
               this._onRefresh();
               this.refreshing = false;
-              resolve({changed: somethingChanged, alerts: alerts});
+              resolve({changed: somethingChanged});
             }
           })
           .done();

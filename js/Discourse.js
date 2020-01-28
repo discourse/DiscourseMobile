@@ -13,7 +13,9 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {StackNavigator, NavigationActions} from 'react-navigation';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import {AppearanceProvider, Appearance} from 'react-native-appearance';
 
@@ -30,8 +32,9 @@ const ChromeCustomTab = NativeModules.ChromeCustomTab;
 import firebase from './firebase/helper';
 import type {Notification, NotificationOpen} from './firebase/helper';
 import bgMessaging from './firebase/bgMessaging';
+import BackgroundFetch from 'react-native-background-fetch';
 
-const AppNavigator = StackNavigator(
+const AppNavigator = createStackNavigator(
   {
     Home: {screen: Screens.Home},
     Notifications: {screen: Screens.Notifications},
@@ -42,6 +45,8 @@ const AppNavigator = StackNavigator(
     headerMode: 'none',
   },
 );
+
+const AppContainer = createAppContainer(AppNavigator);
 
 class Discourse extends React.Component {
   constructor(props) {
@@ -60,10 +65,19 @@ class Discourse extends React.Component {
 
       if (AppState.currentState === 'active') {
         StatusBar.setHidden(false);
-        this._siteManager.refreshSites({
-          ui: false,
-          fast: true,
-        });
+        this._siteManager.refreshSites();
+
+        const intervalId = setInterval(
+          this._refreshPeriodically.bind(this),
+          30000,
+        );
+        this.setState({refreshInterval: intervalId});
+        console.log('_refreshPeriodically interval restarted');
+      }
+
+      if (AppState.currentState === 'inactive') {
+        console.log('_refreshPeriodically interval cleared');
+        clearInterval(this.state.refreshInterval);
       }
     };
 
@@ -159,7 +173,6 @@ class Discourse extends React.Component {
       this._siteManager
         .setActiveSite(e._data.discourse_url)
         .then(activeSite => {
-          this.resetToTop(); // close any open webviews
           let supportsDelegatedAuth = false;
           if (this._siteManager.supportsDelegatedAuth(activeSite)) {
             supportsDelegatedAuth = true;
@@ -220,17 +233,6 @@ class Discourse extends React.Component {
     }
   }
 
-  resetToTop() {
-    if (this._navigation) {
-      this._navigation.dispatch(
-        NavigationActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({routeName: 'Home'})],
-        }),
-      );
-    }
-  }
-
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     Linking.addEventListener('url', this._handleOpenUrl);
@@ -264,6 +266,35 @@ class Discourse extends React.Component {
           bgMessaging(notification);
         });
     }
+
+    // BackgroundFetch register (15-minute minimum interval allowed)
+    BackgroundFetch.configure(
+      {minimumFetchInterval: 15},
+      () => {
+        console.log('Received background-fetch event');
+        this._siteManager.refreshing = false;
+        this._siteManager
+          .refreshSites({ui: false, forceRefresh: true})
+          .finally(() => {
+            this._siteManager.updateUnreadBadge();
+            console.log('finishing up background fetch');
+            // Required: Signal completion of your task to native code
+            // If you fail to do this, the OS can terminate your app
+            // or assign battery-blame for consuming too much background-time
+            BackgroundFetch.finish(BackgroundFetch.FETCH_RESULT_NEW_DATA);
+          });
+      },
+      error => {
+        console.log('RNBackgroundFetch failed to start');
+      },
+    );
+
+    const intervalId = setInterval(this._refreshPeriodically.bind(this), 30000);
+    this.setState({refreshInterval: intervalId});
+  }
+
+  _refreshPeriodically() {
+    this._siteManager.refreshSites();
   }
 
   componentWillUnmount() {
@@ -329,11 +360,10 @@ class Discourse extends React.Component {
       <ThemeContext.Provider value={this.state.theme}>
         <AppearanceProvider>
           <StatusBar barStyle={this.state.theme.barStyle} />
-          <AppNavigator
+          <AppContainer
             ref={ref => (this._navigation = ref && ref._navigation)}
             style={{flex: 1}}
             screenProps={{
-              resetToTop: this.resetToTop.bind(this),
               openUrl: this.openUrl.bind(this),
               _handleOpenUrl: this._handleOpenUrl,
               seenNotificationMap: this._seenNotificationMap,

@@ -25,8 +25,10 @@
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-appearance": "^0.3.1",
+    "react-native-background-fetch": "^2.7.1",
     "react-native-device-info": "^3.1.4",
     "react-native-firebase": "^5.5.7",
+    "react-native-gesture-handler": "^1.5.3",
     "react-native-immutable-list-view": "^2.0.0",
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair",
     "react-native-progress": "^4.0.3",
@@ -35,8 +37,9 @@
     "react-native-sortable-listview": "0.2.9",
     "react-native-swipe-list-view": "^2.1.2",
     "react-native-vector-icons": "^6.6.0",
-    "react-native-webview": "7.6.0",
-    "react-navigation": "^1.5"
+    "react-native-webview": "8.0.4",
+    "react-navigation": "^4.0.10",
+    "react-navigation-stack": "^1.10.3"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

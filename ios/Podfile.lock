@@ -184,13 +184,13 @@ PODS:
   - React-jsinspector (0.61.5)
   - react-native-appearance (0.3.1):
     - React
-  - react-native-key-pair (1.1.0):
+  - react-native-key-pair (1.1.1):
     - React
   - react-native-safari-view (1.0.0):
     - React
   - react-native-safari-web-auth (1.0.4):
     - React
-  - react-native-webview (7.6.0):
+  - react-native-webview (8.0.4):
     - React
   - React-RCTActionSheet (0.61.5):
     - React-Core/RCTActionSheetHeaders (= 0.61.5)
@@ -227,11 +227,15 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
     - ReactCommon/jscallinvoker (= 0.61.5)
+  - RNBackgroundFetch (2.7.1):
+    - React
   - RNCAsyncStorage (1.7.1):
     - React
   - RNCPushNotificationIOS (1.0.3):
     - React
   - RNDeviceInfo (3.1.4):
+    - React
+  - RNGestureHandler (1.5.3):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -270,9 +274,11 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -339,12 +345,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNBackgroundFetch:
+    :path: "../node_modules/react-native-background-fetch"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCPushNotificationIOS:
     :path: "../node_modules/@react-native-community/push-notification-ios"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -367,10 +377,10 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-appearance: 368f9d1160e3f1d7ecb5945e704affe018deef46
-  react-native-key-pair: ad134c3458f430d5677259b124af9f78bc0d5417
+  react-native-key-pair: d45fb2e417ffb0fca307e9bbe22111aa38c3233f
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
   react-native-safari-web-auth: b6642abaa8084a8e5addba1cba4521fd30b95b64
-  react-native-webview: db4682f1698ab4b17a5e88f951031d203ff8aea8
+  react-native-webview: 3f5aa91c3cb083ea4762e006b9653291a96a777a
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
   React-RCTBlob: d89293cc0236d9cb0933d85e430b0bbe81ad1d72
@@ -381,12 +391,14 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
+  RNBackgroundFetch: 8d8d66b47eafcb9e772b2eb95057939038b3ef95
   RNCAsyncStorage: 44395cb9c7c1523104c2b499eb426ef7aff82bca
   RNCPushNotificationIOS: 83ec11fe19d4ea9e32cc339d8e7d2cc3c88f543e
   RNDeviceInfo: 88099e84466f053bae3f34c307b506738b2b6946
+  RNGestureHandler: 02905abe54e1f6e59c081a10b4bd689721e17aa6
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: ae00a331e057317dc1e8092d4fb852ddeaa3b6e3
+PODFILE CHECKSUM: 0c784faacfe9725998cb3d961d8f74196090aea9
 
 COCOAPODS: 1.8.4

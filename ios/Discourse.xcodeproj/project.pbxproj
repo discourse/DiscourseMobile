@@ -13,8 +13,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		B52583FE1E5551D7001E9B7C /* nav-icon-gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B52583FD1E5551D7001E9B7C /* nav-icon-gray@3x.png */; };
-		B587A4EF1E5549A8003AAE26 /* RNBackgroundFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = B587A4EC1E5549A8003AAE26 /* RNBackgroundFetch.m */; };
-		B587A4F01E5549A8003AAE26 /* RNBackgroundJob.m in Sources */ = {isa = PBXBuildFile; fileRef = B587A4EE1E5549A8003AAE26 /* RNBackgroundJob.m */; };
+		BD11887323DB333E00A2EFC9 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BD11887223DB333D00A2EFC9 /* RNBackgroundFetch+AppDelegate.m */; };
 		BDEA363522D818BC0040787F /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BDEA363422D818BC0040787F /* Settings.bundle */; };
 		D09E47561F2C996500AFDCBE /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09E47551F2C996500AFDCBE /* Photos.framework */; };
 		D09E47801F2C9D6100AFDCBE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09E477F1F2C9D6100AFDCBE /* AVFoundation.framework */; };
@@ -32,11 +31,8 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Discourse/main.m; sourceTree = "<group>"; };
 		431021E0869CE9E251F30339 /* libPods-Discourse.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Discourse.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52583FD1E5551D7001E9B7C /* nav-icon-gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "nav-icon-gray@3x.png"; path = "../img/nav-icon-gray@3x.png"; sourceTree = "<group>"; };
-		B587A4EB1E5549A8003AAE26 /* RNBackgroundFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNBackgroundFetch.h; sourceTree = "<group>"; };
-		B587A4EC1E5549A8003AAE26 /* RNBackgroundFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNBackgroundFetch.m; sourceTree = "<group>"; };
-		B587A4ED1E5549A8003AAE26 /* RNBackgroundJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNBackgroundJob.h; sourceTree = "<group>"; };
-		B587A4EE1E5549A8003AAE26 /* RNBackgroundJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNBackgroundJob.m; sourceTree = "<group>"; };
 		B587A4F11E5549B8003AAE26 /* Discourse.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Discourse.entitlements; path = Discourse/Discourse.entitlements; sourceTree = "<group>"; };
+		BD11887223DB333D00A2EFC9 /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
 		BDEA363422D818BC0040787F /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		C78F74B0B169EF82BF34D3E0 /* Pods-Discourse.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Discourse.debug.xcconfig"; path = "Target Support Files/Pods-Discourse/Pods-Discourse.debug.xcconfig"; sourceTree = "<group>"; };
 		D09E47551F2C996500AFDCBE /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
@@ -64,6 +60,7 @@
 		13B07FAE1A68108700A75B9A /* Discourse */ = {
 			isa = PBXGroup;
 			children = (
+				BD11887223DB333D00A2EFC9 /* RNBackgroundFetch+AppDelegate.m */,
 				B587A4F11E5549B8003AAE26 /* Discourse.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -72,10 +69,6 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				B587A4EB1E5549A8003AAE26 /* RNBackgroundFetch.h */,
-				B587A4EC1E5549A8003AAE26 /* RNBackgroundFetch.m */,
-				B587A4ED1E5549A8003AAE26 /* RNBackgroundJob.h */,
-				B587A4EE1E5549A8003AAE26 /* RNBackgroundJob.m */,
 			);
 			name = Discourse;
 			sourceTree = "<group>";
@@ -310,9 +303,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				B587A4EF1E5549A8003AAE26 /* RNBackgroundFetch.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				B587A4F01E5549A8003AAE26 /* RNBackgroundJob.m in Sources */,
+				BD11887323DB333E00A2EFC9 /* RNBackgroundFetch+AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,7 +331,7 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 210;
+				CURRENT_PROJECT_VERSION = 224;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				ENABLE_BITCODE = YES;
@@ -376,7 +368,7 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 210;
+				CURRENT_PROJECT_VERSION = 224;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (

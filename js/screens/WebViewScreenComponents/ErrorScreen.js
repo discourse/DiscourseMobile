@@ -2,7 +2,6 @@
 'use strict';
 
 import React from 'react';
-
 import PropTypes from 'prop-types';
 
 import {
@@ -14,7 +13,6 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import {SafeAreaView} from 'react-navigation';
 import {ThemeContext} from '../../ThemeContext';
 
 class ErrorScreen extends React.Component {
@@ -42,27 +40,29 @@ class ErrorScreen extends React.Component {
   render() {
     let {errorName, errorData} = this.props;
     const theme = this.context;
+
     return (
-      <SafeAreaView
-        style={[styles.container, {backgroundColor: theme.grayBackground}]}
-        forceInset={{top: 'always', bottom: 'always'}}>
+      <View style={[styles.container, {backgroundColor: theme.grayBackground}]}>
         {errorName ? (
           <View style={[styles.box, {backgroundColor: theme.background}]}>
             <View>
-              <Text style={{fontSize: 24}}>Oops, there was an error.</Text>
+              <Text style={{fontSize: 24, color: theme.grayTitle}}>
+                Oops, there was an error.
+              </Text>
             </View>
             <View style={styles.section}>
-              <Text>
+              <Text style={{color: theme.grayTitle}}>
                 {errorData && errorData.description
                   ? errorData.description
                   : errorName}
               </Text>
             </View>
             <View style={styles.section}>
-              {this._renderButton(this.props.onRefresh, 'ios-refresh')}
+              {this._renderButton(this.props.onRefresh, 'ios-refresh', theme)}
               {this._renderButton(
                 this.props.onClose,
                 'ios-close-circle-outline',
+                theme,
               )}
             </View>
           </View>
@@ -74,28 +74,31 @@ class ErrorScreen extends React.Component {
               backgroundColor: theme.background,
             }}>
             <View>
-              <Text style={{fontSize: 20}}>Still loading...</Text>
+              <Text style={{fontSize: 20, color: theme.grayTitle}}>
+                Still loading...
+              </Text>
             </View>
             <View style={styles.section}>
-              {this._renderButton(this.props.onRefresh, 'ios-refresh')}
+              {this._renderButton(this.props.onRefresh, 'ios-refresh', theme)}
               {this._renderButton(
                 this.props.onClose,
                 'ios-close-circle-outline',
+                theme,
               )}
             </View>
           </Animated.View>
         )}
-      </SafeAreaView>
+      </View>
     );
   }
 
-  _renderButton(callback, iconName) {
+  _renderButton(callback, iconName, theme) {
     return (
       <TouchableHighlight
         underlayColor={'transparent'}
         style={styles.button}
         onPress={callback}>
-        <Icon name={iconName} size={42} />
+        <Icon name={iconName} size={42} style={{color: theme.grayTitle}} />
       </TouchableHighlight>
     );
   }

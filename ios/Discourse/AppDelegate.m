@@ -13,9 +13,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
-// #import <React/RCTPushNotificationManager.h>
 #import <React/RCTLog.h>
-// #import <RNBackgroundFetch.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
 
@@ -45,14 +43,11 @@
   // TODO We don't need full release debugging forever, but for now it helps
   RCTSetLogThreshold(RCTLogLevelInfo - 1);
 
-  // config BG fetch
-  [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-
   // define UNUserNotificationCenter
   // see https://github.com/zo0r/react-native-push-notification/issues/275
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
-  
+
   // show statusbar when returning from a fullscreen video
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoExitFullScreen:) name:@"UIWindowDidBecomeHiddenNotification" object:nil];
 
@@ -112,31 +107,6 @@
   completionHandler();
 }
 
-
-// -(void)applicationDidEnterBackground:(UIApplication *)application {
-// }
-// -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-
-//   NSMutableDictionary *notification = [NSMutableDictionary dictionaryWithDictionary: userInfo];
-
-//   NSString *state = nil;
-
-//   if(application.applicationState == UIApplicationStateInactive) {
-//     state = @"inactive";
-//   } else if(application.applicationState == UIApplicationStateBackground){
-//     state = @"background";
-//   } else {
-//     state = @"foreground";
-//   }
-
-//   [notification setObject: state forKey: @"AppState"];
-
-//   [RCTPushNotificationManager didReceiveRemoteNotification:notification];
-
-//   completionHandler(UIBackgroundFetchResultNoData);
-// }
-
-
 // Required for the notification event. You must call the completion handler after handling the remote notification.
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
@@ -154,27 +124,6 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
   [RNCPushNotificationIOS didReceiveLocalNotification:notification];
 }
 
-
--(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
-{
-  NSLog(@"RNBackgroundFetch AppDelegate received fetch event");
-
-  UIBackgroundTaskIdentifier bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
-    NSLog(@"RNBackgroundFetch execution expired!");
-    completionHandler(UIBackgroundTaskInvalid);
-    [application endBackgroundTask:bgTask];
-  }];
-
-  void (^wrappedCompletionHandler) (UIBackgroundFetchResult);
-  wrappedCompletionHandler = ^(UIBackgroundFetchResult result){
-    NSLog(@"RNBackgroundFetch completing fetch");
-    completionHandler(result);
-    [application endBackgroundTask:bgTask];
-  };
-
-//  [RNBackgroundFetch gotBackgroundFetch:wrappedCompletionHandler];
-
-}
 
 - (void)videoExitFullScreen:(id)sender
 {

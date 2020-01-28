@@ -9,6 +9,7 @@ import {
   View,
   Text,
   Linking,
+  Keyboard,
   Platform,
   Settings,
   Share,
@@ -16,7 +17,6 @@ import {
 } from 'react-native';
 
 import {WebView} from 'react-native-webview';
-import {SafeAreaView} from 'react-navigation';
 
 import Components from './WebViewScreenComponents';
 import ProgressBar from '../ProgressBar';
@@ -37,7 +37,6 @@ class WebViewScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.startUrl = this.props.navigation.getParam('url');
     this.siteManager = this.props.screenProps.siteManager;
 
     this.routes = [];
@@ -63,6 +62,7 @@ class WebViewScreen extends React.Component {
       userAgentSuffix: 'DiscourseHub',
       layoutCalculated: false,
       hasNotch: this.props.screenProps.hasNotch,
+      webviewUrl: this.props.navigation.getParam('url'),
     };
   }
 
@@ -72,6 +72,21 @@ class WebViewScreen extends React.Component {
       headerBg: theme.grayBackground,
       barStyle: theme.barStyle,
     });
+
+    // Workaround for StatusBar bug in RN Webview
+    // https://github.com/react-native-community/react-native-webview/issues/735
+    Keyboard.addListener('keyboardWillShow', this._onKeyboardShow.bind(this));
+    Keyboard.addListener('keyboardDidHide', this._onKeyboardShow.bind(this));
+  }
+
+  componentDidUpdate() {
+    const url = this.props.navigation.getParam('url');
+
+    if (url !== this.state.webviewUrl) {
+      this.setState({
+        webviewUrl: url,
+      });
+    }
   }
 
   UNSAFE_componentWillUpdate(nextProps, nextState) {
@@ -124,7 +139,7 @@ class WebViewScreen extends React.Component {
               marginTop: -1, // hacky fix to a 1px overflow just above header
             }}
             ref={ref => (this.webview = ref)}
-            source={{uri: this.startUrl}}
+            source={{uri: this.state.webviewUrl}}
             useWebkit={true}
             applicationNameForUserAgent={this.state.userAgentSuffix}
             allowsBackForwardNavigationGestures={true}
@@ -198,11 +213,13 @@ class WebViewScreen extends React.Component {
 
   componentWillUnmount() {
     clearTimeout(this.progressTimeout);
+    Keyboard.removeListener('keyboardWillShow', this._onKeyboardShow);
+    Keyboard.removeListener('keyboardDidHide', this._onKeyboardShow);
+    this.siteManager.refreshSites();
+  }
 
-    this.siteManager.refreshSites({
-      ui: false,
-      fast: true,
-    });
+  _onKeyboardShow() {
+    StatusBar.setBarStyle(this.state.barStyle);
   }
 
   _onRefresh() {

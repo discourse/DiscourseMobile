@@ -66,7 +66,7 @@ class TermBar extends React.Component {
               this.handleSubmitTerm(event.nativeEvent.text)
             }
             placeholder="meta.discourse.org"
-            style={[styles.term]}
+            style={[styles.term, {color: theme.grayTitle}]}
             onChangeText={text => this.setState({text})}
             underlineColorAndroid={'transparent'}
             value={this.state.text}
