@@ -30,7 +30,6 @@ class SiteManager {
     AsyncStorage.getItem('@Discourse.lastRefresh').then(date => {
       if (date) {
         this.lastRefresh = new Date(date);
-        this._onRefresh;
       }
     });
 
@@ -48,7 +47,6 @@ class SiteManager {
   add(site) {
     this.sites.push(site);
     this.save();
-    this._onChange();
   }
 
   remove(site) {
@@ -59,8 +57,6 @@ class SiteManager {
         console.log(`Failed to revoke API Key ${e}`);
       });
       this.save();
-      this._onChange();
-      this.updateUnreadBadge();
     }
   }
 
@@ -94,7 +90,6 @@ class SiteManager {
   updateOrder(from, to) {
     this.sites.splice(to, 0, this.sites.splice(from, 1)[0]);
     this.save();
-    this._onChange();
   }
 
   subscribe(callback) {
@@ -120,6 +115,7 @@ class SiteManager {
 
   save() {
     AsyncStorage.setItem('@Discourse.sites', JSON.stringify(this.sites)).done();
+    this._onChange();
     this.updateUnreadBadge();
   }
 
@@ -135,10 +131,8 @@ class SiteManager {
           this.rsaKeys = JSON.parse(json);
           resolve();
         } else {
-          console.log('Generating RSA keys');
           RNKeyPair.generate(pair => {
             this.rsaKeys = pair;
-            console.log('Generated RSA keys');
             AsyncStorage.setItem(
               '@Discourse.rsaKeys',
               JSON.stringify(this.rsaKeys),
@@ -186,11 +180,9 @@ class SiteManager {
           Promise.all(promises)
             .then(() => {
               this.save();
-              this.refreshSites({ui: false, fast: false})
-                .then(() => {
-                  this._onChange();
-                })
-                .done();
+              this.refreshSites().then(() => {
+                this._onChange();
+              });
             })
             .catch(e => {
               console.log(e);
@@ -239,103 +231,57 @@ class SiteManager {
 
   refreshSites(opts) {
     let sites = this.sites.slice(0);
-    opts = opts || {};
-
-    console.log('refresh sites was called on ' + sites.length + ' sites!');
+    console.log('refresh ' + sites.length + ' sites');
 
     return new Promise((resolve, reject) => {
       if (sites.length === 0) {
         console.log('no sites defined nothing to refresh!');
-        resolve({changed: false});
+        resolve();
         return;
       }
-
-      let refreshDelta =
-        this._lastRefreshStart && new Date() - this._lastRefreshStart;
-
-      if (
-        !(opts.forceRefresh === true) &&
-        opts.ui === false &&
-        this._lastRefreshStart &&
-        refreshDelta < 10000
-      ) {
-        console.log('bg refresh skipped cause it ran in last 10 seconds!');
-        resolve({changed: false});
-        return;
-      }
-
-      if (this.refreshing && refreshDelta < 20000) {
-        console.log('not refreshing cause already refreshing!');
-        resolve({changed: false});
-        return;
-      }
-
-      if (this.refreshing && refreshDelta >= 20000) {
-        console.log(
-          'WARNING: a previous refresh went missing, resetting after 20 seconds',
-        );
-      }
-
-      this.refreshing = true;
-      this._lastRefreshStart = new Date();
-
-      let somethingChanged = false;
 
       sites.forEach((site, siteIndex) => {
-        if (opts.ui) {
-          site.resetBus();
-        }
-
         let errors = 0;
 
         site
-          .refresh(opts)
-          .then(state => {
-            // present local notification for self-hosted sites
-            // this will also trigger when background fetch runs
-            if (!site.hasPush && state.alerts && state.alerts.length > 0) {
-              state.alerts.forEach(a => {
-                let excerpt = '@' + a.username + ': ' + a.excerpt;
-                excerpt = excerpt.substr(0, 250);
-                console.log(`publishing local notifications for ${a.site.url}`);
-                PushNotificationIOS.presentLocalNotification({
-                  alertBody: excerpt,
-                  userInfo: {discourse_url: a.url},
-                });
+          .refresh()
+          .then(() => {
+            // trigger localNotification alerts for sites with no push support (iOS only)
+            if (!site.hasPush) {
+              site.getAlerts().then(alerts => {
+                if (alerts && alerts.length > 0) {
+                  alerts.forEach(a => {
+                    if (a.id > site._seenNotificationId) {
+                      PushNotificationIOS.presentLocalNotification({
+                        alertBody: a.excerpt.substr(0, 250),
+                        userInfo: {discourse_url: a.url},
+                      });
+
+                      site._seenNotificationId = a.id;
+                    }
+                  });
+                }
               });
             }
           })
           .catch(e => {
             console.log('failed to refresh ' + site.url);
             console.log(e);
-            if (e === 'User was logged off!') {
-              somethingChanged = true;
-            }
             errors++;
           })
           .finally(() => {
             if (siteIndex === sites.length - 1) {
               this.save();
 
-              if (somethingChanged) {
-                this.updateUnreadBadge();
-                this._onChange();
-              }
-
               if (errors < sites.length) {
                 this.lastRefresh = new Date();
-              }
-
-              if (this.lastRefresh) {
                 AsyncStorage.setItem(
                   '@Discourse.lastRefresh',
                   this.lastRefresh.toJSON(),
-                ).done();
+                );
               }
 
-              this._onRefresh();
-              this.refreshing = false;
-              resolve({changed: somethingChanged});
+              resolve();
             }
           })
           .done();
@@ -549,10 +495,6 @@ class SiteManager {
       object[site.url] = site;
     });
     return object;
-  }
-
-  _onRefresh() {
-    this._subscribers.forEach(sub => sub({event: 'refresh'}));
   }
 
   _onChange() {

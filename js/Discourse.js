@@ -24,7 +24,6 @@ import Site from './site';
 import SiteManager from './site_manager';
 import SafariView from 'react-native-safari-view';
 import SafariWebAuth from 'react-native-safari-web-auth';
-import AsyncStorage from '@react-native-community/async-storage';
 import DeviceInfo from 'react-native-device-info';
 
 const ChromeCustomTab = NativeModules.ChromeCustomTab;
@@ -53,17 +52,13 @@ class Discourse extends React.Component {
     super(props);
     this._siteManager = new SiteManager();
 
-    this._handleAppStateChange = () => {
-      console.log('Detected appstate change: ' + AppState.currentState);
+    this._handleAppStateChange = nextAppState => {
+      console.log('Detected appstate change: ' + nextAppState);
 
-      if (
-        AppState.currentState === 'inactive' ||
-        AppState.currentState === 'background'
-      ) {
+      if (nextAppState.match(/inactive|background/)) {
         this._seenNotificationMap = null;
-      }
-
-      if (AppState.currentState === 'active') {
+        clearInterval(this.state.refreshInterval);
+      } else {
         StatusBar.setHidden(false);
         this._siteManager.refreshSites();
 
@@ -72,12 +67,6 @@ class Discourse extends React.Component {
           30000,
         );
         this.setState({refreshInterval: intervalId});
-        console.log('_refreshPeriodically interval restarted');
-      }
-
-      if (AppState.currentState === 'inactive') {
-        console.log('_refreshPeriodically interval cleared');
-        clearInterval(this.state.refreshInterval);
       }
     };
 
@@ -273,16 +262,13 @@ class Discourse extends React.Component {
       () => {
         console.log('Received background-fetch event');
         this._siteManager.refreshing = false;
-        this._siteManager
-          .refreshSites({ui: false, forceRefresh: true})
-          .finally(() => {
-            this._siteManager.updateUnreadBadge();
-            console.log('finishing up background fetch');
-            // Required: Signal completion of your task to native code
-            // If you fail to do this, the OS can terminate your app
-            // or assign battery-blame for consuming too much background-time
-            BackgroundFetch.finish(BackgroundFetch.FETCH_RESULT_NEW_DATA);
-          });
+        this._siteManager.refreshSites({getAlerts: true}).finally(() => {
+          this._siteManager.updateUnreadBadge();
+          // Required: Signal completion of your task to native code
+          // If you fail to do this, the OS can terminate your app
+          // or assign battery-blame for consuming too much background-time
+          BackgroundFetch.finish(BackgroundFetch.FETCH_RESULT_NEW_DATA);
+        });
       },
       error => {
         console.log('RNBackgroundFetch failed to start');

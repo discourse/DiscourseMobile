@@ -5,12 +5,9 @@ import React from 'react';
 
 import {
   Alert,
-  AppState,
   Animated,
   Easing,
   Linking,
-  NativeModules,
-  Platform,
   RefreshControl,
   SafeAreaView,
   StyleSheet,
@@ -152,10 +149,10 @@ class HomeScreen extends React.Component {
     });
   }
 
-  pullDownToRefresh(opts) {
+  pullDownToRefresh() {
     this.setState({isRefreshing: true});
 
-    this._siteManager.refreshSites(opts).then(() => {
+    this._siteManager.refreshSites().then(() => {
       this.setState({isRefreshing: false});
     });
   }
@@ -230,7 +227,7 @@ class HomeScreen extends React.Component {
               style={{left: 500}}
               enabled={this.state.refreshingEnabled}
               refreshing={this.state.isRefreshing}
-              onRefresh={() => this.pullDownToRefresh({ui: true, fast: false})}
+              onRefresh={() => this.pullDownToRefresh()}
               title="Loading..."
               titleColor={theme.graySubtitle}
             />
