@@ -237,50 +237,36 @@ class Site {
     return changed;
   }
 
-  refresh() {
-    return new Promise((resolve, reject) => {
-      if (!this.authToken) {
-        resolve({});
-        return;
-      }
+  async refresh() {
+    if (!this.authToken) {
+      resolve({});
+      return;
+    }
 
-      this.jsonApi('/session/current.json')
-        .then(json => {
-          let currentUser = json.current_user;
-          this.isStaff = !!(currentUser.admin || currentUser.moderator);
+    let json = await this.jsonApi('/session/current.json');
+    let currentUser = json.current_user;
+    this.isStaff = !!(currentUser.admin || currentUser.moderator);
 
-          // in case of old API fallback
-          this._seenNotificationId =
-            currentUser.seen_notification_id || this._seenNotificationId;
+    // in case of old API fallback
+    this._seenNotificationId =
+      currentUser.seen_notification_id || this._seenNotificationId;
 
-          this.unreadNotifications = currentUser.unread_notifications;
-          this.unreadPrivateMessages = currentUser.unread_private_messages;
+    this.unreadNotifications = currentUser.unread_notifications;
+    this.unreadPrivateMessages = currentUser.unread_private_messages;
 
-          if (this.isStaff) {
-            this.flagCount = currentUser.reviewable_count;
-          }
+    if (this.isStaff) {
+      this.flagCount = currentUser.reviewable_count;
+    }
 
-          this.jsonApi(
-            `/users/${json.current_user.username}/topic-tracking-state.json`,
-          )
-            .then(trackingState => {
-              this.trackingState = {};
-              trackingState.forEach(state => {
-                this.trackingState[`t${state.topic_id}`] = state;
-              });
-              this.updateTotals();
-              resolve();
-            })
-            .catch(e => {
-              console.log('failed to get tracking state ' + e);
-              reject(e);
-            });
-        })
-        .catch(e => {
-          console.warn(e);
-          reject(e);
-        });
+    this.trackingState = {};
+    let tS = await this.jsonApi(
+      `/users/${json.current_user.username}/topic-tracking-state.json`,
+    );
+    tS.forEach(state => {
+      this.trackingState[`t${state.topic_id}`] = state;
     });
+    this.updateTotals();
+    return;
   }
 
   readNotification(notification) {
@@ -405,10 +391,15 @@ class Site {
           const unreadAlerts = [];
           if (results.notifications) {
             results.notifications.forEach(r => {
+              let excerpt = '';
               if (!r.read && alertifiable.indexOf(r.notification_type) > -1) {
-                let excerpt = `@${r.data.display_username} ${
-                  types[r.notification_type]
-                } "${r.fancy_title}"`;
+                if (r.data.display_username.match(/\sreplies/)) {
+                  excerpt = `${r.data.display_username} to "${r.fancy_title}"`;
+                } else {
+                  excerpt = `@${r.data.display_username} ${
+                    types[r.notification_type]
+                  } "${r.fancy_title}"`;
+                }
                 let url = DiscourseUtils.endpointForSiteNotification(this, r);
                 unreadAlerts.push({
                   excerpt: excerpt,

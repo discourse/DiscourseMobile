@@ -229,63 +229,67 @@ class SiteManager {
     });
   }
 
-  refreshSites(opts) {
-    let sites = this.sites.slice(0);
-    console.log('refresh ' + sites.length + ' sites');
+  refreshSites() {
+    console.log('refresh ' + this.sites.length + ' sites');
+    let sites = this.sites.slice(0),
+      promises = [],
+      errors = 0;
 
     return new Promise((resolve, reject) => {
       if (sites.length === 0) {
         console.log('no sites defined nothing to refresh!');
-        resolve();
+        reject();
         return;
       }
 
-      sites.forEach((site, siteIndex) => {
-        let errors = 0;
-
-        site
-          .refresh()
-          .then(() => {
+      sites.forEach(site => {
+        promises.push(
+          site.refresh().then(() => {
             // trigger localNotification alerts for sites with no push support (iOS only)
             if (!site.hasPush) {
-              site.getAlerts().then(alerts => {
-                if (alerts && alerts.length > 0) {
-                  alerts.forEach(a => {
-                    if (a.id > site._seenNotificationId) {
-                      PushNotificationIOS.presentLocalNotification({
-                        alertBody: a.excerpt.substr(0, 250),
-                        userInfo: {discourse_url: a.url},
-                      });
+              site
+                .getAlerts()
+                .then(alerts => {
+                  if (alerts && alerts.length > 0) {
+                    alerts.forEach(a => {
+                      if (a.id > site._seenNotificationId) {
+                        PushNotificationIOS.presentLocalNotification({
+                          alertBody: a.excerpt.substr(0, 250),
+                          userInfo: {discourse_url: a.url},
+                        });
 
-                      site._seenNotificationId = a.id;
-                    }
-                  });
-                }
-              });
+                        site._seenNotificationId = a.id;
+                      }
+                    });
+                  }
+                })
+                .catch(e => {
+                  console.log('failed to refresh ' + site.url);
+                  console.log(e);
+                  errors++;
+                });
             }
-          })
-          .catch(e => {
-            console.log('failed to refresh ' + site.url);
-            console.log(e);
-            errors++;
-          })
-          .finally(() => {
-            if (siteIndex === sites.length - 1) {
-              this.save();
-
-              if (errors < sites.length) {
-                this.lastRefresh = new Date();
-                AsyncStorage.setItem(
-                  '@Discourse.lastRefresh',
-                  this.lastRefresh.toJSON(),
-                );
-              }
-
-              resolve();
-            }
-          })
-          .done();
+          }),
+        );
       });
+
+      Promise.all(promises)
+        .then(() => {
+          this.save();
+
+          if (errors < sites.length) {
+            this.lastRefresh = new Date();
+            AsyncStorage.setItem(
+              '@Discourse.lastRefresh',
+              this.lastRefresh.toJSON(),
+            );
+          }
+
+          resolve();
+        })
+        .catch(e => {
+          reject(e);
+        });
     });
   }
 

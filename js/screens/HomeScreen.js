@@ -17,6 +17,7 @@ import {
 
 import SortableListView from 'react-native-sortable-listview';
 import SafariWebAuth from 'react-native-safari-web-auth';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import Site from '../site';
 import Components from './HomeScreenComponents';
@@ -152,9 +153,14 @@ class HomeScreen extends React.Component {
   pullDownToRefresh() {
     this.setState({isRefreshing: true});
 
-    this._siteManager.refreshSites().then(() => {
-      this.setState({isRefreshing: false});
-    });
+    this._siteManager
+      .refreshSites()
+      .catch(e => {
+        console.log(e);
+      })
+      .done(() => {
+        this.setState({isRefreshing: false});
+      });
   }
 
   shouldDisplayOnBoarding() {

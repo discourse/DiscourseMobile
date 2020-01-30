@@ -262,7 +262,7 @@ class Discourse extends React.Component {
       () => {
         console.log('Received background-fetch event');
         this._siteManager.refreshing = false;
-        this._siteManager.refreshSites({getAlerts: true}).finally(() => {
+        this._siteManager.refreshSites().done(() => {
           this._siteManager.updateUnreadBadge();
           // Required: Signal completion of your task to native code
           // If you fail to do this, the OS can terminate your app
