@@ -235,13 +235,12 @@ class SiteManager {
       promises = [],
       errors = 0;
 
-    return new Promise((resolve, reject) => {
-      if (sites.length === 0) {
-        console.log('no sites defined nothing to refresh!');
-        reject();
-        return;
-      }
+    if (sites.length === 0) {
+      console.log('no sites defined nothing to refresh!');
+      return;
+    }
 
+    return new Promise((resolve, reject) => {
       sites.forEach(site => {
         promises.push(
           site.refresh().then(() => {
