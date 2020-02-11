@@ -1,7 +1,8 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
+import {ThemeContext, themes} from './ThemeContext';
 
 import {
   Alert,
@@ -9,75 +10,79 @@ import {
   Linking,
   NativeModules,
   Platform,
-  PushNotificationIOS,
   StatusBar,
-  StyleSheet
-} from "react-native";
+} from 'react-native';
 
-import { StackNavigator, NavigationActions } from "react-navigation";
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 
-import Screens from "./screens";
-import Site from "./site";
-import SiteManager from "./site_manager";
-import SafariView from "react-native-safari-view";
-import SafariWebAuth from "react-native-safari-web-auth";
-import AsyncStorage from "@react-native-community/async-storage";
-import DeviceInfo from "react-native-device-info";
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import {AppearanceProvider, Appearance} from 'react-native-appearance';
+
+import Screens from './screens';
+import Site from './site';
+import SiteManager from './site_manager';
+import SafariView from 'react-native-safari-view';
+import SafariWebAuth from 'react-native-safari-web-auth';
+import DeviceInfo from 'react-native-device-info';
 
 const ChromeCustomTab = NativeModules.ChromeCustomTab;
 
-import firebase from "./firebase/helper";
-import type { Notification, NotificationOpen } from "./firebase/helper";
-import bgMessaging from "./firebase/bgMessaging";
+import firebase from './firebase/helper';
+import type {Notification, NotificationOpen} from './firebase/helper';
+import bgMessaging from './firebase/bgMessaging';
+import BackgroundFetch from 'react-native-background-fetch';
+import AsyncStorage from '@react-native-community/async-storage';
 
-const AppNavigator = StackNavigator(
+const AppNavigator = createStackNavigator(
   {
-    Home: { screen: Screens.Home },
-    Notifications: { screen: Screens.Notifications },
-    WebView: { screen: Screens.WebView }
+    Home: {screen: Screens.Home},
+    Notifications: {screen: Screens.Notifications},
+    WebView: {screen: Screens.WebView},
   },
   {
-    mode: "modal",
-    headerMode: "none"
-  }
+    mode: 'modal',
+    headerMode: 'none',
+  },
 );
+
+const AppContainer = createAppContainer(AppNavigator);
 
 class Discourse extends React.Component {
   constructor(props) {
     super(props);
     this._siteManager = new SiteManager();
 
-    this._handleAppStateChange = () => {
-      console.log("Detected appstate change: " + AppState.currentState);
+    this._handleAppStateChange = nextAppState => {
+      console.log('Detected appstate change: ' + nextAppState);
 
-      if (
-        AppState.currentState === "inactive" ||
-        AppState.currentState === "background"
-      ) {
+      if (nextAppState.match(/inactive|background/)) {
         this._seenNotificationMap = null;
-      }
-
-      if (AppState.currentState === "active") {
+        clearInterval(this.state.refreshInterval);
+      } else {
         StatusBar.setHidden(false);
-        this._siteManager.refreshSites({
-          ui: false,
-          fast: true
-        });
+        this._siteManager.refreshSites();
+
+        const intervalId = setInterval(
+          this._refreshPeriodically.bind(this),
+          30000,
+        );
+        this.setState({refreshInterval: intervalId});
       }
     };
 
     this._handleOpenUrl = this._handleOpenUrl.bind(this);
 
-    if (Platform.OS === "ios") {
-      PushNotificationIOS.addEventListener("notification", e =>
-        this._handleRemoteNotification(e)
+    if (Platform.OS === 'ios') {
+      PushNotificationIOS.addEventListener('notification', e =>
+        this._handleRemoteNotification(e),
       );
       // PushNotificationIOS.addEventListener("localNotification", e =>
       //   this._handleLocalNotification(e)
       // );
 
-      PushNotificationIOS.addEventListener("register", s => {
-        console.log("registered for push notifications", s);
+      PushNotificationIOS.addEventListener('register', s => {
+        console.log('registered for push notifications', s);
         this._siteManager.registerClientId(s);
       });
 
@@ -88,12 +93,12 @@ class Discourse extends React.Component {
       });
     }
 
-    if (Platform.OS === "android") {
+    if (Platform.OS === 'android') {
       const channel = new firebase.notifications.Android.Channel(
-        "discourse",
-        "Discourse",
-        firebase.notifications.Android.Importance.Max
-      ).setDescription("Discourse notifications channel.");
+        'discourse',
+        'Discourse',
+        firebase.notifications.Android.Importance.Max,
+      ).setDescription('Discourse notifications channel.');
 
       // Create the channel
       firebase.notifications().android.createChannel(channel);
@@ -116,20 +121,43 @@ class Discourse extends React.Component {
         });
     }
 
+    const colorScheme = Appearance.getColorScheme();
+
     this.state = {
       hasNotch: true,
-      deviceId: ""
+      deviceId: '',
+      theme: colorScheme === 'dark' ? themes.dark : themes.light,
     };
 
     DeviceInfo.hasNotch().then(hasNotch => {
       if (hasNotch === false) {
-        this.setState({ hasNotch: false });
+        this.setState({hasNotch: false});
       }
     });
 
     DeviceInfo.getDeviceId().then(deviceId => {
-      this.setState({ deviceId: deviceId });
+      this.setState({deviceId: deviceId});
     });
+
+    this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+      this.setState({
+        theme: colorScheme === 'dark' ? themes.dark : themes.light,
+      });
+    });
+
+    // Toggle dark mode for older Androids (using a custom button in DebugRow)
+    if (Platform.OS === 'android' && Platform.Version < 29) {
+      AsyncStorage.getItem('@Discourse.androidLegacyTheme').then(
+        storedTheme => {
+          this.setState({
+            theme:
+              storedTheme && storedTheme === 'dark'
+                ? themes.dark
+                : themes.light,
+          });
+        },
+      );
+    }
   }
 
   // _handleLocalNotification(e) {
@@ -144,12 +172,11 @@ class Discourse extends React.Component {
   // }
 
   _handleRemoteNotification(e) {
-    console.log("got remote notification", e);
+    console.log('got remote notification', e);
     if (e._data && e._data.discourse_url) {
       this._siteManager
         .setActiveSite(e._data.discourse_url)
         .then(activeSite => {
-          this.resetToTop(); // close any open webviews
           let supportsDelegatedAuth = false;
           if (this._siteManager.supportsDelegatedAuth(activeSite)) {
             supportsDelegatedAuth = true;
@@ -160,13 +187,13 @@ class Discourse extends React.Component {
   }
 
   _handleOpenUrl(event) {
-    console.log("_handleOpenUrl", event);
+    console.log('_handleOpenUrl', event);
 
-    if (event.url.startsWith("discourse://")) {
+    if (event.url.startsWith('discourse://')) {
       let params = this.parseURLparameters(event.url);
       let site = this._siteManager.activeSite;
 
-      if (Platform.OS === "ios") {
+      if (Platform.OS === 'ios') {
         SafariView.dismiss();
       }
 
@@ -177,7 +204,7 @@ class Discourse extends React.Component {
 
       // received one-time-password request from SafariView
       if (params.otp) {
-        this._siteManager.generateURLParams(site, "full").then(params => {
+        this._siteManager.generateURLParams(site, 'full').then(params => {
           SafariWebAuth.requestAuth(`${site.url}/user-api-key/otp?${params}`);
         });
       }
@@ -190,7 +217,7 @@ class Discourse extends React.Component {
 
       // handle site URL passed via app-argument
       if (params.siteUrl) {
-        if (this._siteManager.exists({ url: params.siteUrl })) {
+        if (this._siteManager.exists({url: params.siteUrl})) {
           console.log(`${params.siteUrl} exists!`);
           this.openUrl(params.siteUrl);
         } else {
@@ -202,7 +229,7 @@ class Discourse extends React.Component {
               }
             })
             .catch(e => {
-              console.log("Error adding site via app-argument:", e);
+              console.log('Error adding site via app-argument:', e);
             })
             .done();
         }
@@ -210,31 +237,20 @@ class Discourse extends React.Component {
     }
   }
 
-  resetToTop() {
-    if (this._navigation) {
-      this._navigation.dispatch(
-        NavigationActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({ routeName: "Home" })]
-        })
-      );
-    }
-  }
-
   componentDidMount() {
-    AppState.addEventListener("change", this._handleAppStateChange);
-    Linking.addEventListener("url", this._handleOpenUrl);
+    AppState.addEventListener('change', this._handleAppStateChange);
+    Linking.addEventListener('url', this._handleOpenUrl);
 
-    if (Platform.OS === "ios") {
-      PushNotificationIOS.requestPermissions({ alert: true, badge: true });
+    if (Platform.OS === 'ios') {
+      PushNotificationIOS.requestPermissions({alert: true, badge: true});
     }
 
-    if (Platform.OS === "android") {
+    if (Platform.OS === 'android') {
       // notification opened while app is in foreground or background
       this.removeNotificationOpenedListener = firebase
         .notifications()
         .onNotificationOpened((notificationOpen: NotificationOpen) => {
-          console.log("onNotificationOpened");
+          console.log('onNotificationOpened');
           this.handleAndroidOpeNotification(notificationOpen);
         });
 
@@ -243,7 +259,7 @@ class Discourse extends React.Component {
         .notifications()
         .getInitialNotification()
         .then((notificationOpen: NotificationOpen) => {
-          console.log("getInitialNotification");
+          console.log('getInitialNotification');
           this.handleAndroidOpeNotification(notificationOpen);
         });
 
@@ -254,24 +270,51 @@ class Discourse extends React.Component {
           bgMessaging(notification);
         });
     }
+
+    // BackgroundFetch register (15-minute minimum interval allowed)
+    BackgroundFetch.configure(
+      {minimumFetchInterval: 15},
+      () => {
+        console.log('Received background-fetch event');
+        this._siteManager.refreshing = false;
+        this._siteManager.refreshSites().done(() => {
+          this._siteManager.updateUnreadBadge();
+          // Required: Signal completion of your task to native code
+          // If you fail to do this, the OS can terminate your app
+          // or assign battery-blame for consuming too much background-time
+          BackgroundFetch.finish(BackgroundFetch.FETCH_RESULT_NEW_DATA);
+        });
+      },
+      error => {
+        console.log('RNBackgroundFetch failed to start');
+      },
+    );
+
+    const intervalId = setInterval(this._refreshPeriodically.bind(this), 30000);
+    this.setState({refreshInterval: intervalId});
+  }
+
+  _refreshPeriodically() {
+    this._siteManager.refreshSites();
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener("change", this._handleAppStateChange);
-    Linking.removeEventListener("url", this._handleOpenUrl);
+    AppState.removeEventListener('change', this._handleAppStateChange);
+    Linking.removeEventListener('url', this._handleOpenUrl);
     clearTimeout(this.safariViewTimeout);
-    if (Platform.OS === "android") {
+    if (Platform.OS === 'android') {
       this.removeNotificationOpenedListener();
       this.foregroundNNotificationListener();
     }
+    this.subscription.remove();
   }
 
   parseURLparameters(string) {
     let parsed = {};
-    (string.split("?")[1] || string)
-      .split("&")
+    (string.split('?')[1] || string)
+      .split('&')
       .map(item => {
-        return item.split("=");
+        return item.split('=');
       })
       .forEach(item => {
         parsed[item[0]] = decodeURIComponent(item[1]);
@@ -289,17 +332,14 @@ class Discourse extends React.Component {
   }
 
   openUrl(url, supportsDelegatedAuth = true) {
-    if (Platform.OS === "ios") {
+    if (Platform.OS === 'ios') {
       if (!supportsDelegatedAuth) {
-        this.safariViewTimeout = setTimeout(
-          () => SafariView.show({ url }),
-          400
-        );
+        this.safariViewTimeout = setTimeout(() => SafariView.show({url}), 400);
       } else {
         SafariView.dismiss();
 
-        this._navigation.navigate("WebView", {
-          url: url
+        this._navigation.navigate('WebView', {
+          url: url,
         });
       }
     } else {
@@ -316,39 +356,37 @@ class Discourse extends React.Component {
     }
   }
 
+  _toggleTheme(newTheme) {
+    this.setState({
+      theme: newTheme === 'dark' ? themes.dark : themes.light,
+    });
+  }
+
   render() {
     return (
-      <React.Fragment>
-        <StatusBar barStyle="dark-content" />
-        <AppNavigator
-          ref={ref => (this._navigation = ref && ref._navigation)}
-          style={styles.app}
-          screenProps={{
-            resetToTop: this.resetToTop.bind(this),
-            openUrl: this.openUrl.bind(this),
-            _handleOpenUrl: this._handleOpenUrl,
-            seenNotificationMap: this._seenNotificationMap,
-            setSeenNotificationMap: map => {
-              this._seenNotificationMap = map;
-            },
-            siteManager: this._siteManager,
-            hasNotch: this.state.hasNotch,
-            deviceId: this.state.deviceId
-          }}
-        />
-      </React.Fragment>
+      <ThemeContext.Provider value={this.state.theme}>
+        <AppearanceProvider>
+          <StatusBar barStyle={this.state.theme.barStyle} />
+          <AppContainer
+            ref={ref => (this._navigation = ref && ref._navigation)}
+            style={{flex: 1}}
+            screenProps={{
+              openUrl: this.openUrl.bind(this),
+              _handleOpenUrl: this._handleOpenUrl,
+              seenNotificationMap: this._seenNotificationMap,
+              setSeenNotificationMap: map => {
+                this._seenNotificationMap = map;
+              },
+              siteManager: this._siteManager,
+              hasNotch: this.state.hasNotch,
+              deviceId: this.state.deviceId,
+              toggleTheme: this._toggleTheme.bind(this),
+            }}
+          />
+        </AppearanceProvider>
+      </ThemeContext.Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  app: {
-    flex: 1,
-    backgroundColor: "white"
-  },
-  screenContainer: {
-    flex: 1
-  }
-});
 
 export default Discourse;

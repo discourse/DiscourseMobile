@@ -1,27 +1,25 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import _ from "lodash";
-import Moment from "moment";
+import _ from 'lodash';
+import Moment from 'moment';
 
-const Fabric = require("react-native-fabric");
-const { Answers } = Fabric;
+import {Alert, AppState, Platform} from 'react-native';
 
-import { Alert, AppState, Platform, PushNotificationIOS } from "react-native";
-
-import AsyncStorage from "@react-native-community/async-storage";
-import Site from "./site";
-import RNKeyPair from "react-native-key-pair";
-import DeviceInfo from "react-native-device-info";
-import JSEncrypt from "./../lib/jsencrypt";
-import randomBytes from "./../lib/random-bytes";
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import AsyncStorage from '@react-native-community/async-storage';
+import Site from './site';
+import RNKeyPair from 'react-native-key-pair';
+import DeviceInfo from 'react-native-device-info';
+import JSEncrypt from './../lib/jsencrypt';
+import randomBytes from './../lib/random-bytes';
 
 class SiteManager {
   constructor() {
     this._subscribers = [];
     this.sites = [];
     this.activeSite = null;
-    this.urlScheme = "discourse://auth_redirect";
+    this.urlScheme = 'discourse://auth_redirect';
 
     this.load();
 
@@ -29,45 +27,26 @@ class SiteManager {
     this.lastFetch = new Date();
     this.fetchCount = 0;
 
-    AsyncStorage.getItem("@Discourse.lastRefresh").then(date => {
+    AsyncStorage.getItem('@Discourse.lastRefresh').then(date => {
       if (date) {
         this.lastRefresh = new Date(date);
-        this._onRefresh;
       }
     });
 
-    this.deviceName = "Discourse - Unknown Mobile Device";
+    this.deviceName = 'Discourse - Unknown Mobile Device';
 
     DeviceInfo.getDeviceName().then(name => {
       this.deviceName = `Discourse - ${name}`;
     });
   }
 
-  refreshInterval(interval) {
-    if (this._refresher) {
-      clearInterval(this._refresher);
-      this._refresher = null;
-    }
-
-    this._refreshInterval = interval;
-
-    if (interval > 0) {
-      this._refresher = setInterval(() => {
-        this.refreshSites({ ui: false, fast: true });
-      }, interval);
-    }
-  }
-
   exists(site) {
-    return !!_.find(this.sites, { url: site.url });
+    return !!_.find(this.sites, {url: site.url});
   }
 
   add(site) {
-    Answers.logCustom("Added site", { url: site.url, title: site.title });
-
     this.sites.push(site);
     this.save();
-    this._onChange();
   }
 
   remove(site) {
@@ -77,18 +56,15 @@ class SiteManager {
       removableSite.revokeApiKey().catch(e => {
         console.log(`Failed to revoke API Key ${e}`);
       });
-      Answers.logCustom("Removed site", { url: site.url, title: site.title });
       this.save();
-      this._onChange();
-      this.updateUnreadBadge();
     }
   }
 
   setActiveSite(site) {
     return new Promise((resolve, reject) => {
-      if (typeof site === "string" || site instanceof String) {
+      if (typeof site === 'string' || site instanceof String) {
         let url = site;
-        AsyncStorage.getItem("@Discourse.sites")
+        AsyncStorage.getItem('@Discourse.sites')
           .then(json => {
             let activeSite = null;
             if (json) {
@@ -100,12 +76,12 @@ class SiteManager {
               this.activeSite = activeSite;
             }
 
-            resolve({ activeSite: activeSite });
+            resolve({activeSite: activeSite});
           })
           .done();
       } else {
         this.activeSite = site;
-        resolve({ activeSite: site });
+        resolve({activeSite: site});
         return;
       }
     });
@@ -114,7 +90,6 @@ class SiteManager {
   updateOrder(from, to) {
     this.sites.splice(to, 0, this.sites.splice(from, 1)[0]);
     this.save();
-    this._onChange();
   }
 
   subscribe(callback) {
@@ -129,7 +104,7 @@ class SiteManager {
   }
 
   updateUnreadBadge() {
-    if (Platform.OS === "ios") {
+    if (Platform.OS === 'ios') {
       PushNotificationIOS.checkPermissions(p => {
         if (p.badge) {
           PushNotificationIOS.setApplicationIconBadgeNumber(this.totalUnread());
@@ -139,7 +114,8 @@ class SiteManager {
   }
 
   save() {
-    AsyncStorage.setItem("@Discourse.sites", JSON.stringify(this.sites)).done();
+    AsyncStorage.setItem('@Discourse.sites', JSON.stringify(this.sites)).done();
+    this._onChange();
     this.updateUnreadBadge();
   }
 
@@ -150,18 +126,16 @@ class SiteManager {
         return;
       }
 
-      AsyncStorage.getItem("@Discourse.rsaKeys").then(json => {
+      AsyncStorage.getItem('@Discourse.rsaKeys').then(json => {
         if (json) {
           this.rsaKeys = JSON.parse(json);
           resolve();
         } else {
-          console.log("Generating RSA keys");
           RNKeyPair.generate(pair => {
             this.rsaKeys = pair;
-            console.log("Generated RSA keys");
             AsyncStorage.setItem(
-              "@Discourse.rsaKeys",
-              JSON.stringify(this.rsaKeys)
+              '@Discourse.rsaKeys',
+              JSON.stringify(this.rsaKeys),
             );
             resolve();
           });
@@ -178,7 +152,7 @@ class SiteManager {
     // generate RSA Keys on load, they'll be needed
     this.ensureRSAKeys().done();
     this._loading = true;
-    AsyncStorage.getItem("@Discourse.sites")
+    AsyncStorage.getItem('@Discourse.sites')
       .then(json => {
         if (json) {
           this.sites = JSON.parse(json).map(obj => {
@@ -199,18 +173,16 @@ class SiteManager {
                 }
 
                 this.sites[index].lastChecked = Moment().format();
-              })
+              }),
             );
           });
 
           Promise.all(promises)
             .then(() => {
               this.save();
-              this.refreshSites({ ui: false, fast: false })
-                .then(() => {
-                  this._onChange();
-                })
-                .done();
+              this.refreshSites().then(() => {
+                this._onChange();
+              });
             })
             .catch(e => {
               console.log(e);
@@ -257,132 +229,84 @@ class SiteManager {
     });
   }
 
-  // exitBackground() {
-  //   this.sites.forEach(s => s.exitBackground());
-  //   this.refreshInterval(this._refreshInterval);
-  //   // in case UI did not pick up changes
-  //   this._onChange();
-  //   this._onRefresh();
-  // }
+  refreshSites() {
+    console.log('refresh ' + this.sites.length + ' sites');
+    let sites = this.sites.slice(0),
+      promises = [],
+      errors = 0;
 
-  refreshSites(opts) {
-    let sites = this.sites.slice(0);
-    opts = opts || {};
-
-    console.log("refresh sites was called on " + sites.length + " sites!");
+    if (sites.length === 0) {
+      console.log('no sites defined nothing to refresh!');
+      return;
+    }
 
     return new Promise((resolve, reject) => {
-      if (AppState.currentState !== "active") {
-        console.log("skip refresh cause app is not active");
-        resolve({ changed: false });
-        return;
-      }
-
-      if (sites.length === 0) {
-        console.log("no sites defined nothing to refresh!");
-        resolve({ changed: false });
-        return;
-      }
-
-      let refreshDelta =
-        this._lastRefreshStart && new Date() - this._lastRefreshStart;
-
-      if (
-        !(opts.forceRefresh === true) &&
-        opts.ui === false &&
-        this._lastRefreshStart &&
-        refreshDelta < 10000
-      ) {
-        console.log("bg refresh skipped cause it ran in last 10 seconds!");
-        resolve({ changed: false });
-        return;
-      }
-
-      if (this.refreshing && refreshDelta < 30000) {
-        console.log("not refreshing cause already refreshing!");
-        resolve({ changed: false });
-        return;
-      }
-
-      if (this.refreshing && refreshDelta >= 30000) {
-        console.log(
-          "WARNING: a previous refresh went missing, resetting after 30 seconds"
-        );
-      }
-
-      this.refreshing = true;
-      this._lastRefreshStart = new Date();
-
-      let processedSites = 0;
-      let somethingChanged = false;
-      let alerts = [];
-
       sites.forEach(site => {
-        if (opts.ui) {
-          site.resetBus();
+        if (site.authToken) {
+          promises.push(
+            site
+              .refresh()
+              .then(() => {
+                // trigger localNotification alerts for sites with no push support (iOS only)
+                if (!site.hasPush) {
+                  site
+                    .getAlerts()
+                    .then(alerts => {
+                      if (alerts && alerts.length > 0) {
+                        alerts.forEach(a => {
+                          if (a.id > site._seenNotificationId) {
+                            PushNotificationIOS.presentLocalNotification({
+                              alertBody: a.excerpt.substr(0, 250),
+                              userInfo: {discourse_url: a.url},
+                            });
+
+                            site._seenNotificationId = a.id;
+                          }
+                        });
+                      }
+                    })
+                    .catch(e => {
+                      console.log('failed to refresh ' + site.url);
+                      console.log(e);
+                      errors++;
+                    });
+                }
+              })
+              .catch(e => {
+                console.log(e);
+              }),
+          );
         }
-
-        let errors = 0;
-
-        site
-          .refresh(opts)
-          .then(state => {
-            somethingChanged = somethingChanged || state.changed;
-            if (state.alerts) {
-              alerts = alerts.concat(state.alerts);
-            }
-          })
-          .catch(e => {
-            console.log("failed to refresh " + site.url);
-            console.log(e);
-            if (e === "User was logged off!") {
-              somethingChanged = true;
-            }
-            errors++;
-          })
-          .finally(() => {
-            processedSites++;
-
-            if (processedSites === sites.length) {
-              // Don't save stuff in the background
-              if (AppState.currentState === "active") {
-                this.save();
-              }
-
-              if (somethingChanged) {
-                this.updateUnreadBadge();
-                this._onChange();
-              }
-
-              if (errors < sites.length) {
-                this.lastRefresh = new Date();
-              }
-
-              if (this.lastRefresh) {
-                AsyncStorage.setItem(
-                  "@Discourse.lastRefresh",
-                  this.lastRefresh.toJSON()
-                ).done();
-              }
-
-              this._onRefresh();
-              this.refreshing = false;
-              resolve({ changed: somethingChanged, alerts: alerts });
-            }
-          })
-          .done();
       });
+
+      Promise.all(promises)
+        .then(() => {
+          this.save();
+
+          if (errors < sites.length) {
+            this.lastRefresh = new Date();
+            AsyncStorage.setItem(
+              '@Discourse.lastRefresh',
+              this.lastRefresh.toJSON(),
+            );
+          }
+
+          resolve();
+        })
+        .catch(e => {
+          reject(e);
+        });
     });
   }
 
   serializeParams(obj) {
     return Object.keys(obj)
       .map(k => `${encodeURIComponent(k)}=${encodeURIComponent([obj[k]])}`)
-      .join("&");
+      .join('&');
   }
 
   registerClientId(id) {
-    console.log("REGISTER CLIENT ID " + id);
+    console.log('REGISTER CLIENT ID ' + id);
 
     this.getClientId().then(existing => {
       this.sites.forEach(site => {
@@ -391,7 +315,7 @@ class SiteManager {
 
       if (existing !== id) {
         this.clientId = id;
-        AsyncStorage.setItem("@ClientId", this.clientId);
+        AsyncStorage.setItem('@ClientId', this.clientId);
         this.sites.forEach(site => {
           site.authToken = null;
           site.userId = null;
@@ -406,13 +330,13 @@ class SiteManager {
       if (this.clientId) {
         resolve(this.clientId);
       } else {
-        AsyncStorage.getItem("@ClientId").then(clientId => {
+        AsyncStorage.getItem('@ClientId').then(clientId => {
           if (clientId && clientId.length > 0) {
             this.clientId = clientId;
             resolve(clientId);
           } else {
             this.clientId = randomBytes(32);
-            AsyncStorage.setItem("@ClientId", this.clientId);
+            AsyncStorage.setItem('@ClientId', this.clientId);
             resolve(this.clientId);
           }
         });
@@ -438,7 +362,7 @@ class SiteManager {
     let decrypted = JSON.parse(this.decryptHelper(payload));
 
     if (decrypted.nonce !== this._nonce) {
-      Alert.alert("We were not expecting this reply, please try again!");
+      Alert.alert('We were not expecting this reply, please try again!');
       return;
     }
 
@@ -455,7 +379,7 @@ class SiteManager {
         this._onChange();
       })
       .catch(e => {
-        console.log("Failed to refresh " + this._nonceSite.url + " " + e);
+        console.log('Failed to refresh ' + this._nonceSite.url + ' ' + e);
       });
   }
 
@@ -469,10 +393,10 @@ class SiteManager {
           return this.generateNonce(site);
         })
         .then(nonce => {
-          let basePushUrl = "https://api.discourse.org";
+          let basePushUrl = 'https://api.discourse.org';
           //let basePushUrl = "http://l.discourse:3000"
 
-          let scopes = "notifications,session_info";
+          let scopes = 'notifications,session_info';
 
           if (this.supportsDelegatedAuth(site)) {
             scopes = `${scopes},one_time_password`;
@@ -482,30 +406,30 @@ class SiteManager {
             scopes: scopes,
             client_id: clientId,
             nonce: nonce,
-            push_url: basePushUrl + "/api/publish_" + Platform.OS,
+            push_url: basePushUrl + '/api/publish_' + Platform.OS,
             auth_redirect: this.urlScheme,
             application_name: this.deviceName,
             public_key: this.rsaKeys.public,
-            discourse_app: 1
+            discourse_app: 1,
           };
 
           return `${site.url}/user-api-key/new?${this.serializeParams(params)}`;
-        })
+        }),
     );
   }
 
-  generateURLParams(site, type = "basic") {
+  generateURLParams(site, type = 'basic') {
     return this.ensureRSAKeys().then(() => {
       let params = {
         auth_redirect: this.urlScheme,
-        user_api_public_key: this.rsaKeys.public
+        user_api_public_key: this.rsaKeys.public,
       };
 
-      if (type === "full") {
+      if (type === 'full') {
         params = {
           auth_redirect: this.urlScheme,
           application_name: this.deviceName,
-          public_key: this.rsaKeys.public
+          public_key: this.rsaKeys.public,
         };
       }
 
@@ -523,7 +447,7 @@ class SiteManager {
           promises.push(
             site.getSeenNotificationId().then(function(id) {
               results[site.url] = id;
-            })
+            }),
           );
         }
       });
@@ -539,12 +463,12 @@ class SiteManager {
         let opts = options;
 
         if (opts.onlyNew) {
-          opts = _.merge(_.clone(opts), { minId: opts.newMap[site.url] });
+          opts = _.merge(_.clone(opts), {minId: opts.newMap[site.url]});
         }
 
         let promise = site.notifications(types, opts).then(notifications => {
           return notifications.map(n => {
-            return { notification: n, site: site };
+            return {notification: n, site: site};
           });
         });
 
@@ -564,11 +488,11 @@ class SiteManager {
                       ? 0
                       : 1;
                   },
-                  "notification.created_at"
+                  'notification.created_at',
                 ],
-                ["asc", "desc"]
+                ['asc', 'desc'],
               )
-              .value()
+              .value(),
           );
         })
         .done();
@@ -583,12 +507,8 @@ class SiteManager {
     return object;
   }
 
-  _onRefresh() {
-    this._subscribers.forEach(sub => sub({ event: "refresh" }));
-  }
-
   _onChange() {
-    this._subscribers.forEach(sub => sub({ event: "change" }));
+    this._subscribers.forEach(sub => sub({event: 'change'}));
   }
 
   supportsDelegatedAuth(site) {
@@ -596,7 +516,7 @@ class SiteManager {
     // site needs user api >= 4
 
     if (
-      Platform.OS !== "ios" ||
+      Platform.OS !== 'ios' ||
       parseInt(Platform.Version, 10) <= 11 ||
       site.apiVersion < 4
     ) {

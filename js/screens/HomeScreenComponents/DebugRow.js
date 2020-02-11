@@ -1,11 +1,19 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 
-import { StyleSheet, Text, View } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 
-import Moment from "moment";
+import Moment from 'moment';
+import {ThemeContext} from '../../ThemeContext';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class DebugRow extends React.Component {
   componentDidMount() {
@@ -14,10 +22,19 @@ class DebugRow extends React.Component {
         firstFetch: this.props.siteManager.firstFetch,
         lastFetch: this.props.siteManager.lastFetch,
         fetchCount: this.props.siteManager.fetchCount,
-        lastRefresh: this.props.siteManager.lastRefresh
+        lastRefresh: this.props.siteManager.lastRefresh,
       });
     };
     this.props.siteManager.subscribe(this._subscription);
+
+    AsyncStorage.getItem('@Discourse.androidLegacyTheme').then(theme => {
+      if (!theme) {
+        theme = 'light';
+      }
+      this.setState({
+        themeOverride: theme,
+      });
+    });
   }
 
   componentWillUnmount() {
@@ -32,31 +49,72 @@ class DebugRow extends React.Component {
       firstFetch: this.props.siteManager.firstFetch,
       lastFetch: this.props.siteManager.lastFetch,
       fetchCount: this.props.siteManager.fetchCount,
-      lastRefresh: this.props.siteManager.lastRefresh
+      lastRefresh: this.props.siteManager.lastRefresh,
     };
+  }
+
+  toggleTheme = () => {
+    const theme = this.context;
+    const newTheme = theme.background === '#FFFFFF' ? 'dark' : 'light';
+    AsyncStorage.setItem('@Discourse.androidLegacyTheme', newTheme).done(() => {
+      this.props.toggleTheme(newTheme);
+    });
+  };
+
+  renderDarkModeToggle() {
+    if (Platform.OS === 'android' && Platform.Version < 29) {
+      const theme = this.context;
+
+      const label =
+        theme.background === '#FFFFFF'
+          ? 'Switch to dark theme'
+          : 'Switch to light theme';
+      return (
+        <TouchableHighlight
+          underlayColor={'transparent'}
+          onPress={this.toggleTheme}>
+          <Text style={styles.darkModeToggle}>{label}</Text>
+        </TouchableHighlight>
+      );
+    }
+    return false;
   }
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Text style={styles.debugText}>
-          Last Updated: {Moment(this.state.lastRefresh).format("h:mmA")}
+          Last Updated: {Moment(this.state.lastRefresh).format('h:mmA')}
         </Text>
+        {this.renderDarkModeToggle()}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  debugText: {
-    color: "#777",
-    fontSize: 10,
-    position: "absolute",
+  container: {
+    position: 'absolute',
+    zIndex: 5,
     bottom: 0,
-    left: 0,
-    paddingLeft: 6,
-    backgroundColor: "transparent"
-  }
+    padding: 0,
+    width: '100%',
+    height: 30,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  darkModeToggle: {
+    color: '#666',
+    fontSize: 11,
+    padding: 6,
+  },
+  debugText: {
+    color: '#777',
+    fontSize: 11,
+    padding: 6,
+  },
 });
+DebugRow.contextType = ThemeContext;
 
 export default DebugRow;

@@ -2,15 +2,13 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "1.5.6"
-ANDROID_APP_VERSION = "1.5.4"
+IOS_APP_VERSION = "1.6.0"
+ANDROID_APP_VERSION = "1.6.0"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
 
 fastlane_version "2.89.0"
-
-# xcode_select "/Applications/Xcode11-beta.app"
 
 default_platform :ios
 
@@ -121,28 +119,28 @@ platform :ios do
     # match(force: true, type: "development", git_url: KEYS_REPOSITORY)
   end
 
-  desc "Submit a new Beta Build to Fabric -> Beta"
-  desc "This will also make sure the profile is up to date"
-  lane :beta do
-    gym(
-      scheme: PROJECT_NAME,
-      clean: true,
-      export_method: "ad-hoc",
-      export_options: {
-        provisioningProfiles: {
-          "org.discourse.DiscourseApp" => "match AdHoc org.discourse.DiscourseApp"
-        }
-      },
-      project: "./ios/#{PROJECT_NAME}.xcodeproj",
-      export_xcargs: "-allowProvisioningUpdates"
-    )
+  # desc "Submit a new Beta Build to Fabric -> Beta"
+  # desc "This will also make sure the profile is up to date"
+  # lane :beta do
+  #   gym(
+  #     scheme: PROJECT_NAME,
+  #     clean: true,
+  #     export_method: "ad-hoc",
+  #     export_options: {
+  #       provisioningProfiles: {
+  #         "org.discourse.DiscourseApp" => "match AdHoc org.discourse.DiscourseApp"
+  #       }
+  #     },
+  #     project: "./ios/#{PROJECT_NAME}.xcodeproj",
+  #     export_xcargs: "-allowProvisioningUpdates"
+  #   )
 
-    crashlytics(
-      api_token: fabric_api_key,
-      build_secret: fabric_build_secret,
-      notifications: true
-    )
-  end
+  #   crashlytics(
+  #     api_token: fabric_api_key,
+  #     build_secret: fabric_build_secret,
+  #     notifications: true
+  #   )
+  # end
 
   desc "Submit a new build to Testflight"
   lane :release do
@@ -159,13 +157,13 @@ platform :ios do
         }
       },
       clean: true,
-      project: "./ios/#{PROJECT_NAME}.xcodeproj"
+      workspace: "./ios/#{PROJECT_NAME}.xcworkspace"
     )
 
-    upload_symbols_to_crashlytics(
-      api_token: fabric_api_key,
-      binary_path: ENV["IPA_OUTPUT_PATH"]
-    )
+    # upload_symbols_to_crashlytics(
+    #   api_token: fabric_api_key,
+    #   binary_path: ENV["IPA_OUTPUT_PATH"]
+    # )
 
     `cp ../Discourse.ipa ../releases/Discourse.ipa`
 
@@ -186,7 +184,7 @@ platform :ios do
         }
       },
       clean: true,
-      project: "./ios/#{PROJECT_NAME}.xcodeproj"
+      workspace: "./ios/#{PROJECT_NAME}.xcworkspace"
     )
 
     install_on_device

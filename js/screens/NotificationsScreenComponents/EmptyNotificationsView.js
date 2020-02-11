@@ -1,40 +1,41 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import { StyleSheet, Text, View } from "react-native";
-
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-
-import colors from "../../colors";
+import {ThemeContext} from '../../ThemeContext';
 
 class EmptyNotificationsView extends React.Component {
   render() {
+    const theme = this.context;
     return (
       <View style={styles.container}>
-        <FontAwesome5 name={"bell"} size={26} color={colors.grayUI} solid />
-        <Text style={styles.text}>{this.props.text}</Text>
+        <FontAwesome5 name={'bell'} size={26} color={theme.grayUI} solid />
+        <Text style={{...styles.text, color: theme.grayTitle}}>
+          {this.props.text}
+        </Text>
       </View>
     );
   }
 }
+EmptyNotificationsView.contextType = ThemeContext;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    backgroundColor: "transparent",
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
     flex: 5,
-    justifyContent: "center"
   },
   text: {
-    color: colors.grayTitle,
     fontSize: 16,
     marginBottom: 48,
     padding: 24,
     paddingTop: 12,
-    textAlign: "center"
-  }
+    textAlign: 'center',
+  },
 });
 
 export default EmptyNotificationsView;

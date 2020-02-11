@@ -1,134 +1,100 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import PropTypes from "prop-types";
+import {Text, TouchableHighlight, View} from 'react-native';
 
-import { Animated, Easing, Text, TouchableHighlight, View } from "react-native";
+import _ from 'lodash';
 
-import Dimensions from "Dimensions";
-
-import _ from "lodash";
-import Orientation from "react-native-orientation";
-
-import colors from "../../colors";
+import {ThemeContext} from '../../ThemeContext';
 
 class Filter extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     selectedIndex: PropTypes.number.isRequired,
-    tabs: PropTypes.array
+    tabs: PropTypes.array,
   };
 
   constructor(props) {
     super(props);
 
-    this.initialOrientation = Orientation.getInitialOrientation();
-
     this.state = {
-      indicatorWidth: Dimensions.get("window").width / this.props.tabs.length,
-      selectedIndex: new Animated.Value(props.selectedIndex)
+      selectedIndex: props.selectedIndex,
     };
   }
 
-  componentDidMount() {
-    Orientation.addOrientationListener(this._orientationDidChange.bind(this));
-  }
-
-  componentWillUnmount() {
-    Orientation.removeOrientationListener(this._orientationDidChange);
-  }
-
-  onDidSelect(index) {
-    Animated.timing(this.state.selectedIndex, {
-      easing: Easing.inOut(Easing.ease),
-      duration: 250,
-      toValue: index,
-      useNativeDriver: true
-    }).start();
-
-    this.props.onChange(index);
-  }
-
   render() {
+    const theme = this.context;
     return (
-      <View style={styles.container}>
+      <View style={{...styles.container, backgroundColor: theme.grayUILight}}>
         {this._renderTabs(this.props.tabs)}
-        <Animated.View
-          style={[
-            styles.indicator,
-            {
-              width: this.state.indicatorWidth,
-              transform: [{ translateX: this._indicatorLeftPosition() }]
-            }
-          ]}
-        />
+        <View style={{...styles.indicator, backgroundColor: theme.grayUI}} />
       </View>
     );
   }
 
   _renderTabs(tabs) {
+    const theme = this.context;
     return _.map(tabs, (tab, tabIndex) => {
+      const selected = this.props.selectedIndex === tabIndex;
+
       return (
         <TouchableHighlight
           key={tab}
-          underlayColor={colors.yellowUIFeedback}
-          style={[styles.button]}
-          onPress={() => this.onDidSelect(tabIndex)}
-        >
-          <Text style={styles.buttonText}>{tab.toUpperCase()}</Text>
+          underlayColor={theme.yellowUIFeedback}
+          style={{...styles.button, backgroundColor: theme.grayUILight}}
+          onPress={() => this.props.onChange(tabIndex)}>
+          <Text
+            style={[
+              styles.buttonText,
+              {
+                color: selected ? theme.blueCallToAction : theme.grayUI,
+                backgroundColor: selected
+                  ? theme.background
+                  : theme.grayUILight,
+              },
+            ]}>
+            {tab.toUpperCase()}
+          </Text>
         </TouchableHighlight>
       );
     });
   }
 
-  _indicatorLeftPosition() {
+  _indicatorColor() {
     return this.state.selectedIndex.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, this.state.indicatorWidth]
+      outputRange: ['black', 'blue'],
     });
   }
-
-  _orientationDidChange(newOrientation) {
-    let width;
-
-    if (newOrientation === this.initialOrientation) {
-      width = Dimensions.get("window").width / this.props.tabs.length;
-    } else {
-      width = Dimensions.get("window").height / this.props.tabs.length;
-    }
-
-    this.setState({ indicatorWidth: width });
-  }
 }
+Filter.contextType = ThemeContext;
 
 const styles = {
   container: {
-    alignItems: "flex-end",
-    justifyContent: "center",
-    backgroundColor: colors.grayUILight,
-    flexDirection: "row"
+    width: '100%',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   button: {
     flex: 1,
-    flexDirection: "column",
-    backgroundColor: colors.grayUILight
+    flexDirection: 'column',
   },
   buttonText: {
     padding: 12,
     fontSize: 14,
-    fontWeight: "500",
-    color: colors.grayUI,
-    textAlign: "center"
+    fontWeight: '500',
+    textAlign: 'center',
   },
   indicator: {
-    backgroundColor: colors.grayUI,
     height: 3,
-    position: "absolute",
+    position: 'absolute',
     left: 0,
-    bottom: 0
-  }
+    bottom: 0,
+  },
 };
 
 export default Filter;

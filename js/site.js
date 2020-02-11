@@ -1,40 +1,41 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import { AppState, Platform } from "react-native";
-import _ from "lodash";
-import Moment from "moment";
+import {AppState, Platform} from 'react-native';
+import _ from 'lodash';
+import Moment from 'moment';
+import DiscourseUtils from './DiscourseUtils';
 
-const fetch = require("./../lib/fetch");
-import randomBytes from "./../lib/random-bytes";
+const fetch = require('./../lib/fetch');
+import randomBytes from './../lib/random-bytes';
 
 class Site {
   static FIELDS = [
-    "authToken",
-    "title",
-    "description",
-    "icon",
-    "url",
-    "unreadNotifications",
-    "unreadPrivateMessages",
-    "lastSeenNotificationId",
-    "flagCount",
-    "queueCount",
-    "totalUnread",
-    "totalNew",
-    "userId",
-    "username",
-    "hasPush",
-    "isStaff",
-    "apiVersion",
-    "lastChecked"
+    'authToken',
+    'title',
+    'description',
+    'icon',
+    'url',
+    'unreadNotifications',
+    'unreadPrivateMessages',
+    'lastSeenNotificationId',
+    'flagCount',
+    'queueCount',
+    'totalUnread',
+    'totalNew',
+    'userId',
+    'username',
+    'hasPush',
+    'isStaff',
+    'apiVersion',
+    'lastChecked',
   ];
 
   static fromTerm(term) {
-    let url = "";
+    let url = '';
 
     term = term.trim();
-    while (term.endsWith("/")) {
+    while (term.endsWith('/')) {
       term = term.slice(0, term.length - 1);
     }
 
@@ -49,7 +50,7 @@ class Site {
 
   static fromURL(url) {
     let req = new Request(`${url}/user-api-key/new`, {
-      method: "HEAD"
+      method: 'HEAD',
     });
 
     let apiVersion;
@@ -57,17 +58,17 @@ class Site {
     return fetch(req)
       .then(userApiKeyResponse => {
         if (userApiKeyResponse.status === 404) {
-          throw "bad api";
+          throw 'bad api';
         }
 
         if (userApiKeyResponse.status !== 200) {
-          throw "bad url";
+          throw 'bad url';
         }
 
-        let version = userApiKeyResponse.headers.get("Auth-Api-Version");
+        let version = userApiKeyResponse.headers.get('Auth-Api-Version');
         apiVersion = parseInt(version, 10);
         if (apiVersion < 2) {
-          throw "bad api";
+          throw 'bad api';
         }
 
         // make sure we use the correct URL, eg: a URL could lead us to
@@ -75,12 +76,12 @@ class Site {
         // final destination and not the origin
         // we also replace any trailing slash
         url = userApiKeyResponse.url
-          .replace("/user-api-key/new", "")
-          .replace(/\/+$/, "")
-          .replace(/:\d+/, "");
+          .replace('/user-api-key/new', '')
+          .replace(/\/+$/, '')
+          .replace(/:\d+/, '');
 
         return fetch(`${url}/site/basic-info.json`).then(basicInfoResponse =>
-          basicInfoResponse.json()
+          basicInfoResponse.json(),
         );
       })
       .then(info => {
@@ -89,7 +90,7 @@ class Site {
           title: info.title,
           description: info.description,
           icon: info.apple_touch_icon_url,
-          apiVersion: apiVersion
+          apiVersion: apiVersion,
         });
       });
   }
@@ -109,7 +110,7 @@ class Site {
 
   addhttps(url) {
     if (!/^(f|ht)tps?:/i.test(url)) {
-      url = "https:" + url;
+      url = 'https:' + url;
     }
     return url;
   }
@@ -117,46 +118,37 @@ class Site {
   jsonApi(path, method, data) {
     console.log(`calling: ${this.url}${path}`);
 
-    method = method || "GET";
+    method = method || 'GET';
     let headers = {
-      "User-Api-Key": this.authToken,
-      "User-Agent": `Discourse ${Platform.OS} App / 1.0`,
-      "Content-Type": "application/json",
-      "Dont-Chunk": "true",
-      "User-Api-Client-Id": this.clientId || ""
+      'User-Api-Key': this.authToken,
+      'User-Agent': `Discourse ${Platform.OS} App / 1.0`,
+      'Content-Type': 'application/json',
+      'Dont-Chunk': 'true',
+      'User-Api-Client-Id': this.clientId || '',
     };
 
     if (data) {
       data = JSON.stringify(data);
     }
 
-    if (AppState.currentState !== "active") {
-      return new Promise((resolve, reject) =>
-        reject("In background mode aborting start request!")
-      );
-    }
-
     return new Promise((resolve, reject) => {
       let req = new Request(this.url + path, {
         headers: headers,
         method: method,
-        body: data
+        body: data,
       });
       this._currentFetch = fetch(req);
       this._currentFetch
         .then(r1 => {
-          if (AppState.currentState !== "active") {
-            throw "In Background mode aborting request!";
-          }
           if (r1.status === 200) {
             return r1.json();
           } else {
-            if (r1.status === 403) {
-              this.logoff();
-              throw "User was logged off!";
-            } else {
-              throw "Error during fetch status code:" + r1.status;
-            }
+            // if (r1.status === 403) {
+            //   this.logoff();
+            //   throw 'User was logged off!';
+            // } else {
+            throw 'Error during fetch status code:' + r1.status;
+            // }
           }
         })
         .then(result => {
@@ -184,18 +176,18 @@ class Site {
       this.logoff();
     }
 
-    var timeOffset = new Moment().subtract(1, "hours").format();
+    var timeOffset = new Moment().subtract(1, 'hours').format();
 
     return new Promise((resolve, reject) => {
       if (!this.lastChecked || Moment(this.lastChecked).isBefore(timeOffset)) {
         Site.fromURL(this.url)
           .then(site => {
-            console.log("fromUrl request for", this.url);
+            console.log('fromUrl request for', this.url);
             resolve(site);
           })
           .catch(e => {
             console.log(e);
-            reject("failure");
+            reject('failure');
           })
           .done();
       } else {
@@ -205,230 +197,7 @@ class Site {
   }
 
   revokeApiKey() {
-    return this.jsonApi("/user-api-key/revoke", "POST");
-  }
-
-  getUserInfo() {
-    return new Promise((resolve, reject) => {
-      if (this.userId && this.username) {
-        console.log("we have user id and user name");
-        resolve({
-          userId: this.userId,
-          username: this.username,
-          isStaff: this.isStaff
-        });
-      } else {
-        this.jsonApi("/session/current.json")
-          .then(json => {
-            this.userId = json.current_user.id;
-            this.username = json.current_user.username;
-            this.isStaff = !!(
-              json.current_user.admin || json.current_user.moderator
-            );
-
-            resolve({
-              userId: this.userId,
-              username: this.username,
-              isStaff: this.isStaff
-            });
-          })
-          .catch(err => {
-            reject(err);
-          })
-          .done();
-      }
-    });
-  }
-
-  getMessageBusId() {
-    return new Promise(resolve => {
-      if (this.messageBusId) {
-        resolve(this.messageBusId);
-      } else {
-        this.messageBusId = randomBytes(16);
-        resolve(this.messageBusId);
-      }
-    });
-  }
-
-  messageBus(channels) {
-    return this.getMessageBusId().then(messageBusId => {
-      return this.jsonApi(
-        `/message-bus/${messageBusId}/poll?dlp=t`,
-        "POST",
-        channels
-      );
-    });
-  }
-
-  processMessages(messages) {
-    let rval = {
-      notifications: false,
-      totals: false,
-      alerts: []
-    };
-
-    let notificationChannel = `/notification/${this.userId}`;
-    let alertChannel = `/notification-alert/${this.userId}`;
-
-    messages.forEach(message => {
-      console.info(`processing incoming message on ${this.url}`);
-      console.log(message);
-
-      if (this.channels) {
-        this.channels[message.channel] = message.message_id;
-      }
-
-      if (message.channel === "/__status") {
-        this.channels = message.data;
-        this.channels.__seq = 0;
-        // we have to get notifications now cause we may have an incorrect number
-        rval.notifications = true;
-      } else if (message.channel === notificationChannel) {
-        this._seenNotificationId = message.data.seen_notification_id;
-
-        // force a refresh on next open
-        if (this._notifications) {
-          // compare most recent notifications
-          let newData = message.data.recent;
-
-          let existing = _.chain(this._notifications)
-            .take(newData.length)
-            .map(n => [n.id, n.read])
-            .value();
-
-          let changed = !_.isEqual(newData, existing);
-          if (changed) {
-            this._notifications = null;
-            rval.notifications = true;
-          }
-        }
-
-        if (this.unreadNotifications !== message.data.unread_notifications) {
-          this.unreadNotifications = message.data.unread_notifications;
-          rval.notifications = true;
-        }
-
-        if (
-          this.unreadPrivateMessages !== message.data.unread_private_messages
-        ) {
-          this.unreadPrivateMessages = message.data.unread_private_messages;
-          rval.notifications = true;
-        }
-      } else if (
-        ["/new", "/latest", "/unread/" + this.userId].indexOf(message.channel) >
-        -1
-      ) {
-        let payload = message.data.payload;
-        if (payload.archetype !== "private_message") {
-          let existing = this.trackingState["t" + payload.topic_id];
-          if (existing) {
-            this.trackingState["t" + payload.topic_id] = _.merge(
-              existing,
-              payload
-            );
-          } else {
-            this.trackingState["t" + payload.topic_id] = payload;
-          }
-          this.updateTotals();
-          rval.totals = true;
-        }
-      } else if (
-        message.channel === "/recover" ||
-        message.channel === "/delete"
-      ) {
-        let existing = this.trackingState["t" + message.data.payload.topic_id];
-        if (existing) {
-          existing.deleted = message.channel === "/delete";
-        }
-      } else if (message.channel === "/flagged_counts") {
-        if (this.flagCount !== message.data.total) {
-          this.flagCount = message.data.total;
-          rval.notifications = true;
-        }
-      } else if (message.channel === "/queue_counts") {
-        if (this.queueCount !== message.data.post_queue_new_count) {
-          // yes this is weird, we have some real coupled code here
-          this.flagCount -=
-            (this.queueCount || 0) - message.data.post_queue_new_count;
-          this.queueCount = message.data.post_queue_new_count;
-          rval.notifications = true;
-        }
-      } else if (message.channel === alertChannel) {
-        message.data.url = this.url + message.data.post_url;
-        message.data.site = this;
-        rval.alerts.push(message.data);
-      }
-    });
-
-    return rval;
-  }
-
-  resetBus() {
-    this.userId = null;
-    this.username = null;
-    this.isStaff = null;
-    this.trackingState = null;
-    this.channels = null;
-  }
-
-  initBus() {
-    return new Promise((resolve, reject) => {
-      if (this.channels && this.trackingState) {
-        resolve({ wasReady: true });
-      } else {
-        this.getUserInfo()
-          .then(info => {
-            let channels = {
-              "/delete": -1,
-              "/recover": -1,
-              "/new": -1,
-              "/latest": -1,
-              __seq: 1
-            };
-
-            if (info.isStaff) {
-              channels["/queue_counts"] = -1;
-              channels["/flagged_counts"] = -1;
-            }
-
-            channels[`/notification/${info.userId}`] = -1;
-            channels[`/notification-alert/${info.userId}`] = -1;
-            channels[`/unread/${info.userId}`] = -1;
-
-            this.messageBus(channels)
-              .then(r => {
-                this.processMessages(r);
-
-                this.jsonApi(
-                  `/users/${info.username}/topic-tracking-state.json`
-                )
-                  .then(trackingState => {
-                    this.trackingState = {};
-                    trackingState.forEach(state => {
-                      this.trackingState[`t${state.topic_id}`] = state;
-                    });
-                    resolve({ wasReady: false });
-                  })
-                  .catch(e => {
-                    console.log("failed to get tracking state " + e);
-                    reject(e);
-                  })
-                  .done();
-              })
-              .catch(e => {
-                console.log(`failed to poll message bus ${e}`);
-                reject(e);
-              })
-              .done();
-          })
-          .catch(e => {
-            console.log(`get user info failed ${e}`);
-            reject(e);
-          })
-          .done();
-      }
-    });
+    return this.jsonApi('/user-api-key/revoke', 'POST');
   }
 
   isNew(topic) {
@@ -452,7 +221,7 @@ class Site {
     let newTopics = 0;
 
     _.each(this.trackingState, t => {
-      if (!t.deleted && t.archetype !== "private_message") {
+      if (!t.deleted && t.archetype !== 'private_message') {
         if (this.isNew(t)) {
           newTopics++;
         } else if (this.isUnread(t)) {
@@ -465,138 +234,43 @@ class Site {
 
     this.totalUnread = unread;
     this.totalNew = newTopics;
-
     return changed;
   }
 
-  checkBus() {
-    console.info(`${new Date()} Checking Message Bus on ${this.url}`);
-    return this.messageBus(this.channels).then(messages =>
-      this.processMessages(messages)
+  async refresh() {
+    if (!this.authToken) {
+      return;
+    }
+
+    let json = await this.jsonApi('/session/current.json');
+    let currentUser = json.current_user;
+    this.isStaff = !!(currentUser.admin || currentUser.moderator);
+
+    // in case of old API fallback
+    this._seenNotificationId =
+      currentUser.seen_notification_id || this._seenNotificationId;
+
+    this.unreadNotifications = currentUser.unread_notifications;
+    this.unreadPrivateMessages = currentUser.unread_private_messages;
+
+    if (this.isStaff) {
+      this.flagCount = currentUser.reviewable_count;
+    }
+
+    this.trackingState = {};
+    let tS = await this.jsonApi(
+      `/users/${json.current_user.username}/topic-tracking-state.json`,
     );
-  }
-
-  refresh(opts) {
-    opts = opts || {};
-
-    return new Promise((resolve, reject) => {
-      if (!this.authToken) {
-        resolve({ changed: false });
-        return;
-      }
-
-      this.initBus()
-        .then(busState => {
-          if (opts.fast || !busState.wasReady) {
-            this.checkBus()
-              .then(changes => {
-                if (!busState.wasReady) {
-                  this.updateTotals();
-
-                  this.refresh({ fast: false })
-                    .then(result => {
-                      resolve({ changed: true, alerts: changes.alerts });
-                    })
-                    .catch(e => reject(e))
-                    .done();
-                } else {
-                  resolve({
-                    changed:
-                      this.updateTotals() ||
-                      changes.notifications ||
-                      changes.totals,
-                    alerts: changes.alerts
-                  });
-                }
-              })
-              .catch(e => {
-                console.log(`failed to check bus ${e}`);
-                reject(e);
-              });
-
-            if (opts.fast) {
-              return;
-            }
-          }
-
-          this.jsonApi("/session/current.json")
-            .then(json => {
-              let currentUser = json.current_user;
-
-              let changed =
-                this.userId !== currentUser.id ||
-                this.username !== currentUser.username ||
-                this.isStaff !== !!(currentUser.admin || currentUser.moderator);
-
-              changed = changed || this.updateTotals();
-
-              this.userId = currentUser.id;
-              this.username = currentUser.username;
-              this.isStaff = !!(currentUser.admin || currentUser.moderator);
-
-              // in case of old API fallback
-              this._seenNotificationId =
-                currentUser.seen_notification_id || this._seenNotificationId;
-
-              if (
-                this.unreadNotifications !== currentUser.unread_notifications
-              ) {
-                this.unreadNotifications = currentUser.unread_notifications;
-                changed = true;
-              }
-
-              if (
-                this.unreadPrivateMessages !==
-                currentUser.unread_private_messages
-              ) {
-                this.unreadPrivateMessages =
-                  currentUser.unread_private_messages;
-                changed = true;
-              }
-
-              if (this.isStaff) {
-                let newFlagCount = currentUser.post_queue_new_count;
-                if (newFlagCount !== this.flagCount) {
-                  this.flagCount = newFlagCount;
-                  changed = true;
-                }
-
-                let newQueueCount = currentUser.post_queue_new_count;
-                if (newQueueCount !== this.queueCount) {
-                  this.queueCount = newQueueCount;
-                  changed = true;
-                }
-              }
-
-              resolve({ changed });
-            })
-            .catch(e => {
-              console.warn(e);
-              reject(e);
-            });
-        })
-        .catch(e => {
-          reject(e);
-        });
+    tS.forEach(state => {
+      this.trackingState[`t${state.topic_id}`] = state;
     });
+    this.updateTotals();
+    return;
   }
-
-  // enterBackground() {
-  //   this._background = true;
-  //   if (this._currentFetch && this._currentFetch.abort) {
-  //     this._currentFetch.abort();
-  //   }
-  //   this._timeout = 5000;
-  // }
-
-  // exitBackground() {
-  //   this._background = false;
-  //   this._timeout = 10000;
-  // }
 
   readNotification(notification) {
     return new Promise((resolve, reject) => {
-      this.jsonApi("/notifications/read", "PUT", { id: notification.id })
+      this.jsonApi('/notifications/read', 'PUT', {id: notification.id})
         .catch(e => {
           reject(e);
         })
@@ -678,25 +352,68 @@ class Site {
 
       this._loadingNotifications = true;
       this.jsonApi(
-        "/notifications.json?recent=true&limit=25" +
-          (options && options.silent === false ? "" : "&silent=true")
+        '/notifications.json?recent=true&limit=25' +
+          (options && options.silent === false ? '' : '&silent=true'),
       )
         .then(results => {
           this._loadingNotifications = false;
           this._notifications = (results && results.notifications) || [];
           this._seenNotificationId = results && results.seen_notification_id;
-          this.notifications(types, _.merge(options, { silent: true }))
+          this.notifications(types, _.merge(options, {silent: true}))
             .then(n => resolve(n))
             .done();
         })
         .catch(e => {
-          console.log("failed to fetch notifications " + e);
+          console.log('failed to fetch notifications ' + e);
           resolve([]);
         })
         .finally(() => {
           this._loadingNotifications = false;
         })
         .done();
+    });
+  }
+
+  getAlerts() {
+    const alertifiable = [1, 2, 3, 6, 7];
+    const types = {
+      1: 'mentioned you in',
+      2: 'replied to',
+      3: 'quoted you in',
+      6: 'messaged you in',
+      7: 'invited you to',
+    };
+
+    return new Promise((resolve, reject) => {
+      this.jsonApi('/notifications.json?recent=true&limit=25')
+        .then(results => {
+          const unreadAlerts = [];
+          if (results.notifications) {
+            results.notifications.forEach(r => {
+              let excerpt = '';
+              if (!r.read && alertifiable.indexOf(r.notification_type) > -1) {
+                if (r.data.display_username.match(/\sreplies/)) {
+                  excerpt = `${r.data.display_username} to "${r.fancy_title}"`;
+                } else {
+                  excerpt = `@${r.data.display_username} ${
+                    types[r.notification_type]
+                  } "${r.fancy_title}"`;
+                }
+                let url = DiscourseUtils.endpointForSiteNotification(this, r);
+                unreadAlerts.push({
+                  excerpt: excerpt,
+                  url: url,
+                  id: r.id,
+                });
+              }
+            });
+            resolve(unreadAlerts);
+          }
+        })
+        .catch(e => {
+          console.log('failed to fetch notifications ' + e);
+          resolve({});
+        });
     });
   }
 

@@ -1,78 +1,85 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
+import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View
-} from "react-native";
-
-import Swipeout from "react-native-swipeout";
-
-import colors from "../../colors";
-import Notification from "./Notification";
+import {SwipeRow} from 'react-native-swipe-list-view';
+import Notification from './Notification';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {ThemeContext} from '../../ThemeContext';
 
 class SiteRow extends React.Component {
   render() {
+    const theme = this.context;
+
     let iconPath = this.props.site.icon
-      ? { uri: this.props.site.icon }
-      : require("../../../img/nav-icon-gray.png");
+      ? {uri: this.props.site.icon}
+      : require('../../../img/nav-icon-gray.png');
     return (
-      <Swipeout
-        sensitivity={2}
-        backgroundColor={"white"}
-        scroll={scrollEnabled => this.props.onSwipe(scrollEnabled)}
-        right={[
-          {
-            text: "Remove",
-            backgroundColor: colors.redDanger,
-            onPress: this.props.onDelete
-          }
-        ]}
-      >
-        <TouchableHighlight
-          underlayColor={colors.yellowUIFeedback}
-          onPress={() => this.props.onClick()}
-          {...this.props.sortHandlers}
-        >
-          <View accessibilityTraits="link" style={styles.row}>
-            <Image style={styles.icon} source={iconPath} />
-            <View style={styles.info}>
-              <Text ellipsizeMode="tail" numberOfLines={1} style={styles.url}>
-                {this.props.site.url.replace(/^https?:\/\//, "")}
-              </Text>
-              <Text
-                ellipsizeMode="tail"
-                numberOfLines={2}
-                style={styles.description}
-              >
-                {this.props.site.description}
-              </Text>
-              {this._renderCounts(this.props.site)}
+      <SwipeRow
+        disableRightSwipe={true}
+        rightOpenValue={-80}
+        style={{backgroundColor: theme.redDanger}}>
+        <View style={{...styles.hiddenRow}}>
+          <TouchableHighlight
+            style={{paddingHorizontal: 28, backgroundColor: theme.redDanger}}
+            underlayColor={theme.redDanger}
+            onPress={this.props.onDelete}
+            {...this.props.sortHandlers}>
+            <FontAwesome5
+              name={'trash-alt'}
+              size={24}
+              color={theme.buttonTextColor}
+            />
+          </TouchableHighlight>
+        </View>
+        <View style={{backgroundColor: theme.background}}>
+          <TouchableHighlight
+            underlayColor={theme.yellowUIFeedback}
+            onPress={() => this.props.onClick()}
+            {...this.props.sortHandlers}>
+            <View
+              accessibilityTraits="link"
+              style={{...styles.row, borderBottomColor: theme.grayBorder}}>
+              <Image style={styles.icon} source={iconPath} />
+              <View style={styles.info}>
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={{...styles.url, color: theme.grayTitle}}>
+                  {this.props.site.url.replace(/^https?:\/\//, '')}
+                </Text>
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={2}
+                  style={{...styles.description, color: theme.graySubtitle}}>
+                  {this.props.site.description}
+                </Text>
+                {this._renderCounts(this.props.site)}
+              </View>
+              {this._renderShouldLogin(this.props.site)}
+              {this._renderNotifications(this.props.site)}
             </View>
-            {this._renderShouldLogin(this.props.site)}
-            {this._renderNotifications(this.props.site)}
-          </View>
-        </TouchableHighlight>
-      </Swipeout>
+          </TouchableHighlight>
+        </View>
+      </SwipeRow>
     );
   }
 
   _renderNotifications(site) {
+    const theme = this.context;
+
     if (site.authToken) {
       return (
         <View style={styles.notifications}>
-          <Notification color={colors.redDanger} count={site.flagCount} />
+          <Notification color={theme.redDanger} count={site.flagCount} />
           <Notification
-            color={colors.greenPrivateUnread}
+            color={theme.greenPrivateUnread}
             count={site.unreadPrivateMessages}
           />
           <Notification
-            color={colors.blueUnread}
+            color={theme.blueUnread}
             count={site.unreadNotifications}
           />
         </View>
@@ -81,10 +88,19 @@ class SiteRow extends React.Component {
   }
 
   _renderShouldLogin(site) {
+    const theme = this.context;
+
     if (!site.authToken) {
       return (
         <View style={styles.notifications}>
-          <Text style={styles.connect}>connect</Text>
+          <Text
+            style={{
+              ...styles.connect,
+              backgroundColor: theme.blueCallToAction,
+              color: theme.buttonTextColor,
+            }}>
+            connect
+          </Text>
         </View>
       );
     }
@@ -92,75 +108,74 @@ class SiteRow extends React.Component {
 
   _renderCounts(site) {
     var counts = [];
+    const theme = this.context;
     if (site.authToken) {
       if (site.totalNew > 0) {
-        counts.push("new (" + site.totalNew + ")");
+        counts.push('new (' + site.totalNew + ')');
       }
       if (site.totalUnread > 0) {
-        counts.push("unread (" + site.totalUnread + ")");
+        counts.push('unread (' + site.totalUnread + ')');
       }
     }
 
     if (counts.length > 0) {
       return (
         <View style={styles.counts}>
-          <Text style={styles.countsText}>{counts.join("  ")}</Text>
+          <Text style={{color: theme.blueUnread}}>{counts.join('  ')}</Text>
         </View>
       );
     }
   }
 }
+SiteRow.contextType = ThemeContext;
 
 const styles = StyleSheet.create({
   row: {
-    borderBottomColor: colors.grayBorder,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    flexDirection: "row",
-    padding: 12
+    flexDirection: 'row',
+    padding: 12,
+  },
+  hiddenRow: {
+    height: '100%',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
   icon: {
-    alignSelf: "center",
+    alignSelf: 'center',
     height: 40,
-    width: 40
+    width: 40,
   },
   info: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    paddingLeft: 12
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingLeft: 12,
   },
   url: {
-    color: colors.grayTitle,
     fontSize: 16,
-    fontWeight: "normal"
+    fontWeight: 'normal',
   },
   description: {
-    color: colors.graySubtitle,
     flex: 10,
-    fontSize: 14
+    fontSize: 14,
   },
   notifications: {
-    flexDirection: "row",
-    paddingLeft: 12
+    flexDirection: 'row',
+    paddingLeft: 12,
   },
   connect: {
-    alignSelf: "flex-start",
-    backgroundColor: colors.blueCallToAction,
-    color: "white",
+    alignSelf: 'flex-start',
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: '500',
     marginLeft: 6,
     marginBottom: 6,
-    overflow: "hidden",
-    padding: 6
+    overflow: 'hidden',
+    padding: 6,
+    borderRadius: 6,
   },
   counts: {
-    marginTop: 6
+    marginTop: 6,
   },
-  countsText: {
-    color: colors.blueUnread,
-    fontSize: 14
-  }
 });
 
 export default SiteRow;

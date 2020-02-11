@@ -1,17 +1,15 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import React from "react";
-import Immutable from "immutable";
+import React from 'react';
+import Immutable from 'immutable';
 
-import { InteractionManager, StyleSheet, View } from "react-native";
-import { ImmutableListView } from "react-native-immutable-list-view";
+import {InteractionManager, SafeAreaView, View} from 'react-native';
+import {ImmutableVirtualizedList} from 'react-native-immutable-list-view';
 
-import { SafeAreaView } from "react-navigation";
-
-import DiscourseUtils from "../DiscourseUtils";
-import Components from "./NotificationsScreenComponents";
-import colors from "../colors";
+import Components from './NotificationsScreenComponents';
+import DiscourseUtils from '../DiscourseUtils';
+import {ThemeContext} from '../ThemeContext';
 
 class NotificationsScreen extends React.Component {
   static replyTypes = [1, 2, 3, 6, 9, 11, 15, 16, 17];
@@ -22,11 +20,11 @@ class NotificationsScreen extends React.Component {
     this.state = {
       progress: 0,
       renderPlaceholderOnly: true,
-      selectedIndex: 0
+      selectedIndex: 0,
     };
 
     this._onSiteChange = e => {
-      if (e.event === "change") {
+      if (e.event === 'change') {
         this.refresh();
       }
     };
@@ -70,7 +68,7 @@ class NotificationsScreen extends React.Component {
   removePlaceholder() {
     InteractionManager.runAfterInteractions(() => {
       this.setTimeout(() => {
-        this.setState({ renderPlaceholderOnly: false });
+        this.setState({renderPlaceholderOnly: false});
       }, 0);
     });
   }
@@ -81,11 +79,13 @@ class NotificationsScreen extends React.Component {
   }
 
   render() {
+    const theme = this.context;
+
     if (this.state.renderPlaceholderOnly) {
       return (
-        <View style={styles.container}>
+        <View style={{flex: 1, backgroundColor: theme.grayBackground}}>
           <Components.NavigationBar onDidPressRightButton={() => {}} />
-          <View style={{ height: 50, marginTop: 0, paddingTop: 0 }}>
+          <View style={{height: 50, marginTop: 0, paddingTop: 0}}>
             {this._renderListHeader()}
           </View>
         </View>
@@ -94,51 +94,50 @@ class NotificationsScreen extends React.Component {
 
     return (
       <SafeAreaView
-        style={styles.container}
-        forceInset={{ top: "never", bottom: "always" }}
-      >
+        style={{flex: 1, backgroundColor: theme.background}}
+        forceInset={{top: 'never', bottom: 'always'}}>
         <Components.NavigationBar
           onDidPressRightButton={() => this._onDidPressRightButton()}
           onDidPressLeftButton={() => this._onDidPressLeftButton()}
           progress={this.state.progress}
         />
-        {this._renderList()}
-        {this._renderEmptyNotifications()}
+
+        {this._renderListHeader()}
+
+        {this.state.dataSource.size > 0
+          ? this._renderList()
+          : this._renderEmptyNotifications()}
       </SafeAreaView>
     );
   }
 
   _renderEmptyNotifications() {
-    if (this.state.dataSource.size < 1) {
-      let text;
-      switch (this.state.selectedIndex) {
-        case 0:
-          text = "No new notifications.";
-          break;
-        case 1:
-          text = "No replies.";
-          break;
-        case 2:
-          text = "No notifications.";
-          break;
-        default:
-          text = "";
-      }
-
-      return <Components.EmptyNotificationsView text={text} />;
+    let text;
+    switch (this.state.selectedIndex) {
+      case 0:
+        text = 'No new notifications.';
+        break;
+      case 1:
+        text = 'No replies.';
+        break;
+      case 2:
+        text = 'No notifications.';
+        break;
+      default:
+        text = '';
     }
 
-    return null;
+    return <Components.EmptyNotificationsView text={text} />;
   }
 
   _renderList() {
     return (
-      <ImmutableListView
+      <ImmutableVirtualizedList
         enableEmptySections={true}
         immutableData={this.state.dataSource}
-        renderHeader={() => this._renderListHeader()}
-        renderRow={rowData => this._renderListRow(rowData)}
-        renderEmptyInList={""}
+        renderItem={rowData => this._renderListRow(rowData)}
+        keyExtractor={rowData => this._listIndex(rowData)}
+        ListEmptyComponent={''}
       />
     );
   }
@@ -147,7 +146,7 @@ class NotificationsScreen extends React.Component {
     site
       .readNotification(notification)
       .catch(e => {
-        console.log("failed to mark notification as read " + e);
+        console.log('failed to mark notification as read ' + e);
       })
       .done();
     let url = DiscourseUtils.endpointForSiteNotification(site, notification);
@@ -163,8 +162,14 @@ class NotificationsScreen extends React.Component {
     this.props.navigation.goBack();
   }
 
-  _renderListRow(rowDataSource) {
-    let rowData = rowDataSource.toJS();
+  _listIndex(row) {
+    let rowData = row.toJS();
+    return rowData.notification.id.toString();
+  }
+
+  _renderListRow(row) {
+    let rowData = row.item.toJS();
+
     return (
       <Components.Row
         site={rowData.site}
@@ -184,7 +189,7 @@ class NotificationsScreen extends React.Component {
     this._fetchNotifications(types, {
       onlyNew: this.state.selectedIndex === 0,
       newMap: this._seenNotificationMap,
-      silent: false
+      silent: false,
     });
   }
 
@@ -192,9 +197,9 @@ class NotificationsScreen extends React.Component {
     return (
       <Components.Filter
         selectedIndex={this.state.selectedIndex}
-        tabs={["New", "Replies", "All"]}
+        tabs={['New', 'Replies', 'All']}
         onChange={index => {
-          this.setState({ selectedIndex: index }, () => {
+          this.setState({selectedIndex: index}, () => {
             this.refresh();
           });
         }}
@@ -212,7 +217,7 @@ class NotificationsScreen extends React.Component {
       setTimeout(() => {
         if (this._mounted && this._fetching) {
           this.setState({
-            progress: Math.random() * 0.4
+            progress: Math.random() * 0.4,
           });
         }
       }, 100);
@@ -227,20 +232,20 @@ class NotificationsScreen extends React.Component {
         if (this._mounted) {
           if (this.state.progress !== 0) {
             this.setState({
-              progress: 1
+              progress: 1,
             });
 
             this.removePlaceholder();
 
             setTimeout(() => {
               if (this._mounted) {
-                this.setState({ progress: 0 });
+                this.setState({progress: 0});
               }
             }, 400);
           }
 
           this.setState({
-            dataSource: Immutable.fromJS(notifications)
+            dataSource: Immutable.fromJS(notifications),
           });
 
           this.removePlaceholder();
@@ -251,12 +256,6 @@ class NotificationsScreen extends React.Component {
       });
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.grayBackground
-  }
-});
+NotificationsScreen.contextType = ThemeContext;
 
 export default NotificationsScreen;
