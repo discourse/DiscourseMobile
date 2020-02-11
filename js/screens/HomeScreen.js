@@ -175,7 +175,12 @@ class HomeScreen extends React.Component {
 
   _renderDebugRow() {
     if (this._siteManager.sites.length !== 0) {
-      return <Components.DebugRow siteManager={this._siteManager} />;
+      return (
+        <Components.DebugRow
+          siteManager={this._siteManager}
+          toggleTheme={this.props.screenProps.toggleTheme}
+        />
+      );
     }
   }
 

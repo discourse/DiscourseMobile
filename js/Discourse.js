@@ -32,6 +32,7 @@ import firebase from './firebase/helper';
 import type {Notification, NotificationOpen} from './firebase/helper';
 import bgMessaging from './firebase/bgMessaging';
 import BackgroundFetch from 'react-native-background-fetch';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const AppNavigator = createStackNavigator(
   {
@@ -143,6 +144,20 @@ class Discourse extends React.Component {
         theme: colorScheme === 'dark' ? themes.dark : themes.light,
       });
     });
+
+    // Toggle dark mode for older Androids (using a custom button in DebugRow)
+    if (Platform.OS === 'android' && Platform.Version < 29) {
+      AsyncStorage.getItem('@Discourse.androidLegacyTheme').then(
+        storedTheme => {
+          this.setState({
+            theme:
+              storedTheme && storedTheme === 'dark'
+                ? themes.dark
+                : themes.light,
+          });
+        },
+      );
+    }
   }
 
   // _handleLocalNotification(e) {
@@ -341,6 +356,12 @@ class Discourse extends React.Component {
     }
   }
 
+  _toggleTheme(newTheme) {
+    this.setState({
+      theme: newTheme === 'dark' ? themes.dark : themes.light,
+    });
+  }
+
   render() {
     return (
       <ThemeContext.Provider value={this.state.theme}>
@@ -359,6 +380,7 @@ class Discourse extends React.Component {
               siteManager: this._siteManager,
               hasNotch: this.state.hasNotch,
               deviceId: this.state.deviceId,
+              toggleTheme: this._toggleTheme.bind(this),
             }}
           />
         </AppearanceProvider>

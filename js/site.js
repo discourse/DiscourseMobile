@@ -239,7 +239,6 @@ class Site {
 
   async refresh() {
     if (!this.authToken) {
-      resolve({});
       return;
     }
 
