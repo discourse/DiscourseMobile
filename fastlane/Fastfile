@@ -64,13 +64,6 @@ android.enableJetifier=true
 TEMPLATE
   File.write(File.expand_path("../android/gradle.properties"), gradle_properties)
 
-  android_fabric_properties = <<TEMPLATE
-# Generated from `fastlane bootstrap` do not edit or commit
-apiSecret=#{fabric_build_secret}
-apiKey=#{fabric_api_key}
-TEMPLATE
-  File.write(File.expand_path("../android/app/fabric.properties"), android_fabric_properties)
-
   key_store = Base64.decode64(File.open("my-release-key.keystore").read)
   File.write(File.expand_path("../android/app/my-release-key.keystore"), key_store)
 end
@@ -85,14 +78,6 @@ end
 
 def google_key_store_password
   @google_key_store_password ||= secrets["google_key_store_password"]
-end
-
-def fabric_build_secret
-  @fabric_build_secret ||= secrets["fabric_build_secret"]
-end
-
-def fabric_api_key
-  @fabric_api_key ||= secrets["fabric_api_key"]
 end
 
 platform :ios do
@@ -119,29 +104,6 @@ platform :ios do
     # match(force: true, type: "development", git_url: KEYS_REPOSITORY)
   end
 
-  # desc "Submit a new Beta Build to Fabric -> Beta"
-  # desc "This will also make sure the profile is up to date"
-  # lane :beta do
-  #   gym(
-  #     scheme: PROJECT_NAME,
-  #     clean: true,
-  #     export_method: "ad-hoc",
-  #     export_options: {
-  #       provisioningProfiles: {
-  #         "org.discourse.DiscourseApp" => "match AdHoc org.discourse.DiscourseApp"
-  #       }
-  #     },
-  #     project: "./ios/#{PROJECT_NAME}.xcodeproj",
-  #     export_xcargs: "-allowProvisioningUpdates"
-  #   )
-
-  #   crashlytics(
-  #     api_token: fabric_api_key,
-  #     build_secret: fabric_build_secret,
-  #     notifications: true
-  #   )
-  # end
-
   desc "Submit a new build to Testflight"
   lane :release do
     register_devices(
@@ -159,11 +121,6 @@ platform :ios do
       clean: true,
       workspace: "./ios/#{PROJECT_NAME}.xcworkspace"
     )
-
-    # upload_symbols_to_crashlytics(
-    #   api_token: fabric_api_key,
-    #   binary_path: ENV["IPA_OUTPUT_PATH"]
-    # )
 
     `cp ../Discourse.ipa ../releases/Discourse.ipa`
 
@@ -196,16 +153,6 @@ platform :android do
     increment_version_code(
       gradle_file_path: "android/app/build.gradle"
     )
-  end
-
-  desc "Submit a new Beta Build to Fabric -> Beta"
-  lane :beta do
-    unless ENV["ANDROID_HOME"]
-      STDOUT.puts("ANDROID_HOME env variable not set, set it android sdk location")
-      ENV["ANDROID_HOME"] = STDIN.gets.chomp
-    end
-
-    `cd ../android && ./gradlew assembleRelease crashlyticsUploadDistributionRelease`
   end
 
   desc "Submit a build to Google Play Store"
