@@ -234,12 +234,32 @@ class Discourse extends React.Component {
             .done();
         }
       }
+
+      // handle shared URLs
+      if (params.sharedUrl) {
+        this._siteManager.setActiveSite(params.sharedUrl).then(activeSite => {
+          if (activeSite.activeSite !== undefined) {
+            let supportsDelegatedAuth = false;
+            if (this._siteManager.supportsDelegatedAuth(activeSite)) {
+              supportsDelegatedAuth = true;
+            }
+            this.openUrl(params.sharedUrl, supportsDelegatedAuth);
+          } else {
+            Alert.alert('Could not load that URL.');
+          }
+        });
+      }
     }
   }
 
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     Linking.addEventListener('url', this._handleOpenUrl);
+    Linking.getInitialURL().then(url => {
+      if (url) {
+        this._handleOpenUrl({url: url});
+      }
+    });
 
     if (Platform.OS === 'ios') {
       PushNotificationIOS.requestPermissions({alert: true, badge: true});

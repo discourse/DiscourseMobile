@@ -2,13 +2,11 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "1.6.0"
-ANDROID_APP_VERSION = "1.6.0"
+IOS_APP_VERSION = "1.6.1"
+ANDROID_APP_VERSION = "1.6.1"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
-
-fastlane_version "2.89.0"
 
 default_platform :ios
 
@@ -88,6 +86,12 @@ platform :ios do
       version_number: IOS_APP_VERSION
     )
 
+    increment_version_number_in_plist(
+      xcodeproj: "./ios/#{PROJECT_NAME}.xcodeproj",
+      target: "ShareExtension",
+      version_number: IOS_APP_VERSION
+    )
+
     increment_build_number(
       xcodeproj: "./ios/#{PROJECT_NAME}.xcodeproj"
     )
@@ -99,8 +103,18 @@ platform :ios do
 
     register_devices(devices_file: File.expand_path("./keys/ios-beta-devices.txt"))
 
-    match(force: true, type: "appstore", git_url: KEYS_REPOSITORY)
-    match(force: true, type: "adhoc", git_url: KEYS_REPOSITORY)
+    match(
+      force: true,
+      type: "appstore",
+      git_url: KEYS_REPOSITORY,
+      app_identifier: ["org.discourse.DiscourseApp", "org.discourse.DiscourseApp.ShareExtension"]
+    )
+    match(
+      force: true,
+      type: "adhoc",
+      git_url: KEYS_REPOSITORY,
+      app_identifier: ["org.discourse.DiscourseApp", "org.discourse.DiscourseApp.ShareExtension"]
+    )
     # match(force: true, type: "development", git_url: KEYS_REPOSITORY)
   end
 
@@ -115,7 +129,8 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-          "org.discourse.DiscourseApp" => "match AppStore org.discourse.DiscourseApp 1566494554"
+          "org.discourse.DiscourseApp" => "match AppStore org.discourse.DiscourseApp",
+          "org.discourse.DiscourseApp.ShareExtension" => "match AppStore org.discourse.DiscourseApp.ShareExtension"
         }
       },
       clean: true,
@@ -137,7 +152,8 @@ platform :ios do
       export_method: "ad-hoc",
       export_options: {
         provisioningProfiles: {
-          "org.discourse.DiscourseApp" => "match AdHoc org.discourse.DiscourseApp"
+          "org.discourse.DiscourseApp" => "match AdHoc org.discourse.DiscourseApp",
+          "org.discourse.DiscourseApp.ShareExtension" => "match AdHoc org.discourse.DiscourseApp.ShareExtension"
         }
       },
       clean: true,
