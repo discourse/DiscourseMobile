@@ -231,6 +231,7 @@ class SiteManager {
 
   refreshSites() {
     console.log('refresh ' + this.sites.length + ' sites');
+
     let sites = this.sites.slice(0),
       promises = [],
       errors = 0;
