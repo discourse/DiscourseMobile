@@ -294,19 +294,20 @@ class Discourse extends React.Component {
     // BackgroundFetch register (15-minute minimum interval allowed)
     BackgroundFetch.configure(
       {minimumFetchInterval: 15},
-      () => {
-        console.log('Received background-fetch event');
+      async taskId => {
+        console.log('[js] Received background-fetch event: ', taskId);
+
         this._siteManager.refreshing = false;
         this._siteManager.refreshSites().done(() => {
           this._siteManager.updateUnreadBadge();
           // Required: Signal completion of your task to native code
           // If you fail to do this, the OS can terminate your app
           // or assign battery-blame for consuming too much background-time
-          BackgroundFetch.finish(BackgroundFetch.FETCH_RESULT_NEW_DATA);
+          BackgroundFetch.finish(taskId);
         });
       },
       error => {
-        console.log('RNBackgroundFetch failed to start');
+        console.log('[js] RNBackgroundFetch failed to start');
       },
     );
 
