@@ -140,10 +140,10 @@ class WebViewScreen extends React.Component {
             }}
             ref={ref => (this.webview = ref)}
             source={{uri: this.state.webviewUrl}}
-            useWebkit={true}
             applicationNameForUserAgent={this.state.userAgentSuffix}
             allowsBackForwardNavigationGestures={true}
             allowsInlineMediaPlayback={true}
+            allowsLinkPreview={true}
             onError={syntheticEvent => {
               const {nativeEvent} = syntheticEvent;
               this.setState({errorData: nativeEvent});
@@ -177,18 +177,28 @@ class WebViewScreen extends React.Component {
 
                 // launch externally and stop loading request if external link
                 if (!this.siteManager.urlInSites(request.url)) {
-                  const useSVC = Settings.get('external_links_svc');
-                  if (useSVC) {
-                    if (!this.safariViewVisible) {
-                      SafariView.show({url: request.url});
-                    }
-                  } else {
-                    Linking.openURL(request.url);
-                  }
+                  // ensure URL can be opened, before opening an external URL
+                  Linking.canOpenURL(request.url)
+                    .then(() => {
+                      const useSVC = Settings.get('external_links_svc');
+                      if (useSVC) {
+                        if (!this.safariViewVisible) {
+                          SafariView.show({url: request.url});
+                        }
+                      } else {
+                        Linking.openURL(request.url);
+                      }
+                    })
+                    .catch(e => {
+                      console.log('failed to fetch notifications ' + e);
+                    });
                   return false;
                 }
                 return true;
               }
+            }}
+            onNavigationStateChange={() => {
+              StatusBar.setBarStyle(this.state.barStyle, true);
             }}
             decelerationRate={'normal'}
             onLoadProgress={({nativeEvent}) => {
@@ -205,6 +215,10 @@ class WebViewScreen extends React.Component {
               }
             }}
             onMessage={event => this._onMessage(event)}
+            onContentProcessDidTerminate={event => {
+              console.log('onContentProcessDidTerminate', event);
+              this._onClose();
+            }}
           />
         )}
       </Animated.View>

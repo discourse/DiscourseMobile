@@ -251,7 +251,13 @@ class Site {
       currentUser.seen_notification_id || this._seenNotificationId;
 
     this.unreadNotifications = currentUser.unread_notifications;
-    this.unreadPrivateMessages = currentUser.unread_private_messages;
+
+    if (currentUser.unread_high_priority_notifications) {
+      this.unreadPrivateMessages =
+        currentUser.unread_high_priority_notifications;
+    } else {
+      this.unreadPrivateMessages = currentUser.unread_private_messages;
+    }
 
     if (this.isStaff) {
       this.flagCount = currentUser.reviewable_count;
@@ -337,6 +343,9 @@ class Site {
                 return false;
               }
               if (!notification.read && notification.notification_type === 6) {
+                return true;
+              }
+              if (!notification.read && notification.notification_type === 24) {
                 return true;
               }
             }

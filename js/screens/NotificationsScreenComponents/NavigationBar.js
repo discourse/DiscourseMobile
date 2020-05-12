@@ -37,7 +37,11 @@ class NavigationBar extends React.Component {
           </Text>
         </View>
         <View style={styles.rightContainer}>
-          {this._renderButton(this.props.onDidPressRightButton, 'times')}
+          {this._renderButton(
+            this.props.onDidPressRightButton,
+            'times',
+            'Dismiss',
+          )}
         </View>
         <View
           style={{...styles.separator, backgroundColor: theme.grayBackground}}
@@ -46,11 +50,12 @@ class NavigationBar extends React.Component {
     );
   }
 
-  _renderButton(callback, iconName) {
+  _renderButton(callback, iconName, label) {
     const theme = this.context;
     return (
       <TouchableHighlight
         underlayColor={theme.background}
+        accessibilityLabel={label}
         style={styles.button}
         onPress={callback}>
         <FontAwesome5 name={iconName} size={20} color={theme.grayUI} />

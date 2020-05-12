@@ -1,5 +1,5 @@
 /* @flow */
-"use strict";
+'use strict';
 
 class DiscourseUtils {
   static endpointForSiteNotification(site, notification) {
@@ -25,9 +25,8 @@ class DiscourseUtils {
       case 17:
       case 18:
       case 20:
-        endpoint = `/t/${notification.slug}/${notification.topic_id}/${
-          notification.post_number
-        }`;
+      case 24:
+        endpoint = `/t/${notification.slug}/${notification.topic_id}/${notification.post_number}`;
         break;
       case 12:
         endpoint = `/badges/${data.badge_id}/basic?username=${data.username}`;
@@ -36,15 +35,11 @@ class DiscourseUtils {
         endpoint = `/users/${data.username}/messages/group/${data.group_name}`;
         break;
       case 19:
-        endpoint = `/u/${
-          site.username
-        }/notifications/likes-received?acting_username=${data.username}`;
+        endpoint = `/u/${site.username}/notifications/likes-received?acting_username=${data.username}`;
         break;
       case 21:
         if (notification.fancy_title !== undefined) {
-          endpoint = `/t/${notification.slug}/${notification.topic_id}/${
-            notification.post_number
-          }`;
+          endpoint = `/t/${notification.slug}/${notification.topic_id}/${notification.post_number}`;
         } else {
           endpoint = `/u/${site.username}/activity/approval-given`;
         }
@@ -54,66 +49,68 @@ class DiscourseUtils {
         break;
       default:
         console.log(
-          "Couldn’t generate an endpoint for notification",
-          notification
+          'Couldn’t generate an endpoint for notification',
+          notification,
         );
-        endpoint = "";
+        endpoint = '';
     }
-
+    console.log(endpoint);
     return `${site.url}${endpoint}`;
   }
 
   static iconNameForNotification(notification) {
     switch (notification.notification_type) {
       case 1:
-        return "at";
+        return 'at';
       case 2:
-        return "reply";
+        return 'reply';
       case 3:
-        return "quote-right";
+        return 'quote-right';
       case 4:
-        return "pencil-alt";
+        return 'pencil-alt';
       case 5:
-        return "heart";
+        return 'heart';
       case 6:
-        return "envelope";
+        return 'envelope';
       case 7:
-        return "envelope";
+        return 'envelope';
       case 8:
-        return "user";
+        return 'user';
       case 9:
-        return "reply";
+        return 'reply';
       case 10:
-        return "sign-out";
+        return 'sign-out';
       case 11:
-        return "link";
+        return 'link';
       case 12:
-        return "certificate";
+        return 'certificate';
       case 13:
-        return "hand-point-right";
+        return 'hand-point-right';
       case 14:
-        return "check-square";
+        return 'check-square';
       case 15:
-        return "at";
+        return 'at';
       case 16:
-        return "users";
+        return 'users';
       case 17:
-        return "dot-circle";
+        return 'dot-circle';
       case 18:
-        return "clock";
+        return 'clock';
       case 19:
-        return "heart";
+        return 'heart';
       case 20:
       case 21:
-        return "check";
+        return 'check';
       case 22:
-        return "user-plus";
+        return 'user-plus';
+      case 24:
+        return 'bookmark';
       default:
         console.log(
-          "Couldn’t generate an icon name for notification",
-          notification
+          'Couldn’t generate an icon name for notification',
+          notification,
         );
-        return "exclamation-circle";
+        return 'exclamation-circle';
     }
   }
 }

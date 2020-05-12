@@ -190,7 +190,7 @@ PODS:
     - React
   - react-native-safari-web-auth (1.0.4):
     - React
-  - react-native-webview (8.0.4):
+  - react-native-webview (9.2.1):
     - React
   - React-RCTActionSheet (0.61.5):
     - React-Core/RCTActionSheetHeaders (= 0.61.5)
@@ -390,7 +390,7 @@ SPEC CHECKSUMS:
   react-native-key-pair: d45fb2e417ffb0fca307e9bbe22111aa38c3233f
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
   react-native-safari-web-auth: b6642abaa8084a8e5addba1cba4521fd30b95b64
-  react-native-webview: 3f5aa91c3cb083ea4762e006b9653291a96a777a
+  react-native-webview: 9fb615251c147d1b94157b31fa0ea9c68b234c04
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
   React-RCTBlob: d89293cc0236d9cb0933d85e430b0bbe81ad1d72

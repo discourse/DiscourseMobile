@@ -62,6 +62,7 @@ class NavigationBar extends React.Component {
         <View style={styles.leftContainer}>
           <TouchableHighlight
             underlayColor={'transparent'}
+            accessibilityLabel={'Add Site'}
             style={[styles.button]}
             onPress={this.props.onDidPressLeftButton}>
             <AnimatedIcon
@@ -97,6 +98,7 @@ class NavigationBar extends React.Component {
         <View style={styles.rightContainer}>
           <TouchableHighlight
             underlayColor={'transparent'}
+            accessibilityLabel={'Notifications'}
             style={styles.button}
             onPress={this.props.onDidPressRightButton}>
             <FontAwesome5

@@ -18,6 +18,7 @@ class NotificationRow extends React.Component {
       borderBottomColor: theme.grayBorder,
       borderBottomWidth: StyleSheet.hairlineWidth,
     };
+
     return (
       <TouchableHighlight
         style={[contentView, this._backgroundColor()]}
@@ -36,7 +37,7 @@ class NotificationRow extends React.Component {
     let name = DiscourseUtils.iconNameForNotification(notification);
     let FA5types = {};
 
-    if (name === 'heart' || name === 'dot-circle') {
+    if (name === 'heart' || name === 'dot-circle' || name === 'bookmark') {
       FA5types.solid = true;
     }
 
@@ -156,6 +157,18 @@ class NotificationRow extends React.Component {
           </Text>
         );
         break;
+      case 24:
+        innerText = (
+          <Text style={textStyle}>
+            {displayName}
+            <Text style={{color: theme.blueUnread}}>
+              {' '}
+              {notification.fancy_title}
+            </Text>
+          </Text>
+        );
+        break;
+
       default:
         console.log('Couldn’t generate text for notification', notification);
         innerText = (
@@ -178,6 +191,7 @@ class NotificationRow extends React.Component {
     }
   }
 }
+
 NotificationRow.contextType = ThemeContext;
 
 const styles = StyleSheet.create({
