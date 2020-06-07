@@ -34,6 +34,9 @@ import bgMessaging from './firebase/bgMessaging';
 import BackgroundFetch from 'react-native-background-fetch';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import {enableScreens} from 'react-native-screens';
+enableScreens();
+
 const AppNavigator = createStackNavigator(
   {
     Home: {screen: Screens.Home},
@@ -363,7 +366,9 @@ class Discourse extends React.Component {
           url: url,
         });
       }
-    } else {
+    }
+
+    if (Platform.OS === 'android') {
       if (this.props.simulator) {
         Linking.openURL(url);
       } else {

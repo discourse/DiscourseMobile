@@ -94,6 +94,7 @@ class WebViewScreen extends React.Component {
       Animated.timing(this.state.headerBgAnim, {
         toValue: 1,
         duration: 250,
+        useNativeDriver: false,
       }).start();
     }
   }
@@ -102,7 +103,7 @@ class WebViewScreen extends React.Component {
     // The iPad user agent string no longer includes "iPad".
     // We want to serve desktop version on fullscreen iPad app
     // and mobile version on split view.
-    // That's why we append the device ID (which includes "iPad" on large window sizes only.
+    // That's why we append the device ID (which includes "iPad" on large window sizes only)
     var {width, height} = event.nativeEvent.layout;
 
     this.setState({

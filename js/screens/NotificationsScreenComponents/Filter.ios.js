@@ -3,7 +3,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {SegmentedControlIOS, View} from 'react-native';
+import {View} from 'react-native';
+import SegmentedControl from '@react-native-community/segmented-control';
 
 import {ThemeContext} from '../../ThemeContext';
 
@@ -17,7 +18,7 @@ class Filter extends React.Component {
     const theme = this.context;
     return (
       <View style={{flex: 0, backgroundColor: theme.background}}>
-        <SegmentedControlIOS
+        <SegmentedControl
           values={this.props.tabs}
           tintColor={theme.grayUI}
           style={{margin: 12}}

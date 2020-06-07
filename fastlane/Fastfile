@@ -2,8 +2,8 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "1.6.4"
-ANDROID_APP_VERSION = "1.6.1"
+IOS_APP_VERSION = "1.6.5"
+ANDROID_APP_VERSION = "1.6.2"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
@@ -59,6 +59,7 @@ MYAPP_RELEASE_STORE_PASSWORD=#{google_key_store_password}
 MYAPP_RELEASE_KEY_PASSWORD=#{google_key_store_password}
 android.useAndroidX=true
 android.enableJetifier=true
+FLIPPER_VERSION=0.41.0
 TEMPLATE
   File.write(File.expand_path("../android/gradle.properties"), gradle_properties)
 
@@ -169,6 +170,24 @@ platform :android do
     increment_version_code(
       gradle_file_path: "android/app/build.gradle"
     )
+  end
+
+  desc "Build APK and install on device"
+  lane :install do
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      project_dir: "android/"
+    )
+
+    lane_context[SharedValues::GRADLE_ALL_APK_OUTPUT_PATHS].each do | apk |
+      puts "Uploading APK to Device: " + apk
+      begin
+        adb(command: "install -r #{apk}")
+      rescue => ex
+        puts ex
+      end
+    end
   end
 
   desc "Submit a build to Google Play Store"

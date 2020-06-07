@@ -38,6 +38,7 @@ class SiteRow extends React.Component {
           <TouchableHighlight
             underlayColor={theme.yellowUIFeedback}
             onPress={() => this.props.onClick()}
+            onLongPress={() => this.props.onLongPress()}
             {...this.props.sortHandlers}>
             <View
               accessibilityTraits="link"

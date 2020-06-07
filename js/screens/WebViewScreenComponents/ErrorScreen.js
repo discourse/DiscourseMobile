@@ -34,6 +34,7 @@ class ErrorScreen extends React.Component {
       toValue: 0.75,
       duration: 500,
       delay: 6000,
+      useNativeDriver: true,
     }).start();
   }
 

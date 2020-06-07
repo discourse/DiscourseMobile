@@ -500,12 +500,8 @@ class SiteManager {
     });
   }
 
-  toObject() {
-    let object = {};
-    this.sites.forEach(site => {
-      object[site.url] = site;
-    });
-    return object;
+  listSites() {
+    return this.sites;
   }
 
   _onChange() {

@@ -7,7 +7,6 @@ import {
   Alert,
   Animated,
   Easing,
-  Linking,
   RefreshControl,
   SafeAreaView,
   StyleSheet,
@@ -15,9 +14,8 @@ import {
   View,
 } from 'react-native';
 
-import SortableListView from 'react-native-sortable-listview';
+import DraggableFlatList from 'react-native-draggable-dynamic-flatlist';
 import SafariWebAuth from 'react-native-safari-web-auth';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import Site from '../site';
 import Components from './HomeScreenComponents';
@@ -37,7 +35,7 @@ class HomeScreen extends React.Component {
       addSiteProgress: 0,
       displayTermBar: false,
       anim: new Animated.Value(0),
-      data: false,
+      data: [],
       isRefreshing: false,
       lastRefreshTime: null,
       scrollEnabled: true,
@@ -46,6 +44,8 @@ class HomeScreen extends React.Component {
     };
 
     this._onChangeSites = e => this.onChangeSites(e);
+    this._dragItem = this._dragItem.bind(this);
+    this._renderItem = this._renderItem.bind(this);
   }
 
   visitSite(site) {
@@ -91,7 +91,7 @@ class HomeScreen extends React.Component {
       this.setState({loadingSites: this._siteManager.isLoading()});
     }
     if (e && e.event) {
-      this.setState({data: this._siteManager.toObject()});
+      this.setState({data: this._siteManager.listSites()});
     }
   }
 
@@ -151,6 +151,7 @@ class HomeScreen extends React.Component {
   }
 
   pullDownToRefresh() {
+    console.log('pullDownToRefresh');
     this.setState({isRefreshing: true});
 
     this._siteManager
@@ -184,6 +185,22 @@ class HomeScreen extends React.Component {
     }
   }
 
+  _renderItem({item, index, move, moveEnd, isActive}) {
+    return (
+      <Components.SiteRow
+        site={item}
+        onSwipe={scrollEnabled => this.setState({scrollEnabled: scrollEnabled})}
+        onClick={() => this.visitSite(item)}
+        onDelete={() => this._siteManager.remove(item)}
+        onLongPress={move}
+      />
+    );
+  }
+
+  _dragItem({data, from, to}) {
+    this._siteManager.updateOrder(from, to);
+  }
+
   _renderSites() {
     const theme = this.context;
     if (this.state.loadingSites) {
@@ -207,32 +224,12 @@ class HomeScreen extends React.Component {
       );
     } else {
       return (
-        <SortableListView
+        <DraggableFlatList
           data={this.state.data}
-          order={Object.keys(this.state.data)}
-          scrollEnabled={this.state.scrollEnabled}
-          enableEmptySections={true}
-          activeOpacity={0.5}
-          disableAnimatedScrolling={true}
-          styles={styles.list}
-          rowHasChanged={(r1, r2) => {
-            // TODO: r2 returns as an Object instead of a Site
-            // casting Site shouldn't be needed
-            return new Site(r1).toJSON() !== new Site(r2).toJSON();
-          }}
-          onRowMoved={e => {
-            this._siteManager.updateOrder(e.from, e.to);
-            this.forceUpdate();
-          }}
-          onRowActive={() => {
-            this.setState({refreshingEnabled: false});
-          }}
-          onMoveEnd={() => {
-            this.setState({refreshingEnabled: true});
-          }}
-          onMoveCancel={() => {
-            this.setState({refreshingEnabled: true});
-          }}
+          renderItem={item => this._renderItem(item)}
+          keyExtractor={(item, index) => `draggable-item-${item.url}`}
+          onMoveEnd={this._dragItem}
+          scaleSelectionFactor={1.05}
           refreshControl={
             <RefreshControl
               style={{left: 500}}
@@ -243,16 +240,6 @@ class HomeScreen extends React.Component {
               titleColor={theme.graySubtitle}
             />
           }
-          renderRow={site => (
-            <Components.SiteRow
-              site={site}
-              onSwipe={scrollEnabled =>
-                this.setState({scrollEnabled: scrollEnabled})
-              }
-              onClick={() => this.visitSite(site)}
-              onDelete={() => this._siteManager.remove(site)}
-            />
-          )}
         />
       );
     }
