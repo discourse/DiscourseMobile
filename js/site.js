@@ -29,6 +29,7 @@ class Site {
     'isStaff',
     'apiVersion',
     'lastChecked',
+    'loginRequired',
   ];
 
   static fromTerm(term) {
@@ -85,12 +86,24 @@ class Site {
         );
       })
       .then(info => {
-        return new Site({
-          url: url,
-          title: info.title,
-          description: info.description,
-          icon: info.apple_touch_icon_url,
-          apiVersion: apiVersion,
+        return fetch(`${url}/about.json`).then(aboutResp => {
+          let loginRequired = false;
+          console.log(aboutResp.url);
+          if (
+            aboutResp.url.indexOf('discourse/sso') > 0 ||
+            aboutResp.url.endsWith('/login')
+          ) {
+            loginRequired = true;
+          }
+
+          return new Site({
+            url: url,
+            title: info.title,
+            description: info.description,
+            icon: info.apple_touch_icon_url,
+            apiVersion: apiVersion,
+            loginRequired: loginRequired,
+          });
         });
       });
   }

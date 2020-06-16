@@ -316,7 +316,7 @@ PODS:
     - React
   - RNReanimated (1.9.0):
     - React
-  - RNScreens (2.0.0-beta.2):
+  - RNScreens (2.8.0):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -530,7 +530,7 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 88099e84466f053bae3f34c307b506738b2b6946
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
-  RNScreens: 5e4758109c6d35f9a009ce72af873df907548020
+  RNScreens: 62211832af51e0aebcf6e8c36bcf7dd65592f244
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

@@ -246,12 +246,20 @@ class WebViewScreen extends React.Component {
   }
 
   _onMessage(event) {
+    // when fully transparent, use black status bar
+    if (TinyColor(headerBg).getAlpha() === 0) {
+      headerBg = 'rgb(0,0,0)';
+    }
     let data = JSON.parse(event.nativeEvent.data);
     console.log('_onMessage', data);
 
     let {headerBg, shareUrl, dismiss} = data;
 
     if (headerBg) {
+      // when fully transparent, use black status bar
+      if (TinyColor(headerBg).getAlpha() === 0) {
+        headerBg = 'rgb(0,0,0)';
+      }
       this.setState({
         headerBg: headerBg,
         barStyle:

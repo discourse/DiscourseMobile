@@ -121,10 +121,6 @@ platform :ios do
 
   desc "Submit a new build to Testflight"
   lane :release do
-    register_devices(
-      devices_file: File.expand_path("./keys/ios-beta-devices.txt")
-    )
-
     gym(
       scheme: PROJECT_NAME,
       export_method: "app-store",

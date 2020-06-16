@@ -93,7 +93,10 @@ class SiteRow extends React.Component {
 
     if (!site.authToken) {
       return (
-        <View style={styles.notifications}>
+        <TouchableHighlight
+          style={styles.notifications}
+          underlayColor={theme.background}
+          onPress={() => this.props.onClickConnect()}>
           <Text
             style={{
               ...styles.connect,
@@ -102,7 +105,7 @@ class SiteRow extends React.Component {
             }}>
             connect
           </Text>
-        </View>
+        </TouchableHighlight>
       );
     }
   }

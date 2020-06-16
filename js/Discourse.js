@@ -4,14 +4,7 @@
 import React from 'react';
 import {ThemeContext, themes} from './ThemeContext';
 
-import {
-  Alert,
-  AppState,
-  Linking,
-  NativeModules,
-  Platform,
-  StatusBar,
-} from 'react-native';
+import {Alert, AppState, Linking, Platform, StatusBar} from 'react-native';
 
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -25,8 +18,6 @@ import SiteManager from './site_manager';
 import SafariView from 'react-native-safari-view';
 import SafariWebAuth from 'react-native-safari-web-auth';
 import DeviceInfo from 'react-native-device-info';
-
-const ChromeCustomTab = NativeModules.ChromeCustomTab;
 
 import firebase from './firebase/helper';
 import type {Notification, NotificationOpen} from './firebase/helper';
@@ -319,7 +310,20 @@ class Discourse extends React.Component {
   }
 
   _refreshPeriodically() {
-    this._siteManager.refreshSites();
+    AsyncStorage.getItem('@Discourse.lastRefresh').then(date => {
+      if (date) {
+        const lastRun = new Date(date).getTime(),
+          now = new Date().getTime();
+        if (now - lastRun > 20000) {
+          this._siteManager.refreshSites();
+        } else {
+          console.log(now - lastRun);
+          console.log('no period refresh, it was last refreshed too recently');
+        }
+      } else {
+        this._siteManager.refreshSites();
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -369,16 +373,7 @@ class Discourse extends React.Component {
     }
 
     if (Platform.OS === 'android') {
-      if (this.props.simulator) {
-        Linking.openURL(url);
-      } else {
-        ChromeCustomTab.show(url)
-          .then(() => {})
-          .catch(e => {
-            // if Chrome is not installed, use any other available browser
-            Linking.openURL(url);
-          });
-      }
+      Linking.openURL(url);
     }
   }
 

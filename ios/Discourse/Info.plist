@@ -35,7 +35,7 @@
 		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>286</string>
+	<string>305</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -56,6 +56,11 @@
 			</dict>
 		</array>
 	</dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>org.jitsi.meet</string>
+		<string>tel</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

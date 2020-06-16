@@ -48,7 +48,7 @@ class HomeScreen extends React.Component {
     this._renderItem = this._renderItem.bind(this);
   }
 
-  visitSite(site) {
+  visitSite(site, connect = false) {
     this._siteManager.setActiveSite(site);
 
     if (site.authToken) {
@@ -68,13 +68,17 @@ class HomeScreen extends React.Component {
       return;
     }
 
-    this._siteManager.generateAuthURL(site).then(url => {
-      if (this._siteManager.supportsDelegatedAuth(site)) {
-        SafariWebAuth.requestAuth(url);
-      } else {
-        this.props.screenProps.openUrl(url, false);
-      }
-    });
+    if (connect || site.loginRequired) {
+      this._siteManager.generateAuthURL(site).then(url => {
+        if (this._siteManager.supportsDelegatedAuth(site)) {
+          SafariWebAuth.requestAuth(url);
+        } else {
+          this.props.screenProps.openUrl(url, false);
+        }
+      });
+    } else {
+      this.props.screenProps.openUrl(`${site.url}`);
+    }
   }
 
   componentDidMount() {
@@ -191,6 +195,7 @@ class HomeScreen extends React.Component {
         site={item}
         onSwipe={scrollEnabled => this.setState({scrollEnabled: scrollEnabled})}
         onClick={() => this.visitSite(item)}
+        onClickConnect={() => this.visitSite(item, true)}
         onDelete={() => this._siteManager.remove(item)}
         onLongPress={move}
       />
