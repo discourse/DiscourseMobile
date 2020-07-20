@@ -20,7 +20,7 @@
     "immutable": "^4.0.0-rc.12",
     "invariant": "^2.2",
     "jetifier": "^1.6.3",
-    "lodash": "^4.17",
+    "lodash": "^4.17.19",
     "moment": "^2.22",
     "prop-types": "^15.6.0",
     "react": "16.11.0",
