@@ -283,6 +283,19 @@ class Site {
     tS.forEach(state => {
       this.trackingState[`t${state.topic_id}`] = state;
     });
+
+    if (this.isStaff) {
+      this.groupInboxes = [];
+
+      let notifications = await this.groupInboxesFromNotifications();
+      notifications.forEach(n => {
+        console.log(n);
+        if (n.data && n.data.group_id) {
+          this.groupInboxes.push(n.data);
+        }
+      });
+    }
+
     this.updateTotals();
     return;
   }
@@ -393,6 +406,23 @@ class Site {
           this._loadingNotifications = false;
         })
         .done();
+    });
+  }
+
+  groupInboxesFromNotifications() {
+    return new Promise((resolve, reject) => {
+      this.jsonApi('/notifications.json?filter=unread&limit=25')
+        .then(results => {
+          if (results && results.notifications) {
+            resolve(results.notifications);
+          } else {
+            resolve([]);
+          }
+        })
+        .catch(e => {
+          console.log('failed to fetch notifications ' + e);
+          resolve([]);
+        });
     });
   }
 

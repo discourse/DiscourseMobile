@@ -111,26 +111,66 @@ class SiteRow extends React.Component {
   }
 
   _renderCounts(site) {
-    var counts = [];
-    const theme = this.context;
+    var counts = {};
+
     if (site.authToken) {
       if (site.totalNew > 0) {
-        counts.push('new (' + site.totalNew + ')');
+        counts.new = {
+          link: '/new',
+          text: 'new (' + site.totalNew + ')',
+        };
       }
       if (site.totalUnread > 0) {
-        counts.push('unread (' + site.totalUnread + ')');
+        counts.unread = {
+          link: '/unread',
+          text: 'unread (' + site.totalUnread + ')',
+        };
       }
     }
 
-    if (counts.length > 0) {
+    if (site.groupInboxes && site.groupInboxes.length > 0) {
+      site.groupInboxes.sort(function(a, b) {
+        return a.group_name.localeCompare(b.group_name);
+      });
+      site.groupInboxes.forEach(group => {
+        if (group.inbox_count !== undefined) {
+          counts[group.group_name] = {
+            link: `/u/${group.username}/messages/group/${group.group_name}`,
+            text: `${group.group_name} (${group.inbox_count})`,
+          };
+        }
+      });
+    }
+
+    const countButtons = Object.keys(counts).map(function(key) {
+      return counts[key];
+    });
+
+    if (countButtons.length > 0) {
       return (
         <View style={styles.counts}>
-          <Text style={{color: theme.blueUnread}}>{counts.join('  ')}</Text>
+          {countButtons.map((value, index) => {
+            return this._renderCountItem(value, index);
+          })}
         </View>
       );
     }
   }
+
+  _renderCountItem(item, index) {
+    const theme = this.context;
+    return (
+      <TouchableHighlight
+        key={index}
+        style={styles.countItem}
+        underlayColor={theme.yellowUIFeedback}
+        onPress={() => this.props.onClick(item.link)}>
+        <Text style={{color: theme.blueUnread, fontSize: 15}}>{item.text}</Text>
+      </TouchableHighlight>
+    );
+  }
 }
+
 SiteRow.contextType = ThemeContext;
 
 const styles = StyleSheet.create({
@@ -145,23 +185,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   icon: {
-    alignSelf: 'center',
+    alignSelf: 'flex-start',
     height: 40,
     width: 40,
+    marginTop: 3,
   },
   info: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    paddingLeft: 12,
+    paddingLeft: 8,
   },
   url: {
     fontSize: 16,
     fontWeight: 'normal',
+    paddingLeft: 6,
   },
   description: {
     flex: 10,
     fontSize: 14,
+    paddingLeft: 6,
+    paddingTop: 6,
   },
   notifications: {
     flexDirection: 'row',
@@ -179,6 +223,13 @@ const styles = StyleSheet.create({
   },
   counts: {
     marginTop: 6,
+    flexDirection: 'row',
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  countItem: {
+    paddingVertical: 3,
+    paddingHorizontal: 6,
   },
 });
 

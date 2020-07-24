@@ -54,7 +54,7 @@ class DiscourseUtils {
         );
         endpoint = '';
     }
-    console.log(endpoint);
+
     return `${site.url}${endpoint}`;
   }
 
