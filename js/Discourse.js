@@ -317,7 +317,6 @@ class Discourse extends React.Component {
         if (now - lastRun > 20000) {
           this._siteManager.refreshSites();
         } else {
-          console.log(now - lastRun);
           console.log('no period refresh, it was last refreshed too recently');
         }
       } else {

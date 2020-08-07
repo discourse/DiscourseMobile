@@ -246,10 +246,6 @@ class WebViewScreen extends React.Component {
   }
 
   _onMessage(event) {
-    // when fully transparent, use black status bar
-    if (TinyColor(headerBg).getAlpha() === 0) {
-      headerBg = 'rgb(0,0,0)';
-    }
     let data = JSON.parse(event.nativeEvent.data);
     console.log('_onMessage', data);
 
@@ -260,6 +256,7 @@ class WebViewScreen extends React.Component {
       if (TinyColor(headerBg).getAlpha() === 0) {
         headerBg = 'rgb(0,0,0)';
       }
+
       this.setState({
         headerBg: headerBg,
         barStyle:
@@ -267,6 +264,11 @@ class WebViewScreen extends React.Component {
             ? 'light-content'
             : 'dark-content',
       });
+      // ugly hack for an outstanding react-native-webview issue with the statusbar
+      // https://github.com/react-native-community/react-native-webview/issues/735
+      setTimeout(() => {
+        StatusBar.setBarStyle(this.state.barStyle);
+      }, 400);
     }
 
     if (shareUrl) {

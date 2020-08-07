@@ -289,7 +289,6 @@ class Site {
 
       let notifications = await this.groupInboxesFromNotifications();
       notifications.forEach(n => {
-        console.log(n);
         if (n.data && n.data.group_id) {
           this.groupInboxes.push(n.data);
         }
