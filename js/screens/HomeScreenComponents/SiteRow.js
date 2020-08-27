@@ -130,7 +130,11 @@ class SiteRow extends React.Component {
 
     if (site.groupInboxes && site.groupInboxes.length > 0) {
       site.groupInboxes.sort(function(a, b) {
-        return a.group_name.localeCompare(b.group_name);
+        if (a.group_name && b.group_name) {
+          return a.group_name.localeCompare(b.group_name);
+        } else {
+          return true;
+        }
       });
       site.groupInboxes.forEach(group => {
         if (group.inbox_count !== undefined) {
