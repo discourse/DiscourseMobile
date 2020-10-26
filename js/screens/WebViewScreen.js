@@ -137,7 +137,7 @@ class WebViewScreen extends React.Component {
         <StatusBar barStyle={this.state.barStyle} />
         <View
           style={{
-            marginTop: this.state.isLandscape ? 0 : this.state.hasNotch ? 8 : 0,
+            marginTop: this.state.isLandscape ? 3 : this.state.hasNotch ? 8 : 0,
           }}>
           <ProgressBar progress={this.state.progress} />
         </View>
