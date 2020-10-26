@@ -24,8 +24,10 @@ import type {Notification, NotificationOpen} from './firebase/helper';
 import bgMessaging from './firebase/bgMessaging';
 import BackgroundFetch from 'react-native-background-fetch';
 import AsyncStorage from '@react-native-community/async-storage';
+import RootViewBackgroundColor from 'react-native-root-view-background-color';
 
 import {enableScreens} from 'react-native-screens';
+import {color} from 'react-native-reanimated';
 enableScreens();
 
 const AppNavigator = createStackNavigator(
@@ -118,22 +120,15 @@ class Discourse extends React.Component {
     const colorScheme = Appearance.getColorScheme();
 
     this.state = {
-      hasNotch: true,
-      deviceId: '',
+      hasNotch: DeviceInfo.hasNotch(),
+      deviceId: DeviceInfo.getDeviceId(),
       theme: colorScheme === 'dark' ? themes.dark : themes.light,
     };
 
-    DeviceInfo.hasNotch().then(hasNotch => {
-      if (hasNotch === false) {
-        this.setState({hasNotch: false});
-      }
-    });
-
-    DeviceInfo.getDeviceId().then(deviceId => {
-      this.setState({deviceId: deviceId});
-    });
+    this.setRootBackground(colorScheme);
 
     this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+      this.setRootBackground(colorScheme);
       this.setState({
         theme: colorScheme === 'dark' ? themes.dark : themes.light,
       });
@@ -151,6 +146,14 @@ class Discourse extends React.Component {
           });
         },
       );
+    }
+  }
+
+  setRootBackground(colorScheme) {
+    if (colorScheme === 'dark') {
+      RootViewBackgroundColor.setBackground(0, 0, 0, 1);
+    } else {
+      RootViewBackgroundColor.setBackground(255, 255, 255, 1);
     }
   }
 
@@ -389,7 +392,6 @@ class Discourse extends React.Component {
           <StatusBar barStyle={this.state.theme.barStyle} />
           <AppContainer
             ref={ref => (this._navigation = ref && ref._navigation)}
-            style={{flex: 1}}
             screenProps={{
               openUrl: this.openUrl.bind(this),
               _handleOpenUrl: this._handleOpenUrl,

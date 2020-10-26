@@ -129,7 +129,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 97
+        versionCode 103
         versionName MYAPP_VERSION
     }
 

@@ -5700,10 +5700,10 @@ react-native-background-fetch@^3.0.2:
     plist "^3.0.1"
     xcode "^2.0.0"
 
-react-native-device-info@^3.1.4:
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-3.1.4.tgz#58a1d465ce9e2c28809132b1c68dd7ec7ce5f00f"
-  integrity sha512-r+7APHkPO9EA/9w3e9K7yrFigaU+0/g8i3psrNUwCGFxoDewkCHOPj/1YZnAPUwPxgyG3svjZXeCtymI3xcSlA==
+react-native-device-info@^7.1.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-7.0.2.tgz#dcfebd8e879e2a1973156597eba4d6777e67945f"
+  integrity sha512-3jzEzzX0Zo5rm+fClPFp3OGUnRPjK0w4X6RCNZtuaNbwMG+Vm3BLcU69dv+UfkYMrCo5JSKV6lA2fG25qq2tuA==
 
 react-native-draggable-dynamic-flatlist@^1.0.4:
   version "1.0.4"
@@ -5754,6 +5754,11 @@ react-native-reanimated@^1.9.0:
   integrity sha512-Aj+spgIHRiVv7ezGADxnSH1EoKrQRD2+XaSiGY0MiB/pvRNNrZPSJ+3NVpvLwWf9lZMOP7dwqqyJIzoZgBDt8w==
   dependencies:
     fbjs "^1.0.0"
+
+react-native-root-view-background-color@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-root-view-background-color/-/react-native-root-view-background-color-1.0.2.tgz#5747e1bbb0b1894d6b0458a561716f278ac1f93c"
+  integrity sha512-Vn6Qwd34RvL63UmBmq0ES31p8AcNj30xRhOqajoxgkF5iABT1tnHtiSNp+zpcigVNJ9FZurbDnmWzIV9douLXg==
 
 "react-native-safari-view@git+https://github.com/samsaffron/react-native-safari-view.git":
   version "1.0.2"

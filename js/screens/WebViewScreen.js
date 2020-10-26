@@ -62,6 +62,7 @@ class WebViewScreen extends React.Component {
       userAgentSuffix: 'DiscourseHub',
       layoutCalculated: false,
       hasNotch: this.props.screenProps.hasNotch,
+      isLandscape: false,
       webviewUrl: this.props.navigation.getParam('url'),
     };
   }
@@ -112,9 +113,8 @@ class WebViewScreen extends React.Component {
           ? `DiscourseHub ${this.props.screenProps.deviceId}`
           : 'DiscourseHub',
       layoutCalculated: true,
+      isLandscape: width > height,
     });
-
-    // TODO: disable notch spacing in landscape mode
   }
 
   render() {
@@ -124,14 +124,21 @@ class WebViewScreen extends React.Component {
         onLayout={e => this._onLayout(e)}
         style={{
           flex: 1,
-          paddingTop: this.state.hasNotch ? 35 : 20,
+          paddingTop: this.state.isLandscape
+            ? 0
+            : this.state.hasNotch
+            ? 35
+            : 20,
           backgroundColor: this.state.headerBgAnim.interpolate({
             inputRange: [0, 1],
             outputRange: [theme.grayBackground, this.state.headerBg],
           }),
         }}>
         <StatusBar barStyle={this.state.barStyle} />
-        <View style={{marginTop: this.state.hasNotch ? 8 : 0}}>
+        <View
+          style={{
+            marginTop: this.state.isLandscape ? 0 : this.state.hasNotch ? 8 : 0,
+          }}>
           <ProgressBar progress={this.state.progress} />
         </View>
         {this.state.layoutCalculated && (
