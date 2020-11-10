@@ -119,16 +119,25 @@ class WebViewScreen extends React.Component {
 
   render() {
     const theme = this.context;
+
+    let viewTopPadding = 0;
+
+    if (this.props.screenProps.deviceId.startsWith('iPad')) {
+      viewTopPadding = 15;
+    } else {
+      viewTopPadding = this.state.isLandscape
+        ? 10
+        : this.state.hasNotch
+        ? 35
+        : 20;
+    }
+
     return (
       <Animated.View
         onLayout={e => this._onLayout(e)}
         style={{
           flex: 1,
-          paddingTop: this.state.isLandscape
-            ? 0
-            : this.state.hasNotch
-            ? 35
-            : 20,
+          paddingTop: viewTopPadding,
           backgroundColor: this.state.headerBgAnim.interpolate({
             inputRange: [0, 1],
             outputRange: [theme.grayBackground, this.state.headerBg],
@@ -137,7 +146,7 @@ class WebViewScreen extends React.Component {
         <StatusBar barStyle={this.state.barStyle} />
         <View
           style={{
-            marginTop: this.state.isLandscape ? 3 : this.state.hasNotch ? 8 : 0,
+            marginTop: this.state.isLandscape ? 0 : this.state.hasNotch ? 8 : 0,
           }}>
           <ProgressBar progress={this.state.progress} />
         </View>
