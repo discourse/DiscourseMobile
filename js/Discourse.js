@@ -4,13 +4,20 @@
 import React from 'react';
 import {ThemeContext, themes} from './ThemeContext';
 
-import {Alert, AppState, Linking, Platform, StatusBar} from 'react-native';
+import {
+  Alert,
+  AppearanceProvider,
+  Appearance,
+  AppState,
+  Linking,
+  Platform,
+  StatusBar,
+} from 'react-native';
 
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import {AppearanceProvider, Appearance} from 'react-native-appearance';
 
 import Screens from './screens';
 import Site from './site';
@@ -388,24 +395,22 @@ class Discourse extends React.Component {
   render() {
     return (
       <ThemeContext.Provider value={this.state.theme}>
-        <AppearanceProvider>
-          <StatusBar barStyle={this.state.theme.barStyle} />
-          <AppContainer
-            ref={ref => (this._navigation = ref && ref._navigation)}
-            screenProps={{
-              openUrl: this.openUrl.bind(this),
-              _handleOpenUrl: this._handleOpenUrl,
-              seenNotificationMap: this._seenNotificationMap,
-              setSeenNotificationMap: map => {
-                this._seenNotificationMap = map;
-              },
-              siteManager: this._siteManager,
-              hasNotch: this.state.hasNotch,
-              deviceId: this.state.deviceId,
-              toggleTheme: this._toggleTheme.bind(this),
-            }}
-          />
-        </AppearanceProvider>
+        <StatusBar barStyle={this.state.theme.barStyle} />
+        <AppContainer
+          ref={ref => (this._navigation = ref && ref._navigation)}
+          screenProps={{
+            openUrl: this.openUrl.bind(this),
+            _handleOpenUrl: this._handleOpenUrl,
+            seenNotificationMap: this._seenNotificationMap,
+            setSeenNotificationMap: map => {
+              this._seenNotificationMap = map;
+            },
+            siteManager: this._siteManager,
+            hasNotch: this.state.hasNotch,
+            deviceId: this.state.deviceId,
+            toggleTheme: this._toggleTheme.bind(this),
+          }}
+        />
       </ThemeContext.Provider>
     );
   }

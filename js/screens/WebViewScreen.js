@@ -160,6 +160,7 @@ class WebViewScreen extends React.Component {
             applicationNameForUserAgent={this.state.userAgentSuffix}
             allowsBackForwardNavigationGestures={true}
             allowsInlineMediaPlayback={true}
+            allowsFullscreenVideo={true}
             allowsLinkPreview={true}
             onError={syntheticEvent => {
               const {nativeEvent} = syntheticEvent;
