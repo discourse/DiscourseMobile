@@ -70,7 +70,7 @@ i18n.translations = {
   },
   it: {
     add_first_site: '+ Aggiungi il tuo primo sito',
-    add_site: 'Agguingi sito',
+    add_site: 'Aggiungi sito',
     add_sites: 'Aggiungi siti Discourse da seguire.',
     add: '+ Aggiungi',
     all: 'Tutti',
@@ -81,7 +81,7 @@ i18n.translations = {
     connect: 'connetti',
     dont_know_where_to_start: 'Non sai da dove cominciare?',
     incorrect_url:
-      'Sorry, %{term} is not a correct URL to a Discourse forum or does not support mobile APIs, have owner upgrade Discourse to latest!',
+      'Spiacenti, %{term} non è l’URL corretto di un forum Discourse o non supporta le API mobile, chiedi al proprietario di aggiornare Discourse alla versione più recente!',
     liked: 'ha messo "mi piace" a %{count} dei tuoi messaggi',
     membership_accepted: 'Iscrizione accettata in "%{name}"',
     message: 'messaggio',
