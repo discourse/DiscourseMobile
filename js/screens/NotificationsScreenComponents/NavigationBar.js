@@ -16,7 +16,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import ProgressBar from '../../ProgressBar';
 import {ThemeContext} from '../../ThemeContext';
-
+import i18n from 'i18n-js';
 class NavigationBar extends React.Component {
   static propTypes = {
     onDidPressLeftButton: PropTypes.func,
@@ -33,7 +33,7 @@ class NavigationBar extends React.Component {
         <View style={styles.leftContainer} />
         <View style={styles.titleContainer}>
           <Text style={{...styles.title, color: theme.grayUI}}>
-            Notifications
+            {i18n.t('notifications')}
           </Text>
         </View>
         <View style={styles.rightContainer}>

@@ -4,7 +4,6 @@
 const suggestedSites = [
   'https://meta.discourse.org',
   'https://community.cartalk.com',
-  // "https://community.imgur.com",
   'https://bbs.boingboing.net',
 ];
 
@@ -26,6 +25,7 @@ import {ImmutableVirtualizedList} from 'react-native-immutable-list-view';
 
 import Site from '../../site';
 import {ThemeContext} from '../../ThemeContext';
+import i18n from 'i18n-js';
 
 class OnBoardingView extends React.Component {
   static propTypes = {
@@ -41,7 +41,7 @@ class OnBoardingView extends React.Component {
   }
 
   _fetchSuggestedSites(suggestedSites) {
-    const sitesFetchPromises = suggestedSites.map(function(url) {
+    const sitesFetchPromises = suggestedSites.map(function (url) {
       return fetch(`${url}/site/basic-info.json`)
         .then(response => response.json())
         .then(info => {
@@ -116,7 +116,7 @@ class OnBoardingView extends React.Component {
               backgroundColor: theme.blueCallToAction,
               color: theme.buttonTextColor,
             }}>
-            + Add
+            {i18n.t('add')}
           </Text>
         </View>
       </TouchableHighlight>
@@ -130,11 +130,11 @@ class OnBoardingView extends React.Component {
         <View style={styles.suggestedSitesContainer}>
           <Text style={styles.text}>
             <Text style={{...styles.title, color: theme.grayTitle}}>
-              Don’t know where to start?
+              {i18n.t('dont_know_where_to_start')}
             </Text>
             {'\n'}
             <Text style={{color: theme.graySubtitle}}>
-              Check out these popular communities.
+              {i18n.t('check_out_popular')}
             </Text>
           </Text>
         </View>
@@ -148,12 +148,10 @@ class OnBoardingView extends React.Component {
       <View style={styles.addSiteContainer}>
         <Text style={styles.text}>
           <Text style={{...styles.title, color: theme.grayTitle}}>
-            You don’t have any sites yet.
+            {i18n.t('no_sites_yet')}
           </Text>
           {'\n'}
-          <Text style={{color: theme.graySubtitle}}>
-            Add Discourse sites to keep track of.
-          </Text>
+          <Text style={{color: theme.graySubtitle}}>{i18n.t('add_sites')}</Text>
         </Text>
 
         <TouchableOpacity onPress={() => this.props.onDidPressAddSite()}>
@@ -163,7 +161,7 @@ class OnBoardingView extends React.Component {
               backgroundColor: theme.blueCallToAction,
               color: theme.buttonTextColor,
             }}>
-            + Add your first site
+            {i18n.t('add_first_site')}
           </Text>
         </TouchableOpacity>
 

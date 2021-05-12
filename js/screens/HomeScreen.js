@@ -21,6 +21,7 @@ import Site from '../site';
 import Components from './HomeScreenComponents';
 
 import {ThemeContext} from '../ThemeContext';
+import i18n from 'i18n-js';
 
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -132,16 +133,15 @@ class HomeScreen extends React.Component {
           console.log(e);
 
           if (e === 'dupe site') {
-            Alert.alert(`${term} already exists`);
+            Alert.alert(i18n.t('term_exists', {term}));
           } else if (e === 'bad api') {
-            Alert.alert(
-              `Sorry, ${term} is not a correct URL to a Discourse forum or does not support mobile APIs, have owner upgrade Discourse to latest!`,
-            );
+            Alert.alert(i18n.t('incorrect_url', {term}));
           } else {
-            Alert.alert(`${term} was not found!`);
+            Alert.alert(i18n.t('not_found', {term}));
           }
 
           this.setState({displayTermBar: true, addSiteProgress: 1});
+          this.onToggleTermBar(this.state.displayTermBar);
 
           reject('failure');
         })
@@ -241,7 +241,7 @@ class HomeScreen extends React.Component {
               enabled={this.state.refreshingEnabled}
               refreshing={this.state.isRefreshing}
               onRefresh={() => this.pullDownToRefresh()}
-              title="Loading..."
+              title={i18n.t('loading')}
               titleColor={theme.graySubtitle}
             />
           }

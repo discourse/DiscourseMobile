@@ -15,11 +15,9 @@ import {
 } from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
 import ProgressBar from '../../ProgressBar';
-
 import {ThemeContext} from '../../ThemeContext';
-
+import i18n from 'i18n-js';
 class NavigationBar extends React.Component {
   static propTypes = {
     leftButtonIconRotated: PropTypes.bool.isRequired,
@@ -62,7 +60,7 @@ class NavigationBar extends React.Component {
         <View style={styles.leftContainer}>
           <TouchableHighlight
             underlayColor={'transparent'}
-            accessibilityLabel={'Add Site'}
+            accessibilityLabel={i18n.t('add_site')}
             style={[styles.button]}
             onPress={this.props.onDidPressLeftButton}>
             <AnimatedIcon
@@ -98,7 +96,7 @@ class NavigationBar extends React.Component {
         <View style={styles.rightContainer}>
           <TouchableHighlight
             underlayColor={'transparent'}
-            accessibilityLabel={'Notifications'}
+            accessibilityLabel={i18n.t('notifications')}
             style={styles.button}
             onPress={this.props.onDidPressRightButton}>
             <FontAwesome5

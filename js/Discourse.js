@@ -6,7 +6,6 @@ import {ThemeContext, themes} from './ThemeContext';
 
 import {
   Alert,
-  AppearanceProvider,
   Appearance,
   AppState,
   Linking,
@@ -33,8 +32,24 @@ import BackgroundFetch from 'react-native-background-fetch';
 import AsyncStorage from '@react-native-community/async-storage';
 import RootViewBackgroundColor from 'react-native-root-view-background-color';
 
+// SETUP i18n
+import i18n from 'i18n-js';
+import * as RNLocalize from 'react-native-localize';
+
+i18n.translations = {
+  en: require('./locale/en.json'),
+  fr: require('./locale/fr.json'),
+  it: require('./locale/it.json'),
+};
+
+const {languageTag, isRTL} = RNLocalize.findBestAvailableLanguage(
+  Object.keys(i18n.translations),
+) || {languageTag: 'en', isRTL: false};
+
+i18n.locale = languageTag;
+i18n.fallbacks = true;
+
 import {enableScreens} from 'react-native-screens';
-import {color} from 'react-native-reanimated';
 enableScreens();
 
 const AppNavigator = createStackNavigator(
@@ -50,7 +65,6 @@ const AppNavigator = createStackNavigator(
 );
 
 const AppContainer = createAppContainer(AppNavigator);
-
 class Discourse extends React.Component {
   constructor(props) {
     super(props);
@@ -339,11 +353,15 @@ class Discourse extends React.Component {
     AppState.removeEventListener('change', this._handleAppStateChange);
     Linking.removeEventListener('url', this._handleOpenUrl);
     clearTimeout(this.safariViewTimeout);
+
     if (Platform.OS === 'android') {
       this.removeNotificationOpenedListener();
       this.foregroundNNotificationListener();
     }
-    this.subscription.remove();
+
+    if (this.subscription) {
+      this.subscription.remove();
+    }
   }
 
   parseURLparameters(string) {

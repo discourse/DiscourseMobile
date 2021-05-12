@@ -8,7 +8,7 @@ import {SwipeRow} from 'react-native-swipe-list-view';
 import Notification from './Notification';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ThemeContext} from '../../ThemeContext';
-
+import i18n from 'i18n-js';
 class SiteRow extends React.Component {
   render() {
     const theme = this.context;
@@ -103,7 +103,7 @@ class SiteRow extends React.Component {
               backgroundColor: theme.blueCallToAction,
               color: theme.buttonTextColor,
             }}>
-            connect
+            {i18n.t('connect')}
           </Text>
         </TouchableHighlight>
       );
@@ -117,19 +117,19 @@ class SiteRow extends React.Component {
       if (site.totalNew > 0) {
         counts.new = {
           link: '/new',
-          text: 'new (' + site.totalNew + ')',
+          text: i18n.t('new_with_count', {count: site.totalNew}),
         };
       }
       if (site.totalUnread > 0) {
         counts.unread = {
           link: '/unread',
-          text: 'unread (' + site.totalUnread + ')',
+          text: i18n.t('unread_with_count', {count: site.totalUnread}),
         };
       }
     }
 
     if (site.groupInboxes && site.groupInboxes.length > 0) {
-      site.groupInboxes.sort(function(a, b) {
+      site.groupInboxes.sort(function (a, b) {
         if (a.group_name && b.group_name) {
           return a.group_name.localeCompare(b.group_name);
         } else {
@@ -146,7 +146,7 @@ class SiteRow extends React.Component {
       });
     }
 
-    const countButtons = Object.keys(counts).map(function(key) {
+    const countButtons = Object.keys(counts).map(function (key) {
       return counts[key];
     });
 
