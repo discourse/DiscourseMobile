@@ -21,7 +21,7 @@ import Site from '../site';
 import Components from './HomeScreenComponents';
 
 import {ThemeContext} from '../ThemeContext';
-import Localization from '../Localization';
+import i18n from 'i18n-js';
 
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -133,11 +133,11 @@ class HomeScreen extends React.Component {
           console.log(e);
 
           if (e === 'dupe site') {
-            Alert.alert(Localization('term_exists', {term}));
+            Alert.alert(i18n.t('term_exists', {term}));
           } else if (e === 'bad api') {
-            Alert.alert(Localization('incorrect_url', {term}));
+            Alert.alert(i18n.t('incorrect_url', {term}));
           } else {
-            Alert.alert(Localization('not_found', {term}));
+            Alert.alert(i18n.t('not_found', {term}));
           }
 
           this.setState({displayTermBar: true, addSiteProgress: 1});
@@ -241,7 +241,7 @@ class HomeScreen extends React.Component {
               enabled={this.state.refreshingEnabled}
               refreshing={this.state.isRefreshing}
               onRefresh={() => this.pullDownToRefresh()}
-              title="Loading..."
+              title={i18n.t('loading')}
               titleColor={theme.graySubtitle}
             />
           }

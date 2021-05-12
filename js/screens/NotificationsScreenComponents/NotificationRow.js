@@ -9,7 +9,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import DiscourseUtils from '../../DiscourseUtils';
 import {ThemeContext} from '../../ThemeContext';
-import Localization from '../../Localization';
+import i18n from 'i18n-js';
 class NotificationRow extends React.Component {
   render() {
     const theme = this.context;
@@ -62,13 +62,16 @@ class NotificationRow extends React.Component {
     if (notification.notification_type === 5) {
       // special logic for multi like
       if (data.count === 2) {
-        displayName = `${displayName} ${Localization('and')} ${data.username2}`;
+        displayName = i18n.t('liked_two_users', {
+          user1: displayName,
+          user2: data.username2,
+        });
       } else if (data.count > 2) {
-        let other =
-          data.count === 2 ? Localization('other') : Localization('others');
-        displayName = `${displayName}, ${data.username2} ${Localization(
-          'and',
-        )} ${data.count - 2} ${other}`;
+        displayName = i18n.t('liked_more', {
+          user1: displayName,
+          user2: data.username2,
+          count: data.count - 2,
+        });
       }
     }
 
@@ -112,15 +115,10 @@ class NotificationRow extends React.Component {
         );
         break;
       case 16:
-        let messages =
-          data.inbox_count > 1
-            ? Localization('messages')
-            : Localization('message');
         innerText = (
           <Text style={textStyle}>
-            {Localization('inbox_message', {
-              inbox_count: data.inbox_count,
-              messages: messages,
+            {i18n.t('inbox_message', {
+              count: data.inbox_count,
               group_name: data.group_name,
             })}
           </Text>
@@ -132,7 +130,7 @@ class NotificationRow extends React.Component {
             {displayName}
             <Text style={textStyle}>
               {' '}
-              {Localization('liked', {count: data.count})}
+              {i18n.t('liked', {count: data.count})}
             </Text>
           </Text>
         );
@@ -140,7 +138,7 @@ class NotificationRow extends React.Component {
       case 20:
         innerText = (
           <Text style={textStyle}>
-            {Localization('approved', {title: notification.fancy_title})}
+            {i18n.t('approved', {title: notification.fancy_title})}
           </Text>
         );
         break;
@@ -148,13 +146,13 @@ class NotificationRow extends React.Component {
         if (notification.fancy_title !== undefined) {
           innerText = (
             <Text style={textStyle}>
-              {Localization('approved', {title: notification.fancy_title})}
+              {i18n.t('approved', {title: notification.fancy_title})}
             </Text>
           );
         } else {
           innerText = (
             <Text style={textStyle}>
-              {Localization('approved_commits', {
+              {i18n.t('approved_commits', {
                 count: notification.data.num_approved_commits,
               })}
             </Text>
@@ -164,7 +162,7 @@ class NotificationRow extends React.Component {
       case 22:
         innerText = (
           <Text style={textStyle}>
-            {Localization('membership_accepted', {
+            {i18n.t('membership_accepted', {
               name: notification.data.group_name,
             })}
           </Text>

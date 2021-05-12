@@ -1,0 +1,39 @@
+{
+  "add_first_site": "+ Aggiungi il tuo primo sito",
+  "add_site": "Aggiungi sito",
+  "add_sites": "Aggiungi siti Discourse da seguire.",
+  "add": "+ Aggiungi",
+  "all": "Tutti",
+  "approved_commits": {
+    "one": "%{count} commit approvato",
+    "other": "%{count} commit approvati"
+  },
+  "approved": "\"%{title}\" approvato",
+  "check_out_popular": "Dai un’occhiata a queste comunità popolari.",
+  "connect": "connetti",
+  "dont_know_where_to_start": "Non sai da dove cominciare?",
+  "inbox_message": {
+    "one": "%{count} messaggio in \"%{group_name}\"",
+    "other": "%{count} messaggi in \"%{group_name}\""
+  },
+  "incorrect_url": "Spiacenti, %{term} non è l’URL corretto di un forum Discourse o non supporta le API mobile, chiedi al proprietario di aggiornare Discourse alla versione più recente!",
+  "liked": "ha messo \"mi piace\" a %{count} dei tuoi messaggi",
+  "liked_two_users": "%{user1} e %{user2}",
+  "liked_more": {
+    "one": "%{user1}, %{user2} e %{count} altro",
+    "other": "%{user1}, %{user2} e %{count} altri"
+  },
+  "loading": "Caricamento…",
+  "membership_accepted": "Iscrizione accettata in \"%{name}\"",
+  "new_with_count": "nuovi (%{count})",
+  "new": "Nuovi",
+  "no_notifications": "Non hai ancora notifiche.",
+  "no_replies": "Ancora nessuna risposta.",
+  "no_sites_yet": "Non hai ancora nessun sito.",
+  "no_new_notifications": "Non hai nuove notifiche.",
+  "not_found": "Spiacente, %{term} non esiste.",
+  "notifications": "Notifiche",
+  "replies": "Risposte",
+  "term_exists": "%{term} esiste già",
+  "unread_with_count": "non letti (%{count})"
+}

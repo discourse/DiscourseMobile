@@ -1,0 +1,40 @@
+{
+  "add_first_site": "+ Add your first site",
+  "add_site": "Add Site",
+  "add_sites": "Add Discourse sites to keep track of.",
+  "add": "+ Add",
+  "all": "All",
+  "and": "and",
+  "approved_commits": {
+    "one": "%{count} commit approved",
+    "other": "%{count} commits approved"
+  },
+  "approved": "\"%{title}\" approved",
+  "check_out_popular": "Check out these popular communities.",
+  "connect": "connect",
+  "dont_know_where_to_start": "Don’t know where to start?",
+  "inbox_message": {
+    "one": "%{count} message in your %{group_name} inbox",
+    "other": "%{count} messages in your %{group_name} inbox"
+  },
+  "incorrect_url": "Sorry, %{term} is not a correct URL to a Discourse forum or does not support mobile APIs, have owner upgrade Discourse to latest!",
+  "liked": "liked %{count} of your posts",
+  "liked_two_users": "%{user1} and %{user2}",
+  "liked_more": {
+    "one": "%{user1}, %{user2} and %{count} other",
+    "other": "%{user1}, %{user2} and %{count} others"
+  },
+  "loading": "Loading...",
+  "membership_accepted": "Membership accepted in \"%{name}\"",
+  "new_with_count": "new (%{count})",
+  "new": "New",
+  "no_notifications": "No notifications.",
+  "no_replies": "No replies.",
+  "no_sites_yet": "You don’t have any sites yet.",
+  "no_new_notifications": "No new notifications.",
+  "not_found": "%{term} was not found!",
+  "notifications": "Notifications",
+  "replies": "Replies",
+  "term_exists": "%{term} already exists",
+  "unread_with_count": "unread (%{count})"
+}

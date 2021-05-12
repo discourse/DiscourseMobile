@@ -8,8 +8,7 @@ import {SwipeRow} from 'react-native-swipe-list-view';
 import Notification from './Notification';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ThemeContext} from '../../ThemeContext';
-import Localization from '../../Localization';
-
+import i18n from 'i18n-js';
 class SiteRow extends React.Component {
   render() {
     const theme = this.context;
@@ -104,7 +103,7 @@ class SiteRow extends React.Component {
               backgroundColor: theme.blueCallToAction,
               color: theme.buttonTextColor,
             }}>
-            {Localization('connect')}
+            {i18n.t('connect')}
           </Text>
         </TouchableHighlight>
       );
@@ -118,13 +117,13 @@ class SiteRow extends React.Component {
       if (site.totalNew > 0) {
         counts.new = {
           link: '/new',
-          text: Localization('new_with_count', {count: site.totalNew}),
+          text: i18n.t('new_with_count', {count: site.totalNew}),
         };
       }
       if (site.totalUnread > 0) {
         counts.unread = {
           link: '/unread',
-          text: Localization('unread_with_count', {count: site.totalUnread}),
+          text: i18n.t('unread_with_count', {count: site.totalUnread}),
         };
       }
     }

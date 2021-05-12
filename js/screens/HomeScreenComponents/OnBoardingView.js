@@ -25,7 +25,7 @@ import {ImmutableVirtualizedList} from 'react-native-immutable-list-view';
 
 import Site from '../../site';
 import {ThemeContext} from '../../ThemeContext';
-import Localization from '../../Localization';
+import i18n from 'i18n-js';
 
 class OnBoardingView extends React.Component {
   static propTypes = {
@@ -116,7 +116,7 @@ class OnBoardingView extends React.Component {
               backgroundColor: theme.blueCallToAction,
               color: theme.buttonTextColor,
             }}>
-            {Localization('add')}
+            {i18n.t('add')}
           </Text>
         </View>
       </TouchableHighlight>
@@ -130,11 +130,11 @@ class OnBoardingView extends React.Component {
         <View style={styles.suggestedSitesContainer}>
           <Text style={styles.text}>
             <Text style={{...styles.title, color: theme.grayTitle}}>
-              {Localization('dont_know_where_to_start')}
+              {i18n.t('dont_know_where_to_start')}
             </Text>
             {'\n'}
             <Text style={{color: theme.graySubtitle}}>
-              {Localization('check_out_popular')}
+              {i18n.t('check_out_popular')}
             </Text>
           </Text>
         </View>
@@ -148,12 +148,10 @@ class OnBoardingView extends React.Component {
       <View style={styles.addSiteContainer}>
         <Text style={styles.text}>
           <Text style={{...styles.title, color: theme.grayTitle}}>
-            {Localization('no_sites_yet')}
+            {i18n.t('no_sites_yet')}
           </Text>
           {'\n'}
-          <Text style={{color: theme.graySubtitle}}>
-            {Localization('add_sites')}
-          </Text>
+          <Text style={{color: theme.graySubtitle}}>{i18n.t('add_sites')}</Text>
         </Text>
 
         <TouchableOpacity onPress={() => this.props.onDidPressAddSite()}>
@@ -163,7 +161,7 @@ class OnBoardingView extends React.Component {
               backgroundColor: theme.blueCallToAction,
               color: theme.buttonTextColor,
             }}>
-            {Localization('add_first_site')}
+            {i18n.t('add_first_site')}
           </Text>
         </TouchableOpacity>
 
