@@ -120,7 +120,7 @@ class NotificationRow extends React.Component {
           <Text style={textStyle}>
             {Localization('inbox_message', {
               inbox_count: data.inbox_count,
-              message_count: messages,
+              messages: messages,
               group_name: data.group_name,
             })}
           </Text>

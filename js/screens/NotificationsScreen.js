@@ -116,7 +116,7 @@ class NotificationsScreen extends React.Component {
     let text;
     switch (this.state.selectedIndex) {
       case 0:
-        text = Localization('non_new_notifications');
+        text = Localization('no_new_notifications');
         break;
       case 1:
         text = Localization('no_replies');
