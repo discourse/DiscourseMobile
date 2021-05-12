@@ -4,7 +4,6 @@
   "add_sites": "Add Discourse sites to keep track of.",
   "add": "+ Add",
   "all": "All",
-  "and": "and",
   "approved_commits": {
     "one": "%{count} commit approved",
     "other": "%{count} commits approved"
