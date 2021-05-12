@@ -10,6 +10,7 @@ import {ImmutableVirtualizedList} from 'react-native-immutable-list-view';
 import Components from './NotificationsScreenComponents';
 import DiscourseUtils from '../DiscourseUtils';
 import {ThemeContext} from '../ThemeContext';
+import Localization from '../Localization';
 
 class NotificationsScreen extends React.Component {
   static replyTypes = [1, 2, 3, 6, 9, 11, 15, 16, 17];
@@ -115,13 +116,13 @@ class NotificationsScreen extends React.Component {
     let text;
     switch (this.state.selectedIndex) {
       case 0:
-        text = 'No new notifications.';
+        text = Localization('non_new_notifications');
         break;
       case 1:
-        text = 'No replies.';
+        text = Localization('no_replies');
         break;
       case 2:
-        text = 'No notifications.';
+        text = Localization('no_notifications');
         break;
       default:
         text = '';
@@ -197,7 +198,11 @@ class NotificationsScreen extends React.Component {
     return (
       <Components.Filter
         selectedIndex={this.state.selectedIndex}
-        tabs={['New', 'Replies', 'All']}
+        tabs={[
+          Localization('new'),
+          Localization('replies'),
+          Localization('all'),
+        ]}
         onChange={index => {
           this.setState({selectedIndex: index}, () => {
             this.refresh();

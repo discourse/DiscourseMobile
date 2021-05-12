@@ -4,7 +4,6 @@
 const suggestedSites = [
   'https://meta.discourse.org',
   'https://community.cartalk.com',
-  // "https://community.imgur.com",
   'https://bbs.boingboing.net',
 ];
 
@@ -26,6 +25,7 @@ import {ImmutableVirtualizedList} from 'react-native-immutable-list-view';
 
 import Site from '../../site';
 import {ThemeContext} from '../../ThemeContext';
+import Localization from '../../Localization';
 
 class OnBoardingView extends React.Component {
   static propTypes = {
@@ -41,7 +41,7 @@ class OnBoardingView extends React.Component {
   }
 
   _fetchSuggestedSites(suggestedSites) {
-    const sitesFetchPromises = suggestedSites.map(function(url) {
+    const sitesFetchPromises = suggestedSites.map(function (url) {
       return fetch(`${url}/site/basic-info.json`)
         .then(response => response.json())
         .then(info => {
@@ -116,7 +116,7 @@ class OnBoardingView extends React.Component {
               backgroundColor: theme.blueCallToAction,
               color: theme.buttonTextColor,
             }}>
-            + Add
+            {Localization('add')}
           </Text>
         </View>
       </TouchableHighlight>
@@ -130,11 +130,11 @@ class OnBoardingView extends React.Component {
         <View style={styles.suggestedSitesContainer}>
           <Text style={styles.text}>
             <Text style={{...styles.title, color: theme.grayTitle}}>
-              Don’t know where to start?
+              {Localization('dont_know_where_to_start')}
             </Text>
             {'\n'}
             <Text style={{color: theme.graySubtitle}}>
-              Check out these popular communities.
+              {Localization('check_out_popular')}
             </Text>
           </Text>
         </View>
@@ -148,11 +148,11 @@ class OnBoardingView extends React.Component {
       <View style={styles.addSiteContainer}>
         <Text style={styles.text}>
           <Text style={{...styles.title, color: theme.grayTitle}}>
-            You don’t have any sites yet.
+            {Localization('no_sites_yet')}
           </Text>
           {'\n'}
           <Text style={{color: theme.graySubtitle}}>
-            Add Discourse sites to keep track of.
+            {Localization('add_sites')}
           </Text>
         </Text>
 
@@ -163,7 +163,7 @@ class OnBoardingView extends React.Component {
               backgroundColor: theme.blueCallToAction,
               color: theme.buttonTextColor,
             }}>
-            + Add your first site
+            {Localization('add_first_site')}
           </Text>
         </TouchableOpacity>
 

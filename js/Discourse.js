@@ -34,7 +34,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import RootViewBackgroundColor from 'react-native-root-view-background-color';
 
 import {enableScreens} from 'react-native-screens';
-import {color} from 'react-native-reanimated';
+
 enableScreens();
 
 const AppNavigator = createStackNavigator(
