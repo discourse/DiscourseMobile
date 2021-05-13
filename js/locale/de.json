@@ -1,0 +1,42 @@
+{
+  "add_first_site": "+ Füge das erste Forum hinzu",
+  "add_site": "Forum hinzufügen",
+  "add_sites": "Füge Discourse-Foren hinzu, die du im Auge behalten möchtest.",
+  "add": "+ Hinzufügen",
+  "all": "Alle",
+  "approved_commits": {
+    "one": "%{count} Commit genehmigt",
+    "other": "%{count} Commits genehmigt"
+  },
+  "approved": "„%{title}“ genehmigt",
+  "check_out_popular": "Schau dir diese beliebten Communities an.",
+  "connect": "verbinden",
+  "dont_know_where_to_start": "Du weißt nicht, wo du anfangen sollst?",
+  "inbox_message": {
+    "one": "%{count} Nachricht in deinem %{group_name} Posteingang",
+    "other": "%{count} Nachrichten in deinem %{group_name} Posteingang"
+  },
+  "incorrect_url": "Entschuldigung, %{term} ist keine korrekte URL eines Discourse-Forums oder es unterstützt keine mobilen APIs. Bitte den Betreiber Discourse zu aktualisieren.",
+  "last_updated": "Letzte Aktualisierung:",
+  "liked": "gefallen %{count} deiner Beiträge",
+  "liked_two_users": "%{user1} und %{user2}",
+  "liked_more": {
+    "one": "%{user1}, %{user2} und %{count} anderer",
+    "other": "%{user1}, %{user2} und %{count} andere"
+  },
+  "loading": "Wird geladen…",
+  "membership_accepted": "Mitgliedschaft akzeptiert in „%{name}“",
+  "new_with_count": "neu (%{count})",
+  "new": "Neu",
+  "no_notifications": "Neue Benachrichtigungen.",
+  "no_replies": "Keine Antworten.",
+  "no_sites_yet": "Du hast noch keine Foren hinzugefügt.",
+  "no_new_notifications": "Keine neuen Benachrichtigungen.",
+  "not_found": "%{term} wurde nicht gefunden!",
+  "notifications": "Benachrichtigungen",
+  "replies": "Antworten",
+  "switch_dark": "Zum dunklen Theme wechseln",
+  "switch_light": "Zum hellen Theme wechseln",
+  "term_exists": "%{term} existiert bereits",
+  "unread_with_count": "ungelesen (%{count})"
+}

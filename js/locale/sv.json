@@ -1,0 +1,42 @@
+{
+  "add_first_site": "+ Lägg till din första webbplats",
+  "add_site": "Lägg till webbplats",
+  "add_sites": "Lägg till Discourse-webbplatser att hålla reda på.",
+  "add": "+ Lägg till",
+  "all": "Alla",
+  "approved_commits": {
+    "one": "%{count} godkänt åtagande",
+    "other": "%{count} godkända åtaganden"
+  },
+  "approved": "\"%{title}\" har godkänts",
+  "check_out_popular": "Kolla in dessa populära forum.",
+  "connect": "anslut",
+  "dont_know_where_to_start": "Vet du inte var du ska börja?",
+  "inbox_message": {
+    "one": "%{count} meddelande i din %{group_name}-inkorg",
+    "other": "%{count} meddelanden i din %{group_name}-inkorg"
+  },
+  "incorrect_url": "Tyvärr, %{term} är inte en korrekt URL till ett Discourse-forum eller stöder inte mobila API:er. Se till att ägaren uppgraderar till senaste versionen av Discourse!",
+  "last_updated": "Senast uppdaterat:",
+  "liked": "gillade %{count} av dina inlägg",
+  "liked_two_users": "%{user1} och %{user2}",
+  "liked_more": {
+    "one": "%{user1}, %{user2} och %{count} till",
+    "other": "%{user1}, %{user2} och %{count} till"
+  },
+  "loading": "Läser in...",
+  "membership_accepted": "Medlemskap godkändes i \"%{name}”",
+  "new_with_count": "ny (%{count})",
+  "new": "Ny",
+  "no_notifications": "Inga aviseringar.",
+  "no_replies": "Inga svar.",
+  "no_sites_yet": "Du har inga webbplatser än.",
+  "no_new_notifications": "Inga nya aviseringar.",
+  "not_found": "%{term} hittades inte!",
+  "notifications": "Aviseringar",
+  "replies": "Svar",
+  "switch_dark": "Växla till mörkt tema",
+  "switch_light": "Växla till ljust tema",
+  "term_exists": "%{term} finns redan",
+  "unread_with_count": "olästa (%{count})"
+}
