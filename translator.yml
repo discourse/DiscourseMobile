@@ -1,7 +1,5 @@
+# Configuration file for discourse-translator-bot
+
 files:
   - source_path: js/locale/en.json
-    destination_path: en.json
-  - source_path: js/locale/fr.json
-    destination_path: fr.json
-  - source_path: js/locale/it.json
-    destination_path: it.json
+    destination_path: translations.yml
