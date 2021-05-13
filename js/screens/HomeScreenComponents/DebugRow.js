@@ -14,7 +14,7 @@ import {
 import Moment from 'moment';
 import {ThemeContext} from '../../ThemeContext';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import i18n from 'i18n-js';
 class DebugRow extends React.Component {
   componentDidMount() {
     this._subscription = () => {
@@ -67,8 +67,8 @@ class DebugRow extends React.Component {
 
       const label =
         theme.background === '#FFFFFF'
-          ? 'Switch to dark theme'
-          : 'Switch to light theme';
+          ? i18n.t('switch_dark')
+          : i18n.t('switch_light');
       return (
         <TouchableHighlight
           underlayColor={'transparent'}
@@ -84,7 +84,8 @@ class DebugRow extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.debugText}>
-          Last Updated: {Moment(this.state.lastRefresh).format('h:mmA')}
+          {i18n.t('last_updated')}{' '}
+          {Moment(this.state.lastRefresh).format('h:mmA')}
         </Text>
         {this.renderDarkModeToggle()}
       </View>

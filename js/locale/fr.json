@@ -17,6 +17,7 @@
     "other": "%{count} messages dans %{group_name}"
   },
   "incorrect_url": "Sorry, %{term} is not a correct URL to a Discourse forum or does not support mobile APIs, have owner upgrade Discourse to latest!",
+  "last_updated": "Dernière mise à jour :",
   "liked": "a aimé %{count} de vos messages",
   "liked_two_users": "%{user1} et %{user2}",
   "liked_more": {
@@ -34,6 +35,8 @@
   "not_found": "Désolé, %{term} n’existe pas.",
   "notifications": "Notifications",
   "replies": "Réponses",
+  "switch_dark": "Activer le mode sombre",
+  "switch_light": "Activer le mode clair",
   "term_exists": "%{term} existe déjà",
   "unread_with_count": "non lus (%{count})"
 }

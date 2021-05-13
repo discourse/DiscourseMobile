@@ -17,6 +17,7 @@
     "other": "%{count} messaggi in \"%{group_name}\""
   },
   "incorrect_url": "Spiacenti, %{term} non è l’URL corretto di un forum Discourse o non supporta le API mobile, chiedi al proprietario di aggiornare Discourse alla versione più recente!",
+  "last_updated": "Ultimo aggiornamento:",
   "liked": "ha messo \"mi piace\" a %{count} dei tuoi messaggi",
   "liked_two_users": "%{user1} e %{user2}",
   "liked_more": {
@@ -34,6 +35,8 @@
   "not_found": "Spiacente, %{term} non esiste.",
   "notifications": "Notifiche",
   "replies": "Risposte",
+  "switch_dark": "Passa al tema scuro",
+  "switch_light": "Passa al tema chiaro",
   "term_exists": "%{term} esiste già",
   "unread_with_count": "non letti (%{count})"
 }
