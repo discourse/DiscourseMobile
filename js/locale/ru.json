@@ -1,1 +1,48 @@
-
+{
+  "add_first_site": "+ Добавьте свой первый сайт",
+  "add_site": "Добавить сайт",
+  "add_sites": "Добавьте сайты Discourse для отслеживания.",
+  "add": "+ Добавить",
+  "all": "Все",
+  "approved_commits": {
+    "one": "%{count} коммит одобрен",
+    "few": "%{count} коммита одобрено",
+    "many": "%{count} коммитов одобрено",
+    "other": "%{count} коммитов одобрено"
+  },
+  "approved": "%{title}\" одобрено",
+  "check_out_popular": "Ознакомьтесь с этими популярными сообществами.",
+  "connect": "подключить",
+  "dont_know_where_to_start": "Не знаете с чего начать?",
+  "inbox_message": {
+    "one": "%{count} сообщение в папке %{group_name}",
+    "few": "%{count} сообщения в папке %{group_name}",
+    "many": "%{count} сообщений в папке %{group_name}",
+    "other": "%{count} сообщений в папке %{group_name}"
+  },
+  "incorrect_url": "К сожалению, %{term} не является правильным URL-адресом форума или не поддерживает мобильные API, попросите владельца сайта обновить Discourse до последней версии!",
+  "last_updated": "Последнее обновление:",
+  "liked": "понравились %{count} ваших сообщений",
+  "liked_two_users": "%{user1} и %{user2}",
+  "liked_more": {
+    "one": "%{user1}, %{user2} и %{count} другой пользователь",
+    "few": "%{user1}, %{user2} и %{count} других пользователя",
+    "many": "%{user1}, %{user2} и %{count} других пользователей",
+    "other": "%{user1}, %{user2} и %{count} других пользователей"
+  },
+  "loading": "Загрузка...",
+  "membership_accepted": "Запрос на вступление принят группой \"%{name}\"",
+  "new_with_count": "(%{count}) новых",
+  "new": "Новый",
+  "no_notifications": "Уведомления отсутствуют.",
+  "no_replies": "Нет ответов.",
+  "no_sites_yet": "У вас пока нет сайтов.",
+  "no_new_notifications": "Нет новых уведомлений.",
+  "not_found": "%{term} не найдено!",
+  "notifications": "Уведомления",
+  "replies": "Ответы",
+  "switch_dark": "Переключиться на темную тему",
+  "switch_light": "Переключиться на светлую тему",
+  "term_exists": "%{term} уже существует",
+  "unread_with_count": "непрочитано (%{count})"
+}

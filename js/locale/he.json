@@ -1,1 +1,47 @@
-
+{
+  "add_first_site": "+ להוספת האתר הראשון שלך",
+  "add_site": "הוספת אתר",
+  "add_sites": "הוספת אתרי Discourse למעקב.",
+  "add": "+ הוספה",
+  "all": "הכול",
+  "approved_commits": {
+    "one": "הגשה %{count} אושרה",
+    "two": "%{count} הגשות אושרו",
+    "many": "%{count} הגשות אושרו",
+    "other": "%{count} הגשות אושרו"
+  },
+  "approved": "התקבל אישור עבור „%{title}”",
+  "check_out_popular": "להלן מגוון קהילות נפוצות.",
+  "connect": "התחברות",
+  "dont_know_where_to_start": "לא ברור לך מאיפה מתחילים?",
+  "inbox_message": {
+    "one": "הודעה %{count} בתיבה שלך אצל %{group_name}",
+    "two": "%{count} הודעות בתיבה שלך אצל %{group_name}",
+    "many": "%{count} הודעות בתיבה שלך אצל %{group_name}",
+    "other": "%{count} הודעות בתיבה שלך אצל %{group_name}"
+  },
+  "incorrect_url": "%{term} אינה כתובת פורום Discourse נכונה או שאין שם תמיכה ל־API לניידים, כדאי לבקש מהבעלים לשדרג את ה־Discourse לגרסה העדכנית ביותר!",
+  "last_updated": "עדכון אחרון:",
+  "liked_two_users": "%{user1} וגם %{user2}",
+  "liked_more": {
+    "one": "%{user1}, %{user2} ועוד %{count}",
+    "two": "%{user1}, %{user2} ועוד %{count}",
+    "many": "%{user1}, %{user2} ועוד %{count}",
+    "other": "%{user1}, %{user2} ועוד %{count}"
+  },
+  "loading": "בטעינה…",
+  "membership_accepted": "החברות אל „%{name}” התקבלה",
+  "new_with_count": "חדש (%{count})",
+  "new": "חדש",
+  "no_notifications": "אין התראות.",
+  "no_replies": "אין תגובות.",
+  "no_sites_yet": "עדיין אין לך אתרים.",
+  "no_new_notifications": "אין התראות חדשות.",
+  "not_found": "%{term} לא נמצא!",
+  "notifications": "התראות",
+  "replies": "תגובות",
+  "switch_dark": "מעבר לערכת נושא כהה",
+  "switch_light": "מעבר לערכת נושא בהירה",
+  "term_exists": "%{term} כבר קיים",
+  "unread_with_count": "לא נקראו (%{count})"
+}
