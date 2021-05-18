@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   titleContainer: {
-    flex: 1,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
