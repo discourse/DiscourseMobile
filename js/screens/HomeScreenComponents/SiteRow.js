@@ -20,6 +20,7 @@ class SiteRow extends React.Component {
       <SwipeRow
         disableRightSwipe={true}
         rightOpenValue={-80}
+        recalculateHiddenLayout={true}
         style={{backgroundColor: theme.redDanger}}>
         <View style={{...styles.hiddenRow}}>
           <TouchableHighlight
