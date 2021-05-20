@@ -25,7 +25,7 @@
     "prop-types": "^15.6.0",
     "react": "17.0.1",
     "react-native": "0.64.1",
-    "react-native-background-fetch": "^3.0.2",
+    "react-native-background-fetch": "^4.0.2",
     "react-native-device-info": "^7.4.0",
     "react-native-draggable-dynamic-flatlist": "^1.0.4",
     "react-native-firebase": "^5.5.7",

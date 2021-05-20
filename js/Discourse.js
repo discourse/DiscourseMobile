@@ -36,10 +36,16 @@ import RootViewBackgroundColor from 'react-native-root-view-background-color';
 import i18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
 
+// It's not ideal that we have to manually register languages here
+// but react-native doesn't make it easy to loop through files in a folder
+// there's react-native-fs, but I hesitate to add another dependency just for that
 i18n.translations = {
+  de: require('./locale/de.json'),
   en: require('./locale/en.json'),
   fr: require('./locale/fr.json'),
   it: require('./locale/it.json'),
+  sv: require('./locale/sv.json'),
+  ru: require('./locale/ru.json'),
 };
 
 const {languageTag, isRTL} = RNLocalize.findBestAvailableLanguage(
