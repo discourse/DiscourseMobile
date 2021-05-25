@@ -16,7 +16,7 @@
     "one": "%{count} messaggio in \"%{group_name}\"",
     "other": "%{count} messaggi in \"%{group_name}\""
   },
-  "incorrect_url": "Spiacenti, %{term} non è l’URL corretto di un forum Discourse o non supporta le API mobile, chiedi al proprietario di aggiornare Discourse alla versione più recente!",
+  "incorrect_url": "Spiacente, %{term} non è un URL corretto di un forum Discourse o non supporta le API mobile, chiedi al proprietario di aggiornare Discourse alla versione più recente!",
   "last_updated": "Ultimo aggiornamento:",
   "liked": "ha messo \"mi piace\" a %{count} dei tuoi messaggi",
   "liked_two_users": "%{user1} e %{user2}",
