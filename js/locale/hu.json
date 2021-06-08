@@ -1,1 +1,42 @@
-
+{
+  "add_first_site": "+ Első webhely hozzáadása",
+  "add_site": "Webhely hozzáadása",
+  "add_sites": "Adja hozzá a nyomon követendő Discourse oldalakat",
+  "add": "+ Hozzáadás",
+  "all": "Mind",
+  "approved_commits": {
+    "one": "%{count} véglegesítés jóváhagyva",
+    "other": "%{count} véglegesítés jóváhagyva"
+  },
+  "approved": "\"%{title}\" jóváhagyva",
+  "check_out_popular": "Nézze meg ezeket a népszerű közösségeket.",
+  "connect": "csatlakozás",
+  "dont_know_where_to_start": "Nem tudja, hogy merre induljon?",
+  "inbox_message": {
+    "one": "%{count} üzenet van a(z) %{group_name} postaládájában",
+    "other": "%{count} üzenet van a(z) %{group_name} postaládájában"
+  },
+  "incorrect_url": "Sajnáljuk, a(z) %{term} nem helyes URL a Discourse fórumhoz, vagy nem támogatja a mobilos API-kat, kérje meg a tulajdonost, hogy frissítsen a legfrissebb Discourse-ra.",
+  "last_updated": "Legutóbb frissítve:",
+  "liked": "kedvelte %{count} bejegyzését",
+  "liked_two_users": "%{user1} és %{user2}",
+  "liked_more": {
+    "one": "%{user1}, %{user2} és még %{count} felhasználó",
+    "other": "%{user1}, %{user2} és még %{count} felhasználó"
+  },
+  "loading": "Betöltés…",
+  "membership_accepted": "A tagság elfogadva itt: „%{name}”",
+  "new_with_count": "új (%{count})",
+  "new": "Új",
+  "no_notifications": "Nincsenek értesítések.",
+  "no_replies": "Nincsenek válaszok.",
+  "no_sites_yet": "Még nincs egyetlen webhelye sem.",
+  "no_new_notifications": "Nincsenek új értesítések.",
+  "not_found": "A(z) %{term} nem található.",
+  "notifications": "Értesítések",
+  "replies": "Válaszok",
+  "switch_dark": "Váltás sötét témára",
+  "switch_light": "Váltás világos témára",
+  "term_exists": "A(z) %{term} már létezik",
+  "unread_with_count": "olvasatlan (%{count})"
+}
