@@ -36,7 +36,7 @@
   "notifications": "Notifications",
   "replies": "Replies",
   "switch_dark": "Switch to dark theme",
-  "switch_light": "Switch to ligh theme",
+  "switch_light": "Switch to light theme",
   "term_exists": "%{term} already exists",
   "unread_with_count": "unread (%{count})"
 }
