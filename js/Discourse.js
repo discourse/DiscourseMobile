@@ -43,9 +43,11 @@ i18n.translations = {
   de: require('./locale/de.json'),
   en: require('./locale/en.json'),
   fr: require('./locale/fr.json'),
+  he: require('./locale/he.json'),
+  hu: require('./locale/hu.json'),
   it: require('./locale/it.json'),
-  sv: require('./locale/sv.json'),
   ru: require('./locale/ru.json'),
+  sv: require('./locale/sv.json'),
 };
 
 const {languageTag, isRTL} = RNLocalize.findBestAvailableLanguage(
