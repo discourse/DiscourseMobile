@@ -36,7 +36,6 @@
   "notifications": "Értesítések",
   "replies": "Válaszok",
   "switch_dark": "Váltás sötét témára",
-  "switch_light": "Váltás világos témára",
   "term_exists": "A(z) %{term} már létezik",
   "unread_with_count": "olvasatlan (%{count})"
 }

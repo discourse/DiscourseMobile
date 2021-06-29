@@ -36,7 +36,6 @@
   "notifications": "Aviseringar",
   "replies": "Svar",
   "switch_dark": "Växla till mörkt tema",
-  "switch_light": "Växla till ljust tema",
   "term_exists": "%{term} finns redan",
   "unread_with_count": "olästa (%{count})"
 }

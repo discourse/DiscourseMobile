@@ -36,7 +36,6 @@
   "notifications": "Notifications",
   "replies": "Réponses",
   "switch_dark": "Activer le mode sombre",
-  "switch_light": "Activer le mode clair",
   "term_exists": "%{term} existe déjà",
   "unread_with_count": "non lus (%{count})"
 }

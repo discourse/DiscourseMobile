@@ -42,7 +42,6 @@
   "notifications": "Уведомления",
   "replies": "Ответы",
   "switch_dark": "Переключиться на темную тему",
-  "switch_light": "Переключиться на светлую тему",
   "term_exists": "%{term} уже существует",
   "unread_with_count": "непрочитано (%{count})"
 }
