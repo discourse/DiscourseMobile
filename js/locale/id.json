@@ -1,1 +1,31 @@
-
+{
+  "add_first_site": "+ Tambahkan situs pertamamu",
+  "add_site": "Tambahkan Situs",
+  "add": "+ Tambah",
+  "all": "Semua",
+  "check_out_popular": "Lihat komunitas-komunitas populer ini.",
+  "connect": "hubungkan",
+  "dont_know_where_to_start": "Tidak tahu mulai dari mana?",
+  "incorrect_url": "Maaf, %{term} bukan URL yang tepat untuk sebuah forum Discourse atau tidak mendukung API-API mobile, minta pemilik memperbarui Discourse ke versi mutakhir!",
+  "last_updated": "Terakhir Diperbarui:",
+  "liked": "menyukai %{count} postinganmu",
+  "liked_two_users": "%{user1} dan %{user2}",
+  "liked_more": {
+    "other": "%{user1}, %{user2}, dan %{count} lainnya"
+  },
+  "loading": "Memuat...",
+  "membership_accepted": "Keanggotaan diterima pada \"%{name}\"",
+  "new_with_count": "baru (%{count})",
+  "new": "Baru",
+  "no_notifications": "Tak ada notifikasi.",
+  "no_replies": "Tak ada balasan.",
+  "no_sites_yet": "Kamu belum memiliki satupun situs.",
+  "no_new_notifications": "Tak ada notifikasi baru.",
+  "not_found": "%{term} tidak ditemukan!",
+  "notifications": "Notifikasi",
+  "replies": "Balasan",
+  "switch_dark": "Beralih ke tema gelap",
+  "switch_light": "Beralih ke tema cerah",
+  "term_exists": "%{term} sudah ada",
+  "unread_with_count": "belum dibaca (%{count})"
+}
