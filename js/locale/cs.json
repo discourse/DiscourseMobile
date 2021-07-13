@@ -1,1 +1,14 @@
-
+{
+  "all": "Všechny",
+  "inbox_message": {
+    "one": "%{count} zpráva ve schránce skupiny %{group_name}",
+    "few": "%{count} zprávy ve schránce skupiny %{group_name}",
+    "many": "%{count} zpráv ve schránce skupiny %{group_name}",
+    "other": "%{count} zpráv ve schránce skupiny %{group_name}"
+  },
+  "loading": "Načítám...",
+  "new": "Nová",
+  "no_replies": "Žádné odpovědi.",
+  "notifications": "Oznámení",
+  "replies": "Odpovědi"
+}

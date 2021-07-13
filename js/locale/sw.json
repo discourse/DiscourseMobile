@@ -1,1 +1,12 @@
-
+{
+  "all": "Zote",
+  "inbox_message": {
+    "one": "Kuna meseji %{count} kwenye %{group_name} inbox",
+    "other": "kuna meseji %{count} kwenye %{group_name} inbox"
+  },
+  "loading": "Inapakia...",
+  "new": "Mpya",
+  "no_replies": "Hakuna majibu.",
+  "notifications": "Taarifa",
+  "replies": "Majibu"
+}

@@ -1,1 +1,12 @@
-
+{
+  "all": "ทั้งหมด",
+  "inbox_message": {
+    "other": "%{count}ข้อความในกล่องขาเข้าของกลุ่ม %{group_name}"
+  },
+  "last_updated": "อัปเดตล่าสุด:",
+  "liked": "ถูกใจ %{count} ครั้งต่อโพสต์ของคุณ",
+  "loading": "กำลังโหลด...",
+  "new": "ใหม่",
+  "notifications": "การแจ้งเตือน",
+  "replies": "ตอบ"
+}

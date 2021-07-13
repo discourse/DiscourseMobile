@@ -1,1 +1,12 @@
-
+{
+  "all": "Tất cả",
+  "inbox_message": {
+    "other": "%{count} thư trong %{group_name} hộp thư đến của bạn"
+  },
+  "last_updated": "Cập nhật lần cuối:",
+  "liked": "đã thích %{count} bài viết của bạn",
+  "loading": "Đang tải...",
+  "new": "Mới",
+  "notifications": "Thông báo",
+  "replies": "Trả lời"
+}

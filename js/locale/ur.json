@@ -1,1 +1,13 @@
-
+{
+  "all": "تمام",
+  "inbox_message": {
+    "one": "آپ کے %{group_name} اِن باکس میں %{count} پیغام",
+    "other": "آپ کے %{group_name} اِن باکس میں %{count} پیغامات"
+  },
+  "liked": "آپ کی %{count} پوسٹس کو لائیک کیا",
+  "loading": "لوڈ ہو رہا ہے...",
+  "new": "نیا",
+  "no_replies": "کوئی جوابات نہیں۔",
+  "notifications": "اطلاعات",
+  "replies": "جوابات"
+}

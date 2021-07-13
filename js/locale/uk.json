@@ -1,1 +1,16 @@
-
+{
+  "all": "Усі",
+  "inbox_message": {
+    "one": "%{count} повідомлення в вашій групі: %{group_name} ",
+    "few": "%{count} повідомлень в вашій групі: %{group_name} ",
+    "many": "%{count} повідомлень в вашій групі: %{group_name} ",
+    "other": "%{count} повідомлень в вашій групі: %{group_name} "
+  },
+  "last_updated": "Останнє оновлення:",
+  "liked": "Сподобався %{count} ваш пост",
+  "loading": "Завантаження...",
+  "new": "Новий",
+  "no_replies": "Немає відповідей",
+  "notifications": "Сповіщення",
+  "replies": "Відповідей"
+}

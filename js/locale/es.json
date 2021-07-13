@@ -1,1 +1,14 @@
-
+{
+  "all": "Todo",
+  "inbox_message": {
+    "one": "%{count} mensaje en tu bandeja de %{group_name}",
+    "other": "%{count} mensajes en tu bandeja de %{group_name} "
+  },
+  "last_updated": "Última actualización:",
+  "liked": "le ha dado me gusta a %{count} de tus publicaciones",
+  "loading": "Cargando...",
+  "new": "Nuevo",
+  "no_replies": "No hay respuestas.",
+  "notifications": "Notificaciones",
+  "replies": "Respuestas"
+}
