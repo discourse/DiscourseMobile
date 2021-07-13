@@ -1,1 +1,14 @@
-
+{
+  "all": "Tot",
+  "inbox_message": {
+    "one": "%{count} missatge en la vostra bústia de %{group_name}",
+    "other": "%{count} missatges en la vostra bústia de %{group_name}"
+  },
+  "last_updated": "Última actualització:",
+  "liked": "li agrada %{count} de les vostres publicacions",
+  "loading": "Carregant...",
+  "new": "Nous",
+  "no_replies": "No hi ha respostes.",
+  "notifications": "Notificacions",
+  "replies": "Respostes"
+}

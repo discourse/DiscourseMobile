@@ -1,1 +1,13 @@
-
+{
+  "all": "모두",
+  "inbox_message": {
+    "other": " %{group_name} 사서함에 %{count}개의 메시지가 있습니다"
+  },
+  "last_updated": "마지막 업데이트 :",
+  "liked": "내 게시물 중 %{count}개를 좋아합니다.",
+  "loading": "로드 중...",
+  "new": "새글",
+  "no_replies": "답글이 없습니다.",
+  "notifications": "알림",
+  "replies": "댓글"
+}

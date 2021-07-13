@@ -1,1 +1,14 @@
-
+{
+  "all": "Kaikki",
+  "inbox_message": {
+    "one": "%{count} viesti ryhmän %{group_name} saapuneissa",
+    "other": "%{count} viestiä ryhmän %{group_name} saapuneissa"
+  },
+  "last_updated": "Viimeksi päivitetty:",
+  "liked": "tykkäsi %{count} viestistäsi",
+  "loading": "Ladataan...",
+  "new": "Uudet",
+  "no_replies": "Ei vastauksia.",
+  "notifications": "Ilmoitukset",
+  "replies": "Vastauksia"
+}

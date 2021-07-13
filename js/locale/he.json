@@ -22,6 +22,7 @@
   },
   "incorrect_url": "%{term} אינה כתובת פורום Discourse נכונה או שאין שם תמיכה ל־API לניידים, כדאי לבקש מהבעלים לשדרג את ה־Discourse לגרסה העדכנית ביותר!",
   "last_updated": "עדכון אחרון:",
+  "liked": "אהבו פוסט %{count} שלך",
   "liked_two_users": "%{user1} וגם %{user2}",
   "liked_more": {
     "one": "%{user1}, %{user2} ועוד %{count}",

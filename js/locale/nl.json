@@ -1,1 +1,14 @@
-
+{
+  "all": "Alle",
+  "inbox_message": {
+    "one": "%{count} bericht in uw Postvak IN voor %{group_name}",
+    "other": "%{count} berichten in uw Postvak IN voor %{group_name}"
+  },
+  "last_updated": "Laatst bijgewerkt:",
+  "liked": "heeft %{count} van uw berichten geliket",
+  "loading": "Laden...",
+  "new": "Nieuw",
+  "no_replies": "Geen antwoorden.",
+  "notifications": "Meldingen",
+  "replies": "Antwoorden"
+}

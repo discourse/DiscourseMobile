@@ -1,1 +1,14 @@
-
+{
+  "all": "Todo",
+  "inbox_message": {
+    "one": "%{count} mensaxe na caixa %{group_name}",
+    "other": "%{count} mensaxes na caixa %{group_name}"
+  },
+  "last_updated": "Última actualización:",
+  "liked": "gustoulles %{count} das súas publicacións",
+  "loading": "Cargando...",
+  "new": "Novo",
+  "no_replies": "Sen respostas.",
+  "notifications": "Notificacións",
+  "replies": "Respostas"
+}

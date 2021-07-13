@@ -1,1 +1,14 @@
-
+{
+  "all": "Alle",
+  "inbox_message": {
+    "one": "%{count} besked i din %{group_name} indbakke",
+    "other": "%{count} beskeder i din %{group_name} indbakke"
+  },
+  "last_updated": "Sidst opdateret:",
+  "liked": "syntes godt om %{count} af dine indlæg",
+  "loading": "Indlæser…",
+  "new": "Nye",
+  "no_replies": "Ingen svar.",
+  "notifications": "Underretninger",
+  "replies": "Svar"
+}

@@ -1,1 +1,15 @@
-
+{
+  "all": "Vsi",
+  "inbox_message": {
+    "one": "%{count} sporočilo v%{group_name} predalu",
+    "two": "%{count} sporočili v %{group_name} predalu",
+    "few": "%{count} sporočila v %{group_name} predalu",
+    "other": "%{count} sporočil v %{group_name} predalu"
+  },
+  "last_updated": "Zadnja posodobitev:",
+  "liked": "je všečkal %{count} vaš prispevek",
+  "loading": "Nalagam...",
+  "new": "Nove",
+  "notifications": "Obvestila",
+  "replies": "Odgovorov"
+}
