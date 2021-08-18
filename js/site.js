@@ -86,24 +86,32 @@ class Site {
         );
       })
       .then(info => {
+        const siteInfo = {
+          url: url,
+          title: info.title,
+          description: info.description,
+          icon: info.apple_touch_icon_url,
+          apiVersion: apiVersion,
+          loginRequired: false,
+        };
+
+        if ('login_required' in info) {
+          siteInfo['loginRequired'] = info.login_required;
+
+          return new Site(siteInfo);
+        }
+
+        // TODO: Remove in June 2022, Discourse core includes `login_required` in /site/basic-info.json as of Aug 2021
         return fetch(`${url}/about.json`).then(aboutResp => {
-          let loginRequired = false;
           console.log(aboutResp.url);
           if (
             aboutResp.url.indexOf('discourse/sso') > 0 ||
             aboutResp.url.endsWith('/login')
           ) {
-            loginRequired = true;
+            siteInfo['loginRequired'] = true;
           }
 
-          return new Site({
-            url: url,
-            title: info.title,
-            description: info.description,
-            icon: info.apple_touch_icon_url,
-            apiVersion: apiVersion,
-            loginRequired: loginRequired,
-          });
+          return new Site(siteInfo);
         });
       });
   }
