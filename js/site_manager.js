@@ -4,7 +4,7 @@
 import _ from 'lodash';
 import Moment from 'moment';
 
-import {Alert, AppState, Platform} from 'react-native';
+import {Alert, Platform} from 'react-native';
 
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -152,6 +152,7 @@ class SiteManager {
     // generate RSA Keys on load, they'll be needed
     this.ensureRSAKeys().done();
     this._loading = true;
+
     AsyncStorage.getItem('@Discourse.sites')
       .then(json => {
         if (json) {
@@ -177,16 +178,18 @@ class SiteManager {
             );
           });
 
-          Promise.all(promises)
-            .then(() => {
-              this.save();
-              this.refreshSites().then(() => {
-                this._onChange();
+          if (promises.length) {
+            Promise.all(promises)
+              .then(() => {
+                this.save();
+                this.refreshSites().then(() => {
+                  this._onChange();
+                });
+              })
+              .catch(e => {
+                console.log(e);
               });
-            })
-            .catch(e => {
-              console.log(e);
-            });
+          }
         }
       })
       .finally(() => {
@@ -446,7 +449,7 @@ class SiteManager {
       this.sites.forEach(site => {
         if (site.authToken) {
           promises.push(
-            site.getSeenNotificationId().then(function(id) {
+            site.getSeenNotificationId().then(function (id) {
               results[site.url] = id;
             }),
           );
