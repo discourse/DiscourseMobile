@@ -220,11 +220,6 @@ class HomeScreen extends React.Component {
               this.onToggleTermBar(this.state.displayTermBar);
             })
           }
-          onDidPressSuggestedSite={site => {
-            if (!this._siteManager.exists(site)) {
-              this._siteManager.add(site);
-            }
-          }}
         />
       );
     } else {
