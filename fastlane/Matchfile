@@ -1,0 +1,6 @@
+git_url("git@github.com:discourse-org/discourse-mobile-keys.git")
+
+storage_mode("git")
+
+username("team@discourse.org")
+team_id("6T3LU73T8S")
