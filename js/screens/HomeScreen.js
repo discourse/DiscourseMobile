@@ -173,8 +173,7 @@ class HomeScreen extends React.Component {
       this._siteManager.sites.length === 0 &&
       !this.refreshing &&
       !this.state.isRefreshing &&
-      this.state.addSiteProgress === 0 &&
-      !this.state.displayTermBar
+      this.state.addSiteProgress === 0
     );
   }
 

@@ -10,6 +10,7 @@ import {
   AppState,
   Linking,
   Platform,
+  Settings,
   StatusBar,
 } from 'react-native';
 
@@ -219,7 +220,7 @@ class Discourse extends React.Component {
       let params = this.parseURLparameters(event.url);
       let site = this._siteManager.activeSite;
 
-      if (Platform.OS === 'ios') {
+      if (Platform.OS === 'ios' && Settings.get('external_links_svc')) {
         SafariView.dismiss();
       }
 

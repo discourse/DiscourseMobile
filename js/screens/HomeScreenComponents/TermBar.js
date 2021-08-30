@@ -4,11 +4,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Animated, StyleSheet, TextInput, View, Platform} from 'react-native';
-
+import i18n from 'i18n-js';
 import {ThemeContext} from '../../ThemeContext';
 
 class TermBar extends React.Component {
-  static Height = 48;
+  static Height = 60;
   static propTypes = {
     anim: PropTypes.object.isRequired,
     getInputRef: PropTypes.func,
@@ -65,7 +65,7 @@ class TermBar extends React.Component {
             onSubmitEditing={event =>
               this.handleSubmitTerm(event.nativeEvent.text)
             }
-            placeholder="meta.discourse.org"
+            placeholder={i18n.t('term_placeholder')}
             style={[styles.term, {color: theme.grayTitle}]}
             onChangeText={text => this.setState({text})}
             underlineColorAndroid={'transparent'}
@@ -82,8 +82,9 @@ TermBar.contextType = ThemeContext;
 const styles = StyleSheet.create({
   term: {
     flex: 1,
-    marginLeft: 12,
-    marginRight: 12,
+    marginLeft: 15,
+    marginRight: 15,
+    fontSize: 18,
   },
   container: {
     justifyContent: 'center',
