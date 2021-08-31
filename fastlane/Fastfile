@@ -3,7 +3,7 @@ fastlane_require "fileutils"
 fastlane_require "json"
 
 IOS_APP_VERSION = "1.7.1"
-ANDROID_APP_VERSION = "1.6.6"
+ANDROID_APP_VERSION = "1.7.1"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
