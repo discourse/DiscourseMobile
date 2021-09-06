@@ -33,7 +33,7 @@ class NavigationBar extends React.Component {
         <View style={styles.leftContainer} />
         <View style={styles.titleContainer}>
           <Text style={{...styles.title, color: theme.grayUI}}>
-            {i18n.t('notifications')}
+            {this.props.title || i18n.t('notifications')}
           </Text>
         </View>
         <View style={styles.rightContainer}>

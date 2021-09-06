@@ -182,7 +182,9 @@ class HomeScreen extends React.Component {
       return (
         <Components.DebugRow
           siteManager={this._siteManager}
-          toggleTheme={this.props.screenProps.toggleTheme}
+          onDidPressAndroidSettingsIcon={() =>
+            this.onDidPressAndroidSettingsIcon()
+          }
         />
       );
     }
@@ -265,6 +267,10 @@ class HomeScreen extends React.Component {
 
   onDidPressRighButton() {
     this.props.navigation.navigate('Notifications');
+  }
+
+  onDidPressAndroidSettingsIcon() {
+    this.props.navigation.navigate('Settings');
   }
 
   render() {

@@ -14,7 +14,9 @@ import {
 import Moment from 'moment';
 import {ThemeContext} from '../../ThemeContext';
 import AsyncStorage from '@react-native-community/async-storage';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import i18n from 'i18n-js';
+
 class DebugRow extends React.Component {
   componentDidMount() {
     this._subscription = () => {
@@ -53,31 +55,23 @@ class DebugRow extends React.Component {
     };
   }
 
-  toggleTheme = () => {
+  renderCogButton() {
     const theme = this.context;
-    const newTheme = theme.background === '#FFFFFF' ? 'dark' : 'light';
-    AsyncStorage.setItem('@Discourse.androidLegacyTheme', newTheme).done(() => {
-      this.props.toggleTheme(newTheme);
-    });
-  };
-
-  renderDarkModeToggle() {
-    if (Platform.OS === 'android' && Platform.Version < 29) {
-      const theme = this.context;
-
-      const label =
-        theme.background === '#FFFFFF'
-          ? i18n.t('switch_dark')
-          : i18n.t('switch_light');
+    if (Platform.OS === 'android') {
       return (
         <TouchableHighlight
+          style={{...styles.androidSettingsButton}}
           underlayColor={'transparent'}
-          onPress={this.toggleTheme}>
-          <Text style={styles.darkModeToggle}>{label}</Text>
+          onPress={this.props.onDidPressAndroidSettingsIcon}>
+          <FontAwesome5
+            name={'cog'}
+            size={20}
+            style={{color: theme.grayUI}}
+            solid
+          />
         </TouchableHighlight>
       );
     }
-    return false;
   }
 
   render() {
@@ -87,7 +81,7 @@ class DebugRow extends React.Component {
           {i18n.t('last_updated')}{' '}
           {Moment(this.state.lastRefresh).format('h:mmA')}
         </Text>
-        {this.renderDarkModeToggle()}
+        {this.renderCogButton()}
       </View>
     );
   }
@@ -100,7 +94,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     padding: 0,
     width: '100%',
-    height: 30,
+    height: 34,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -114,6 +108,10 @@ const styles = StyleSheet.create({
     color: '#777',
     fontSize: 11,
     padding: 6,
+  },
+  androidSettingsButton: {
+    paddingVertical: 6,
+    paddingHorizontal: 8,
   },
 });
 DebugRow.contextType = ThemeContext;
