@@ -80,7 +80,10 @@ public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        // react-native template has: super.onCreate(savedInstanceState);
+        // using null here avoids crashes when restarting activity
+        // see https://github.com/software-mansion/react-native-screens#android
+        super.onCreate(null);
     }
 
     /**
