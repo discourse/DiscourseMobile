@@ -38,5 +38,7 @@
   "switch_dark": "Växla till mörkt tema",
   "switch_light": "Växla till ljust tema",
   "term_exists": "%{term} finns redan",
-  "unread_with_count": "olästa (%{count})"
+  "unread_with_count": "olästa (%{count})",
+  "term_placeholder": "Ange webbplatsens adress",
+  "please_wait": "Vänligen vänta..."
 }
