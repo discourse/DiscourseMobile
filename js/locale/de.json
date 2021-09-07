@@ -38,5 +38,7 @@
   "switch_dark": "Zum dunklen Theme wechseln",
   "switch_light": "Zum hellen Theme wechseln",
   "term_exists": "%{term} existiert bereits",
-  "unread_with_count": "ungelesen (%{count})"
+  "unread_with_count": "ungelesen (%{count})",
+  "term_placeholder": "Gib die Adresse deiner Website ein",
+  "please_wait": "Bitte warten…"
 }

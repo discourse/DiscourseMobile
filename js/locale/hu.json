@@ -8,7 +8,7 @@
     "one": "%{count} véglegesítés jóváhagyva",
     "other": "%{count} véglegesítés jóváhagyva"
   },
-  "approved": "\"%{title}\" jóváhagyva",
+  "approved": "„%{title}” jóváhagyva",
   "check_out_popular": "Nézze meg ezeket a népszerű közösségeket.",
   "connect": "csatlakozás",
   "dont_know_where_to_start": "Nem tudja, hogy merre induljon?",
@@ -38,5 +38,7 @@
   "switch_dark": "Váltás sötét témára",
   "switch_light": "Váltás világos témára",
   "term_exists": "A(z) %{term} már létezik",
-  "unread_with_count": "olvasatlan (%{count})"
+  "unread_with_count": "olvasatlan (%{count})",
+  "term_placeholder": "Adja meg a webhely címét",
+  "please_wait": "Kis türelmet…"
 }
