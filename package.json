@@ -17,6 +17,7 @@
     "@react-native-community/async-storage": "^1.7.1",
     "@react-native-community/push-notification-ios": "^1.0.3",
     "@react-native-community/segmented-control": "^2.0.0",
+    "i18n-js": "^3.8.0",
     "immutable": "^4.0.0-rc.12",
     "invariant": "^2.2",
     "jetifier": "^1.6.3",
@@ -26,12 +27,14 @@
     "react": "17.0.1",
     "react-native": "0.64.1",
     "react-native-background-fetch": "^4.0.2",
+    "react-native-custom-tabs": "https://github.com/adminphoeniixx/react-native-custom-tabs",
     "react-native-device-info": "^7.4.0",
     "react-native-draggable-dynamic-flatlist": "^1.0.4",
     "react-native-firebase": "^5.5.7",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-immutable-list-view": "^2.0.0",
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair",
+    "react-native-localize": "^2.0.3",
     "react-native-progress": "^4.0.3",
     "react-native-reanimated": "^1.9.0",
     "react-native-root-view-background-color": "^1.0.2",
@@ -42,9 +45,7 @@
     "react-native-vector-icons": "^6.6.0",
     "react-native-webview": "11.4.4",
     "react-navigation": "^4.4.4",
-    "react-navigation-stack": "^1.10.3",
-    "i18n-js": "^3.8.0",
-    "react-native-localize": "^2.0.3"
+    "react-navigation-stack": "^1.10.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

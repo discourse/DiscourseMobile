@@ -32,6 +32,7 @@ import bgMessaging from './firebase/bgMessaging';
 import BackgroundFetch from 'react-native-background-fetch';
 import AsyncStorage from '@react-native-community/async-storage';
 import RootViewBackgroundColor from 'react-native-root-view-background-color';
+import {CustomTabs} from 'react-native-custom-tabs';
 
 // SETUP i18n
 import i18n from 'i18n-js';
@@ -65,6 +66,7 @@ const AppNavigator = createStackNavigator(
   {
     Home: {screen: Screens.Home},
     Notifications: {screen: Screens.Notifications},
+    Settings: {screen: Screens.Settings},
     WebView: {screen: Screens.WebView},
   },
   {
@@ -409,7 +411,18 @@ class Discourse extends React.Component {
     }
 
     if (Platform.OS === 'android') {
-      Linking.openURL(url);
+      AsyncStorage.getItem('@Discourse.androidCustomTabs').then(value => {
+        if (value) {
+          CustomTabs.openURL(url, {
+            enableUrlBarHiding: true,
+            showPageTitle: false,
+          }).catch(err => {
+            console.error(err);
+          });
+        } else {
+          Linking.openURL(url);
+        }
+      });
     }
   }
 

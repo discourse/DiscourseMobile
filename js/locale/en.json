@@ -35,10 +35,12 @@
   "not_found": "%{term} was not found!",
   "notifications": "Notifications",
   "replies": "Replies",
-  "switch_dark": "Switch to dark theme",
-  "switch_light": "Switch to light theme",
+  "switch_dark": "Use dark theme",
   "term_exists": "%{term} already exists",
   "unread_with_count": "unread (%{count})",
   "term_placeholder": "Enter your site's address",
-  "please_wait": "Please wait..."
+  "please_wait": "Please wait...",
+  "settings": "Settings",
+  "browser_toggle_label": "Open sites with in-app browser",
+  "browser_toggle_description": "When this setting is disabled, sites will be launched via your browser of choice, including PWAs."
 }
