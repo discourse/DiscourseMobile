@@ -41,8 +41,7 @@
   "not_found": "%{term} לא נמצא!",
   "notifications": "התראות",
   "replies": "תגובות",
-  "switch_dark": "מעבר לערכת נושא כהה",
-  "switch_light": "מעבר לערכת נושא בהירה",
   "term_exists": "%{term} כבר קיים",
-  "unread_with_count": "לא נקראו (%{count})"
+  "unread_with_count": "לא נקראו (%{count})",
+  "settings": "הגדרות"
 }

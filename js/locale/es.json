@@ -35,8 +35,7 @@
   "not_found": "¡%{term} no fue encontrado!",
   "notifications": "Notificaciones",
   "replies": "Respuestas",
-  "switch_dark": "Cambiar a tema oscuro",
-  "switch_light": "Cambiar a tema claro",
   "term_exists": "%{term} ya existe",
-  "unread_with_count": "no leídos (%{count})"
+  "unread_with_count": "no leídos (%{count})",
+  "settings": "Ajustes"
 }

@@ -35,10 +35,12 @@
   "not_found": "%{term} hittades inte!",
   "notifications": "Aviseringar",
   "replies": "Svar",
-  "switch_dark": "Växla till mörkt tema",
-  "switch_light": "Växla till ljust tema",
+  "switch_dark": "Använd mörkt tema",
   "term_exists": "%{term} finns redan",
   "unread_with_count": "olästa (%{count})",
   "term_placeholder": "Ange webbplatsens adress",
-  "please_wait": "Vänligen vänta..."
+  "please_wait": "Vänligen vänta...",
+  "settings": "Inställningar",
+  "browser_toggle_label": "Öppna webbplatser med webbläsaren i appen",
+  "browser_toggle_description": "När denna inställning är inaktiverad kommer webbplatser att öppnas via valfri webbläsare, även PWA."
 }

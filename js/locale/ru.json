@@ -41,10 +41,9 @@
   "not_found": "%{term} не найдено!",
   "notifications": "Уведомления",
   "replies": "Ответы",
-  "switch_dark": "Переключиться на темную тему",
-  "switch_light": "Переключиться на светлую тему",
   "term_exists": "%{term} уже существует",
   "unread_with_count": "непрочитано (%{count})",
   "term_placeholder": "Введите адрес вашего сайта",
-  "please_wait": "Пожалуйста, подождите..."
+  "please_wait": "Пожалуйста, подождите...",
+  "settings": "Настройки"
 }
