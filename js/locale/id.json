@@ -24,8 +24,7 @@
   "not_found": "%{term} tidak ditemukan!",
   "notifications": "Notifikasi",
   "replies": "Balasan",
-  "switch_dark": "Beralih ke tema gelap",
-  "switch_light": "Beralih ke tema cerah",
   "term_exists": "%{term} sudah ada",
-  "unread_with_count": "belum dibaca (%{count})"
+  "unread_with_count": "belum dibaca (%{count})",
+  "settings": "Pengaturan"
 }

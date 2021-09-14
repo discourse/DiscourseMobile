@@ -35,10 +35,9 @@
   "not_found": "%{term} wurde nicht gefunden!",
   "notifications": "Benachrichtigungen",
   "replies": "Antworten",
-  "switch_dark": "Zum dunklen Theme wechseln",
-  "switch_light": "Zum hellen Theme wechseln",
   "term_exists": "%{term} existiert bereits",
   "unread_with_count": "ungelesen (%{count})",
   "term_placeholder": "Gib die Adresse deiner Website ein",
-  "please_wait": "Bitte warten…"
+  "please_wait": "Bitte warten…",
+  "settings": "Einstellungen"
 }

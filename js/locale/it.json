@@ -35,8 +35,7 @@
   "not_found": "Spiacente, %{term} non esiste.",
   "notifications": "Notifiche",
   "replies": "Risposte",
-  "switch_dark": "Passa al tema scuro",
-  "switch_light": "Passa al tema chiaro",
   "term_exists": "%{term} esiste già",
-  "unread_with_count": "non letti (%{count})"
+  "unread_with_count": "non letti (%{count})",
+  "settings": "Impostazioni"
 }

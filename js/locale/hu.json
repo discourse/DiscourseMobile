@@ -35,10 +35,9 @@
   "not_found": "A(z) %{term} nem található.",
   "notifications": "Értesítések",
   "replies": "Válaszok",
-  "switch_dark": "Váltás sötét témára",
-  "switch_light": "Váltás világos témára",
   "term_exists": "A(z) %{term} már létezik",
   "unread_with_count": "olvasatlan (%{count})",
   "term_placeholder": "Adja meg a webhely címét",
-  "please_wait": "Kis türelmet…"
+  "please_wait": "Kis türelmet…",
+  "settings": "Beállítások"
 }
