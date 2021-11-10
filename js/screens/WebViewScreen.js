@@ -76,8 +76,14 @@ class WebViewScreen extends React.Component {
 
     // Workaround for StatusBar bug in RN Webview
     // https://github.com/react-native-community/react-native-webview/issues/735
-    Keyboard.addListener('keyboardWillShow', this._onKeyboardShow.bind(this));
-    Keyboard.addListener('keyboardDidHide', this._onKeyboardShow.bind(this));
+    this.keyboardWillShow = Keyboard.addListener(
+      'keyboardWillShow',
+      this._onKeyboardShow.bind(this),
+    );
+    this.keyboardWillHide = Keyboard.addListener(
+      'keyboardDidHide',
+      this._onKeyboardShow.bind(this),
+    );
   }
 
   componentDidUpdate() {
@@ -245,8 +251,8 @@ class WebViewScreen extends React.Component {
 
   componentWillUnmount() {
     clearTimeout(this.progressTimeout);
-    Keyboard.removeListener('keyboardWillShow', this._onKeyboardShow);
-    Keyboard.removeListener('keyboardDidHide', this._onKeyboardShow);
+    this.keyboardWillShow?.remove();
+    this.keyboardWillHide?.remove();
     this.siteManager.refreshSites();
   }
 

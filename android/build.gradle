@@ -2,19 +2,20 @@
 
 buildscript {
     ext {
+        buildToolsVersion = "30.0.2"
         minSdkVersion = 25
-        compileSdkVersion = 29
-        targetSdkVersion = 29
-        buildToolsVersion = "29.0.3"
-        ndkVersion = "19.2.5345600"
+        compileSdkVersion = 30
+        targetSdkVersion = 30
+        buildToolsVersion = "30.0.2"
+        ndkVersion = "21.4.7075529"
         kotlinVersion = '1.3.50'
     }
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath("com.android.tools.build:gradle:4.2.2")
         classpath 'com.google.gms:google-services:4.2.0'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -23,11 +24,12 @@ buildscript {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 allprojects {
     repositories {
+        mavenCentral()
         mavenLocal()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
@@ -42,7 +44,6 @@ allprojects {
             url("${project(':react-native-background-fetch').projectDir}/libs")
         }
         google()
-        jcenter()
         maven { url 'https://www.jitpack.io' }
     }
 }
