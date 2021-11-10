@@ -317,6 +317,7 @@ const styles = StyleSheet.create({
   sitesContainer: {
     flex: 1,
     marginTop: -Components.TermBar.Height,
+    paddingBottom: 40,
   },
 });
 
