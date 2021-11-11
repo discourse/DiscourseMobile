@@ -75,8 +75,9 @@ class DebugRow extends React.Component {
   }
 
   render() {
+    const theme = this.context;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor: theme.background}]}>
         <Text style={styles.debugText}>
           {i18n.t('last_updated')}{' '}
           {Moment(this.state.lastRefresh).format('h:mmA')}
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     padding: 0,
     width: '100%',
-    height: 34,
+    height: 35,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -108,6 +109,7 @@ const styles = StyleSheet.create({
     color: '#777',
     fontSize: 11,
     padding: 6,
+    paddingLeft: 12,
   },
   androidSettingsButton: {
     paddingVertical: 6,
