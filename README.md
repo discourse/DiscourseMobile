@@ -1,37 +1,36 @@
-Discourse Mobile
----
+## Discourse Mobile
 
 Native iOS and Android app for Discourse
 
 ### Getting Started
 
-We use yarn to manage dependencies, be sure to have it installed:
-
-
-```
-npm install -g yarn
-```
-
-Next make sure you have react-native cli installed:
+Install Yarn and Watchman
 
 ```
-npm install -g react-native-cli
+% npm install -g yarn
+% brew install watchman
 ```
 
-Ensure you install all the latest and greatest packages:
+Ensure you install all the project dependencies:
 
 ```
-cd DiscourseMobile
 % yarn
+```
+
+On macOS, make sure you install CocoaPods and its packages:
+
+```
+% sudo gem install cocoapods
+% cd ios/
+% pod install
 ```
 
 Once installed you can get started with:
 
-
 ```
 // https://facebook.github.io/react-native/docs/getting-started.html
-react-native run-ios
-react-native run-android
+npx react-native run-ios
+npx react-native run-android
 ```
 
 Note, on Android your localhost may not be accessible from the simulator, read the error message carefully and consider running:
@@ -39,4 +38,3 @@ Note, on Android your localhost may not be accessible from the simulator, read t
 ```
 adb reverse tcp:8081 tcp:8081
 ```
-
