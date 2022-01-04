@@ -7,22 +7,22 @@ Native iOS and Android app for Discourse
 Install Yarn and Watchman
 
 ```
-% npm install -g yarn
-% brew install watchman
+npm install -g yarn
+brew install watchman
 ```
 
 Install all the project dependencies:
 
 ```
-% yarn
+yarn
 ```
 
 On macOS, make sure you install CocoaPods and its packages:
 
 ```
-% sudo gem install cocoapods
-% cd ios/
-% pod install
+sudo gem install cocoapods
+cd ios/
+pod install
 ```
 
 Once installed you can get started with:
