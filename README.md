@@ -11,7 +11,7 @@ Install Yarn and Watchman
 % brew install watchman
 ```
 
-Ensure you install all the project dependencies:
+Install all the project dependencies:
 
 ```
 % yarn
