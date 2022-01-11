@@ -41,7 +41,12 @@
   "not_found": "%{term} לא נמצא!",
   "notifications": "התראות",
   "replies": "תגובות",
+  "switch_dark": "להשתמש בעיצוב כהה",
   "term_exists": "%{term} כבר קיים",
   "unread_with_count": "לא נקראו (%{count})",
-  "settings": "הגדרות"
+  "term_placeholder": "נא למלא את כתובת האתר שלך",
+  "please_wait": "נא להמתין…",
+  "settings": "הגדרות",
+  "browser_toggle_label": "לפתוח אתרים בדפדפן המובנה",
+  "browser_toggle_description": "כשהגדרה זאת מושבתת, אתרים יופעלו בדפדפן לבחירתך, לרבות יישומוני דפדפן מתקדמים."
 }
