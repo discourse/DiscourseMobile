@@ -2,15 +2,12 @@
 'use strict';
 
 import React from 'react';
-import Immutable from 'immutable';
 
 import {
   Animated,
   View,
-  Text,
   Linking,
   Keyboard,
-  Platform,
   Settings,
   Share,
   StatusBar,
@@ -270,9 +267,7 @@ class WebViewScreen extends React.Component {
 
   _onMessage(event) {
     let data = JSON.parse(event.nativeEvent.data);
-    console.log('_onMessage', data);
-
-    let {headerBg, shareUrl, dismiss} = data;
+    let {headerBg, shareUrl, dismiss, markRead} = data;
 
     if (headerBg) {
       // when fully transparent, use black status bar
@@ -303,6 +298,11 @@ class WebViewScreen extends React.Component {
     if (dismiss) {
       // react-navigation back action (exits webview)
       this.props.navigation.goBack();
+    }
+
+    if (markRead) {
+      // refresh app icon badge count when one site's notifications are dismissed
+      this.siteManager.refreshSites();
     }
   }
 }

@@ -1,14 +1,12 @@
 /* @flow */
 'use strict';
 
-import {AppState, Platform} from 'react-native';
+import {Platform} from 'react-native';
 import _ from 'lodash';
 import Moment from 'moment';
 import DiscourseUtils from './DiscourseUtils';
 
 const fetch = require('./../lib/fetch');
-import randomBytes from './../lib/random-bytes';
-
 class Site {
   static FIELDS = [
     'authToken',
