@@ -133,8 +133,6 @@ platform :ios do
       workspace: "./ios/#{PROJECT_NAME}.xcworkspace"
     )
 
-    `cp ../Discourse.ipa ../releases/Discourse.ipa`
-
     testflight(
       username: apple_id,
       beta_app_feedback_email: apple_id

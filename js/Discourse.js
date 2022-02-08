@@ -291,7 +291,11 @@ class Discourse extends React.Component {
     });
 
     if (Platform.OS === 'ios') {
-      PushNotificationIOS.requestPermissions({alert: true, badge: true});
+      PushNotificationIOS.requestPermissions({
+        alert: true,
+        badge: true,
+        sound: true,
+      });
     }
 
     if (Platform.OS === 'android') {
