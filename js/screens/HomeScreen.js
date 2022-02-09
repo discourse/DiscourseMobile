@@ -107,7 +107,6 @@ class HomeScreen extends React.Component {
       },
     };
 
-    console.log('shortcut donated');
     donateShortcut(shortcutOptions);
   }
 
