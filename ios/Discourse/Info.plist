@@ -109,5 +109,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSUserActivityTypes</key>
+	<array>
+			<string>org.discourse.DiscourseApp.SiriShortcut</string>
+	</array>
 </dict>
 </plist>
