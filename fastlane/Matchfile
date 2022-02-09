@@ -1,5 +1,5 @@
 git_url("git@github.com:discourse-org/discourse-mobile-keys.git")
-
+git_branch('main')
 storage_mode("git")
 
 username("team@discourse.org")
