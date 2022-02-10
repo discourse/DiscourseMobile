@@ -7,6 +7,7 @@ import {
   Alert,
   Animated,
   Easing,
+  Platform,
   RefreshControl,
   SafeAreaView,
   StyleSheet,
@@ -22,6 +23,8 @@ import Components from './HomeScreenComponents';
 
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
+
+import {donateShortcut, clearAllShortcuts} from 'react-native-siri-shortcut';
 
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -63,6 +66,7 @@ class HomeScreen extends React.Component {
             this.props.screenProps.openUrl(`${site.url}${endpoint}?${params}`);
           });
         } else {
+          this.donateShortcut(site);
           this.props.screenProps.openUrl(`${site.url}?discourse_app=1`, false);
         }
       }
@@ -78,8 +82,32 @@ class HomeScreen extends React.Component {
         }
       });
     } else {
+      this.donateShortcut(site);
       this.props.screenProps.openUrl(`${site.url}`);
     }
+  }
+
+  donateShortcut(site) {
+    if (Platform.OS !== 'ios') {
+      return;
+    }
+
+    const shortcutOptions = {
+      // This activity type needs to be set in `NSUserActivityTypes` on the Info.plist
+      activityType: 'org.discourse.DiscourseApp.SiriShortcut',
+      keywords: ['discourse', 'forums', 'hub', site.title],
+      persistentIdentifier: 'DiscourseHubShortcut',
+      isEligibleForSearch: true,
+      isEligibleForPrediction: true,
+      suggestedInvocationPhrase: site.title,
+      needsSave: true,
+      title: `Open ${site.title}`,
+      userInfo: {
+        siteUrl: site.url,
+      },
+    };
+
+    donateShortcut(shortcutOptions);
   }
 
   componentDidMount() {

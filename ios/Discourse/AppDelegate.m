@@ -11,6 +11,7 @@
 
 @import Photos;
 @import AVFoundation;
+@import RNSiriShortcuts;
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -39,10 +40,14 @@ static void InitializeFlipper(UIApplication *application) {
   InitializeFlipper(application);
 #endif
 
+  BOOL launchedFromShortcut = [launchOptions objectForKey:@"UIApplicationLaunchOptionsUserActivityDictionaryKey"] != nil;
+  // Add a boolean to the initialProperties to let the app know you got the initial shortcut
+  NSDictionary *initialProperties = @{ @"launchedFromShortcut":@(launchedFromShortcut) };
+
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
     moduleName:@"Discourse"
-    initialProperties:nil];
+    initialProperties:initialProperties];
 
   [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {}];
   [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {}];
@@ -73,6 +78,26 @@ static void InitializeFlipper(UIApplication *application) {
   return YES;
 }
 
+// This method checks for shortcuts issued to the app
+- (BOOL)application:(UIApplication *)application
+continueUserActivity:(NSUserActivity *)userActivity
+ restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> *restorableObjects))restorationHandler
+{
+  UIViewController *viewController = [self.window rootViewController];
+  RCTRootView *rootView = (RCTRootView*) [viewController view];
+
+  // If the initial properties say the app launched from a shortcut (see above), tell the library about it.
+  if ([[rootView.appProperties objectForKey:@"launchedFromShortcut"] boolValue]) {
+    ShortcutsModule.initialUserActivity = userActivity;
+
+    rootView.appProperties = @{ @"launchedFromShortcut":@NO };
+  }
+
+  [ShortcutsModule onShortcutReceivedWithUserActivity:userActivity];
+
+  return YES;
+}
+
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
@@ -90,13 +115,13 @@ static void InitializeFlipper(UIApplication *application) {
 }
 
 // Only if your app is using [Universal Links](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html).
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
- restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
-{
-  return [RCTLinkingManager application:application
-                   continueUserActivity:userActivity
-                     restorationHandler:restorationHandler];
-}
+// - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
+//  restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+// {
+//   return [RCTLinkingManager application:application
+//                    continueUserActivity:userActivity
+//                      restorationHandler:restorationHandler];
+// }
 
 // Required to register for notifications
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings

@@ -38,6 +38,8 @@ import {CustomTabs} from 'react-native-custom-tabs';
 import i18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
 
+import {SiriShortcutsEvent} from 'react-native-siri-shortcut';
+
 // It's not ideal that we have to manually register languages here
 // but react-native doesn't make it easy to loop through files in a folder
 // there's react-native-fs, but I hesitate to add another dependency just for that
@@ -296,6 +298,18 @@ class Discourse extends React.Component {
         badge: true,
         sound: true,
       });
+
+      SiriShortcutsEvent.addListener(
+        'SiriShortcutListener',
+        ({userInfo, activityType}) => {
+          // Do something with the userInfo and/or activityType
+          if (userInfo.siteUrl) {
+            this._handleOpenUrl({
+              url: `discourse://share?sharedUrl=${userInfo.siteUrl}`,
+            });
+          }
+        },
+      );
     }
 
     if (Platform.OS === 'android') {
