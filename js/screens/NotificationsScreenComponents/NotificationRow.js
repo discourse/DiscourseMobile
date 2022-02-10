@@ -168,14 +168,68 @@ class NotificationRow extends React.Component {
           </Text>
         );
         break;
-      case 24:
+      case 23:
+        innerText = (
+          <Text style={textStyle}>
+            {i18n.t('membership_request_consolidated', {
+              name: notification.data.group_name,
+            })}
+          </Text>
+        );
+        break;
+
+      case 24: // bookmark reminder
+      case 28: // event invitation
         innerText = (
           <Text style={textStyle}>
             {displayName}
             <Text style={{color: theme.blueUnread}}>
               {' '}
-              {notification.fancy_title}
+              {notification.data.topic_title || notification.fancy_title}
             </Text>
+          </Text>
+        );
+        break;
+      case 26:
+        innerText = (
+          <Text style={textStyle}>
+            {i18n.t('votes_released', {
+              description: notification.data.message,
+            })}
+          </Text>
+        );
+        break;
+      case 27:
+        innerText = (
+          <Text style={textStyle}>
+            {i18n.t('event_reminder', {
+              title: notification.data.topic_title,
+            })}
+          </Text>
+        );
+        break;
+      case 29:
+        innerText = (
+          <Text style={textStyle}>
+            {i18n.t('chat_mention', {
+              name: notification.data.mentioned_by_username,
+            })}
+          </Text>
+        );
+        break;
+      case 30:
+        innerText = <Text style={textStyle}>{i18n.t('chat_message')}</Text>;
+        break;
+      case 31:
+        innerText = <Text style={textStyle}>{i18n.t('chat_invitation')}</Text>;
+        break;
+      case 32:
+        innerText = (
+          <Text style={textStyle}>
+            {i18n.t('chat_group_mention', {
+              username: notification.data.mentioned_by_username,
+              group_name: notification.data.group_name,
+            })}
           </Text>
         );
         break;
