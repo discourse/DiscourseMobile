@@ -14,6 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		B52583FE1E5551D7001E9B7C /* nav-icon-gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B52583FD1E5551D7001E9B7C /* nav-icon-gray@3x.png */; };
 		BD11887323DB333E00A2EFC9 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BD11887223DB333D00A2EFC9 /* RNBackgroundFetch+AppDelegate.m */; };
+		BD4A208227B54FA300574A58 /* DiscEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = BD4A208127B54FA300574A58 /* DiscEventEmitter.m */; };
 		BD9F666023F5B02C001001B3 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9F665F23F5B02C001001B3 /* ShareViewController.swift */; };
 		BD9F666323F5B02C001001B3 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD9F666123F5B02C001001B3 /* MainInterface.storyboard */; };
 		BD9F666723F5B02C001001B3 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD9F665D23F5B02C001001B3 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -61,6 +62,8 @@
 		B52583FD1E5551D7001E9B7C /* nav-icon-gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "nav-icon-gray@3x.png"; path = "../img/nav-icon-gray@3x.png"; sourceTree = "<group>"; };
 		B587A4F11E5549B8003AAE26 /* Discourse.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Discourse.entitlements; path = Discourse/Discourse.entitlements; sourceTree = "<group>"; };
 		BD11887223DB333D00A2EFC9 /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
+		BD4A208027B54F6500574A58 /* DiscEventEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiscEventEmitter.h; sourceTree = "<group>"; };
+		BD4A208127B54FA300574A58 /* DiscEventEmitter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiscEventEmitter.m; sourceTree = "<group>"; };
 		BD9F665D23F5B02C001001B3 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD9F665F23F5B02C001001B3 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		BD9F666223F5B02C001001B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -112,6 +115,8 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				BDC4F767248B48BC00785AF9 /* Discourse-Bridging-Header.h */,
+				BD4A208027B54F6500574A58 /* DiscEventEmitter.h */,
+				BD4A208127B54FA300574A58 /* DiscEventEmitter.m */,
 			);
 			name = Discourse;
 			sourceTree = "<group>";
@@ -417,6 +422,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD4A208227B54FA300574A58 /* DiscEventEmitter.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				BDC4F76D248B4F9C00785AF9 /* Dummy.swift in Sources */,

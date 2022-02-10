@@ -134,7 +134,6 @@ class WebViewScreen extends React.Component {
         ? 35
         : 20;
     }
-
     return (
       <Animated.View
         onLayout={e => this._onLayout(e)}

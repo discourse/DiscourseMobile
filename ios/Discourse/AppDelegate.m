@@ -9,6 +9,8 @@
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
 
+#import "DiscEventEmitter.h"
+
 @import Photos;
 @import AVFoundation;
 @import RNSiriShortcuts;
@@ -171,6 +173,24 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 - (void)videoExitFullScreen:(id)sender
 {
   [[UIApplication sharedApplication] setStatusBarHidden:NO animated:YES];
+}
+
+// Custom handler for keyboard events
+
+- (NSArray *)keyCommands {
+    return @[[UIKeyCommand keyCommandWithInput:@"1" modifierFlags:UIKeyModifierCommand action:@selector(sendKeyEvent:) discoverabilityTitle:@"Select first"],
+            [UIKeyCommand keyCommandWithInput:@"2" modifierFlags:UIKeyModifierCommand action:@selector(sendKeyEvent:) discoverabilityTitle:@"Select second"],
+            [UIKeyCommand keyCommandWithInput:@"3" modifierFlags:UIKeyModifierCommand action:@selector(sendKeyEvent:) discoverabilityTitle:@"Select third"],
+            [UIKeyCommand keyCommandWithInput:@"4" modifierFlags:UIKeyModifierCommand action:@selector(sendKeyEvent:) discoverabilityTitle:@"Select fourth"],
+            [UIKeyCommand keyCommandWithInput:@"5" modifierFlags:UIKeyModifierCommand action:@selector(sendKeyEvent:) discoverabilityTitle:@"Select fifth"],
+            [UIKeyCommand keyCommandWithInput:@"0" modifierFlags:UIKeyModifierCommand action:@selector(sendKeyEvent:) discoverabilityTitle:@"Close"]];
+}
+
+- (void)sendKeyEvent:(UIKeyCommand *)sender {
+  NSString *input = sender.input;
+
+  DiscEventEmitter *emitter = [DiscEventEmitter allocWithZone: nil];
+  [emitter sendEvent:input];
 }
 
 @end
