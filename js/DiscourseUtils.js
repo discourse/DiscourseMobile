@@ -26,6 +26,8 @@ class DiscourseUtils {
       case 18:
       case 20:
       case 24:
+      case 27:
+      case 28:
         endpoint = `/t/${notification.slug}/${notification.topic_id}/${notification.post_number}`;
         break;
       case 12:
@@ -46,6 +48,14 @@ class DiscourseUtils {
         break;
       case 22:
         endpoint = `/g/${data.group_name}`;
+        break;
+      case 29:
+      case 32:
+        endpoint = `/chat/channel/${data.chat_channel_id}/${data.chat_channel_title}?messageId=${data.chat_message_id}`;
+        break;
+      case 30:
+      case 31:
+        endpoint = `/chat/channel/${data.chat_channel_id}/${data.chat_channel_title}`;
         break;
       default:
         console.log(
@@ -103,8 +113,23 @@ class DiscourseUtils {
         return 'check';
       case 22:
         return 'user-plus';
+      case 23:
+        return 'users';
       case 24:
         return 'bookmark';
+      case 25:
+        return 'bell';
+      case 26:
+        return 'plus';
+      case 27:
+      case 28:
+        return 'calendar-alt';
+      case 29:
+      case 30:
+      case 31:
+      case 32:
+        return 'comments';
+
       default:
         console.log(
           'Couldn’t generate an icon name for notification',
