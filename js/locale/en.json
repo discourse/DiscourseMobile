@@ -26,7 +26,7 @@
   },
   "loading": "Loading...",
   "membership_accepted": "Membership accepted in \"%{name}\"",
-  "membership_request_consolidated": "New membership requests in  \"%{name}\"",
+  "membership_request_consolidated": "New membership requests in \"%{name}\"",
   "votes_released": "%{description} - completed",
   "event_reminder": "An event is about to start - %{title}",
   "chat_mention": "%{name} mentioned you in chat",
