@@ -318,11 +318,11 @@ class Discourse extends React.Component {
 
       eventEmitter.addListener('keyInputEvent', res => {
         const {input} = res;
-        const index = parseInt(input - 1, 10);
 
-        if (index < 0) {
+        if (input === 'W') {
           this._navigation.navigate('Home');
         } else {
+          const index = parseInt(input, 10) - 1;
           const site = this._siteManager.getSiteByIndex(index);
 
           if (site) {

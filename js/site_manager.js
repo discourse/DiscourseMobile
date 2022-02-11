@@ -50,7 +50,7 @@ class SiteManager {
   }
 
   getSiteByIndex(index) {
-    return this.sites[index] || null;
+    return this.sites[index];
   }
 
   remove(site) {
