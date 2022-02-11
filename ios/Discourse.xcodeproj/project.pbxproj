@@ -495,7 +495,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Discourse\"/**",
 				);
-				MARKETING_VERSION = 1.7.0;
+				MARKETING_VERSION = 1.8.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -536,7 +536,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Discourse\"/**",
 				);
-				MARKETING_VERSION = 1.7.0;
+				MARKETING_VERSION = 1.8.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
