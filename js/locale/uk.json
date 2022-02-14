@@ -9,6 +9,7 @@
   "last_updated": "Останнє оновлення:",
   "liked": "Сподобався %{count} ваш пост",
   "loading": "Завантаження...",
+  "votes_released": "%{description} - завершено",
   "new": "Новий",
   "no_replies": "Немає відповідей",
   "notifications": "Сповіщення",

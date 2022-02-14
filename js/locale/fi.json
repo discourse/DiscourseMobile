@@ -7,6 +7,7 @@
   "last_updated": "Viimeksi päivitetty:",
   "liked": "tykkäsi %{count} viestistäsi",
   "loading": "Ladataan...",
+  "votes_released": "%{description} – valmis",
   "new": "Uudet",
   "no_replies": "Ei vastauksia.",
   "notifications": "Ilmoitukset",

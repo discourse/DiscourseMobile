@@ -7,6 +7,7 @@
   "last_updated": "Τελευταία ενημέρωση:",
   "liked": "μου άρεσε %{count} από τις αναρτήσεις σας",
   "loading": "Φόρτωση...",
+  "votes_released": "%{description} - ολοκληρώθηκε",
   "new": "Νέα",
   "no_replies": "Χωρίς απαντήσεις.",
   "notifications": "Ειδοποιήσεις",

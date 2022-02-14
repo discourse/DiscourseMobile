@@ -26,6 +26,7 @@
   },
   "loading": "Chargement…",
   "membership_accepted": "Adhésion acceptée dans « %{name} »",
+  "votes_released": "%{description} - terminé",
   "new_with_count": "nouveaux (%{count})",
   "new": "Nouveaux",
   "no_notifications": "Pas de notifications.",

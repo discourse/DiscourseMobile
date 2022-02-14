@@ -32,6 +32,7 @@
   },
   "loading": "Загрузка...",
   "membership_accepted": "Запрос на вступление принят группой \"%{name}\"",
+  "votes_released": "%{description} - завершено",
   "new_with_count": "(%{count}) новых",
   "new": "Новый",
   "no_notifications": "Уведомления отсутствуют.",

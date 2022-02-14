@@ -7,6 +7,7 @@
     "other": "%{count} žinutės, jūsų %{group_name} pašto dėžutėje"
   },
   "loading": "Kraunama...",
+  "votes_released": "%{description} - baigtas",
   "new": "Naujos",
   "no_replies": "Jokių atsakymų.",
   "notifications": "Perspėjimai",

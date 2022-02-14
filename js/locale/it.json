@@ -26,6 +26,7 @@
   },
   "loading": "Caricamento…",
   "membership_accepted": "Iscrizione accettata in \"%{name}\"",
+  "votes_released": "%{description} - completato",
   "new_with_count": "nuovi (%{count})",
   "new": "Nuovi",
   "no_notifications": "Non hai ancora notifiche.",
