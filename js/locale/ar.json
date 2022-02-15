@@ -11,6 +11,7 @@
   "last_updated": "آخر تحديث:",
   "liked": "سجَّل إعجابه على واحد (%{count}) من منشوراتك",
   "loading": "جارٍ التحميل...",
+  "votes_released": "%{description} - اكتمل",
   "new": "الجديدة",
   "no_replies": "لا توجد ردود.",
   "notifications": "الإخطارات",

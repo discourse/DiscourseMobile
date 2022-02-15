@@ -7,6 +7,7 @@
   "last_updated": "Laatst bijgewerkt:",
   "liked": "heeft %{count} van uw berichten geliket",
   "loading": "Laden...",
+  "votes_released": "%{description} - voltooid",
   "new": "Nieuw",
   "no_replies": "Geen antwoorden.",
   "notifications": "Meldingen",

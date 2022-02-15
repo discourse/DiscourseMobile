@@ -26,6 +26,13 @@
   },
   "loading": "Betöltés…",
   "membership_accepted": "A tagság elfogadva itt: „%{name}”",
+  "membership_request_consolidated": "Új tagsági kérések itt: „%{name}”",
+  "votes_released": "%{description} – kész",
+  "event_reminder": "Egy esemény hamarosan kezdődik – %{title}",
+  "chat_mention": "%{name} megemlítette Önt a csevegésben",
+  "chat_message": "Új üzenet a csevegésben",
+  "chat_invitation": "Új meghívó a csevegésben",
+  "chat_group_mention": "%{username} megemlítette a(z) %{group_name} csoportot a csevegésben",
   "new_with_count": "új (%{count})",
   "new": "Új",
   "no_notifications": "Nincsenek értesítések.",
@@ -35,9 +42,12 @@
   "not_found": "A(z) %{term} nem található.",
   "notifications": "Értesítések",
   "replies": "Válaszok",
+  "switch_dark": "Sötét téma használata",
   "term_exists": "A(z) %{term} már létezik",
   "unread_with_count": "olvasatlan (%{count})",
   "term_placeholder": "Adja meg a webhely címét",
   "please_wait": "Kis türelmet…",
-  "settings": "Beállítások"
+  "settings": "Beállítások",
+  "browser_toggle_label": "Webhelyek megnyitása az alkalmazáson belüli böngészőben",
+  "browser_toggle_description": "Ha ez a beállítás ki van kapcsolva, a webhelyek a választott böngészőn keresztül indulnak el, beleértve a PWA-kat is."
 }
