@@ -320,7 +320,12 @@ class Discourse extends React.Component {
         const {input} = res;
 
         if (input === 'W') {
-          this._navigation.navigate('Home');
+          if (this._siteManager.activeSite) {
+            this._navigation.navigate('Home');
+            this._siteManager.activeSite = null;
+          } else {
+            DiscEventEmitter.quitApp();
+          }
         } else {
           const index = parseInt(input, 10) - 1;
           const site = this._siteManager.getSiteByIndex(index);

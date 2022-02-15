@@ -1,4 +1,3 @@
-
 #import "DiscEventEmitter.h"
 
 @implementation DiscEventEmitter
@@ -32,6 +31,12 @@ RCT_EXPORT_MODULE()
 
 - (void) sendEvent:(NSString *)eventInput {
   [self sendEventWithName:@"keyInputEvent" body:@{@"input": eventInput}];
+}
+
+RCT_EXPORT_METHOD(quitApp)
+{
+  // React Native can call quitApp on Command + W
+  exit(9);
 }
 
 @end
