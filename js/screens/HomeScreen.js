@@ -24,7 +24,7 @@ import Components from './HomeScreenComponents';
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
 
-import {donateShortcut, clearAllShortcuts} from 'react-native-siri-shortcut';
+import {donateShortcut} from 'react-native-siri-shortcut';
 
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);

@@ -134,7 +134,6 @@ class WebViewScreen extends React.Component {
         ? 35
         : 20;
     }
-
     return (
       <Animated.View
         onLayout={e => this._onLayout(e)}
@@ -298,6 +297,7 @@ class WebViewScreen extends React.Component {
     if (dismiss) {
       // react-navigation back action (exits webview)
       this.props.navigation.goBack();
+      this._siteManager.activeSite = null;
     }
 
     if (markRead) {

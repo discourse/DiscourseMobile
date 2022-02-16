@@ -49,6 +49,10 @@ class SiteManager {
     this.save();
   }
 
+  getSiteByIndex(index) {
+    return this.sites[index];
+  }
+
   remove(site) {
     let index = this.sites.indexOf(site);
     if (index >= 0) {

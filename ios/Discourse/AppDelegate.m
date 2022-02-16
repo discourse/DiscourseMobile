@@ -9,6 +9,8 @@
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
 
+#import "DiscEventEmitter.h"
+
 @import Photos;
 @import AVFoundation;
 @import RNSiriShortcuts;
@@ -173,4 +175,76 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
   [[UIApplication sharedApplication] setStatusBarHidden:NO animated:YES];
 }
 
+// Custom handler for keyboard events
+
+- (NSArray *)keyCommands {
+    return @[[UIKeyCommand keyCommandWithInput:@"1" modifierFlags:UIKeyModifierCommand action:@selector(send1) discoverabilityTitle:@"First site"],
+            [UIKeyCommand keyCommandWithInput:@"2" modifierFlags:UIKeyModifierCommand action:@selector(send2) discoverabilityTitle:@"Second site"],
+            [UIKeyCommand keyCommandWithInput:@"3" modifierFlags:UIKeyModifierCommand action:@selector(send3) discoverabilityTitle:@"Third site"],
+            [UIKeyCommand keyCommandWithInput:@"4" modifierFlags:UIKeyModifierCommand action:@selector(send4) discoverabilityTitle:@"Fourth site"],
+            [UIKeyCommand keyCommandWithInput:@"5" modifierFlags:UIKeyModifierCommand action:@selector(send5) discoverabilityTitle:@"Fifth site"],
+             [UIKeyCommand keyCommandWithInput:@"6" modifierFlags:UIKeyModifierCommand action:@selector(send6) discoverabilityTitle:@"Sixth site"],
+             [UIKeyCommand keyCommandWithInput:@"7" modifierFlags:UIKeyModifierCommand action:@selector(send7) discoverabilityTitle:@"Seventh site"],
+             [UIKeyCommand keyCommandWithInput:@"8" modifierFlags:UIKeyModifierCommand action:@selector(send8) discoverabilityTitle:@"Eighth site"],
+             [UIKeyCommand keyCommandWithInput:@"9" modifierFlags:UIKeyModifierCommand action:@selector(send9) discoverabilityTitle:@"Ninth site"],
+            [UIKeyCommand keyCommandWithInput:@"W" modifierFlags:UIKeyModifierCommand action:@selector(sendW) discoverabilityTitle:@"Dismiss"]];
+}
+
+- (void)send1 {
+  [self sendKey:@"1"];
+}
+
+- (void)send2 {
+  [self sendKey:@"2"];
+}
+
+- (void)send3 {
+  [self sendKey:@"3"];
+}
+
+- (void)send4 {
+  [self sendKey:@"4"];
+}
+
+- (void)send5 {
+  [self sendKey:@"5"];
+}
+
+- (void)send6 {
+  [self sendKey:@"6"];
+}
+
+- (void)send7 {
+  [self sendKey:@"7"];
+}
+
+- (void)send8 {
+  [self sendKey:@"8"];
+}
+
+- (void)send9 {
+  [self sendKey:@"9"];
+}
+
+- (void)sendW {
+  [self sendKey:@"W"];
+}
+
+- (void)sendKey:(NSString *)input {
+  DiscEventEmitter *emitter = [DiscEventEmitter allocWithZone: nil];
+  [emitter sendEvent:input];
+}
+
+// called once at startup, to build/modify the main app menu in macOS
+- (void)buildMenuWithBuilder:(id<UIMenuBuilder>)builder {
+
+    [builder removeMenuForIdentifier:UIMenuFormat];
+    [builder removeMenuForIdentifier:UIMenuView];
+    [builder removeMenuForIdentifier:UIMenuHelp];
+    
+    // replace File menu (also removes default shortcut for ⌘ + W)
+    NSArray *keyCommands = [self keyCommands];
+    [builder replaceChildrenOfMenuForIdentifier:UIMenuFile fromChildrenBlock:^NSArray* (NSArray* children) {return keyCommands;}];
+  
+}
 @end
