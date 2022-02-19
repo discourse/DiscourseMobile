@@ -35,8 +35,14 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(quitApp)
 {
-  // React Native calls quitApp on Command + W
+  // React Native calls quitApp on ⌘+W
   exit(9);
+}
+
+RCT_EXPORT_METHOD(updateFileMenu:(NSArray *)menuItems)
+{
+  // Update menu items when adding/deleting/reordering sites in React Native
+  [[NSUserDefaults standardUserDefaults] setObject:menuItems forKey:@"menuItems"];
 }
 
 @end
