@@ -1,9 +1,9 @@
-#import "DiscEventEmitter.h"
+#import "DiscourseKeyboardShortcuts.h"
 
-@implementation DiscEventEmitter
+@implementation DiscourseKeyboardShortcuts
 
 + (id)allocWithZone:(NSZone *)zone {
-    static DiscEventEmitter *sharedInstance = nil;
+    static DiscourseKeyboardShortcuts *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [super allocWithZone:zone];
@@ -35,7 +35,7 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(quitApp)
 {
-  // React Native can call quitApp on Command + W
+  // React Native calls quitApp on Command + W
   exit(9);
 }
 

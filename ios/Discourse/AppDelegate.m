@@ -9,7 +9,7 @@
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
 
-#import "DiscEventEmitter.h"
+#import "DiscourseKeyboardShortcuts.h"
 
 @import Photos;
 @import AVFoundation;
@@ -231,7 +231,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 }
 
 - (void)sendKey:(NSString *)input {
-  DiscEventEmitter *emitter = [DiscEventEmitter allocWithZone: nil];
+  DiscourseKeyboardShortcuts *emitter = [DiscourseKeyboardShortcuts allocWithZone: nil];
   [emitter sendEvent:input];
 }
 
