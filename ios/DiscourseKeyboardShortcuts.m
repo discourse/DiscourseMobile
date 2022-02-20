@@ -33,12 +33,6 @@ RCT_EXPORT_MODULE()
   [self sendEventWithName:@"keyInputEvent" body:@{@"input": eventInput}];
 }
 
-RCT_EXPORT_METHOD(quitApp)
-{
-  // React Native calls quitApp on ⌘+W
-  exit(9);
-}
-
 RCT_EXPORT_METHOD(updateFileMenu:(NSArray *)menuItems)
 {
   // Update menu items when adding/deleting/reordering sites in React Native
