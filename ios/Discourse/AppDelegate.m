@@ -9,7 +9,7 @@
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
 
-#import "DiscEventEmitter.h"
+#import "DiscourseKeyboardShortcuts.h"
 
 @import Photos;
 @import AVFoundation;
@@ -178,16 +178,26 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 // Custom handler for keyboard events
 
 - (NSArray *)keyCommands {
-    return @[[UIKeyCommand keyCommandWithInput:@"1" modifierFlags:UIKeyModifierCommand action:@selector(send1) discoverabilityTitle:@"First site"],
-            [UIKeyCommand keyCommandWithInput:@"2" modifierFlags:UIKeyModifierCommand action:@selector(send2) discoverabilityTitle:@"Second site"],
-            [UIKeyCommand keyCommandWithInput:@"3" modifierFlags:UIKeyModifierCommand action:@selector(send3) discoverabilityTitle:@"Third site"],
-            [UIKeyCommand keyCommandWithInput:@"4" modifierFlags:UIKeyModifierCommand action:@selector(send4) discoverabilityTitle:@"Fourth site"],
-            [UIKeyCommand keyCommandWithInput:@"5" modifierFlags:UIKeyModifierCommand action:@selector(send5) discoverabilityTitle:@"Fifth site"],
-             [UIKeyCommand keyCommandWithInput:@"6" modifierFlags:UIKeyModifierCommand action:@selector(send6) discoverabilityTitle:@"Sixth site"],
-             [UIKeyCommand keyCommandWithInput:@"7" modifierFlags:UIKeyModifierCommand action:@selector(send7) discoverabilityTitle:@"Seventh site"],
-             [UIKeyCommand keyCommandWithInput:@"8" modifierFlags:UIKeyModifierCommand action:@selector(send8) discoverabilityTitle:@"Eighth site"],
-             [UIKeyCommand keyCommandWithInput:@"9" modifierFlags:UIKeyModifierCommand action:@selector(send9) discoverabilityTitle:@"Ninth site"],
-            [UIKeyCommand keyCommandWithInput:@"W" modifierFlags:UIKeyModifierCommand action:@selector(sendW) discoverabilityTitle:@"Dismiss"]];
+  // store ⌘+(1,2,3...) shortcuts as site mappings
+  // used for keyboard but also File menu items
+  
+  NSArray *userMenuItems = [[NSUserDefaults standardUserDefaults] objectForKey:@"menuItems"];
+  NSMutableArray *menuItems = [NSMutableArray array];
+  NSUInteger index = 1;
+  
+  for(NSString* value in userMenuItems){
+    if (index < 10) {
+      NSString* key = [NSString stringWithFormat:@"%lu", (unsigned long)index];
+      SEL selName = NSSelectorFromString([NSString stringWithFormat:@"send%@", key]);
+
+      [menuItems addObject:[UIKeyCommand keyCommandWithInput:key modifierFlags:UIKeyModifierCommand action:selName discoverabilityTitle:value]];
+      index++;
+    }
+  }
+
+  [menuItems addObject:[UIKeyCommand keyCommandWithInput:@"W" modifierFlags:UIKeyModifierCommand action:@selector(sendW) discoverabilityTitle:@"Dismiss"]];
+
+  return menuItems;
 }
 
 - (void)send1 {
@@ -231,7 +241,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 }
 
 - (void)sendKey:(NSString *)input {
-  DiscEventEmitter *emitter = [DiscEventEmitter allocWithZone: nil];
+  DiscourseKeyboardShortcuts *emitter = [DiscourseKeyboardShortcuts allocWithZone: nil];
   [emitter sendEvent:input];
 }
 
@@ -242,7 +252,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
     [builder removeMenuForIdentifier:UIMenuView];
     [builder removeMenuForIdentifier:UIMenuHelp];
     
-    // replace File menu (also removes default shortcut for ⌘ + W)
+    // replace File menu (also removes default shortcut for ⌘+W)
     NSArray *keyCommands = [self keyCommands];
     [builder replaceChildrenOfMenuForIdentifier:UIMenuFile fromChildrenBlock:^NSArray* (NSArray* children) {return keyCommands;}];
   

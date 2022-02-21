@@ -42,8 +42,8 @@ import * as RNLocalize from 'react-native-localize';
 
 import {SiriShortcutsEvent} from 'react-native-siri-shortcut';
 
-const {DiscEventEmitter} = NativeModules;
-const eventEmitter = new NativeEventEmitter(DiscEventEmitter);
+const {DiscourseKeyboardShortcuts} = NativeModules;
+const eventEmitter = new NativeEventEmitter(DiscourseKeyboardShortcuts);
 
 // It's not ideal that we have to manually register languages here
 // but react-native doesn't make it easy to loop through files in a folder
@@ -320,12 +320,7 @@ class Discourse extends React.Component {
         const {input} = res;
 
         if (input === 'W') {
-          if (this._siteManager.activeSite) {
-            this._navigation.navigate('Home');
-            this._siteManager.activeSite = null;
-          } else {
-            DiscEventEmitter.quitApp();
-          }
+          this._navigation.navigate('Home');
         } else {
           const index = parseInt(input, 10) - 1;
           const site = this._siteManager.getSiteByIndex(index);

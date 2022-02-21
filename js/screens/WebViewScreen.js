@@ -297,7 +297,7 @@ class WebViewScreen extends React.Component {
     if (dismiss) {
       // react-navigation back action (exits webview)
       this.props.navigation.goBack();
-      this._siteManager.activeSite = null;
+      this.siteManager.activeSite = null;
     }
 
     if (markRead) {

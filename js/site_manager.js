@@ -4,7 +4,7 @@
 import _ from 'lodash';
 import Moment from 'moment';
 
-import {Alert, Platform} from 'react-native';
+import {Alert, NativeModules, Platform} from 'react-native';
 
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -13,6 +13,8 @@ import RNKeyPair from 'react-native-key-pair';
 import DeviceInfo from 'react-native-device-info';
 import JSEncrypt from './../lib/jsencrypt';
 import randomBytes from './../lib/random-bytes';
+
+const {DiscourseKeyboardShortcuts} = NativeModules;
 
 class SiteManager {
   constructor() {
@@ -47,6 +49,7 @@ class SiteManager {
   add(site) {
     this.sites.push(site);
     this.save();
+    this.updateNativeMenu();
   }
 
   getSiteByIndex(index) {
@@ -62,6 +65,7 @@ class SiteManager {
       });
       this.save();
     }
+    this.updateNativeMenu();
   }
 
   setActiveSite(site) {
@@ -94,6 +98,12 @@ class SiteManager {
   updateOrder(from, to) {
     this.sites.splice(to, 0, this.sites.splice(from, 1)[0]);
     this.save();
+    this.updateNativeMenu();
+  }
+
+  updateNativeMenu() {
+    const siteLabels = this.sites.map(s => s.url.replace(/^https?:\/\//, ''));
+    DiscourseKeyboardShortcuts.updateFileMenu(siteLabels);
   }
 
   subscribe(callback) {

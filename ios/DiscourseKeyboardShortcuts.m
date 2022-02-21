@@ -1,9 +1,9 @@
-#import "DiscEventEmitter.h"
+#import "DiscourseKeyboardShortcuts.h"
 
-@implementation DiscEventEmitter
+@implementation DiscourseKeyboardShortcuts
 
 + (id)allocWithZone:(NSZone *)zone {
-    static DiscEventEmitter *sharedInstance = nil;
+    static DiscourseKeyboardShortcuts *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [super allocWithZone:zone];
@@ -33,10 +33,10 @@ RCT_EXPORT_MODULE()
   [self sendEventWithName:@"keyInputEvent" body:@{@"input": eventInput}];
 }
 
-RCT_EXPORT_METHOD(quitApp)
+RCT_EXPORT_METHOD(updateFileMenu:(NSArray *)menuItems)
 {
-  // React Native can call quitApp on Command + W
-  exit(9);
+  // Update menu items when adding/deleting/reordering sites in React Native
+  [[NSUserDefaults standardUserDefaults] setObject:menuItems forKey:@"menuItems"];
 }
 
 @end
