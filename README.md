@@ -29,6 +29,9 @@ Once installed you can get started with:
 
 ```
 // https://facebook.github.io/react-native/docs/getting-started.html
+npx react-native start
+
+// and then launch the appropriate simulator
 npx react-native run-ios
 npx react-native run-android
 ```
