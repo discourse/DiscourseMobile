@@ -164,6 +164,10 @@ class WebViewScreen extends React.Component {
             allowsInlineMediaPlayback={true}
             allowsFullscreenVideo={true}
             allowsLinkPreview={true}
+            hideKeyboardAccessoryView={true}
+            onLoadEnd={() => {
+              this.webview.requestFocus();
+            }}
             onError={syntheticEvent => {
               const {nativeEvent} = syntheticEvent;
               this.setState({errorData: nativeEvent});
