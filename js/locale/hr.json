@@ -1,0 +1,18 @@
+{
+  "all": "Sve",
+  "inbox_message": {
+    "one": "%{count} poruka u vašem %{group_name} dolaznom pretincu",
+    "few": "%{count} poruka u vašem %{group_name} dolaznom pretincu",
+    "other": "%{count} poruka u vašem %{group_name} dolaznom pretincu"
+  },
+  "last_updated": "Zadnji put ažurirano:",
+  "liked": "svidjelo se %{count} vaših postova",
+  "loading": "Očitavanje...",
+  "votes_released": "%{description} - dovršeno",
+  "new": "Hello",
+  "no_replies": "Nema odgovora.",
+  "notifications": "Obavijest",
+  "replies": "Odgovori",
+  "please_wait": "Molimo pričekajte...",
+  "settings": "Postavke"
+}

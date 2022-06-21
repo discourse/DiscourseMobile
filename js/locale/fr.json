@@ -30,6 +30,7 @@
   "votes_released": "%{description} - terminé",
   "event_reminder": "Un événement est sur le point de commencer - %{title}",
   "chat_mention": "%{name} Vous avez mentionné dans le chat",
+  "chat_message": "Hello Good Evening",
   "new_with_count": "nouveaux (%{count})",
   "new": "Nouveaux",
   "no_notifications": "Pas de notifications.",
