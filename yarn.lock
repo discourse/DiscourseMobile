@@ -6822,10 +6822,10 @@ react-native-screens@^3.9.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-react-native-siri-shortcut@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-siri-shortcut/-/react-native-siri-shortcut-2.0.1.tgz#4567ecc24d88d658067989d13469ff0ccb8aae94"
-  integrity sha512-jjFHbxjiwyXCQjsWUhkW6YxtkxfFbs0STz/0/K9elPO+KBGT7KICO74acY/GrpBOktrT3fNDisP8E63Tg+01og==
+react-native-siri-shortcut@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-siri-shortcut/-/react-native-siri-shortcut-3.2.2.tgz#0e99c46c3524cbc940be2b3fcc4563ac911b5255"
+  integrity sha512-os1LOvUkoVamghshTp0QrL40mZdJWRDLg1kGcpNG9a1H5vauoF0O/ji0Y9U5DkEkkp2r3Afupp5F9L7NTy+jlQ==
 
 react-native-svg@^12.1.1:
   version "12.1.1"

@@ -40,7 +40,7 @@ import {CustomTabs} from 'react-native-custom-tabs';
 import i18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
 
-import {SiriShortcutsEvent} from 'react-native-siri-shortcut';
+import {addShortcutListener} from 'react-native-siri-shortcut';
 
 const {DiscourseKeyboardShortcuts} = NativeModules;
 const eventEmitter = new NativeEventEmitter(DiscourseKeyboardShortcuts);
@@ -304,17 +304,14 @@ class Discourse extends React.Component {
         sound: true,
       });
 
-      SiriShortcutsEvent.addListener(
-        'SiriShortcutListener',
-        ({userInfo, activityType}) => {
-          // Do something with the userInfo and/or activityType
-          if (userInfo.siteUrl) {
-            this._handleOpenUrl({
-              url: `discourse://share?sharedUrl=${userInfo.siteUrl}`,
-            });
-          }
-        },
-      );
+      addShortcutListener(({userInfo, activityType}) => {
+        // Do something with the userInfo and/or activityType
+        if (userInfo.siteUrl) {
+          this._handleOpenUrl({
+            url: `discourse://share?sharedUrl=${userInfo.siteUrl}`,
+          });
+        }
+      });
 
       eventEmitter.addListener('keyInputEvent', res => {
         const {input} = res;

@@ -8,12 +8,12 @@
 #import <React/RCTLog.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
+#import <RNSiriShortcuts/RNSiriShortcuts.h>
 
 #import "DiscourseKeyboardShortcuts.h"
 
 @import Photos;
 @import AVFoundation;
-@import RNSiriShortcuts;
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -42,14 +42,10 @@ static void InitializeFlipper(UIApplication *application) {
   InitializeFlipper(application);
 #endif
 
-  BOOL launchedFromShortcut = [launchOptions objectForKey:@"UIApplicationLaunchOptionsUserActivityDictionaryKey"] != nil;
-  // Add a boolean to the initialProperties to let the app know you got the initial shortcut
-  NSDictionary *initialProperties = @{ @"launchedFromShortcut":@(launchedFromShortcut) };
-
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
     moduleName:@"Discourse"
-    initialProperties:initialProperties];
+    initialProperties:nil];
 
   [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {}];
   [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {}];
@@ -85,19 +81,7 @@ static void InitializeFlipper(UIApplication *application) {
 continueUserActivity:(NSUserActivity *)userActivity
  restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> *restorableObjects))restorationHandler
 {
-  UIViewController *viewController = [self.window rootViewController];
-  RCTRootView *rootView = (RCTRootView*) [viewController view];
-
-  // If the initial properties say the app launched from a shortcut (see above), tell the library about it.
-  if ([[rootView.appProperties objectForKey:@"launchedFromShortcut"] boolValue]) {
-    ShortcutsModule.initialUserActivity = userActivity;
-
-    rootView.appProperties = @{ @"launchedFromShortcut":@NO };
-  }
-
-  [ShortcutsModule onShortcutReceivedWithUserActivity:userActivity];
-
-  return YES;
+  return [RNSSSiriShortcuts application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
@@ -180,11 +164,11 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 - (NSArray *)keyCommands {
   // store ⌘+(1,2,3...) shortcuts as site mappings
   // used for keyboard but also File menu items
-  
+
   NSArray *userMenuItems = [[NSUserDefaults standardUserDefaults] objectForKey:@"menuItems"];
   NSMutableArray *menuItems = [NSMutableArray array];
   NSUInteger index = 1;
-  
+
   for(NSString* value in userMenuItems){
     if (index < 10) {
       NSString* key = [NSString stringWithFormat:@"%lu", (unsigned long)index];
@@ -251,10 +235,10 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
     [builder removeMenuForIdentifier:UIMenuFormat];
     [builder removeMenuForIdentifier:UIMenuView];
     [builder removeMenuForIdentifier:UIMenuHelp];
-    
+
     // replace File menu (also removes default shortcut for ⌘+W)
     NSArray *keyCommands = [self keyCommands];
     [builder replaceChildrenOfMenuForIdentifier:UIMenuFile fromChildrenBlock:^NSArray* (NSArray* children) {return keyCommands;}];
-  
+
 }
 @end
