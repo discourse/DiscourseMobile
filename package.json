@@ -29,7 +29,7 @@
     "react-native-background-fetch": "^4.0.4",
     "react-native-codegen": "^0.0.11",
     "react-native-custom-tabs": "https://github.com/adminphoeniixx/react-native-custom-tabs",
-    "react-native-device-info": "^8.4.9",
+    "react-native-device-info": "^10.1.2",
     "react-native-draggable-dynamic-flatlist": "^1.0.4",
     "react-native-firebase": "^5.6.0",
     "react-native-gesture-handler": "^1.10.3",
