@@ -44,11 +44,12 @@ class ShareViewController: UIViewController {
                   guard let url = obj as? URL else {
                       return
                   }
-                  self.openURL(URL(string: "discourse://share?sharedUrl=\(url)")!)
-              }
-          }
 
-          if attachment.isText {
+                  DispatchQueue.main.async {
+                    self.openURL(URL(string: "discourse://share?sharedUrl=\(url)")!)
+                  }
+              }
+          } else if attachment.isText {
               attachment.processText { obj, err in
                   guard err == nil else {
                       return
@@ -57,24 +58,29 @@ class ShareViewController: UIViewController {
                   guard let url = URL(string: obj as! String) else {
                       return
                   }
-                  self.openURL(URL(string: "discourse://share?sharedUrl=\(url)")!)
+
+                  DispatchQueue.main.async {
+                    self.openURL(URL(string: "discourse://share?sharedUrl=\(url)")!)
+                  }
               }
           }
       }
     }
+
     UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: {
         self.view.alpha = 0
     }, completion: { _ in
         self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
     })
-
   }
 
-  @objc func openURL(_ url: URL) {
+  func openURL(_ url: URL) {
+    let selector = sel_registerName("openURL:")
     var responder: UIResponder? = self
+
     while responder != nil {
         if let application = responder as? UIApplication {
-          application.perform(#selector(openURL(_:)), with: url)
+          application.perform(selector, with: url)
           break
         }
         responder = responder?.next
