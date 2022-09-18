@@ -3,11 +3,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import {Text, TouchableHighlight, View} from 'react-native';
-
 import _ from 'lodash';
-
 import {ThemeContext} from '../../ThemeContext';
 
 class Filter extends React.Component {
@@ -70,6 +67,7 @@ class Filter extends React.Component {
     });
   }
 }
+
 Filter.contextType = ThemeContext;
 
 const styles = {

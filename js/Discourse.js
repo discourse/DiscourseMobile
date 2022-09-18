@@ -3,7 +3,6 @@
 
 import React from 'react';
 import {ThemeContext, themes} from './ThemeContext';
-
 import {
   Alert,
   Appearance,
@@ -15,32 +14,26 @@ import {
   Settings,
   StatusBar,
 } from 'react-native';
-
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-
 import Screens from './screens';
 import Site from './site';
 import SiteManager from './site_manager';
 import SafariView from 'react-native-safari-view';
 import SafariWebAuth from 'react-native-safari-web-auth';
 import DeviceInfo from 'react-native-device-info';
-
 import firebase from './firebase/helper';
-import type {Notification, NotificationOpen} from './firebase/helper';
 import bgMessaging from './firebase/bgMessaging';
 import BackgroundFetch from 'react-native-background-fetch';
 import AsyncStorage from '@react-native-community/async-storage';
 import RootViewBackgroundColor from 'react-native-root-view-background-color';
 import {CustomTabs} from 'react-native-custom-tabs';
-
-// SETUP i18n
 import i18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
-
 import {SiriShortcutsEvent} from 'react-native-siri-shortcut';
+import {enableScreens} from 'react-native-screens';
+import type {Notification, NotificationOpen} from './firebase/helper';
 
 const {DiscourseKeyboardShortcuts} = NativeModules;
 const eventEmitter = new NativeEventEmitter(DiscourseKeyboardShortcuts);
@@ -59,14 +52,13 @@ i18n.translations = {
   sv: require('./locale/sv.json'),
 };
 
-const {languageTag, isRTL} = RNLocalize.findBestAvailableLanguage(
+const {languageTag} = RNLocalize.findBestAvailableLanguage(
   Object.keys(i18n.translations),
 ) || {languageTag: 'en', isRTL: false};
 
 i18n.locale = languageTag;
 i18n.fallbacks = true;
 
-import {enableScreens} from 'react-native-screens';
 enableScreens();
 
 const AppNavigator = createStackNavigator(
@@ -83,13 +75,14 @@ const AppNavigator = createStackNavigator(
 );
 
 const AppContainer = createAppContainer(AppNavigator);
+
 class Discourse extends React.Component {
   constructor(props) {
     super(props);
     this._siteManager = new SiteManager();
 
     this._handleAppStateChange = nextAppState => {
-      console.log('Detected appstate change: ' + nextAppState);
+      console.log('Detected appState change: ' + nextAppState);
 
       if (nextAppState.match(/inactive|background/)) {
         this._seenNotificationMap = null;
@@ -166,10 +159,10 @@ class Discourse extends React.Component {
 
     this.setRootBackground(colorScheme);
 
-    this.subscription = Appearance.addChangeListener(({colorScheme}) => {
-      this.setRootBackground(colorScheme);
+    this.subscription = Appearance.addChangeListener(({newColorScheme}) => {
+      this.setRootBackground(newColorScheme);
       this.setState({
-        theme: colorScheme === 'dark' ? themes.dark : themes.light,
+        theme: newColorScheme === 'dark' ? themes.dark : themes.light,
       });
     });
 
@@ -240,9 +233,13 @@ class Discourse extends React.Component {
 
       // received one-time-password request from SafariView
       if (params.otp) {
-        this._siteManager.generateURLParams(site, 'full').then(params => {
-          SafariWebAuth.requestAuth(`${site.url}/user-api-key/otp?${params}`);
-        });
+        this._siteManager
+          .generateURLParams(site, 'full')
+          .then(generatedParams => {
+            SafariWebAuth.requestAuth(
+              `${site.url}/user-api-key/otp?${generatedParams}`,
+            );
+          });
       }
 
       // one-time-password received, launch site with it
@@ -259,9 +256,9 @@ class Discourse extends React.Component {
         } else {
           console.log(`${params.siteUrl} does not exist, attempt adding`);
           Site.fromTerm(params.siteUrl)
-            .then(site => {
-              if (site) {
-                this._siteManager.add(site);
+            .then(newSite => {
+              if (newSite) {
+                this._siteManager.add(newSite);
               }
             })
             .catch(e => {

@@ -2,7 +2,6 @@
 'use strict';
 
 import React from 'react';
-
 import {
   Animated,
   View,
@@ -12,14 +11,11 @@ import {
   Share,
   StatusBar,
 } from 'react-native';
-
 import {WebView} from 'react-native-webview';
-
 import Components from './WebViewScreenComponents';
 import ProgressBar from '../ProgressBar';
 import TinyColor from '../../lib/tinycolor';
 import SafariView from 'react-native-safari-view';
-
 import {ThemeContext} from '../ThemeContext';
 
 class WebViewScreen extends React.Component {
@@ -310,6 +306,7 @@ class WebViewScreen extends React.Component {
     }
   }
 }
+
 WebViewScreen.contextType = ThemeContext;
 
 export default WebViewScreen;
