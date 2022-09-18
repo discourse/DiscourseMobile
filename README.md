@@ -1,8 +1,8 @@
-## Discourse Mobile
+# Discourse Mobile
 
 Native iOS and Android app for Discourse
 
-### Getting Started
+## Getting Started
 
 Install Yarn and Watchman
 
@@ -20,18 +20,22 @@ yarn
 On macOS, make sure you install CocoaPods and its packages:
 
 ```
-sudo gem install cocoapods
-cd ios/
-pod install
+bundle
+pod install --project-directory=ios
 ```
 
 Once installed you can get started with:
 
 ```
-// https://facebook.github.io/react-native/docs/getting-started.html
+npx react-native start
+
+// and in a second terminal, either:
 npx react-native run-ios
+// or
 npx react-native run-android
 ```
+
+See more at: https://facebook.github.io/react-native/docs/getting-started.html
 
 Note, on Android your localhost may not be accessible from the simulator, read the error message carefully and consider running:
 
