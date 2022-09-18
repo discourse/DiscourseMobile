@@ -1,0 +1,31 @@
+name: Linting
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: linting-${{ format('{0}-{1}', github.head_ref || github.run_number, github.job) }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+
+      - name: Yarn install
+        run: yarn install
+
+      - name: ESLint
+        if: ${{ always() }}
+        run: yarn lint
