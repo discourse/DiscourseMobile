@@ -58,7 +58,7 @@ MYAPP_RELEASE_STORE_PASSWORD=#{google_key_store_password}
 MYAPP_RELEASE_KEY_PASSWORD=#{google_key_store_password}
 android.useAndroidX=true
 android.enableJetifier=true
-FLIPPER_VERSION=0.99.0
+FLIPPER_VERSION=0.165.0
 TEMPLATE
   File.write(File.expand_path("../android/gradle.properties"), gradle_properties)
 
