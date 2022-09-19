@@ -1,8 +1,8 @@
 /* @flow */
-"use strict";
+'use strict';
 
-import ErrorScreen from "./ErrorScreen";
+import ErrorScreen from './ErrorScreen';
 
 module.exports = {
-	ErrorScreen: ErrorScreen
+  ErrorScreen: ErrorScreen,
 };

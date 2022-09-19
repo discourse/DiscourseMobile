@@ -3,9 +3,7 @@
 
 import _ from 'lodash';
 import Moment from 'moment';
-
 import {Alert, NativeModules, Platform} from 'react-native';
-
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import AsyncStorage from '@react-native-community/async-storage';
 import Site from './site';

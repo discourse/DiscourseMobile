@@ -2,7 +2,6 @@
 'use strict';
 
 import React from 'react';
-
 import {
   Alert,
   Animated,
@@ -14,16 +13,12 @@ import {
   UIManager,
   View,
 } from 'react-native';
-
 import DraggableFlatList from 'react-native-draggable-dynamic-flatlist';
 import SafariWebAuth from 'react-native-safari-web-auth';
-
 import Site from '../site';
 import Components from './HomeScreenComponents';
-
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
-
 import {donateShortcut} from 'react-native-siri-shortcut';
 
 UIManager.setLayoutAnimationEnabledExperimental &&
@@ -293,7 +288,7 @@ class HomeScreen extends React.Component {
     });
   }
 
-  onDidPressRighButton() {
+  onDidPressRightButton() {
     this.props.navigation.navigate('Notifications');
   }
 
@@ -316,7 +311,7 @@ class HomeScreen extends React.Component {
           anim={this.state.anim}
           rightButtonIconColor={theme.grayUI}
           onDidPressLeftButton={() => this.onDidPressLeftButton()}
-          onDidPressRightButton={() => this.onDidPressRighButton()}
+          onDidPressRightButton={() => this.onDidPressRightButton()}
           progress={this.state.addSiteProgress}
         />
         <Components.TermBar
@@ -333,6 +328,7 @@ class HomeScreen extends React.Component {
     );
   }
 }
+
 HomeScreen.contextType = ThemeContext;
 
 const styles = StyleSheet.create({

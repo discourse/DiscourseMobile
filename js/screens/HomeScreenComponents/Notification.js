@@ -23,6 +23,7 @@ class Notification extends React.Component {
     }
   }
 }
+
 Notification.contextType = ThemeContext;
 
 const styles = StyleSheet.create({

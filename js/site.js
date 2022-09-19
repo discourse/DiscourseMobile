@@ -1,12 +1,13 @@
 /* @flow */
+/* global Request */
 'use strict';
 
 import {Platform} from 'react-native';
 import _ from 'lodash';
 import Moment from 'moment';
 import DiscourseUtils from './DiscourseUtils';
+import fetch from './../lib/fetch';
 
-const fetch = require('./../lib/fetch');
 class Site {
   static FIELDS = [
     'authToken',
@@ -94,7 +95,7 @@ class Site {
         };
 
         if ('login_required' in info) {
-          siteInfo['loginRequired'] = info.login_required;
+          siteInfo.loginRequired = info.login_required;
 
           return new Site(siteInfo);
         }
@@ -106,7 +107,7 @@ class Site {
             aboutResp.url.indexOf('discourse/sso') > 0 ||
             aboutResp.url.endsWith('/login')
           ) {
-            siteInfo['loginRequired'] = true;
+            siteInfo.loginRequired = true;
           }
 
           return new Site(siteInfo);
@@ -121,13 +122,13 @@ class Site {
       });
 
       if (this.icon) {
-        this.icon = this.addhttps(this.icon);
+        this.icon = this.addHttps(this.icon);
       }
     }
     this._timeout = 10000;
   }
 
-  addhttps(url) {
+  addHttps(url) {
     if (!/^(f|ht)tps?:/i.test(url)) {
       url = 'https:' + url;
     }
