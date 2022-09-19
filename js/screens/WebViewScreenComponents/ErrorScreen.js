@@ -3,7 +3,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import {
   Animated,
   StyleSheet,
@@ -11,7 +10,6 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ThemeContext} from '../../ThemeContext';
 

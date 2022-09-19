@@ -2,22 +2,19 @@
 'use strict';
 
 import React from 'react';
-
 import PropTypes from 'prop-types';
-
 import {
   Animated,
-  Image,
   Platform,
   StyleSheet,
   TouchableHighlight,
   View,
 } from 'react-native';
-
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ProgressBar from '../../ProgressBar';
 import {ThemeContext} from '../../ThemeContext';
 import i18n from 'i18n-js';
+
 class NavigationBar extends React.Component {
   static propTypes = {
     leftButtonIconRotated: PropTypes.bool.isRequired,
@@ -114,6 +111,7 @@ class NavigationBar extends React.Component {
     );
   }
 }
+
 NavigationBar.contextType = ThemeContext;
 
 const AnimatedIcon = Animated.createAnimatedComponent(FontAwesome5);

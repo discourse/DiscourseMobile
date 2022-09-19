@@ -3,7 +3,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import {
   Platform,
   StyleSheet,
@@ -11,12 +10,11 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
 import ProgressBar from '../../ProgressBar';
 import {ThemeContext} from '../../ThemeContext';
 import i18n from 'i18n-js';
+
 class NavigationBar extends React.Component {
   static propTypes = {
     onDidPressLeftButton: PropTypes.func,

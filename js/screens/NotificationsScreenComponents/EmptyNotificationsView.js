@@ -4,7 +4,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
 import {ThemeContext} from '../../ThemeContext';
 
 class EmptyNotificationsView extends React.Component {
@@ -20,6 +19,7 @@ class EmptyNotificationsView extends React.Component {
     );
   }
 }
+
 EmptyNotificationsView.contextType = ThemeContext;
 
 const styles = StyleSheet.create({

@@ -3,12 +3,12 @@
 
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
-
 import {SwipeRow} from 'react-native-swipe-list-view';
 import Notification from './Notification';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ThemeContext} from '../../ThemeContext';
 import i18n from 'i18n-js';
+
 class SiteRow extends React.Component {
   render() {
     const theme = this.context;

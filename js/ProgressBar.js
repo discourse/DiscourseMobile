@@ -4,7 +4,6 @@
 import React from 'react';
 import {Dimensions, View} from 'react-native';
 import {Bar} from 'react-native-progress';
-
 import {ThemeContext} from './ThemeContext';
 
 class ProgressBar extends React.Component {
@@ -33,6 +32,7 @@ class ProgressBar extends React.Component {
     );
   }
 }
+
 ProgressBar.contextType = ThemeContext;
 
 const styles = {
