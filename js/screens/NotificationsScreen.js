@@ -3,14 +3,13 @@
 
 import React from 'react';
 import Immutable from 'immutable';
-
 import {InteractionManager, SafeAreaView, View} from 'react-native';
 import {ImmutableVirtualizedList} from 'react-native-immutable-list-view';
-
 import Components from './NotificationsScreenComponents';
 import DiscourseUtils from '../DiscourseUtils';
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
+
 class NotificationsScreen extends React.Component {
   static replyTypes = [1, 2, 3, 6, 9, 11, 15, 16, 17];
 
@@ -256,6 +255,7 @@ class NotificationsScreen extends React.Component {
       });
   }
 }
+
 NotificationsScreen.contextType = ThemeContext;
 
 export default NotificationsScreen;

@@ -2,7 +2,6 @@
 'use strict';
 
 import React from 'react';
-
 import {
   Platform,
   StyleSheet,
@@ -10,7 +9,6 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-
 import Moment from 'moment';
 import {ThemeContext} from '../../ThemeContext';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -116,6 +114,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
 });
+
 DebugRow.contextType = ThemeContext;
 
 export default DebugRow;

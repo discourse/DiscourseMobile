@@ -4,7 +4,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'i18n-js';
-
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
 

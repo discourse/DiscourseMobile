@@ -2,7 +2,6 @@
 'use strict';
 
 import React from 'react';
-
 import AsyncStorage from '@react-native-community/async-storage';
 import {
   Platform,
@@ -12,7 +11,6 @@ import {
   Text,
   View,
 } from 'react-native';
-
 import Components from './NotificationsScreenComponents';
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';

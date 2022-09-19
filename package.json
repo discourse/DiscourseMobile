@@ -56,9 +56,12 @@
     "@babel/runtime": "^7.19.0",
     "@react-native-community/eslint-config": "^3.1.0",
     "babel-jest": "^27.3.1",
-    "eslint": "7.25.0",
+    "eslint": "8.23.1",
+    "eslint-plugin-ft-flow": "^2.0.1",
+    "eslint-plugin-prettier": "^4.2.1",
     "jest": "^27.3.1",
     "metro-react-native-babel-preset": "^0.66.2",
+    "prettier": "^2.7.1",
     "react-native-clean-project": "^3.6.7",
     "react-test-renderer": "17.0.2"
   }

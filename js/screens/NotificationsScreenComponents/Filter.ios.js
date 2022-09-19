@@ -5,7 +5,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import SegmentedControl from '@react-native-community/segmented-control';
-
 import {ThemeContext} from '../../ThemeContext';
 
 class Filter extends React.Component {
@@ -31,6 +30,7 @@ class Filter extends React.Component {
     );
   }
 }
+
 Filter.contextType = ThemeContext;
 
 export default Filter;
