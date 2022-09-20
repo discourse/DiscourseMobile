@@ -302,7 +302,7 @@ PODS:
     - React-Core
   - react-native-segmented-control (2.2.2):
     - React-Core
-  - react-native-webview (11.21.1):
+  - react-native-webview (11.23.1):
     - React-Core
   - React-perflogger (0.67.4)
   - React-RCTActionSheet (0.67.4):
@@ -369,17 +369,17 @@ PODS:
     - React-jsi (= 0.67.4)
     - React-logger (= 0.67.4)
     - React-perflogger (= 0.67.4)
-  - RNBackgroundFetch (4.0.4):
+  - RNBackgroundFetch (4.1.2):
     - React-Core
   - RNCAsyncStorage (1.12.1):
     - React-Core
   - RNCPushNotificationIOS (1.10.1):
     - React-Core
-  - RNDeviceInfo (10.1.2):
+  - RNDeviceInfo (10.2.0):
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNLocalize (2.1.5):
+  - RNLocalize (2.2.3):
     - React-Core
   - RNReanimated (2.2.3):
     - DoubleConversion
@@ -659,7 +659,7 @@ SPEC CHECKSUMS:
   react-native-safari-web-auth: b6642abaa8084a8e5addba1cba4521fd30b95b64
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-segmented-control: 65df6cd0619b780b3843d574a72d4c7cec396097
-  react-native-webview: e6125da6d1cb245ff0692f545b0e5eb3572e12ab
+  react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
   React-perflogger: 0afaf2f01a47fd0fc368a93bfbb5bd3b26db6e7f
   React-RCTActionSheet: 59f35c4029e0b532fc42114241a06e170b7431a2
   React-RCTAnimation: aae4f4bed122e78bdab72f7118d291d70a932ce2
@@ -672,12 +672,12 @@ SPEC CHECKSUMS:
   React-RCTVibration: 3b52a7dced19cdb025b4f88ab26ceb2d85f30ba2
   React-runtimeexecutor: a9d3c82ddf7ffdad9fbe6a81c6d6f8c06385464d
   ReactCommon: 07d0c460b9ba9af3eaf1b8f5abe7daaad28c9c4e
-  RNBackgroundFetch: 4ba650701219cf06fdc08336cc0b010242d2d024
+  RNBackgroundFetch: eef260dc500d8ed344fed205fe617d056e381978
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
-  RNDeviceInfo: 4a2d995e05823cf364e8791bfa450d8f2f461c42
+  RNDeviceInfo: 8b83e99e290deaf1bab71673cc636776ef647b6f
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNLocalize: 74b82db20cc3895ccc25af992c644879bcec2815
+  RNLocalize: a64514b46a01375fdfae9349036b4dc7130333b5
   RNReanimated: 660edfbff1fd7b057315fc790f6dd3266278046c
   RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
   RNSiriShortcuts: cf7c7c69927abacc1bb9679cf680acc2f543fdae
