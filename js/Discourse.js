@@ -472,11 +472,10 @@ class Discourse extends React.Component {
           <StatusBar barStyle={this.state.theme.barStyle} />
           <Stack.Navigator
             initialRouteName="Home"
-            mode="modal"
-            headerMode="none"
+            presentation="modal"
             screenOptions={({navigation}) => {
               this._navigation = navigation;
-              return {};
+              return {headerShown: false};
             }}>
             <Stack.Screen name="Home">
               {props => (
