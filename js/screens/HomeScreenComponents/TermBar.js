@@ -1,83 +1,72 @@
 /* @flow */
 'use strict';
 
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Animated, StyleSheet, TextInput, View, Platform} from 'react-native';
 import i18n from 'i18n-js';
 import {ThemeContext} from '../../ThemeContext';
 
-class TermBar extends React.Component {
-  static Height = 60;
-  static propTypes = {
-    anim: PropTypes.object.isRequired,
-    getInputRef: PropTypes.func,
-    onDidSubmitTerm: PropTypes.func.isRequired,
-  };
+export const HEIGHT = 48;
 
-  constructor(props) {
-    super(props);
+const TermBar = props => {
+  const [text, setText] = useState('');
+  const theme = useContext(ThemeContext);
+  const translateY = props.anim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-24, 0],
+  });
+  const scaleY = props.anim.interpolate({
+    inputRange: [0, 1],
+    // hacky to fix unexpected behavior on Android
+    outputRange: [Platform.OS === 'android' ? 0.00001 : 0, 1],
+  });
+  const transform = [{translateY}, {scaleY}];
 
-    this.state = {
-      text: '',
-    };
-  }
-
-  handleSubmitTerm(term) {
-    this.props
+  const handleSubmitTerm = term => {
+    props
       .onDidSubmitTerm(term)
       .then(() => {
-        this.setState({text: ''});
+        setText('');
       })
       .catch(error => {
-        this.setState({text: term});
+        setText(term);
       })
       .done();
-  }
+  };
 
-  render() {
-    const theme = this.context;
-    const translateY = this.props.anim.interpolate({
-      inputRange: [0, 1],
-      outputRange: [-24, 0],
-    });
-    const scaleY = this.props.anim.interpolate({
-      inputRange: [0, 1],
-      // hacky to fix unexpected behavior on Android
-      outputRange: [Platform.OS === 'android' ? 0.00001 : 0, 1],
-    });
-    const transform = [{translateY}, {scaleY}];
-    return (
-      <Animated.View style={[styles.container, {transform}]}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            backgroundColor: theme.grayUILight,
-          }}>
-          <TextInput
-            ref={this.props.getInputRef}
-            keyboardType="url"
-            returnKeyType="done"
-            clearButtonMode="while-editing"
-            autoCapitalize="none"
-            autoCorrect={false}
-            onSubmitEditing={event =>
-              this.handleSubmitTerm(event.nativeEvent.text)
-            }
-            placeholder={i18n.t('term_placeholder')}
-            style={[styles.term, {color: theme.grayTitle}]}
-            onChangeText={text => this.setState({text})}
-            underlineColorAndroid={'transparent'}
-            value={this.state.text}
-          />
-        </View>
-      </Animated.View>
-    );
-  }
-}
+  return (
+    <Animated.View style={[styles.container, {transform}]}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          backgroundColor: theme.grayUILight,
+        }}>
+        <TextInput
+          ref={props.getInputRef}
+          keyboardType="url"
+          returnKeyType="done"
+          clearButtonMode="while-editing"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onSubmitEditing={event => handleSubmitTerm(event.nativeEvent.text)}
+          placeholder={i18n.t('term_placeholder')}
+          style={[styles.term, {color: theme.grayTitle}]}
+          onChangeText={newText => setText(newText)}
+          underlineColorAndroid={'transparent'}
+          value={text}
+        />
+      </View>
+    </Animated.View>
+  );
+};
 
-TermBar.contextType = ThemeContext;
+TermBar.propTypes = {
+  anim: PropTypes.object.isRequired,
+  getInputRef: PropTypes.func,
+  onDidSubmitTerm: PropTypes.func.isRequired,
+};
 
 const styles = StyleSheet.create({
   term: {
@@ -89,7 +78,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     overflow: 'hidden',
-    height: TermBar.Height,
+    height: HEIGHT,
   },
 });
 
