@@ -304,8 +304,7 @@ class HomeScreen extends React.Component {
     });
     return (
       <SafeAreaView
-        style={[styles.container, {backgroundColor: theme.background}]}
-        forceInset={{top: 'never', bottom: 'always'}}>
+        style={[styles.container, {backgroundColor: theme.background}]}>
         <Components.NavigationBar
           leftButtonIconRotated={this.state.displayTermBar ? true : false}
           anim={this.state.anim}
