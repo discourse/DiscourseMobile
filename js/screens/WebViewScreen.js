@@ -17,6 +17,15 @@ import ProgressBar from '../ProgressBar';
 import TinyColor from '../../lib/tinycolor';
 import SafariView from 'react-native-safari-view';
 import {ThemeContext} from '../ThemeContext';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+
+export const withInsets = Component => {
+  return props => {
+    const insets = useSafeAreaInsets();
+
+    return <Component insets={insets} {...props} />;
+  };
+};
 
 class WebViewScreen extends React.Component {
   static navigationOptions = ({screenProps}) => {
@@ -116,36 +125,37 @@ class WebViewScreen extends React.Component {
     });
   }
 
+  get viewTopPadding() {
+    const isIpad = this.props.screenProps.deviceId.startsWith('iPad');
+
+    if (isIpad) {
+      return 15;
+    } else if (this.state.isLandscape) {
+      return 10;
+    } else if (this.state.hasNotch) {
+      return this.props.insets.top;
+    } else {
+      return 20;
+    }
+  }
+
   render() {
     const theme = this.context;
+    const isIpad = this.props.screenProps.deviceId.startsWith('iPad');
 
-    let viewTopPadding = 0;
-
-    if (this.props.screenProps.deviceId.startsWith('iPad')) {
-      viewTopPadding = 15;
-    } else {
-      viewTopPadding = this.state.isLandscape
-        ? 10
-        : this.state.hasNotch
-        ? 35
-        : 20;
-    }
     return (
       <Animated.View
         onLayout={e => this._onLayout(e)}
         style={{
           flex: 1,
-          paddingTop: viewTopPadding,
+          paddingTop: this.viewTopPadding,
           backgroundColor: this.state.headerBgAnim.interpolate({
             inputRange: [0, 1],
             outputRange: [theme.grayBackground, this.state.headerBg],
           }),
         }}>
         <StatusBar barStyle={this.state.barStyle} />
-        <View
-          style={{
-            marginTop: this.state.isLandscape ? 0 : this.state.hasNotch ? 8 : 0,
-          }}>
+        <View style={{marginTop: isIpad ? 10 : 0}}>
           <ProgressBar progress={this.state.progress} />
         </View>
         {this.state.layoutCalculated && (
@@ -309,4 +319,4 @@ class WebViewScreen extends React.Component {
 
 WebViewScreen.contextType = ThemeContext;
 
-export default WebViewScreen;
+export default withInsets(WebViewScreen);
