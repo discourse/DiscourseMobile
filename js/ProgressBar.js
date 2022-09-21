@@ -1,39 +1,36 @@
 /* @flow */
 'use strict';
 
-import React from 'react';
+import React, {useContext} from 'react';
 import {Dimensions, View} from 'react-native';
 import {Bar} from 'react-native-progress';
 import {ThemeContext} from './ThemeContext';
 
-class ProgressBar extends React.Component {
-  render() {
-    let height = this.props.progress === 0 ? 0 : 3;
-    const theme = this.context;
+const ProgressBar = ({progress}) => {
+  const theme = useContext(ThemeContext);
+  const height = progress === 0 ? 0 : 3;
+  const {width} = Dimensions.get('window');
 
-    return (
-      <View
-        style={[
-          styles.container,
-          {
-            height: height,
-            backgroundColor: theme.grayBackground,
-          },
-        ]}>
-        <Bar
-          color={theme.blueCallToAction}
-          borderWidth={0}
-          borderRadius={0}
-          height={height}
-          progress={this.props.progress}
-          width={Dimensions.get('window').width}
-        />
-      </View>
-    );
-  }
-}
-
-ProgressBar.contextType = ThemeContext;
+  return (
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.grayBackground,
+          height,
+        },
+      ]}>
+      <Bar
+        borderRadius={0}
+        borderWidth={0}
+        color={theme.blueCallToAction}
+        height={height}
+        progress={progress}
+        width={width}
+      />
+    </View>
+  );
+};
 
 const styles = {
   container: {
