@@ -46,7 +46,7 @@
     "react-native-siri-shortcut": "^3.2.2",
     "react-native-svg": "^12.1.1",
     "react-native-swipe-list-view": "^3.2.9",
-    "react-native-vector-icons": "^6.6.0",
+    "react-native-vector-icons": "^9.2.0",
     "react-native-webview": "11.23.1",
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4"
