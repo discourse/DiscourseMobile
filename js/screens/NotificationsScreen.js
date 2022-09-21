@@ -82,12 +82,12 @@ class NotificationsScreen extends React.Component {
 
     if (this.state.renderPlaceholderOnly) {
       return (
-        <View style={{flex: 1, backgroundColor: theme.grayBackground}}>
+        <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
           <Components.NavigationBar onDidPressRightButton={() => {}} />
           <View style={{height: 50, marginTop: 0, paddingTop: 0}}>
             {this._renderListHeader()}
           </View>
-        </View>
+        </SafeAreaView>
       );
     }
 
