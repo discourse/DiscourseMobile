@@ -50,9 +50,7 @@ class NavigationBar extends React.Component {
   render() {
     const theme = this.context;
     return (
-      <View
-        style={[styles.container, {backgroundColor: theme.background}]}
-        forceInset={{top: 'always', bottom: 'never'}}>
+      <View style={[styles.container, {backgroundColor: theme.background}]}>
         <ProgressBar progress={this.props.progress} />
         <View style={styles.leftContainer}>
           <TouchableHighlight

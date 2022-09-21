@@ -37,9 +37,7 @@ class SettingsScreen extends React.Component {
   render() {
     const theme = this.context;
     return (
-      <SafeAreaView
-        style={{flex: 1, backgroundColor: theme.background}}
-        forceInset={{top: 'never', bottom: 'always'}}>
+      <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
         <Components.NavigationBar
           onDidPressRightButton={() => this._onDidPressRightButton()}
           progress={this.state.progress}
