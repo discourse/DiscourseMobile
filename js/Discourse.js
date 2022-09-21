@@ -453,6 +453,7 @@ class Discourse extends React.Component {
   }
 
   render() {
+    // TODO: pass only relevant props to each screen component
     const screenProps = {
       openUrl: this.openUrl.bind(this),
       _handleOpenUrl: this._handleOpenUrl,
