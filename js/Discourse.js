@@ -15,7 +15,7 @@ import {
   StatusBar,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import Screens from './screens';
 import Site from './site';
@@ -475,7 +475,10 @@ class Discourse extends React.Component {
             presentation="modal"
             screenOptions={({navigation}) => {
               this._navigation = navigation;
-              return {headerShown: false};
+              return {
+                headerShown: false,
+                ...TransitionPresets.ModalSlideFromBottomIOS,
+              };
             }}>
             <Stack.Screen name="Home">
               {props => (
