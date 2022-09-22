@@ -307,7 +307,7 @@ class HomeScreen extends React.Component {
       <SafeAreaView
         style={[styles.container, {backgroundColor: theme.background}]}>
         <Components.NavigationBar
-          leftButtonIconRotated={this.state.displayTermBar ? true : false}
+          leftButtonIconRotated={this.state.displayTermBar}
           anim={this.state.anim}
           rightButtonIconColor={theme.grayUI}
           onDidPressLeftButton={() => this.onDidPressLeftButton()}

@@ -109,7 +109,7 @@ class SiteManager {
   }
 
   unsubscribe(callback) {
-    var pos = this._subscribers.indexOf(callback);
+    const pos = this._subscribers.indexOf(callback);
     if (pos >= -1) {
       this._subscribers.splice(pos, 1);
     }
