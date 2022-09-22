@@ -1,30 +1,27 @@
 /* @flow */
 'use strict';
 
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
 
-class Notification extends React.Component {
-  render() {
-    const theme = this.context;
-    if (this.props.count > 0) {
-      return (
-        <View style={styles.container}>
-          <View style={[styles.number, {backgroundColor: this.props.color}]}>
-            <Text style={{...styles.numberText, color: theme.buttonTextColor}}>
-              {this.props.count}
-            </Text>
-          </View>
-        </View>
-      );
-    } else {
-      return null;
-    }
-  }
-}
+const Notification = props => {
+  const theme = useContext(ThemeContext);
 
-Notification.contextType = ThemeContext;
+  if (props.count === 0) {
+    return null;
+  }
+
+  return (
+    <View style={styles.container}>
+      <View style={{...styles.number, backgroundColor: props.color}}>
+        <Text style={{...styles.numberText, color: theme.buttonTextColor}}>
+          {props.count}
+        </Text>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
