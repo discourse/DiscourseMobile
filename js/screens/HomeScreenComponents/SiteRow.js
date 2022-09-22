@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-import React from 'react';
+import React, {useContext} from 'react';
 import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {SwipeRow} from 'react-native-swipe-list-view';
 import Notification from './Notification';
@@ -9,135 +9,94 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ThemeContext} from '../../ThemeContext';
 import i18n from 'i18n-js';
 
-class SiteRow extends React.Component {
-  render() {
-    const theme = this.context;
+const SiteRow = props => {
+  const theme = useContext(ThemeContext);
+  const iconPath = props.site.icon
+    ? {uri: props.site.icon}
+    : require('../../../img/nav-icon-gray.png');
 
-    let iconPath = this.props.site.icon
-      ? {uri: this.props.site.icon}
-      : require('../../../img/nav-icon-gray.png');
+  const _renderNotifications = () => {
+    if (!props.site.authToken) {
+      return null;
+    }
+
     return (
-      <SwipeRow
-        disableRightSwipe={true}
-        rightOpenValue={-80}
-        recalculateHiddenLayout={true}
-        style={{backgroundColor: theme.redDanger}}>
-        <View style={{...styles.hiddenRow}}>
-          <TouchableHighlight
-            style={{paddingHorizontal: 28, backgroundColor: theme.redDanger}}
-            underlayColor={theme.redDanger}
-            onPress={this.props.onDelete}
-            {...this.props.sortHandlers}>
-            <FontAwesome5
-              name={'trash-alt'}
-              size={24}
-              color={theme.buttonTextColor}
-            />
-          </TouchableHighlight>
-        </View>
-        <View style={{backgroundColor: theme.background}}>
-          <TouchableHighlight
-            underlayColor={theme.yellowUIFeedback}
-            onPress={() => this.props.onClick()}
-            onLongPress={() => this.props.onLongPress()}
-            {...this.props.sortHandlers}>
-            <View
-              accessibilityTraits="link"
-              style={{...styles.row, borderBottomColor: theme.grayBorder}}>
-              <Image style={styles.icon} source={iconPath} />
-              <View style={styles.info}>
-                <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                  style={{...styles.url, color: theme.grayTitle}}>
-                  {this.props.site.url.replace(/^https?:\/\//, '')}
-                </Text>
-                <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={2}
-                  style={{...styles.description, color: theme.graySubtitle}}>
-                  {this.props.site.description}
-                </Text>
-                {this._renderCounts(this.props.site)}
-              </View>
-              {this._renderShouldLogin(this.props.site)}
-              {this._renderNotifications(this.props.site)}
-            </View>
-          </TouchableHighlight>
-        </View>
-      </SwipeRow>
+      <View style={styles.notifications}>
+        <Notification color={theme.redDanger} count={props.site.flagCount} />
+        <Notification
+          color={theme.greenPrivateUnread}
+          count={props.site.unreadPrivateMessages}
+        />
+        <Notification
+          color={theme.blueUnread}
+          count={props.site.unreadNotifications}
+        />
+      </View>
     );
-  }
+  };
 
-  _renderNotifications(site) {
-    const theme = this.context;
-
-    if (site.authToken) {
-      return (
-        <View style={styles.notifications}>
-          <Notification color={theme.redDanger} count={site.flagCount} />
-          <Notification
-            color={theme.greenPrivateUnread}
-            count={site.unreadPrivateMessages}
-          />
-          <Notification
-            color={theme.blueUnread}
-            count={site.unreadNotifications}
-          />
-        </View>
-      );
+  const _renderShouldLogin = () => {
+    if (props.site.authToken) {
+      return null;
     }
-  }
 
-  _renderShouldLogin(site) {
-    const theme = this.context;
+    return (
+      <TouchableHighlight
+        style={styles.notifications}
+        underlayColor={theme.background}
+        onPress={() => props.onClickConnect()}>
+        <Text
+          style={{
+            ...styles.connect,
+            backgroundColor: theme.blueCallToAction,
+            color: theme.buttonTextColor,
+          }}>
+          {i18n.t('connect')}
+        </Text>
+      </TouchableHighlight>
+    );
+  };
 
-    if (!site.authToken) {
-      return (
-        <TouchableHighlight
-          style={styles.notifications}
-          underlayColor={theme.background}
-          onPress={() => this.props.onClickConnect()}>
-          <Text
-            style={{
-              ...styles.connect,
-              backgroundColor: theme.blueCallToAction,
-              color: theme.buttonTextColor,
-            }}>
-            {i18n.t('connect')}
-          </Text>
-        </TouchableHighlight>
-      );
-    }
-  }
+  const _renderCountItem = (item, index) => {
+    return (
+      <TouchableHighlight
+        key={index}
+        style={styles.countItem}
+        underlayColor={theme.yellowUIFeedback}
+        onPress={() => props.onClick(item.link)}>
+        <Text style={{color: theme.blueUnread, fontSize: 15}}>{item.text}</Text>
+      </TouchableHighlight>
+    );
+  };
 
-  _renderCounts(site) {
-    var counts = {};
+  const _renderCounts = () => {
+    const counts = {};
 
-    if (site.authToken) {
-      if (site.totalNew > 0) {
+    if (props.site.authToken) {
+      if (props.site.totalNew > 0) {
         counts.new = {
           link: '/new',
-          text: i18n.t('new_with_count', {count: site.totalNew}),
+          text: i18n.t('new_with_count', {count: props.site.totalNew}),
         };
       }
-      if (site.totalUnread > 0) {
+      if (props.site.totalUnread > 0) {
         counts.unread = {
           link: '/unread',
-          text: i18n.t('unread_with_count', {count: site.totalUnread}),
+          text: i18n.t('unread_with_count', {count: props.site.totalUnread}),
         };
       }
     }
 
-    if (site.groupInboxes && site.groupInboxes.length > 0) {
-      site.groupInboxes.sort(function (a, b) {
+    if (props.site.groupInboxes && props.site.groupInboxes.length > 0) {
+      props.site.groupInboxes.sort(function (a, b) {
         if (a.group_name && b.group_name) {
           return a.group_name.localeCompare(b.group_name);
         } else {
           return true;
         }
       });
-      site.groupInboxes.forEach(group => {
+
+      props.site.groupInboxes.forEach(group => {
         if (group.inbox_count !== undefined) {
           counts[group.group_name] = {
             link: `/u/${group.username}/messages/group/${group.group_name}`,
@@ -147,36 +106,67 @@ class SiteRow extends React.Component {
       });
     }
 
-    const countButtons = Object.keys(counts).map(function (key) {
-      return counts[key];
-    });
+    const countButtons = Object.values(counts);
 
     if (countButtons.length > 0) {
       return (
-        <View style={styles.counts}>
-          {countButtons.map((value, index) => {
-            return this._renderCountItem(value, index);
-          })}
-        </View>
+        <View style={styles.counts}>{countButtons.map(_renderCountItem)}</View>
       );
     }
-  }
+  };
 
-  _renderCountItem(item, index) {
-    const theme = this.context;
-    return (
-      <TouchableHighlight
-        key={index}
-        style={styles.countItem}
-        underlayColor={theme.yellowUIFeedback}
-        onPress={() => this.props.onClick(item.link)}>
-        <Text style={{color: theme.blueUnread, fontSize: 15}}>{item.text}</Text>
-      </TouchableHighlight>
-    );
-  }
-}
-
-SiteRow.contextType = ThemeContext;
+  return (
+    <SwipeRow
+      disableRightSwipe={true}
+      rightOpenValue={-80}
+      recalculateHiddenLayout={true}
+      style={{backgroundColor: theme.redDanger}}>
+      <View style={{...styles.hiddenRow}}>
+        <TouchableHighlight
+          style={{paddingHorizontal: 28, backgroundColor: theme.redDanger}}
+          underlayColor={theme.redDanger}
+          onPress={props.onDelete}
+          {...props.sortHandlers}>
+          <FontAwesome5
+            name={'trash-alt'}
+            size={24}
+            color={theme.buttonTextColor}
+          />
+        </TouchableHighlight>
+      </View>
+      <View style={{backgroundColor: theme.background}}>
+        <TouchableHighlight
+          underlayColor={theme.yellowUIFeedback}
+          onPress={() => props.onClick()}
+          onLongPress={() => props.onLongPress()}
+          {...props.sortHandlers}>
+          <View
+            accessibilityTraits="link"
+            style={{...styles.row, borderBottomColor: theme.grayBorder}}>
+            <Image style={styles.icon} source={iconPath} />
+            <View style={styles.info}>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={{...styles.url, color: theme.grayTitle}}>
+                {props.site.url.replace(/^https?:\/\//, '')}
+              </Text>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={2}
+                style={{...styles.description, color: theme.graySubtitle}}>
+                {props.site.description}
+              </Text>
+              {_renderCounts()}
+            </View>
+            {_renderShouldLogin()}
+            {_renderNotifications()}
+          </View>
+        </TouchableHighlight>
+      </View>
+    </SwipeRow>
+  );
+};
 
 const styles = StyleSheet.create({
   row: {
