@@ -14,8 +14,8 @@ import {
   Settings,
   StatusBar,
 } from 'react-native';
-import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import Screens from './screens';
 import Site from './site';
@@ -61,20 +61,8 @@ i18n.fallbacks = true;
 
 enableScreens();
 
-const AppNavigator = createStackNavigator(
-  {
-    Home: {screen: Screens.Home},
-    Notifications: {screen: Screens.Notifications},
-    Settings: {screen: Screens.Settings},
-    WebView: {screen: Screens.WebView},
-  },
-  {
-    mode: 'modal',
-    headerMode: 'none',
-  },
-);
-
-const AppContainer = createAppContainer(AppNavigator);
+// TODO: Use NativeStackNavigator instead?
+const Stack = createStackNavigator();
 
 class Discourse extends React.Component {
   constructor(props) {
@@ -465,25 +453,60 @@ class Discourse extends React.Component {
   }
 
   render() {
+    // TODO: pass only relevant props to each screen component
+    const screenProps = {
+      openUrl: this.openUrl.bind(this),
+      _handleOpenUrl: this._handleOpenUrl,
+      seenNotificationMap: this._seenNotificationMap,
+      setSeenNotificationMap: map => {
+        this._seenNotificationMap = map;
+      },
+      siteManager: this._siteManager,
+      hasNotch: this.state.hasNotch,
+      deviceId: this.state.deviceId,
+      toggleTheme: this._toggleTheme.bind(this),
+    };
+
     return (
-      <ThemeContext.Provider value={this.state.theme}>
-        <StatusBar barStyle={this.state.theme.barStyle} />
-        <AppContainer
-          ref={ref => (this._navigation = ref && ref._navigation)}
-          screenProps={{
-            openUrl: this.openUrl.bind(this),
-            _handleOpenUrl: this._handleOpenUrl,
-            seenNotificationMap: this._seenNotificationMap,
-            setSeenNotificationMap: map => {
-              this._seenNotificationMap = map;
-            },
-            siteManager: this._siteManager,
-            hasNotch: this.state.hasNotch,
-            deviceId: this.state.deviceId,
-            toggleTheme: this._toggleTheme.bind(this),
-          }}
-        />
-      </ThemeContext.Provider>
+      <NavigationContainer>
+        <ThemeContext.Provider value={this.state.theme}>
+          <StatusBar barStyle={this.state.theme.barStyle} />
+          <Stack.Navigator
+            initialRouteName="Home"
+            presentation="modal"
+            screenOptions={({navigation}) => {
+              this._navigation = navigation;
+              return {
+                headerShown: false,
+                ...TransitionPresets.ModalSlideFromBottomIOS,
+              };
+            }}>
+            <Stack.Screen name="Home">
+              {props => (
+                <Screens.Home {...props} screenProps={{...screenProps}} />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="Notifications">
+              {props => (
+                <Screens.Notifications
+                  {...props}
+                  screenProps={{...screenProps}}
+                />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="Settings">
+              {props => (
+                <Screens.Settings {...props} screenProps={{...screenProps}} />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="WebView">
+              {props => (
+                <Screens.WebView {...props} screenProps={{...screenProps}} />
+              )}
+            </Stack.Screen>
+          </Stack.Navigator>
+        </ThemeContext.Provider>
+      </NavigationContainer>
     );
   }
 }

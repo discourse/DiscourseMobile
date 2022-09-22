@@ -65,7 +65,7 @@ class WebViewScreen extends React.Component {
       layoutCalculated: false,
       hasNotch: this.props.screenProps.hasNotch,
       isLandscape: false,
-      webviewUrl: this.props.navigation.getParam('url'),
+      webviewUrl: this.props.route.params.url,
     };
   }
 
@@ -89,7 +89,7 @@ class WebViewScreen extends React.Component {
   }
 
   componentDidUpdate() {
-    const url = this.props.navigation.getParam('url');
+    const url = this.props.route.params.url;
 
     if (url !== this.state.webviewUrl) {
       this.setState({

@@ -92,9 +92,7 @@ class NotificationsScreen extends React.Component {
     }
 
     return (
-      <SafeAreaView
-        style={{flex: 1, backgroundColor: theme.background}}
-        forceInset={{top: 'never', bottom: 'always'}}>
+      <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
         <Components.NavigationBar
           onDidPressRightButton={() => this._onDidPressRightButton()}
           onDidPressLeftButton={() => this._onDidPressLeftButton()}
