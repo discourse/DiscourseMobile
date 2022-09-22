@@ -17,6 +17,7 @@ import DraggableFlatList from 'react-native-draggable-dynamic-flatlist';
 import SafariWebAuth from 'react-native-safari-web-auth';
 import Site from '../site';
 import Components from './HomeScreenComponents';
+import {HEIGHT as TERM_BAR_HEIGHT} from './HomeScreenComponents/TermBar';
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
 import {donateShortcut} from 'react-native-siri-shortcut';
@@ -300,7 +301,7 @@ class HomeScreen extends React.Component {
     const theme = this.context;
     const translateY = this.state.anim.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, Components.TermBar.Height],
+      outputRange: [0, TERM_BAR_HEIGHT],
     });
     return (
       <SafeAreaView
@@ -339,7 +340,7 @@ const styles = StyleSheet.create({
   },
   sitesContainer: {
     flex: 1,
-    marginTop: -Components.TermBar.Height,
+    marginTop: -TERM_BAR_HEIGHT,
     paddingBottom: 40,
   },
 });
