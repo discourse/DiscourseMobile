@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-import React from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {
   Animated,
@@ -15,102 +15,87 @@ import ProgressBar from '../../ProgressBar';
 import {ThemeContext} from '../../ThemeContext';
 import i18n from 'i18n-js';
 
-class NavigationBar extends React.Component {
-  static propTypes = {
-    leftButtonIconRotated: PropTypes.bool.isRequired,
-    rightButtonIconColor: PropTypes.string.isRequired,
-    onDidPressRightButton: PropTypes.func.isRequired,
-    onDidPressLeftButton: PropTypes.func.isRequired,
-  };
+const NavigationBar = props => {
+  const theme = useContext(ThemeContext);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      rotationValue: new Animated.Value(props.leftButtonIconRotated ? 1 : 0),
-    };
-  }
+  const rotationValue = useRef(
+    new Animated.Value(props.leftButtonIconRotated ? 1 : 0),
+  ).current;
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      nextProps.leftButtonIconRotated !== this.props.leftButtonIconRotated ||
-      nextProps.progress !== this.props.progress
-    );
-  }
+  useEffect(() => {
+    Animated.spring(rotationValue, {
+      toValue: props.leftButtonIconRotated ? 1 : 0,
+      duration: 50,
+      useNativeDriver: true,
+    }).start();
+  }, [rotationValue, props.leftButtonIconRotated]);
 
-  UNSAFE_componentWillReceiveProps(props) {
-    if (this.props.leftButtonIconRotated !== props.leftButtonIconRotated) {
-      Animated.spring(this.state.rotationValue, {
-        toValue: props.leftButtonIconRotated ? 1 : 0,
-        duration: 50,
-        useNativeDriver: true,
-      }).start();
-    }
-  }
-
-  render() {
-    const theme = this.context;
-    return (
-      <View style={[styles.container, {backgroundColor: theme.background}]}>
-        <ProgressBar progress={this.props.progress} />
-        <View style={styles.leftContainer}>
-          <TouchableHighlight
-            underlayColor={'transparent'}
-            accessibilityLabel={i18n.t('add_site')}
-            style={[styles.button]}
-            onPress={this.props.onDidPressLeftButton}>
-            <AnimatedIcon
-              name="plus"
-              color={theme.grayUI}
-              size={20}
-              style={[
-                styles.animatedIcon,
-                {
-                  transform: [
-                    {
-                      rotate: this.state.rotationValue.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ['0deg', '225deg'],
-                      }),
-                    },
-                  ],
-                },
-              ]}
-            />
-          </TouchableHighlight>
-        </View>
-        <View style={styles.titleContainer}>
-          <TouchableHighlight underlayColor={'transparent'}>
-            <FontAwesome5
-              name={'discourse'}
-              size={20}
-              brand
-              style={{color: theme.grayTitle}}
-            />
-          </TouchableHighlight>
-        </View>
-        <View style={styles.rightContainer}>
-          <TouchableHighlight
-            underlayColor={'transparent'}
-            accessibilityLabel={i18n.t('notifications')}
-            style={styles.button}
-            onPress={this.props.onDidPressRightButton}>
-            <FontAwesome5
-              name={'bell'}
-              color={this.props.rightButtonIconColor}
-              size={20}
-              solid
-            />
-          </TouchableHighlight>
-        </View>
-        <View
-          style={[styles.separator, {backgroundColor: theme.grayBackground}]}
-        />
+  return (
+    <View style={[styles.container, {backgroundColor: theme.background}]}>
+      <ProgressBar progress={props.progress} />
+      <View style={styles.leftContainer}>
+        <TouchableHighlight
+          underlayColor={'transparent'}
+          accessibilityLabel={i18n.t('add_site')}
+          style={[styles.button]}
+          onPress={props.onDidPressLeftButton}>
+          <AnimatedIcon
+            name="plus"
+            color={theme.grayUI}
+            size={20}
+            style={[
+              styles.animatedIcon,
+              {
+                transform: [
+                  {
+                    rotate: rotationValue.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ['0deg', '225deg'],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          />
+        </TouchableHighlight>
       </View>
-    );
-  }
-}
+      <View style={styles.titleContainer}>
+        <TouchableHighlight underlayColor={'transparent'}>
+          <FontAwesome5
+            name={'discourse'}
+            size={20}
+            brand
+            style={{color: theme.grayTitle}}
+          />
+        </TouchableHighlight>
+      </View>
+      <View style={styles.rightContainer}>
+        <TouchableHighlight
+          underlayColor={'transparent'}
+          accessibilityLabel={i18n.t('notifications')}
+          style={styles.button}
+          onPress={props.onDidPressRightButton}>
+          <FontAwesome5
+            name={'bell'}
+            color={props.rightButtonIconColor}
+            size={20}
+            solid
+          />
+        </TouchableHighlight>
+      </View>
+      <View
+        style={[styles.separator, {backgroundColor: theme.grayBackground}]}
+      />
+    </View>
+  );
+};
 
-NavigationBar.contextType = ThemeContext;
+NavigationBar.propTypes = {
+  leftButtonIconRotated: PropTypes.bool.isRequired,
+  rightButtonIconColor: PropTypes.string.isRequired,
+  onDidPressRightButton: PropTypes.func.isRequired,
+  onDidPressLeftButton: PropTypes.func.isRequired,
+};
 
 const AnimatedIcon = Animated.createAnimatedComponent(FontAwesome5);
 
