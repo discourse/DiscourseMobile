@@ -196,7 +196,7 @@ class Site {
       this.logoff();
     }
 
-    var timeOffset = new Moment().subtract(1, 'hours').format();
+    const timeOffset = new Moment().subtract(1, 'hours').format();
 
     return new Promise((resolve, reject) => {
       if (!this.lastChecked || Moment(this.lastChecked).isBefore(timeOffset)) {

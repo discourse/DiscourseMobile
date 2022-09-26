@@ -113,7 +113,7 @@ class WebViewScreen extends React.Component {
     // We want to serve desktop version on fullscreen iPad app
     // and mobile version on split view.
     // That's why we append the device ID (which includes "iPad" on large window sizes only)
-    var {width, height} = event.nativeEvent.layout;
+    const {width, height} = event.nativeEvent.layout;
 
     this.setState({
       userAgentSuffix:
