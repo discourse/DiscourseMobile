@@ -9,7 +9,7 @@
     "other": "%{count} véglegesítés jóváhagyva"
   },
   "approved": "„%{title}” jóváhagyva",
-  "check_out_popular": "Nézze meg ezeket a népszerű közösségeket.",
+  "check_out_popular": "Nézze meg ezeket a népszerű közösségeket",
   "connect": "csatlakozás",
   "dont_know_where_to_start": "Nem tudja, hogy merre induljon?",
   "inbox_message": {
@@ -35,10 +35,10 @@
   "chat_group_mention": "%{username} megemlítette a(z) %{group_name} csoportot a csevegésben",
   "new_with_count": "új (%{count})",
   "new": "Új",
-  "no_notifications": "Nincsenek értesítések.",
-  "no_replies": "Nincsenek válaszok.",
-  "no_sites_yet": "Még nincs egyetlen webhelye sem.",
-  "no_new_notifications": "Nincsenek új értesítések.",
+  "no_notifications": "Nincsenek értesítések",
+  "no_replies": "Nincsenek válaszok",
+  "no_sites_yet": "Még nincs egyetlen webhelye sem",
+  "no_new_notifications": "Nincsenek új értesítések",
   "not_found": "A(z) %{term} nem található.",
   "notifications": "Értesítések",
   "replies": "Válaszok",
@@ -49,5 +49,5 @@
   "please_wait": "Kis türelmet…",
   "settings": "Beállítások",
   "browser_toggle_label": "Webhelyek megnyitása az alkalmazáson belüli böngészőben",
-  "browser_toggle_description": "Ha ez a beállítás ki van kapcsolva, a webhelyek a választott böngészőn keresztül indulnak el, beleértve a PWA-kat is."
+  "browser_toggle_description": "Ha ez a beállítás ki van kapcsolva, a webhelyek a választott böngészőn keresztül indulnak el, beleértve a PWA-kat is"
 }

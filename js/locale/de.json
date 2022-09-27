@@ -1,7 +1,7 @@
 {
   "add_first_site": "+ Füge das erste Forum hinzu",
   "add_site": "Forum hinzufügen",
-  "add_sites": "Füge Discourse-Foren hinzu, die du im Auge behalten möchtest.",
+  "add_sites": "Füge Discourse-Foren hinzu, die du im Auge behalten möchtest",
   "add": "+ Hinzufügen",
   "all": "Alle",
   "approved_commits": {
@@ -9,7 +9,7 @@
     "other": "%{count} Commits genehmigt"
   },
   "approved": "„%{title}“ genehmigt",
-  "check_out_popular": "Schau dir diese beliebten Communities an.",
+  "check_out_popular": "Schau dir diese beliebten Communities an",
   "connect": "verbinden",
   "dont_know_where_to_start": "Du weißt nicht, wo du anfangen sollst?",
   "inbox_message": {
@@ -29,10 +29,10 @@
   "votes_released": "%{description} – abgeschlossen",
   "new_with_count": "neu (%{count})",
   "new": "Neu",
-  "no_notifications": "Neue Benachrichtigungen.",
-  "no_replies": "Keine Antworten.",
-  "no_sites_yet": "Du hast noch keine Foren hinzugefügt.",
-  "no_new_notifications": "Keine neuen Benachrichtigungen.",
+  "no_notifications": "Neue Benachrichtigungen",
+  "no_replies": "Keine Antworten",
+  "no_sites_yet": "Du hast noch keine Foren hinzugefügt",
+  "no_new_notifications": "Keine neuen Benachrichtigungen",
   "not_found": "%{term} wurde nicht gefunden!",
   "notifications": "Benachrichtigungen",
   "replies": "Antworten",
