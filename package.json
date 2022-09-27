@@ -62,7 +62,7 @@
     "jest": "^27.3.1",
     "metro-react-native-babel-preset": "^0.66.2",
     "prettier": "^2.7.1",
-    "react-native-clean-project": "^3.6.7",
+    "react-native-clean-project": "^4.0.1",
     "react-test-renderer": "17.0.2"
   }
 }
