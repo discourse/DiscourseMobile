@@ -8,7 +8,7 @@
   "loading": "로드 중...",
   "votes_released": "%{description} - 완료됨",
   "new": "새글",
-  "no_replies": "답글이 없습니다.",
+  "no_replies": "답글이 없습니다",
   "notifications": "알림",
   "replies": "댓글",
   "settings": "설정"

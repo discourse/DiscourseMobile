@@ -1,7 +1,7 @@
 {
   "add_first_site": "+ أضف موقعك الأول",
   "add_site": "إضافة موقع",
-  "add_sites": "أضف مواقع Discourse لتتبعها.",
+  "add_sites": "أضف مواقع Discourse لتتبعها",
   "add": "+ إضافة",
   "all": "الكلّ",
   "approved_commits": {
@@ -13,7 +13,7 @@
     "other": "%{count} التزام مُوافق عليه"
   },
   "approved": "\"%{title}\" موافق عليه",
-  "check_out_popular": "تحقق من هذه المجتمعات الشعبية.",
+  "check_out_popular": "تحقق من هذه المجتمعات الشعبية",
   "connect": "الاتصال",
   "dont_know_where_to_start": "لا تعرف من أين تبدأ؟",
   "inbox_message": {
@@ -48,9 +48,9 @@
   "new_with_count": "الجديدة (%{count})",
   "new": "الجديدة",
   "no_notifications": "لا توجد إشعارات",
-  "no_replies": "لا توجد ردود.",
-  "no_sites_yet": "ليس لديك أي مواقع حتى الآن.",
-  "no_new_notifications": "لا توجد إشعارات جديدة.",
+  "no_replies": "لا توجد ردود",
+  "no_sites_yet": "ليس لديك أي مواقع حتى الآن",
+  "no_new_notifications": "لا توجد إشعارات جديدة",
   "not_found": "لم يُعثر على %{term}!",
   "notifications": "الإخطارات",
   "replies": "الردود",
@@ -61,5 +61,5 @@
   "please_wait": "الرجاء الانتظار...",
   "settings": "الإعدادات",
   "browser_toggle_label": "افتح المواقع باستخدام متصفح داخل التطبيق",
-  "browser_toggle_description": "عند تعطيل هذا الإعداد، سيتم تشغيل المواقع عبر المتصفح الذي تختاره، بما في ذلك تطبيقات الويب التقدمية PWA."
+  "browser_toggle_description": "عند تعطيل هذا الإعداد، سيتم تشغيل المواقع عبر المتصفح الذي تختاره، بما في ذلك تطبيقات الويب التقدمية PWA"
 }

@@ -1,7 +1,7 @@
 {
   "add_first_site": "+ להוספת האתר הראשון שלך",
   "add_site": "הוספת אתר",
-  "add_sites": "הוספת אתרי Discourse למעקב.",
+  "add_sites": "הוספת אתרי Discourse למעקב",
   "add": "+ הוספה",
   "all": "הכול",
   "approved_commits": {
@@ -11,7 +11,7 @@
     "other": "%{count} הגשות אושרו"
   },
   "approved": "התקבל אישור עבור „%{title}”",
-  "check_out_popular": "להלן מגוון קהילות נפוצות.",
+  "check_out_popular": "להלן מגוון קהילות נפוצות",
   "connect": "התחברות",
   "dont_know_where_to_start": "לא ברור לך מאיפה מתחילים?",
   "inbox_message": {
@@ -35,10 +35,10 @@
   "votes_released": "%{description} - הסתיים",
   "new_with_count": "חדש (%{count})",
   "new": "חדש",
-  "no_notifications": "אין התראות.",
-  "no_replies": "אין תגובות.",
-  "no_sites_yet": "עדיין אין לך אתרים.",
-  "no_new_notifications": "אין התראות חדשות.",
+  "no_notifications": "אין התראות",
+  "no_replies": "אין תגובות",
+  "no_sites_yet": "עדיין אין לך אתרים",
+  "no_new_notifications": "אין התראות חדשות",
   "not_found": "%{term} לא נמצא!",
   "notifications": "התראות",
   "replies": "תגובות",
@@ -49,5 +49,5 @@
   "please_wait": "נא להמתין…",
   "settings": "הגדרות",
   "browser_toggle_label": "לפתוח אתרים בדפדפן המובנה",
-  "browser_toggle_description": "כשהגדרה זאת מושבתת, אתרים יופעלו בדפדפן לבחירתך, לרבות יישומוני דפדפן מתקדמים."
+  "browser_toggle_description": "כשהגדרה זאת מושבתת, אתרים יופעלו בדפדפן לבחירתך, לרבות יישומוני דפדפן מתקדמים"
 }

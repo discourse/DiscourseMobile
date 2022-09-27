@@ -1,7 +1,7 @@
 {
   "add_first_site": "+ Añade tu primer sitio",
   "add_site": "Añadir sitio",
-  "add_sites": "Añade sitios de Discourse para mantenerte en seguimiento.",
+  "add_sites": "Añade sitios de Discourse para mantenerte en seguimiento",
   "add": "+ Añadir",
   "all": "Todos",
   "approved_commits": {
@@ -9,7 +9,7 @@
     "other": "%{count} commits aprobados"
   },
   "approved": "\"%{title}\" aprobado",
-  "check_out_popular": "Echa un vistazo a estas comunidades populares.",
+  "check_out_popular": "Echa un vistazo a estas comunidades populares",
   "connect": "conectar",
   "dont_know_where_to_start": "¿No sabes por dónde empezar?",
   "inbox_message": {
@@ -29,10 +29,10 @@
   "votes_released": "%{description} - completado",
   "new_with_count": "nuevos (%{count})",
   "new": "Nuevo",
-  "no_notifications": "No hay notificaciones.",
-  "no_replies": "No hay respuestas.",
-  "no_sites_yet": "Aún no tienes ningún sitio.",
-  "no_new_notifications": "No hay notificaciones nuevas.",
+  "no_notifications": "No hay notificaciones",
+  "no_replies": "No hay respuestas",
+  "no_sites_yet": "Aún no tienes ningún sitio",
+  "no_new_notifications": "No hay notificaciones nuevas",
   "not_found": "¡%{term} no fue encontrado!",
   "notifications": "Notificaciones",
   "replies": "Respuestas",

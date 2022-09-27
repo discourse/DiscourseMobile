@@ -7,7 +7,7 @@
   "loading": "読み込み中...",
   "votes_released": "%{description} - 完了",
   "new": "新着",
-  "no_replies": "返信はありません。",
+  "no_replies": "返信はありません",
   "notifications": "通知",
   "replies": "返信",
   "settings": "設定"
