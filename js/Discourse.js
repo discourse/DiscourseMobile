@@ -26,7 +26,7 @@ import DeviceInfo from 'react-native-device-info';
 import firebase from './firebase/helper';
 import bgMessaging from './firebase/bgMessaging';
 import BackgroundFetch from 'react-native-background-fetch';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import RootViewBackgroundColor from 'react-native-root-view-background-color';
 import {CustomTabs} from 'react-native-custom-tabs';
 import i18n from 'i18n-js';
