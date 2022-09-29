@@ -23,10 +23,6 @@ class SiteManager {
 
     this.load();
 
-    this.firstFetch = new Date();
-    this.lastFetch = new Date();
-    this.fetchCount = 0;
-
     AsyncStorage.getItem('@Discourse.lastRefresh').then(date => {
       if (date) {
         this.lastRefresh = new Date(date);
