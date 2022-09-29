@@ -27,5 +27,9 @@ jobs:
         run: yarn install
 
       - name: ESLint
-        if: ${{ always() }}
-        run: yarn lint
+        if: ${{ !cancelled() }}
+        run: yarn eslint
+
+      - name: Prettier
+        if: ${{ !cancelled() }}
+        run: yarn prettier
