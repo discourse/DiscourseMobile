@@ -1,16 +1,53 @@
 {
+  "add_first_site": "+ Lisää ensimmäinen sivustosi",
+  "add_site": "Lisää sivusto",
+  "add_sites": "Lisää Discourse-sivustoja seurattavaksi",
+  "add": "+ Lisää",
   "all": "Kaikki",
+  "approved_commits": {
+    "one": "%{count} solmu hyväksytty",
+    "other": "%{count} solmua hyväksytty"
+  },
+  "approved": "\"%{title}\" hyväksytty",
+  "check_out_popular": "Tutustu näihin suosittuihin yhteisöihin",
+  "connect": "yhdistä",
+  "dont_know_where_to_start": "Etkö tiedä mistä aloittaa?",
   "inbox_message": {
     "one": "%{count} viesti ryhmän %{group_name} saapuneissa",
     "other": "%{count} viestiä ryhmän %{group_name} saapuneissa"
   },
+  "incorrect_url": "%{term} ei ole oikea Discourse-foorumin URL tai se ei tue mobiili-APIa, pyydä omistajaa päivittämään Discourse uusimpaan versioon.",
   "last_updated": "Viimeksi päivitetty:",
   "liked": "tykkäsi %{count} viestistäsi",
+  "liked_two_users": "%{user1} ja %{user2}",
+  "liked_more": {
+    "one": "%{user1}, %{user2} ja %{count} muu",
+    "other": "%{user1}, %{user2} ja %{count} muuta"
+  },
   "loading": "Ladataan...",
+  "membership_accepted": "Hyväksyttiin ryhmään \"%{name}\"",
+  "membership_request_consolidated": "Uusia jäsenyyspyyntö ryhmässä \"%{name}\"",
   "votes_released": "%{description} – valmis",
+  "event_reminder": "Tapahtuma on alkamassa – %{title}",
+  "chat_mention": "%{name} mainitsi sinut chatissa",
+  "chat_message": "Uusi viesti chatissa",
+  "chat_invitation": "Uusi kutsu chatissa",
+  "chat_group_mention": "%{username} mainitsi ryhmän %{group_name} chatissa",
+  "new_with_count": "uudet (%{count})",
   "new": "Uudet",
+  "no_notifications": "Ei ilmoituksia",
   "no_replies": "Ei vastauksia",
+  "no_sites_yet": "Sinulla ei ole vielä sivustoja!",
+  "no_new_notifications": "Ei uusia ilmoituksia",
+  "not_found": "Kohdetta %{term} ei löytynyt!",
   "notifications": "Ilmoitukset",
   "replies": "Vastauksia",
-  "settings": "Asetukset"
+  "switch_dark": "Käytä tummaa teemaa",
+  "term_exists": "%{term} on jo olemassa",
+  "unread_with_count": "lukematta (%{count})",
+  "term_placeholder": "Anna sivustosi osoite",
+  "please_wait": "Odota...",
+  "settings": "Asetukset",
+  "browser_toggle_label": "Avaa sivustot sovelluksen sisäisellä selaimella",
+  "browser_toggle_description": "Kun tämä asetus on poistettu käytöstä, sivustot käynnistetään valitsemasi selaimen kautta, mukaan lukien PWA:t"
 }
