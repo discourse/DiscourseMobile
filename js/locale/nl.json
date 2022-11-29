@@ -1,16 +1,53 @@
 {
+  "add_first_site": "+ Voeg je eerste site toe",
+  "add_site": "Site toevoegen",
+  "add_sites": "Voeg Discourse-sites toe voor het bijhouden van",
+  "add": "+ Toevoegen",
   "all": "Alle",
+  "approved_commits": {
+    "one": "%{count} commit goedgekeurd",
+    "other": "%{count} commits goedgekeurd"
+  },
+  "approved": "\"%{title}\" goedgekeurd",
+  "check_out_popular": "Bekijk deze populaire community's",
+  "connect": "verbinden",
+  "dont_know_where_to_start": "Weet je niet waar je moet beginnen?",
   "inbox_message": {
     "one": "%{count} bericht in uw Postvak IN voor %{group_name}",
     "other": "%{count} berichten in uw Postvak IN voor %{group_name}"
   },
+  "incorrect_url": "Sorry, %{term} is geen correcte URL naar een Discourse-forum of ondersteunt geen mobiele API's. Laat de eigenaar Discourse upgraden naar de nieuwste versie!",
   "last_updated": "Laatst bijgewerkt:",
   "liked": "heeft %{count} van uw berichten geliket",
+  "liked_two_users": "%{user1} en %{user2}",
+  "liked_more": {
+    "one": "%{user1}, %{user2} en %{count} ander",
+    "other": "%{user1}, %{user2} en %{count} anderen"
+  },
   "loading": "Laden...",
+  "membership_accepted": "Lidmaatschap geaccepteerd in '%{name}\"",
+  "membership_request_consolidated": "Nieuwe lidmaatschapsverzoeken in \"%{name}\"",
   "votes_released": "%{description} - voltooid",
+  "event_reminder": "Een evenement staat op het punt te beginnen - %{title}",
+  "chat_mention": "%{name} heeft je genoemd in de chat",
+  "chat_message": "Nieuw bericht in chat",
+  "chat_invitation": "Nieuwe uitnodiging in chat",
+  "chat_group_mention": "%{username} heeft %{group_name} genoemd in de chat",
+  "new_with_count": "nieuw (%{count})",
   "new": "Nieuw",
+  "no_notifications": "Geen meldingen",
   "no_replies": "Geen antwoorden",
+  "no_sites_yet": "Je hebt nog geen sites!",
+  "no_new_notifications": "Geen nieuwe meldingen",
+  "not_found": "%{term} is niet gevonden!",
   "notifications": "Meldingen",
   "replies": "Antwoorden",
-  "settings": "Instellingen"
+  "switch_dark": "Donker thema gebruiken",
+  "term_exists": "%{term} bestaat al",
+  "unread_with_count": "ongelezen (%{count})",
+  "term_placeholder": "Voer het adres van je site in",
+  "please_wait": "Even geduld...",
+  "settings": "Instellingen",
+  "browser_toggle_label": "Sites openen met in-app browser",
+  "browser_toggle_description": "Als deze instelling is uitgeschakeld, worden sites geopend in de browser van je keuze, inclusief PWA's"
 }
