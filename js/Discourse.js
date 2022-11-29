@@ -53,11 +53,11 @@ i18n.translations = {
   it: require('./locale/it.json'),
   ja: require('./locale/ja.json'),
   nl: require('./locale/nl.json'),
-  "pt-BR": require('./locale/pt_BR.json'),
+  'pt-BR': require('./locale/pt_BR.json'),
   ru: require('./locale/ru.json'),
   sv: require('./locale/sv.json'),
-  "zh-CN": require('./locale/zh_CN.json'),
-  "zh-TW": require('./locale/zh_TW.json'),
+  'zh-CN': require('./locale/zh_CN.json'),
+  'zh-TW': require('./locale/zh_TW.json'),
 };
 
 const {languageTag} = RNLocalize.findBestAvailableLanguage(
