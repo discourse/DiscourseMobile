@@ -119,6 +119,8 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 def enableHermes = project.ext.react.get("enableHermes", false);
 
 android {
+
+    namespace 'com.discourse'
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -127,7 +129,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 125
+        versionCode 147
         versionName MYAPP_VERSION
     }
 
@@ -178,7 +180,9 @@ android {
     }
 }
 
-repositories {}
+repositories {
+    mavenCentral()
+}
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -187,18 +191,6 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
-      exclude group:'com.facebook.fbjni'
-    }
-
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.flipper'
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
-    }
-
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.flipper'
-    }
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
@@ -206,6 +198,9 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:18.0.0"
     implementation "com.google.android.gms:play-services-base:16.1.0"
     // implementation 'com.google.android.gms:play-services-gcm:15.0.1'
+    implementation platform('com.google.firebase:firebase-bom:31.1.0')
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation 'com.google.firebase:firebase-analytics'
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";

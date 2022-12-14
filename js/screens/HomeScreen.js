@@ -155,6 +155,7 @@ class HomeScreen extends React.Component {
         })
         .catch(e => {
           console.log(e);
+          console.log('error above?');
 
           if (e === 'dupe site') {
             Alert.alert(i18n.t('term_exists', {term}));

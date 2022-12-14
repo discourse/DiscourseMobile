@@ -25,7 +25,7 @@ lane :bootstrap do
   FileUtils.rm_rf("keys")
   `git clone #{KEYS_REPOSITORY} keys`
 
-  `openssl enc -aes-256-cbc -d -in keys/secrets.enc > keys/secrets.json`
+  `openssl enc -aes-256-cbc -d -in keys/secrets.enc > keys/secrets.json -md md5`
 
   File.open("google-play-api-secret.json","w") do |f|
     f.write(secrets["google-play-api-secret"].to_json)
@@ -64,6 +64,9 @@ TEMPLATE
 
   key_store = Base64.decode64(File.open("my-release-key.keystore").read)
   File.write(File.expand_path("../android/app/my-release-key.keystore"), key_store)
+
+  google_services = File.open("keys/google-services.json").read
+  File.write(File.expand_path("../android/app/google-services.json"), google_services)
 end
 
 def secrets
