@@ -10,5 +10,10 @@ module.exports = {
         ios: null,
       },
     },
+    'react-native-root-view-background-color': {
+      platforms: {
+        android: null,
+      },
+    },
   },
 };

@@ -170,6 +170,10 @@ class Discourse extends React.Component {
   }
 
   setRootBackground(colorScheme) {
+    if (Platform.OS === 'android') {
+      return;
+    }
+
     if (colorScheme === 'dark') {
       RootViewBackgroundColor.setBackground(0, 0, 0, 1);
     } else {

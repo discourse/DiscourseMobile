@@ -96,8 +96,10 @@ class SiteManager {
   }
 
   updateNativeMenu() {
-    const siteLabels = this.sites.map(s => s.url.replace(/^https?:\/\//, ''));
-    DiscourseKeyboardShortcuts.updateFileMenu(siteLabels);
+    if (Platform.OS === 'ios') {
+      const siteLabels = this.sites.map(s => s.url.replace(/^https?:\/\//, ''));
+      DiscourseKeyboardShortcuts.updateFileMenu(siteLabels);
+    }
   }
 
   subscribe(callback) {
