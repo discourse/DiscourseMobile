@@ -1,1 +1,15 @@
-
+{
+  "all": "Tümü",
+  "inbox_message": {
+    "one": "%{group_name} gelen kutunuzdaki %{count} mesaj var",
+    "other": "%{group_name} gelen kutunuzda %{count} mesajları"
+  },
+  "last_updated": "Son Güncelleme:",
+  "liked": "gönderilerinizden %{count} tanesi beğenildi",
+  "loading": "Yükleniyor...",
+  "votes_released": "%{description} - tamamlandı",
+  "new": "Yeni",
+  "notifications": "Bildirimler",
+  "replies": "Cevaplar",
+  "settings": "Ayarlar"
+}
