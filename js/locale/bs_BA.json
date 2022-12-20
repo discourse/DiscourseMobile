@@ -1,1 +1,15 @@
-
+{
+  "all": "Sve",
+  "inbox_message": {
+    "one": "%{count} poruka u vašem %{group_name} sandučiću",
+    "few": "%{count} poruke u vašem %{group_name} sandučiću",
+    "other": "%{count} poruka u vašem %{group_name} sandučiću"
+  },
+  "last_updated": "Zadnji put ažurirano:",
+  "liked": "vam se svidio %{count} vaših postova",
+  "loading": "Učitava se...",
+  "new": "Novo",
+  "notifications": "Obavijest",
+  "replies": "Replike",
+  "settings": "Postavke"
+}

@@ -1,1 +1,50 @@
-
+{
+  "add_first_site": "+ 新增您的第一個網站",
+  "add_site": "新增網站",
+  "add_sites": "新增要追蹤的Discourse網站",
+  "add": "+ 新增",
+  "all": "全部",
+  "approved_commits": {
+    "other": "%{count} 次提交已獲核准"
+  },
+  "approved": "「%{title}」已核准",
+  "check_out_popular": "查看這些受歡迎的社群",
+  "connect": "連線",
+  "dont_know_where_to_start": "不知道從哪裡開始嗎？",
+  "inbox_message": {
+    "other": "您的 %{group_name} 收件箱中有%{count} 條消息"
+  },
+  "incorrect_url": "抱歉， %{term} 不是 Discourse 論壇的正確 URL，或者不支持移動 API，請所有者將 Discourse 升級到最新！",
+  "last_updated": "最近更新時間：",
+  "liked": "說你的%{count}則貼文讚",
+  "liked_two_users": "%{user1} 和 %{user2}",
+  "liked_more": {
+    "other": "%{user1}、%{user2} 和其他 %{count} 個人都"
+  },
+  "loading": "正在載入",
+  "membership_accepted": "“%{name}”中接受的成員資格",
+  "membership_request_consolidated": "“%{name}”中的新成員請求",
+  "votes_released": "%{description} - 完成",
+  "event_reminder": "活動即將開始 - %{title}",
+  "chat_mention": "%{name} 在聊天中提到你",
+  "chat_message": "聊天中的新訊息",
+  "chat_invitation": "聊天中的新邀請",
+  "chat_group_mention": "%{username} 在聊天中提到 %{group_name}",
+  "new_with_count": "新的 (%{count})",
+  "new": "新的",
+  "no_notifications": "沒有通知",
+  "no_replies": "沒有回覆。",
+  "no_sites_yet": "您還沒有任何網站！",
+  "no_new_notifications": "無新的通知",
+  "not_found": "%{term} 未找到！",
+  "notifications": "通知",
+  "replies": "回覆",
+  "switch_dark": "使用深色佈景主題",
+  "term_exists": "%{term} 已存在",
+  "unread_with_count": "未讀 (%{count})",
+  "term_placeholder": "輸入您的網站地址",
+  "please_wait": "請稍候...",
+  "settings": "設定",
+  "browser_toggle_label": "使用app內建瀏覽器開啟網站",
+  "browser_toggle_description": "禁用此設置後，將通過您選擇的瀏覽器啟動網站，包括 PWA"
+}

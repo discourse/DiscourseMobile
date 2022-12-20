@@ -1,1 +1,13 @@
-
+{
+  "all": "Alle",
+  "inbox_message": {
+    "one": "%{count} melding i din %{group_name} innboks",
+    "other": "%{count} meldinger i din innboks for %{group_name}"
+  },
+  "loading": "Laster…",
+  "votes_released": "%{description} - fullført",
+  "new": "Nye",
+  "notifications": "Varsler",
+  "replies": "Svar",
+  "settings": "Innstillinger"
+}

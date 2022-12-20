@@ -1,1 +1,53 @@
-
+{
+  "add_first_site": "+ Adicione seu primeiro site",
+  "add_site": "Adicionar site",
+  "add_sites": "Adicione sites do Discourse para acompanhar",
+  "add": "+ Add",
+  "all": "Tudo",
+  "approved_commits": {
+    "one": "%{count} confirmação aprovada",
+    "other": "%{count} confirmações aprovadas"
+  },
+  "approved": "\"%{title}\" aprovado(a)",
+  "check_out_popular": "Confira essas comunidades populares",
+  "connect": "conectar",
+  "dont_know_where_to_start": "Não sabe por onde começar?",
+  "inbox_message": {
+    "one": "%{count} mensagem na caixa de entrada de %{group_name}",
+    "other": "%{count} mensagens na caixa de entrada de %{group_name}"
+  },
+  "incorrect_url": "Desculpe, %{term} não é uma URL correta para um fórum do Discourse ou não é compatível com APIs móveis, faça com que o proprietário atualize o Discourse para a versão mais recente!",
+  "last_updated": "Última atualização:",
+  "liked": "curtiu %{count} de suas postagens",
+  "liked_two_users": "%{user1} e %{user2}",
+  "liked_more": {
+    "one": "%{user1}, %{user2} e outro %{count}",
+    "other": "%{user1}, %{user2} e outros %{count}"
+  },
+  "loading": "Carregando...",
+  "membership_accepted": "Associação aceita em '%{name}\"",
+  "membership_request_consolidated": "Novos pedidos de adesão em \"%{name}\"",
+  "votes_released": "%{description} - concluído(a)",
+  "event_reminder": "Um evento está prestes a começar - %{title}",
+  "chat_mention": "%{name} mencionou você no chat",
+  "chat_message": "Nova mensagem no chat",
+  "chat_invitation": "Novo convite no chat",
+  "chat_group_mention": "%{username} mencionou %{group_name} no chat",
+  "new_with_count": "novo(s) (%{count})",
+  "new": "Novo",
+  "no_notifications": "Novas notificações",
+  "no_replies": "Sem respostas",
+  "no_sites_yet": "Você ainda não tem sites!",
+  "no_new_notifications": "Não há novas notificações",
+  "not_found": "%{term} não foi encontrado!",
+  "notifications": "Notificações",
+  "replies": "Respostas",
+  "switch_dark": "Usar tema escuro",
+  "term_exists": "%{term} já existe",
+  "unread_with_count": "não lido(s) (%{count})",
+  "term_placeholder": "Digite o endereço do seu site",
+  "please_wait": "Aguarde...",
+  "settings": "Configurações",
+  "browser_toggle_label": "Abrir sites com navegador no aplicativo",
+  "browser_toggle_description": "Quando essa configuração estiver desativada, os sites serão lançados por meio do navegador de sua escolha, incluindo PWAs"
+}
