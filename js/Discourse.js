@@ -42,14 +42,22 @@ const eventEmitter = new NativeEventEmitter(DiscourseKeyboardShortcuts);
 // but react-native doesn't make it easy to loop through files in a folder
 // there's react-native-fs, but I hesitate to add another dependency just for that
 i18n.translations = {
+  ar: require('./locale/ar.json'),
   de: require('./locale/de.json'),
   en: require('./locale/en.json'),
+  es: require('./locale/es.json'),
+  fi: require('./locale/fi.json'),
   fr: require('./locale/fr.json'),
   he: require('./locale/he.json'),
   hu: require('./locale/hu.json'),
   it: require('./locale/it.json'),
+  ja: require('./locale/ja.json'),
+  nl: require('./locale/nl.json'),
+  'pt-BR': require('./locale/pt_BR.json'),
   ru: require('./locale/ru.json'),
   sv: require('./locale/sv.json'),
+  'zh-CN': require('./locale/zh_CN.json'),
+  'zh-TW': require('./locale/zh_TW.json'),
 };
 
 const {languageTag} = RNLocalize.findBestAvailableLanguage(
