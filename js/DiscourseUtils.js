@@ -26,8 +26,12 @@ class DiscourseUtils {
       case 18:
       case 20:
       case 24:
+      case 25:
       case 27:
       case 28:
+      case 36:
+      case 801:
+      case 802:
         endpoint = `/t/${notification.slug}/${notification.topic_id}/${notification.post_number}`;
         break;
       case 12:
@@ -56,6 +60,9 @@ class DiscourseUtils {
       case 30:
       case 31:
         endpoint = `/chat/channel/${data.chat_channel_id}/${data.chat_channel_title}`;
+        break;
+      case 800:
+        endpoint = `/u/${data.display_username}`;
         break;
       default:
         console.log(
@@ -87,6 +94,7 @@ class DiscourseUtils {
       case 8:
         return 'user';
       case 9:
+      case 802:
         return 'reply';
       case 10:
         return 'sign-out';
@@ -103,6 +111,8 @@ class DiscourseUtils {
       case 16:
         return 'users';
       case 17:
+      case 36:
+      case 801:
         return 'dot-circle';
       case 18:
         return 'clock';
@@ -112,13 +122,14 @@ class DiscourseUtils {
       case 21:
         return 'check';
       case 22:
+      case 800:
         return 'user-plus';
       case 23:
         return 'users';
       case 24:
         return 'bookmark';
       case 25:
-        return 'bell';
+        return 'heart';
       case 26:
         return 'plus';
       case 27:

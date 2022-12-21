@@ -94,6 +94,10 @@ class NotificationRow extends React.Component {
       case 15:
       case 17:
       case 18:
+      case 25:
+      case 36:
+      case 801:
+      case 802:
         innerText = (
           <Text style={textStyle}>
             {displayName}
@@ -229,6 +233,11 @@ class NotificationRow extends React.Component {
               group_name: notification.data.group_name,
             })}
           </Text>
+        );
+        break;
+      case 800:
+        innerText = (
+          <Text style={textStyle}>{notification.data.display_username}</Text>
         );
         break;
 
