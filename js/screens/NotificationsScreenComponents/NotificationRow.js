@@ -237,7 +237,11 @@ class NotificationRow extends React.Component {
         break;
       case 800:
         innerText = (
-          <Text style={textStyle}>{notification.data.display_username}</Text>
+          <Text style={textStyle}>
+            {i18n.t('user_following', {
+              name: notification.data.display_username,
+            })}
+          </Text>
         );
         break;
 
