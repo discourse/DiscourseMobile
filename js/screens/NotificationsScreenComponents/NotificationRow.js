@@ -94,6 +94,10 @@ class NotificationRow extends React.Component {
       case 15:
       case 17:
       case 18:
+      case 25:
+      case 36:
+      case 801:
+      case 802:
         innerText = (
           <Text style={textStyle}>
             {displayName}
@@ -227,6 +231,15 @@ class NotificationRow extends React.Component {
             {i18n.t('chat_group_mention', {
               username: notification.data.mentioned_by_username,
               group_name: notification.data.group_name,
+            })}
+          </Text>
+        );
+        break;
+      case 800:
+        innerText = (
+          <Text style={textStyle}>
+            {i18n.t('user_following', {
+              name: notification.data.display_username,
             })}
           </Text>
         );

@@ -29,6 +29,7 @@
   "membership_request_consolidated": "New membership requests in \"%{name}\"",
   "votes_released": "%{description} - completed",
   "event_reminder": "An event is about to start - %{title}",
+  "user_following": "%{name} is now following you",
   "chat_mention": "%{name} mentioned you in chat",
   "chat_message": "New message in chat",
   "chat_invitation": "New invitation in chat",
