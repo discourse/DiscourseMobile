@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator 'iPhone 14 Pro (16.0)'",
+    "ios": "react-native run-ios --simulator 'iPhone 14 Pro (16.2)'",
     "start": "react-native start",
     "clean": "react-native clean-project-auto",
     "pod": "pod install --project-directory=ios",
