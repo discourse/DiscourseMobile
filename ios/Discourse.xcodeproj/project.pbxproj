@@ -479,9 +479,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 387;
+				CURRENT_PROJECT_VERSION = 389;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6T3LU73T8S;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -504,6 +505,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.discourse.DiscourseApp;
 				PRODUCT_NAME = Discourse;
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc org.discourse.DiscourseApp";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AdHoc org.discourse.DiscourseApp";
 				SWIFT_OBJC_BRIDGING_HEADER = "Discourse-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -521,8 +523,9 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 387;
+				CURRENT_PROJECT_VERSION = 389;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6T3LU73T8S;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -546,6 +549,7 @@
 				PRODUCT_NAME = Discourse;
 				PROVISIONING_PROFILE = "8a5dde79-abbd-4707-a921-2b4412ef65ad";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.discourse.DiscourseApp";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore org.discourse.DiscourseApp";
 				SWIFT_OBJC_BRIDGING_HEADER = "Discourse-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
