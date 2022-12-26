@@ -22,17 +22,14 @@ const SiteRow = props => {
 
     return (
       <View style={styles.notifications}>
-        <Notification
-          color={theme.redDanger}
-          count={props.site.flagCount || 0}
-        />
+        <Notification color={theme.redDanger} count={props.site.flagCount} />
         <Notification
           color={theme.greenPrivateUnread}
-          count={props.site.unreadPrivateMessages || 0}
+          count={props.site.unreadPrivateMessages}
         />
         <Notification
           color={theme.blueUnread}
-          count={props.site.unreadNotifications || 0}
+          count={props.site.unreadNotifications}
         />
       </View>
     );

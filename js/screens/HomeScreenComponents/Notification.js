@@ -8,7 +8,7 @@ import {ThemeContext} from '../../ThemeContext';
 const Notification = props => {
   const theme = useContext(ThemeContext);
 
-  if (props.count === 0) {
+  if (!props.count) {
     return null;
   }
 
