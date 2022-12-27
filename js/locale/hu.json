@@ -1,7 +1,7 @@
 {
   "add_first_site": "+ Első webhely hozzáadása",
   "add_site": "Webhely hozzáadása",
-  "add_sites": "Adja hozzá a nyomon követendő Discourse oldalakat",
+  "add_sites": "Adja hozzá a nyomon követendő Discourse-oldalakat",
   "add": "+ Hozzáadás",
   "all": "Mind",
   "approved_commits": {
@@ -29,6 +29,7 @@
   "membership_request_consolidated": "Új tagsági kérések itt: „%{name}”",
   "votes_released": "%{description} – kész",
   "event_reminder": "Egy esemény hamarosan kezdődik – %{title}",
+  "user_following": "%{name} mostantól követi Önt",
   "chat_mention": "%{name} megemlítette Önt a csevegésben",
   "chat_message": "Új üzenet a csevegésben",
   "chat_invitation": "Új meghívó a csevegésben",
@@ -37,7 +38,7 @@
   "new": "Új",
   "no_notifications": "Nincsenek értesítések",
   "no_replies": "Nincsenek válaszok",
-  "no_sites_yet": "Még nincs egyetlen webhelye sem",
+  "no_sites_yet": "Még nincs egyetlen webhelye sem.",
   "no_new_notifications": "Nincsenek új értesítések",
   "not_found": "A(z) %{term} nem található.",
   "notifications": "Értesítések",

@@ -3,8 +3,8 @@
   "add_site": "افزودن سایت",
   "all": "همه",
   "inbox_message": {
-    "one": "%{count}پیام در اینباکس %{group_name}",
-    "other": "%{count}پیام در اینباکس %{group_name}"
+    "one": "%{count} پیام در صندوق ورودی %{group_name}",
+    "other": "%{count} پیام در صندوق ورودی %{group_name}"
   },
   "last_updated": "آخرین به‌روزرسانی:",
   "liked": "%{count} نفر نوشته شما را پسندیدن",
