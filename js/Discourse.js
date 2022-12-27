@@ -155,7 +155,8 @@ class Discourse extends React.Component {
 
     this.setRootBackground(colorScheme);
 
-    this.subscription = Appearance.addChangeListener(({newColorScheme}) => {
+    this.subscription = Appearance.addChangeListener(() => {
+      const newColorScheme = Appearance.getColorScheme();
       this.setRootBackground(newColorScheme);
       this.setState({
         theme: newColorScheme === 'dark' ? themes.dark : themes.light,
