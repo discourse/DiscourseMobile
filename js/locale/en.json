@@ -34,6 +34,7 @@
   "chat_message": "New message in chat",
   "chat_invitation": "New invitation in chat",
   "chat_group_mention": "%{username} mentioned %{group_name} in chat",
+  "new_features": "New features available!",
   "new_with_count": "new (%{count})",
   "new": "New",
   "no_notifications": "No notifications",

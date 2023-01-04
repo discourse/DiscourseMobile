@@ -235,6 +235,9 @@ class NotificationRow extends React.Component {
           </Text>
         );
         break;
+      case 37:
+        innerText = <Text style={textStyle}>{i18n.t('new_features')}</Text>;
+        break;
       case 800:
         innerText = (
           <Text style={textStyle}>
