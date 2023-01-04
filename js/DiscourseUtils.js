@@ -61,6 +61,9 @@ class DiscourseUtils {
       case 31:
         endpoint = `/chat/channel/${data.chat_channel_id}/${data.chat_channel_title}`;
         break;
+      case 37:
+        endpoint = '/admin';
+        break;
       case 800:
         endpoint = `/u/${data.display_username}`;
         break;
@@ -140,6 +143,8 @@ class DiscourseUtils {
       case 31:
       case 32:
         return 'comments';
+      case 37:
+        return 'gift';
 
       default:
         console.log(
