@@ -27,6 +27,7 @@
   "loading": "Läser in...",
   "membership_accepted": "Medlemskap godkändes i \"%{name}”",
   "votes_released": "%{description} - slutförd",
+  "new_features": "Nya funktioner tillgängliga!",
   "new_with_count": "ny (%{count})",
   "new": "Ny",
   "no_notifications": "Inga aviseringar",
