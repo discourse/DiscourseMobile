@@ -24,6 +24,7 @@
   "loading": "Wczytuję…",
   "membership_accepted": "Członkostwo zaakceptowane w \"%{name}\"",
   "votes_released": "%{description} - zakończone",
+  "new_features": "Dostępne są nowe funkcje!",
   "new_with_count": "nowe (%{count})",
   "new": "Nowe",
   "notifications": "Powiadomienia",

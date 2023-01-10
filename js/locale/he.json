@@ -33,6 +33,7 @@
   "loading": "בטעינה…",
   "membership_accepted": "החברות אל „%{name}” התקבלה",
   "votes_released": "%{description} - הסתיים",
+  "new_features": "יכולות חדשות זמינות!",
   "new_with_count": "חדש (%{count})",
   "new": "חדש",
   "no_notifications": "אין התראות",

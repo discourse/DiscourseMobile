@@ -34,6 +34,7 @@
   "chat_message": "Új üzenet a csevegésben",
   "chat_invitation": "Új meghívó a csevegésben",
   "chat_group_mention": "%{username} megemlítette a(z) %{group_name} csoportot a csevegésben",
+  "new_features": "Új funkciók érhetők el!",
   "new_with_count": "új (%{count})",
   "new": "Új",
   "no_notifications": "Nincsenek értesítések",
