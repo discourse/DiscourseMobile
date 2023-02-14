@@ -65,7 +65,7 @@ class SettingsScreen extends React.Component {
     const theme = this.context;
     const newTheme = theme.background === '#FFFFFF' ? 'dark' : 'light';
 
-    AsyncStorage.setItem('@Discourse.androidLegacyTheme', newTheme).done(() => {
+    AsyncStorage.setItem('@Discourse.androidLegacyTheme', newTheme).then(() => {
       this.props.screenProps.toggleTheme(newTheme);
     });
   }

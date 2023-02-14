@@ -189,7 +189,7 @@ class HomeScreen extends React.Component {
       .catch(e => {
         console.log(e);
       })
-      .done(() => {
+      .then(() => {
         this.setState({isRefreshing: false});
       });
   }

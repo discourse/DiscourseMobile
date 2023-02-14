@@ -359,7 +359,7 @@ class Discourse extends React.Component {
         console.log('[js] Received background-fetch event: ', taskId);
 
         this._siteManager.refreshing = false;
-        this._siteManager.refreshSites().done(() => {
+        this._siteManager.refreshSites().then(() => {
           this._siteManager.updateUnreadBadge();
           // Required: Signal completion of your task to native code
           // If you fail to do this, the OS can terminate your app
@@ -393,10 +393,13 @@ class Discourse extends React.Component {
   }
 
   componentWillUnmount() {
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === 'ios' && this.eventEmitter) {
       this.eventEmitter.remove();
     }
-    AppState.removeEventListener('change', this._handleAppStateChange);
+    if (this._handleAppStateChange) {
+      this._handleAppStateChange.remove();
+    }
+
     Linking.removeEventListener('url', this._handleOpenUrl);
     clearTimeout(this.safariViewTimeout);
 
