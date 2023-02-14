@@ -20,6 +20,7 @@ DerivedData
 *.hmap
 /Discourse.ipa
 *.xcuserstate
+ios/.xcode.env.local
 
 # Android/IntelliJ
 #
@@ -29,6 +30,10 @@ build/
 local.properties
 *.iml
 google-services.json
+.cxx/
+*.keystore
+!debug.keystore
+
 
 # node.js
 #
@@ -67,5 +72,9 @@ fastlane/google-play-api-secret.json
 *.jsbundle
 fastlane/report.xml
 
-# CocoaPods
+# Ruby / CocoaPods
 /ios/Pods/
+/vendor/bundle
+
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*

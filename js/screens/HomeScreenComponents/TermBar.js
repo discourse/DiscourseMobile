@@ -31,8 +31,7 @@ const TermBar = props => {
       })
       .catch(error => {
         setText(term);
-      })
-      .done();
+      });
   };
 
   return (

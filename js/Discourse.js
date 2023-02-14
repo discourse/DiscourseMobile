@@ -36,7 +36,6 @@ import {enableScreens} from 'react-native-screens';
 import type {Notification, NotificationOpen} from './firebase/helper';
 
 const {DiscourseKeyboardShortcuts} = NativeModules;
-const eventEmitter = new NativeEventEmitter(DiscourseKeyboardShortcuts);
 
 // It's not ideal that we have to manually register languages here
 // but react-native doesn't make it easy to loop through files in a folder
@@ -264,8 +263,7 @@ class Discourse extends React.Component {
             })
             .catch(e => {
               console.log('Error adding site via app-argument:', e);
-            })
-            .done();
+            });
         }
       }
 
@@ -311,7 +309,8 @@ class Discourse extends React.Component {
         }
       });
 
-      eventEmitter.addListener('keyInputEvent', res => {
+      this.eventEmitter = new NativeEventEmitter(DiscourseKeyboardShortcuts);
+      this.eventEmitter.addListener('keyInputEvent', res => {
         const {input} = res;
 
         if (input === 'W') {
@@ -394,6 +393,9 @@ class Discourse extends React.Component {
   }
 
   componentWillUnmount() {
+    if (Platform.OS === 'ios') {
+      this.eventEmitter.remove();
+    }
     AppState.removeEventListener('change', this._handleAppStateChange);
     Linking.removeEventListener('url', this._handleOpenUrl);
     clearTimeout(this.safariViewTimeout);
