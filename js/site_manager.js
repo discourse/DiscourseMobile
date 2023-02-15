@@ -66,21 +66,19 @@ class SiteManager {
     return new Promise((resolve, reject) => {
       if (typeof site === 'string' || site instanceof String) {
         let url = site;
-        AsyncStorage.getItem('@Discourse.sites')
-          .then(json => {
-            let activeSite = null;
-            if (json) {
-              let tSites = JSON.parse(json).map(obj => {
-                return new Site(obj);
-              });
+        AsyncStorage.getItem('@Discourse.sites').then(json => {
+          let activeSite = null;
+          if (json) {
+            let tSites = JSON.parse(json).map(obj => {
+              return new Site(obj);
+            });
 
-              activeSite = tSites.find(s => url.startsWith(s.url) === true);
-              this.activeSite = activeSite;
-            }
+            activeSite = tSites.find(s => url.startsWith(s.url) === true);
+            this.activeSite = activeSite;
+          }
 
-            resolve({activeSite: activeSite});
-          })
-          .done();
+          resolve({activeSite: activeSite});
+        });
       } else {
         this.activeSite = site;
         resolve({activeSite: site});
@@ -124,7 +122,7 @@ class SiteManager {
   }
 
   save() {
-    AsyncStorage.setItem('@Discourse.sites', JSON.stringify(this.sites)).done();
+    AsyncStorage.setItem('@Discourse.sites', JSON.stringify(this.sites));
     this._onChange();
     this.updateUnreadBadge();
   }
@@ -160,7 +158,7 @@ class SiteManager {
 
   load() {
     // generate RSA Keys on load, they'll be needed
-    this.ensureRSAKeys().done();
+    this.ensureRSAKeys();
     this._loading = true;
 
     AsyncStorage.getItem('@Discourse.sites')
@@ -205,8 +203,7 @@ class SiteManager {
       .finally(() => {
         this._loading = false;
         this._onChange();
-      })
-      .done();
+      });
   }
 
   totalUnread() {
@@ -489,27 +486,25 @@ class SiteManager {
         promises.push(promise);
       });
 
-      Promise.all(promises)
-        .then(results => {
-          resolve(
-            _.chain(results)
-              .flatten()
-              .orderBy(
-                [
-                  o => {
-                    return !o.notification.read &&
-                      o.notification.notification_type === 6
-                      ? 0
-                      : 1;
-                  },
-                  'notification.created_at',
-                ],
-                ['asc', 'desc'],
-              )
-              .value(),
-          );
-        })
-        .done();
+      Promise.all(promises).then(results => {
+        resolve(
+          _.chain(results)
+            .flatten()
+            .orderBy(
+              [
+                o => {
+                  return !o.notification.read &&
+                    o.notification.notification_type === 6
+                    ? 0
+                    : 1;
+                },
+                'notification.created_at',
+              ],
+              ['asc', 'desc'],
+            )
+            .value(),
+        );
+      });
     });
   }
 

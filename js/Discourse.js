@@ -36,7 +36,6 @@ import {enableScreens} from 'react-native-screens';
 import type {Notification, NotificationOpen} from './firebase/helper';
 
 const {DiscourseKeyboardShortcuts} = NativeModules;
-const eventEmitter = new NativeEventEmitter(DiscourseKeyboardShortcuts);
 
 // It's not ideal that we have to manually register languages here
 // but react-native doesn't make it easy to loop through files in a folder
@@ -264,8 +263,7 @@ class Discourse extends React.Component {
             })
             .catch(e => {
               console.log('Error adding site via app-argument:', e);
-            })
-            .done();
+            });
         }
       }
 
@@ -311,7 +309,8 @@ class Discourse extends React.Component {
         }
       });
 
-      eventEmitter.addListener('keyInputEvent', res => {
+      this.eventEmitter = new NativeEventEmitter(DiscourseKeyboardShortcuts);
+      this.eventEmitter.addListener('keyInputEvent', res => {
         const {input} = res;
 
         if (input === 'W') {
@@ -360,7 +359,7 @@ class Discourse extends React.Component {
         console.log('[js] Received background-fetch event: ', taskId);
 
         this._siteManager.refreshing = false;
-        this._siteManager.refreshSites().done(() => {
+        this._siteManager.refreshSites().then(() => {
           this._siteManager.updateUnreadBadge();
           // Required: Signal completion of your task to native code
           // If you fail to do this, the OS can terminate your app
@@ -394,7 +393,13 @@ class Discourse extends React.Component {
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this._handleAppStateChange);
+    if (Platform.OS === 'ios' && this.eventEmitter) {
+      this.eventEmitter.remove();
+    }
+    if (this._handleAppStateChange) {
+      this._handleAppStateChange.remove();
+    }
+
     Linking.removeEventListener('url', this._handleOpenUrl);
     clearTimeout(this.safariViewTimeout);
 

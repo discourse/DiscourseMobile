@@ -13,7 +13,7 @@ import {
   UIManager,
   View,
 } from 'react-native';
-import DraggableFlatList from 'react-native-draggable-dynamic-flatlist';
+import DraggableFlatList from 'react-native-draggable-flatlist';
 import SafariWebAuth from 'react-native-safari-web-auth';
 import Site from '../site';
 import Components from './HomeScreenComponents';
@@ -63,7 +63,10 @@ class HomeScreen extends React.Component {
           });
         } else {
           this.donateShortcut(site);
-          this.props.screenProps.openUrl(`${site.url}?discourse_app=1`, false);
+          this.props.screenProps.openUrl(
+            `${site.url}${endpoint}?discourse_app=1`,
+            false,
+          );
         }
       }
       return;
@@ -173,8 +176,7 @@ class HomeScreen extends React.Component {
           setTimeout(() => {
             this.setState({addSiteProgress: 0});
           }, 1000);
-        })
-        .done();
+        });
     });
   }
 
@@ -187,7 +189,7 @@ class HomeScreen extends React.Component {
       .catch(e => {
         console.log(e);
       })
-      .done(() => {
+      .then(() => {
         this.setState({isRefreshing: false});
       });
   }
@@ -214,7 +216,7 @@ class HomeScreen extends React.Component {
     }
   }
 
-  _renderItem({item, index, move, moveEnd, isActive}) {
+  _renderItem({item, index, drag, isActive}) {
     return (
       <Components.SiteRow
         site={item}
@@ -222,7 +224,7 @@ class HomeScreen extends React.Component {
         onClick={(endpoint = '') => this.visitSite(item, false, endpoint)}
         onClickConnect={() => this.visitSite(item, true)}
         onDelete={() => this._siteManager.remove(item)}
-        onLongPress={move}
+        onLongPress={drag}
       />
     );
   }
@@ -250,10 +252,11 @@ class HomeScreen extends React.Component {
     } else {
       return (
         <DraggableFlatList
+          activationDistance={20}
           data={this.state.data}
           renderItem={item => this._renderItem(item)}
           keyExtractor={(item, index) => `draggable-item-${item.url}`}
-          onMoveEnd={this._dragItem}
+          onDragEnd={this._dragItem}
           scaleSelectionFactor={1.05}
           refreshControl={
             <RefreshControl

@@ -179,8 +179,7 @@ class Site {
         })
         .finally(() => {
           this._currentFetch = undefined;
-        })
-        .done();
+        });
     });
   }
 
@@ -208,8 +207,7 @@ class Site {
           .catch(e => {
             console.log(e);
             reject('failure');
-          })
-          .done();
+          });
       } else {
         resolve(this);
       }
@@ -312,8 +310,7 @@ class Site {
         .catch(e => {
           reject(e);
         })
-        .finally(() => resolve)
-        .done();
+        .finally(() => resolve);
     });
   }
 
@@ -344,11 +341,9 @@ class Site {
           retries--;
           if (retries === 0 || this._notifications) {
             clearInterval(interval);
-            this.notifications(types)
-              .then(n => {
-                resolve(n);
-              })
-              .done();
+            this.notifications(types).then(n => {
+              resolve(n);
+            });
           }
         }, 50);
       });
@@ -400,9 +395,9 @@ class Site {
           this._loadingNotifications = false;
           this._notifications = (results && results.notifications) || [];
           this._seenNotificationId = results && results.seen_notification_id;
-          this.notifications(types, _.merge(options, {silent: true}))
-            .then(n => resolve(n))
-            .done();
+          this.notifications(types, _.merge(options, {silent: true})).then(n =>
+            resolve(n),
+          );
         })
         .catch(e => {
           console.log('failed to fetch notifications ' + e);
@@ -410,8 +405,7 @@ class Site {
         })
         .finally(() => {
           this._loadingNotifications = false;
-        })
-        .done();
+        });
     });
   }
 

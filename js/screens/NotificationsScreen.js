@@ -34,14 +34,11 @@ class NotificationsScreen extends React.Component {
       this._seenNotificationMap = this.props.screenProps.seenNotificationMap;
       this.refresh();
     } else {
-      this._siteManager
-        .getSeenNotificationMap()
-        .then(map => {
-          this._seenNotificationMap = map;
-          this.props.screenProps.setSeenNotificationMap(map);
-          this.refresh();
-        })
-        .done();
+      this._siteManager.getSeenNotificationMap().then(map => {
+        this._seenNotificationMap = map;
+        this.props.screenProps.setSeenNotificationMap(map);
+        this.refresh();
+      });
     }
   }
 
@@ -140,12 +137,9 @@ class NotificationsScreen extends React.Component {
   }
 
   _openNotificationForSite(notification, site) {
-    site
-      .readNotification(notification)
-      .catch(e => {
-        console.log('failed to mark notification as read ' + e);
-      })
-      .done();
+    site.readNotification(notification).catch(e => {
+      console.log('failed to mark notification as read ' + e);
+    });
     let url = DiscourseUtils.endpointForSiteNotification(site, notification);
     this._siteManager.setActiveSite(site);
     this.props.screenProps.openUrl(url);
