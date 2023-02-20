@@ -29,6 +29,7 @@ class DiscourseUtils {
       case 25:
       case 27:
       case 28:
+      case 34:
       case 36:
       case 801:
       case 802:
@@ -38,7 +39,7 @@ class DiscourseUtils {
         endpoint = `/badges/${data.badge_id}/basic?username=${data.username}`;
         break;
       case 16:
-        endpoint = `/users/${data.username}/messages/group/${data.group_name}`;
+        endpoint = `/u/${data.username}/messages/group/${data.group_name}`;
         break;
       case 19:
         endpoint = `/u/${site.username}/notifications/likes-received?acting_username=${data.username}`;
@@ -128,6 +129,7 @@ class DiscourseUtils {
       case 800:
         return 'user-plus';
       case 23:
+      case 34:
         return 'users';
       case 24:
         return 'bookmark';
