@@ -285,8 +285,16 @@ class Discourse extends React.Component {
   }
 
   componentDidMount() {
-    AppState.addEventListener('change', this._handleAppStateChange);
-    Linking.addEventListener('url', this._handleOpenUrl);
+    this._appStateSubscription = AppState.addEventListener(
+      'change',
+      this._handleAppStateChange,
+    );
+
+    this._handleOpenUrlSubscription = Linking.addEventListener(
+      'url',
+      this._handleOpenUrl,
+    );
+
     Linking.getInitialURL().then(url => {
       if (url) {
         this._handleOpenUrl({url: url});
@@ -393,23 +401,16 @@ class Discourse extends React.Component {
   }
 
   componentWillUnmount() {
-    if (Platform.OS === 'ios' && this.eventEmitter) {
-      this.eventEmitter.remove();
-    }
-    if (this._handleAppStateChange) {
-      this._handleAppStateChange.remove();
-    }
-
-    Linking.removeEventListener('url', this._handleOpenUrl);
+    this.eventEmitter?.removeAllListeners('keyInputEvent');
+    this._appStateSubscription?.remove();
+    this._handleOpenUrlSubscription?.remove();
+    this.subscription?.remove();
     clearTimeout(this.safariViewTimeout);
+    clearInterval(this.state.refreshInterval);
 
     if (Platform.OS === 'android') {
       this.removeNotificationOpenedListener();
       this.foregroundNNotificationListener();
-    }
-
-    if (this.subscription) {
-      this.subscription.remove();
     }
   }
 
