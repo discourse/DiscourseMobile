@@ -252,6 +252,7 @@ class HomeScreen extends React.Component {
     } else {
       return (
         <DraggableFlatList
+          style={styles.sitesList}
           activationDistance={20}
           data={this.state.data}
           renderItem={item => this._renderItem(item)}
@@ -345,6 +346,9 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: -TERM_BAR_HEIGHT,
     paddingBottom: 40,
+  },
+  sitesList: {
+    height: '100%',
   },
 });
 
