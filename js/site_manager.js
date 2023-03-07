@@ -259,9 +259,13 @@ class SiteManager {
   }
 
   _throttledRefreshSites() {
-    console.log('refreshing ' + this.sites.length + ' sites');
-
     this.lastRefresh = new Date();
+    console.log(
+      'refreshing ' +
+        this.sites.length +
+        ' sites at ' +
+        this.lastRefresh.toJSON(),
+    );
     AsyncStorage.setItem('@Discourse.lastRefresh', this.lastRefresh.toJSON());
 
     let sites = this.sites.slice(0);
