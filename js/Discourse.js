@@ -72,25 +72,25 @@ enableScreens();
 const Stack = createStackNavigator();
 
 class Discourse extends React.Component {
+  refreshTimerId = null;
+
   constructor(props) {
     super(props);
     this._siteManager = new SiteManager();
+    this._refresh = this._refresh.bind(this);
 
     this._handleAppStateChange = nextAppState => {
       console.log('Detected appState change: ' + nextAppState);
 
       if (nextAppState.match(/inactive|background/)) {
         this._seenNotificationMap = null;
-        clearInterval(this.state.refreshInterval);
+        clearTimeout(this.refreshTimerId);
       } else {
         StatusBar.setHidden(false);
         this._siteManager.refreshSites();
 
-        const intervalId = setInterval(
-          this._refreshPeriodically.bind(this),
-          30000,
-        );
-        this.setState({refreshInterval: intervalId});
+        clearTimeout(this.refreshTimerId);
+        this.refreshTimerId = setTimeout(this._refresh, 30000);
       }
     };
 
@@ -380,24 +380,14 @@ class Discourse extends React.Component {
       },
     );
 
-    const intervalId = setInterval(this._refreshPeriodically.bind(this), 30000);
-    this.setState({refreshInterval: intervalId});
+    clearTimeout(this.refreshTimerId);
+    this.refreshTimerId = setTimeout(this._refresh, 30000);
   }
 
-  _refreshPeriodically() {
-    AsyncStorage.getItem('@Discourse.lastRefresh').then(date => {
-      if (date) {
-        const lastRun = new Date(date).getTime(),
-          now = new Date().getTime();
-        if (now - lastRun > 20000) {
-          this._siteManager.refreshSites();
-        } else {
-          console.log('no period refresh, it was last refreshed too recently');
-        }
-      } else {
-        this._siteManager.refreshSites();
-      }
-    });
+  async _refresh() {
+    clearTimeout(this.refreshTimerId);
+    await this._siteManager.refreshSites();
+    this.refreshTimerId = setTimeout(this._refresh, 30000);
   }
 
   componentWillUnmount() {
@@ -406,7 +396,7 @@ class Discourse extends React.Component {
     this._handleOpenUrlSubscription?.remove();
     this.subscription?.remove();
     clearTimeout(this.safariViewTimeout);
-    clearInterval(this.state.refreshInterval);
+    clearTimeout(this.refreshTimerId);
 
     if (Platform.OS === 'android') {
       this.removeNotificationOpenedListener();

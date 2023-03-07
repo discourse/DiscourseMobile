@@ -13,14 +13,17 @@ import JSEncrypt from './../lib/jsencrypt';
 import randomBytes from './../lib/random-bytes';
 
 const {DiscourseKeyboardShortcuts} = NativeModules;
+const REFRESH_THROTTLE_MS = 5000;
 
 class SiteManager {
-  constructor() {
-    this._subscribers = [];
-    this.sites = [];
-    this.activeSite = null;
-    this.urlScheme = 'discourse://auth_redirect';
+  lastRefresh = null;
+  _subscribers = [];
+  sites = [];
+  activeSite = null;
+  urlScheme = 'discourse://auth_redirect';
+  deviceName = 'Discourse - Unknown Mobile Device';
 
+  constructor() {
     this.load();
 
     AsyncStorage.getItem('@Discourse.lastRefresh').then(date => {
@@ -28,8 +31,6 @@ class SiteManager {
         this.lastRefresh = new Date(date);
       }
     });
-
-    this.deviceName = 'Discourse - Unknown Mobile Device';
 
     DeviceInfo.getDeviceName().then(name => {
       this.deviceName = `Discourse - ${name}`;
@@ -239,15 +240,35 @@ class SiteManager {
     });
   }
 
-  refreshSites() {
-    console.log('refresh ' + this.sites.length + ' sites');
+  async refreshSites() {
+    const previousRefresh = this.lastRefresh;
 
-    let sites = this.sites.slice(0),
-      promises = [],
-      errors = 0;
+    if (!previousRefresh) {
+      this._throttledRefreshSites();
+      return;
+    }
+
+    const lastRun = new Date(previousRefresh).getTime();
+    const now = new Date().getTime();
+
+    if (now - lastRun >= REFRESH_THROTTLE_MS) {
+      this._throttledRefreshSites();
+    } else {
+      console.log('no refresh, it was last refreshed too recently');
+    }
+  }
+
+  _throttledRefreshSites() {
+    console.log('refreshing ' + this.sites.length + ' sites');
+
+    this.lastRefresh = new Date();
+    AsyncStorage.setItem('@Discourse.lastRefresh', this.lastRefresh.toJSON());
+
+    let sites = this.sites.slice(0);
+    let promises = [];
 
     if (sites.length === 0) {
-      console.log('no sites defined nothing to refresh!');
+      console.log('no sites defined, nothing to refresh!');
       return;
     }
 
@@ -260,7 +281,7 @@ class SiteManager {
               .then(() => {
                 // trigger localNotification alerts for sites with no push support (iOS only)
                 if (!site.hasPush) {
-                  site
+                  return site
                     .getAlerts()
                     .then(alerts => {
                       if (alerts && alerts.length > 0) {
@@ -279,7 +300,6 @@ class SiteManager {
                     .catch(e => {
                       console.log('failed to refresh ' + site.url);
                       console.log(e);
-                      errors++;
                     });
                 }
               })
@@ -293,15 +313,6 @@ class SiteManager {
       Promise.all(promises)
         .then(() => {
           this.save();
-
-          if (errors < sites.length) {
-            this.lastRefresh = new Date();
-            AsyncStorage.setItem(
-              '@Discourse.lastRefresh',
-              this.lastRefresh.toJSON(),
-            );
-          }
-
           resolve();
         })
         .catch(e => {
