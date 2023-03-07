@@ -301,7 +301,6 @@ class Site {
     }
 
     this.updateTotals();
-    return;
   }
 
   readNotification(notification) {
@@ -310,7 +309,7 @@ class Site {
         .catch(e => {
           reject(e);
         })
-        .finally(() => resolve);
+        .finally(() => resolve());
     });
   }
 
