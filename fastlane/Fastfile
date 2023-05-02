@@ -2,8 +2,8 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "1.8.8"
-ANDROID_APP_VERSION = "1.8.8"
+IOS_APP_VERSION = "1.8.9"
+ANDROID_APP_VERSION = "1.8.9"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
@@ -181,10 +181,7 @@ platform :ios do
       workspace: "./ios/#{PROJECT_NAME}.xcworkspace"
     )
 
-    testflight(
-      username: apple_id,
-      beta_app_feedback_email: apple_id
-    )
+    upload_to_testflight(skip_waiting_for_build_processing: true)
   end
 
   desc "Install on connected device"
