@@ -13,7 +13,7 @@
     "eslint": "eslint .",
     "eslint:fix": "eslint . --fix",
     "test": "jest",
-    "postinstall": "npx jetify"
+    "postinstall": "npx jetify && patch-package"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
@@ -27,6 +27,8 @@
     "jetifier": "^2.0.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
+    "patch-package": "^7.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-native": "^0.71.7",
