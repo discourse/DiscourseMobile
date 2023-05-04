@@ -26,6 +26,7 @@ lane :bootstrap do
   `git clone #{KEYS_REPOSITORY} keys`
 
   `openssl enc -aes-256-cbc -d -in keys/secrets.enc > keys/secrets.json -md md5`
+  `openssl enc -aes-256-cbc -d -in keys/appstoreconnect-key.enc > keys/appstoreconnect-key.json -md md5`
 
   File.open("google-play-api-secret.json","w") do |f|
     f.write(secrets["google-play-api-secret"].to_json)
@@ -155,12 +156,14 @@ platform :ios do
       force: true,
       type: "appstore",
       git_url: KEYS_REPOSITORY,
+      api_key_path: "fastlane/keys/appstoreconnect-key.json",
       app_identifier: ["org.discourse.DiscourseApp", "org.discourse.DiscourseApp.ShareExtension"]
     )
     match(
       force: true,
       type: "adhoc",
       git_url: KEYS_REPOSITORY,
+      api_key_path: "fastlane/keys/appstoreconnect-key.json",
       app_identifier: ["org.discourse.DiscourseApp", "org.discourse.DiscourseApp.ShareExtension"]
     )
     # match(force: true, type: "development", git_url: KEYS_REPOSITORY)
@@ -181,7 +184,7 @@ platform :ios do
       workspace: "./ios/#{PROJECT_NAME}.xcworkspace"
     )
 
-    upload_to_testflight(skip_waiting_for_build_processing: true)
+    pilot(skip_waiting_for_build_processing: true, api_key_path: "fastlane/keys/appstoreconnect-key.json")
   end
 
   desc "Install on connected device"
