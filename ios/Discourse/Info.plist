@@ -37,7 +37,7 @@
 		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>410</string>
+	<string>412</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -58,6 +58,8 @@
 			</dict>
 		</array>
 	</dict>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>org.jitsi.meet</string>
