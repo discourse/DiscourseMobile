@@ -162,6 +162,7 @@ class WebViewScreen extends React.Component {
           <WebView
             style={{
               marginTop: -1, // hacky fix to a 1px overflow just above header
+              backgroundColor: this.state.headerBg,
             }}
             ref={ref => (this.webview = ref)}
             source={{uri: this.state.webviewUrl}}
