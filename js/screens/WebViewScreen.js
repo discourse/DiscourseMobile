@@ -276,7 +276,7 @@ class WebViewScreen extends React.Component {
 
   _sendAppStateChange(appState) {
     const appStateChange = `
-      window.dispatchEvent(new CustomEvent("AppStateChange", { newAppState: "${appState}" }));
+      window.dispatchEvent(new CustomEvent("AppStateChange", { detail: { newAppState: "${appState}" } }));
       true;
     `;
 
