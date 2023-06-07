@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-siri-shortcut/ios/RNSSAddToSiriButtonViewManager.m b/node_modules/react-native-siri-shortcut/ios/RNSSAddToSiriButtonViewManager.m
-index 4705319..566fca1 100644
+index 4705319..df21980 100644
 --- a/node_modules/react-native-siri-shortcut/ios/RNSSAddToSiriButtonViewManager.m
 +++ b/node_modules/react-native-siri-shortcut/ios/RNSSAddToSiriButtonViewManager.m
 @@ -42,7 +42,7 @@ + (BOOL)requiresMainQueueSetup
@@ -7,7 +7,7 @@ index 4705319..566fca1 100644
  - (NSDictionary *)constantsToExport
  {
 -    INUIAddVoiceShortcutButton *button = [INUIAddVoiceShortcutButton new];
-+    INUIAddVoiceShortcutButton *button = [INUIAddVoiceShortcutButton alloc];
++    INUIAddVoiceShortcutButton *button = [[INUIAddVoiceShortcutButton alloc] initWithStyle:INUIAddVoiceShortcutButtonStyleAutomatic];
      button.translatesAutoresizingMaskIntoConstraints = NO;
      [button layoutIfNeeded];
  
