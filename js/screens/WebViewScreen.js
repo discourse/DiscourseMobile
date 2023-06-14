@@ -4,6 +4,7 @@
 import React from 'react';
 import {
   Animated,
+  AppState,
   View,
   Linking,
   Keyboard,
@@ -54,6 +55,10 @@ class WebViewScreen extends React.Component {
       this.safariViewVisible = false;
     });
 
+    this._handleAppStateChange = nextAppState => {
+      this._sendAppStateChange(nextAppState);
+    };
+
     this.state = {
       progress: 0,
       scrollDirection: '',
@@ -85,6 +90,11 @@ class WebViewScreen extends React.Component {
     this.keyboardWillHide = Keyboard.addListener(
       'keyboardDidHide',
       this._onKeyboardShow.bind(this),
+    );
+
+    this.appStateSubscription = AppState.addEventListener(
+      'change',
+      this._handleAppStateChange,
     );
   }
 
@@ -162,6 +172,7 @@ class WebViewScreen extends React.Component {
           <WebView
             style={{
               marginTop: -1, // hacky fix to a 1px overflow just above header
+              backgroundColor: this.state.headerBg,
             }}
             ref={ref => (this.webview = ref)}
             source={{uri: this.state.webviewUrl}}
@@ -260,6 +271,16 @@ class WebViewScreen extends React.Component {
     this.keyboardWillShow?.remove();
     this.keyboardWillHide?.remove();
     this.siteManager.refreshSites();
+    this.appStateSubscription?.remove();
+  }
+
+  _sendAppStateChange(appState) {
+    const appStateChange = `
+      window.dispatchEvent(new CustomEvent("AppStateChange", { detail: { newAppState: "${appState}" } }));
+      true;
+    `;
+
+    this.webview.injectJavaScript(appStateChange);
   }
 
   _onKeyboardShow() {

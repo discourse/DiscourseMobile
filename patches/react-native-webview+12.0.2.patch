@@ -1,0 +1,23 @@
+diff --git a/node_modules/react-native-webview/apple/RNCWebViewImpl.m b/node_modules/react-native-webview/apple/RNCWebViewImpl.m
+index c6d18bb..065723b 100644
+--- a/node_modules/react-native-webview/apple/RNCWebViewImpl.m
++++ b/node_modules/react-native-webview/apple/RNCWebViewImpl.m
+@@ -440,6 +440,18 @@ - (void)didMoveToWindow
+     [_webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:nil];
+     _webView.allowsBackForwardNavigationGestures = _allowsBackForwardNavigationGestures;
+ 
++    // We have to do both the #if check and the @available check. The first gates compilation when compiling on older
++    // versions of Xcode (14.2 and lower, to be specific). The @available() checks ensure we're _running_ on a supported
++    // OS.
++    #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 130300 || \
++        __IPHONE_OS_VERSION_MAX_ALLOWED >= 160400 || \
++        __TV_OS_VERSION_MAX_ALLOWED >= 160400
++        // https://webkit.org/blog/13936/enabling-the-inspection-of-web-content-in-apps/
++        if (@available(macos 13.3, ios 16.4, tvOS 16.4, *)) {
++            _webView.inspectable = YES;
++        }
++    #endif
++
+     _webView.customUserAgent = _userAgent;
+ 
+ #if !TARGET_OS_OSX
