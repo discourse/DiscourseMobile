@@ -273,8 +273,6 @@ class Site {
     if (currentUser.unread_high_priority_notifications) {
       this.unreadPrivateMessages =
         currentUser.unread_high_priority_notifications;
-    } else {
-      this.unreadPrivateMessages = currentUser.unread_private_messages;
     }
 
     if (this.isStaff) {
