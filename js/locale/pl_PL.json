@@ -1,8 +1,17 @@
 {
   "add_first_site": "+ Dodaj swoją pierwszą witrynę",
   "add_site": "Dodaj witrynę",
+  "add_sites": "Dodaj strony Discourse, które chcesz śledzić",
   "add": "+ Dodaj",
   "all": "Wszystkie",
+  "approved_commits": {
+    "one": "%{count} commit zatwierdzony",
+    "few": "%{count} commity zatwierdzone",
+    "many": "%{count} commitów zatwierdzonych",
+    "other": "%{count} commitów zatwierdzonych"
+  },
+  "approved": "\"%{title}\" zatwierdzono",
+  "check_out_popular": "Sprawdź te popularne społeczności",
   "connect": "połącz",
   "dont_know_where_to_start": "Nie wiesz od czego zacząć?",
   "inbox_message": {
@@ -23,10 +32,22 @@
   },
   "loading": "Wczytuję…",
   "membership_accepted": "Członkostwo zaakceptowane w \"%{name}\"",
+  "membership_request_consolidated": "Nowe prośby o członkostwo w \"%{name}\"",
   "votes_released": "%{description} - zakończone",
+  "event_reminder": "Wydarzenie wkrótce się rozpocznie - %{title}",
+  "user_following": "%{name} obserwuje Cię",
+  "chat_mention": "%{name} wspomniał o tobie na czacie",
+  "chat_message": "Nowa wiadomość na czacie",
+  "chat_invitation": "Nowe zaproszenie na czacie",
+  "chat_group_mention": "%{username} wspomniał o %{group_name} na czacie",
   "new_features": "Dostępne są nowe funkcje!",
   "new_with_count": "nowe (%{count})",
   "new": "Nowe",
+  "no_notifications": "Brak powiadomień",
+  "no_replies": "Brak odpowiedzi",
+  "no_sites_yet": "Nie masz jeszcze żadnych witryn!",
+  "no_new_notifications": "Brak nowych powiadomień",
+  "not_found": "%{term} nie został znaleziony!",
   "notifications": "Powiadomienia",
   "replies": "Odpowiedzi",
   "switch_dark": "Użyj ciemnego motywu",
@@ -35,5 +56,6 @@
   "term_placeholder": "Wpisz adres swojej witryny",
   "please_wait": "Proszę czekać...",
   "settings": "Ustawienia",
-  "browser_toggle_label": "Otwórz strony w przeglądarce aplikacji"
+  "browser_toggle_label": "Otwórz strony w przeglądarce aplikacji",
+  "browser_toggle_description": "Gdy to ustawienie jest wyłączone, witryny będą uruchamiane za pośrednictwem wybranej przeglądarki, w tym PWA"
 }
