@@ -1,16 +1,55 @@
 {
+  "add_first_site": "+ İlk sitenizi ekleyin",
+  "add_site": "Site ekle",
+  "add_sites": "Takip edilecek Discourse siteleri ekleyin",
+  "add": "+ Ekle",
   "all": "Tümü",
-  "inbox_message": {
-    "one": "%{group_name} gelen kutunuzdaki %{count} mesaj var",
-    "other": "%{group_name} gelen kutunuzda %{count} mesajları"
+  "approved_commits": {
+    "one": "%{count} taahhüt onaylandı",
+    "other": "%{count} taahhüt onaylandı"
   },
+  "approved": "\"%{title}\" onaylandı",
+  "check_out_popular": "Şu popüler topluluklara göz atın",
+  "connect": "bağlan",
+  "dont_know_where_to_start": "Nereden başlayacağınızı bilmiyor musunuz?",
+  "inbox_message": {
+    "one": "%{group_name} gelen kutunuzda %{count} mesaj var",
+    "other": "%{group_name} gelen kutunuzda %{count} mesaj var"
+  },
+  "incorrect_url": "Üzgünüz, %{term} bir Discourse forumu için doğru bir URL değil veya mobil API'leri desteklemiyor, sahibinin Discourse'u en son sürüme yükseltmesini sağlayın!",
   "last_updated": "Son Güncelleme:",
-  "liked": "gönderilerinizden %{count} tanesi beğenildi",
+  "liked": "gönderilerinizden %{count} tanesini beğendi",
+  "liked_two_users": "%{user1} ve %{user2}",
+  "liked_more": {
+    "one": "%{user1}, %{user2} ve %{count} kişi daha",
+    "other": "%{user1}, %{user2} ve %{count} kişi daha"
+  },
   "loading": "Yükleniyor...",
+  "membership_accepted": "\"%{name}\" üyeliği kabul edildi",
+  "membership_request_consolidated": "\"%{name}\" yeni üyelik talepleri",
   "votes_released": "%{description} - tamamlandı",
+  "event_reminder": "Bir etkinlik başlamak üzere - %{title}",
+  "user_following": "%{name} artık sizi takip ediyor",
+  "chat_mention": "%{name} sohbette sizden bahsetti",
+  "chat_message": "Sohbette yeni mesaj",
+  "chat_invitation": "Sohbette yeni davetiye",
+  "chat_group_mention": "%{username} sohbette %{group_name} adlı gruptan bahsetti",
   "new_features": "Yeni özellikler mevcut!",
+  "new_with_count": "yeni (%{count})",
   "new": "Yeni",
+  "no_notifications": "Bildirim yok",
+  "no_replies": "Yanıt yok",
+  "no_sites_yet": "Henüz siteniz yok!",
+  "no_new_notifications": "Yeni bildirim yok",
+  "not_found": "%{term} bulunamadı!",
   "notifications": "Bildirimler",
   "replies": "Cevaplar",
-  "settings": "Ayarlar"
+  "switch_dark": "Koyu temayı kullan",
+  "term_exists": "%{term} zaten mevcut",
+  "unread_with_count": "okunmamış (%{count})",
+  "term_placeholder": "Sitenizin adresini girin",
+  "please_wait": "Lütfen bekleyin...",
+  "settings": "Ayarlar",
+  "browser_toggle_label": "Siteleri uygulama içi tarayıcıyla açın",
+  "browser_toggle_description": "Bu ayar devre dışı bırakıldığında, siteler PWA'lar da dâhil olmak üzere tercih ettiğiniz tarayıcı üzerinden başlatılır"
 }
