@@ -182,6 +182,7 @@ class WebViewScreen extends React.Component {
             allowsFullscreenVideo={true}
             allowsLinkPreview={true}
             hideKeyboardAccessoryView={true}
+            webviewDebuggingEnabled={true}
             onLoadEnd={() => {
               this.webview.requestFocus();
             }}

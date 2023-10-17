@@ -345,7 +345,7 @@ PODS:
     - ReactCommon/turbomodule/core
   - react-native-segmented-control (2.2.2):
     - React-Core
-  - react-native-webview (12.0.2):
+  - react-native-webview (13.6.0):
     - React-Core
   - React-perflogger (0.71.7)
   - React-RCTActionSheet (0.71.7):
@@ -437,7 +437,7 @@ PODS:
     - React-Core
   - RNCPushNotificationIOS (1.10.1):
     - React-Core
-  - RNDeviceInfo (10.2.0):
+  - RNDeviceInfo (10.11.0):
     - React-Core
   - RNGestureHandler (2.9.0):
     - React-Core
@@ -727,7 +727,7 @@ SPEC CHECKSUMS:
   react-native-safari-web-auth: b6642abaa8084a8e5addba1cba4521fd30b95b64
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
   react-native-segmented-control: 65df6cd0619b780b3843d574a72d4c7cec396097
-  react-native-webview: 203b6a1c7507737f777c91d7e10c30e7e67c1a17
+  react-native-webview: 669ae162965f629a8d6a4bdd3b99a304d36ef1f2
   React-perflogger: 2d505bbe298e3b7bacdd9e542b15535be07220f6
   React-RCTActionSheet: 0e96e4560bd733c9b37efbf68f5b1a47615892fb
   React-RCTAnimation: fd138e26f120371c87e406745a27535e2c8a04ef
@@ -744,7 +744,7 @@ SPEC CHECKSUMS:
   RNBackgroundFetch: eef260dc500d8ed344fed205fe617d056e381978
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
-  RNDeviceInfo: 8b83e99e290deaf1bab71673cc636776ef647b6f
+  RNDeviceInfo: bf8a32acbcb875f568217285d1793b0e8588c974
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNLocalize: a64514b46a01375fdfae9349036b4dc7130333b5
   RNReanimated: cc5e3aa479cb9170bcccf8204291a6950a3be128
