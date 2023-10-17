@@ -35,7 +35,7 @@
     "react-native-background-fetch": "^4.1.2",
     "react-native-codegen": "^0.0.11",
     "react-native-custom-tabs": "https://github.com/adminphoeniixx/react-native-custom-tabs",
-    "react-native-device-info": "^10.2.0",
+    "react-native-device-info": "^10.11.0",
     "react-native-draggable-flatlist": "^4.0.0",
     "react-native-firebase": "^5.6.0",
     "react-native-gesture-handler": "^2.9.0",
@@ -53,7 +53,7 @@
     "react-native-svg": "^13.7.0",
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-webview": "^12.0.2"
+    "react-native-webview": "^13.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
