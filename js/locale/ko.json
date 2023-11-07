@@ -1,15 +1,52 @@
 {
+  "add_first_site": "+ 첫 사이트 추가",
+  "add_site": "사이트 추가",
+  "add_sites": "추적할 Discourse 사이트 추가",
+  "add": "+ 추가",
   "all": "모두",
+  "approved_commits": {
+    "other": "%{count} 커밋 승인됨"
+  },
+  "approved": "“%{title}\" 승인됨",
+  "check_out_popular": "인기 커뮤니티를 확인해 보세요",
+  "connect": "연결",
+  "dont_know_where_to_start": "어디서부터 시작해야 할지 모르겠다고요?",
   "inbox_message": {
     "other": " %{group_name} 사서함에 %{count}개의 메시지가 있습니다"
   },
+  "incorrect_url": "죄송합니다. %{term} 사이트는 Discourse 포럼의 올바른 URL이 아니거나 모바일 API를 지원하지 않습니다. 사이트 소유자가 Discourse를 최신 버전으로 업그레이드해야 합니다!",
   "last_updated": "마지막 업데이트 :",
   "liked": "내 게시물 중 %{count}개를 좋아합니다.",
+  "liked_two_users": "%{user1} 및 %{user2}",
+  "liked_more": {
+    "other": "%{user1}, %{user2} 및 %{count} 기타"
+  },
   "loading": "로드 중...",
+  "membership_accepted": "\"%{name}\"에서 회원 가입 승인됨",
+  "membership_request_consolidated": "\"%{name}\"에서 신규 가입 요청",
   "votes_released": "%{description} - 완료됨",
+  "event_reminder": "이벤트가 곧 시작됩니다 - %{title}",
+  "user_following": "%{name}님이 이제 당신을 팔로우함",
+  "chat_mention": "%{name}님이 당신을 채팅에서 언급함",
+  "chat_message": "채팅의 새 메시지",
+  "chat_invitation": "채팅에서 새 초대",
+  "chat_group_mention": "%{username}님이 채팅에서 %{group_name} 언급함",
+  "new_features": "새로운 기능을 사용할 수 있습니다!",
+  "new_with_count": "신규 (%{count})",
   "new": "새글",
+  "no_notifications": "알림 없음",
   "no_replies": "답글이 없습니다",
+  "no_sites_yet": "아직 사이트가 없습니다!",
+  "no_new_notifications": "새로운 알림 없음",
+  "not_found": "%{term}(을)를 찾을 수 없습니다!",
   "notifications": "알림",
   "replies": "댓글",
-  "settings": "설정"
+  "switch_dark": "어두운 테마 사용",
+  "term_exists": "%{term} 이미 존재함",
+  "unread_with_count": "읽지 않음 (%{count})",
+  "term_placeholder": "사이트 주소 입력",
+  "please_wait": "잠시만 기다려주세요...",
+  "settings": "설정",
+  "browser_toggle_label": "인앱 브라우저로 사이트 열기",
+  "browser_toggle_description": "이 설정을 비활성화하면 PWA를 포함하여 선택한 브라우저를 통해 사이트가 실행됩니다."
 }
