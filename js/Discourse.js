@@ -255,15 +255,7 @@ class Discourse extends React.Component {
           this.openUrl(params.siteUrl);
         } else {
           console.log(`${params.siteUrl} does not exist, attempt adding`);
-          Site.fromTerm(params.siteUrl)
-            .then(newSite => {
-              if (newSite) {
-                this._siteManager.add(newSite);
-              }
-            })
-            .catch(e => {
-              console.log('Error adding site via app-argument:', e);
-            });
+          this._addSite(params.siteUrl);
         }
       }
 
@@ -277,7 +269,7 @@ class Discourse extends React.Component {
             }
             this.openUrl(params.sharedUrl, supportsDelegatedAuth);
           } else {
-            Alert.alert('Could not load that URL.');
+            this._addSite(params.sharedUrl);
           }
         });
       }
@@ -388,6 +380,46 @@ class Discourse extends React.Component {
     clearTimeout(this.refreshTimerId);
     await this._siteManager.refreshSites();
     this.refreshTimerId = setTimeout(this._refresh, 30000);
+  }
+
+  async _addSite(url) {
+    // when adding a site, try stripping off the path
+    // helps find the site if users aren't on homepage
+    const match = url.match(/^(https?:\/\/[^/]+)\//);
+
+    if (!match) {
+      Alert.alert(i18n.t('cannot_load_url'));
+    }
+
+    const siteUrl = match[1];
+
+    try {
+      const newSite = await Site.fromTerm(siteUrl);
+
+      if (newSite) {
+        this._siteManager.add(newSite);
+        this._navigation.navigate('Home');
+      }
+    } catch (error) {
+      if (url !== siteUrl) {
+        // stripping off path is imperfect, though, try the full URL
+        // this is particularly helpful with subfolder sites
+        try {
+          const newSite2 = await Site.fromTerm(url);
+          if (newSite2) {
+            console.log(url);
+            this._siteManager.add(newSite2);
+            this._navigation.navigate('Home');
+          }
+        } catch (e) {
+          console.log('Error adding site: ', e);
+          Alert.alert(i18n.t('cannot_load_url'));
+        }
+      } else {
+        console.log('Error adding site: ', error);
+        Alert.alert(i18n.t('cannot_load_url'));
+      }
+    }
   }
 
   componentWillUnmount() {

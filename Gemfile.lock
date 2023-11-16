@@ -155,7 +155,7 @@ GEM
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
     fastlane-plugin-increment_version_code (0.4.3)
-    fastlane-plugin-versioning (0.5.1)
+    fastlane-plugin-versioning (0.5.2)
     ffi (1.15.5)
     fourflusher (2.3.1)
     fuzzy_match (2.0.4)
