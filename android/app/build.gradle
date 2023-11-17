@@ -98,7 +98,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 167
+        versionCode 180
         versionName MYAPP_VERSION
     }
 
@@ -168,13 +168,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
-    implementation 'com.google.firebase:firebase-core:16.0.9'
-    implementation "com.google.firebase:firebase-messaging:18.0.0"
-    implementation "com.google.android.gms:play-services-base:16.1.0"
-    // implementation 'com.google.android.gms:play-services-gcm:15.0.1'
-    implementation platform('com.google.firebase:firebase-bom:31.3.0')
-    // When using the BoM, don't specify versions in Firebase dependencies
-    implementation 'com.google.firebase:firebase-analytics'
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

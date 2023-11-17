@@ -2,8 +2,8 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "1.8.11"
-ANDROID_APP_VERSION = "1.8.9"
+IOS_APP_VERSION = "1.8.12"
+ANDROID_APP_VERSION = "1.8.12"
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
@@ -221,14 +221,8 @@ platform :android do
       project_dir: "android/"
     )
 
-    lane_context[SharedValues::GRADLE_ALL_APK_OUTPUT_PATHS].each do | apk |
-      puts "Uploading APK to Device: " + apk
-      begin
-        adb(command: "install -r #{apk}")
-      rescue => ex
-        puts ex
-      end
-    end
+    # adb(command: "install android/app/build/outputs/apk/debug/app-debug.apk")
+    adb(command: "install android/app/build/outputs/apk/release/app-release.apk")
   end
 
   desc "Submit a build to Google Play Store"
