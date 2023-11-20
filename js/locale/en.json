@@ -17,6 +17,7 @@
     "other": "%{count} messages in your %{group_name} inbox"
   },
   "incorrect_url": "Sorry, %{term} is not a correct URL to a Discourse forum or does not support mobile APIs, have owner upgrade Discourse to latest!",
+  "cannot_load_url": "That URL could not be added to DiscourseHub.",
   "last_updated": "Last Updated:",
   "liked": "liked %{count} of your posts",
   "liked_two_users": "%{user1} and %{user2}",

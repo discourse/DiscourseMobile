@@ -270,10 +270,8 @@ class Site {
 
     this.unreadNotifications = currentUser.unread_notifications;
 
-    if (currentUser.unread_high_priority_notifications) {
-      this.unreadPrivateMessages =
-        currentUser.unread_high_priority_notifications;
-    }
+    this.unreadPrivateMessages =
+      currentUser.new_personal_messages_notifications_count || 0;
 
     if (this.isStaff) {
       this.flagCount = currentUser.reviewable_count;
