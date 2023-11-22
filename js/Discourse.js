@@ -25,7 +25,6 @@ import SafariView from 'react-native-safari-view';
 import SafariWebAuth from 'react-native-safari-web-auth';
 import DeviceInfo from 'react-native-device-info';
 import firebaseMessaging from './platforms/firebase';
-import BackgroundFetch from './platforms/background-fetch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RootViewBackgroundColor from 'react-native-root-view-background-color';
 import {CustomTabs} from 'react-native-custom-tabs';
@@ -33,6 +32,8 @@ import i18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
 import {addShortcutListener} from 'react-native-siri-shortcut';
 import {enableScreens} from 'react-native-screens';
+
+// import BackgroundFetch from './platforms/background-fetch';
 
 const {DiscourseKeyboardShortcuts} = NativeModules;
 
@@ -104,39 +105,10 @@ class Discourse extends React.Component {
 
     this._handleOpenUrl = this._handleOpenUrl.bind(this);
 
-    if (Platform.OS === 'ios') {
-      PushNotificationIOS.addEventListener('notification', e =>
-        this._handleRemoteNotification(e),
-      );
-      // PushNotificationIOS.addEventListener("localNotification", e =>
-      //   this._handleLocalNotification(e)
-      // );
-
-      PushNotificationIOS.addEventListener('register', s => {
-        console.log('registered for push notifications', s);
-        this._siteManager.registerClientId(s);
-      });
-
-      PushNotificationIOS.getInitialNotification().then(e => {
-        if (e) {
-          this._handleRemoteNotification(e);
-        }
-      });
-    }
-
     if (Platform.OS === 'android') {
-      AsyncStorage.getItem('@PNPermissionRequestedAt').then(val => {
-        if (!val) {
-          PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-          );
-
-          AsyncStorage.setItem(
-            '@PNPermissionRequestedAt',
-            Date.now().toString(),
-          );
-        }
-      });
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
 
       firebaseMessaging.getToken().then(fcmToken => {
         if (fcmToken) {
@@ -309,8 +281,25 @@ class Discourse extends React.Component {
         sound: true,
       });
 
+      PushNotificationIOS.addEventListener('notification', e =>
+        this._handleRemoteNotification(e),
+      );
+
+      // PushNotificationIOS.addEventListener('localNotification', e =>
+      //   this._handleRemoteNotification(e),
+      // );
+
+      PushNotificationIOS.addEventListener('register', s => {
+        this._siteManager.registerClientId(s);
+      });
+
+      PushNotificationIOS.getInitialNotification().then(e => {
+        if (e) {
+          this._handleRemoteNotification(e);
+        }
+      });
+
       addShortcutListener(({userInfo, activityType}) => {
-        // Do something with the userInfo and/or activityType
         if (userInfo.siteUrl) {
           this._handleOpenUrl({
             url: `discourse://share?sharedUrl=${userInfo.siteUrl}`,
@@ -343,8 +332,6 @@ class Discourse extends React.Component {
       //   console.log(remoteMessage);
       // });
 
-      console.log(JSON.stringify(firebaseMessaging.app.options));
-
       // notification received while app is in background/closed
       firebaseMessaging.setBackgroundMessageHandler(async remoteMessage => {
         // console.log(remoteMessage);
@@ -356,30 +343,37 @@ class Discourse extends React.Component {
     }
 
     // BackgroundFetch register (15-minute minimum interval allowed)
-    if (Platform.OS === 'ios') {
-      BackgroundFetch.configure(
-        {minimumFetchInterval: 15},
-        async taskId => {
-          console.log('[js] Received background-fetch event: ', taskId);
-
-          this._siteManager.refreshing = false;
-          this._siteManager.refreshSites().then(() => {
-            this._siteManager.updateUnreadBadge();
-            // Required: Signal completion of your task to native code
-            // If you fail to do this, the OS can terminate your app
-            // or assign battery-blame for consuming too much background-time
-            BackgroundFetch.finish(taskId);
-          });
-        },
-        error => {
-          console.log('[js] RNBackgroundFetch failed to start');
-        },
-      );
-    }
+    // this._initBackgroundFetch();
 
     clearTimeout(this.refreshTimerId);
     this.refreshTimerId = setTimeout(this._refresh, 30000);
   }
+
+  // TODO: Restore background fetch
+  // async _initBackgroundFetch() {
+  // BackgroundFetch event handler.
+  // const onEvent = async taskId => {
+  //   console.log('[BackgroundFetch] task: ', taskId);
+  //   // Do your background work...
+  //   this._siteManager = new SiteManager();
+  //   await this._siteManager.backgroundRefresh();
+  //   // IMPORTANT:  You must signal to the OS that your task is complete.
+  //   BackgroundFetch.finish(taskId);
+  // };
+  // // Timeout callback is executed when your Task has exceeded its allowed running-time.
+  // // You must stop what you're doing immediately BackgroundFetch.finish(taskId)
+  // const onTimeout = async taskId => {
+  //   console.warn('[BackgroundFetch] TIMEOUT task: ', taskId);
+  //   BackgroundFetch.finish(taskId);
+  // };
+  // // Initialize BackgroundFetch only once when component mounts.
+  // let status = await BackgroundFetch.configure(
+  //   {minimumFetchInterval: 15},
+  //   onEvent,
+  //   onTimeout,
+  // );
+  // console.log('[BackgroundFetch] configure status: ', status);
+  // }
 
   async _refresh() {
     clearTimeout(this.refreshTimerId);

@@ -279,38 +279,7 @@ class SiteManager {
     return new Promise((resolve, reject) => {
       sites.forEach(site => {
         if (site.authToken) {
-          promises.push(
-            site
-              .refresh()
-              .then(() => {
-                // trigger localNotification alerts for sites with no push support (iOS only)
-                if (!site.hasPush) {
-                  return site
-                    .getAlerts()
-                    .then(alerts => {
-                      if (alerts && alerts.length > 0) {
-                        alerts.forEach(a => {
-                          if (a.id > site._seenNotificationId) {
-                            PushNotificationIOS.presentLocalNotification({
-                              alertBody: a.excerpt.substr(0, 250),
-                              userInfo: {discourse_url: a.url},
-                            });
-
-                            site._seenNotificationId = a.id;
-                          }
-                        });
-                      }
-                    })
-                    .catch(e => {
-                      console.log('failed to refresh ' + site.url);
-                      console.log(e);
-                    });
-                }
-              })
-              .catch(e => {
-                console.log(e);
-              }),
-          );
+          promises.push(site.refresh());
         }
       });
 

@@ -5,7 +5,6 @@
 import {Platform} from 'react-native';
 import _ from 'lodash';
 import Moment from 'moment';
-import DiscourseUtils from './DiscourseUtils';
 import fetch from './../lib/fetch';
 
 class Site {
@@ -417,49 +416,6 @@ class Site {
         .catch(e => {
           console.log('failed to fetch notifications ' + e);
           resolve([]);
-        });
-    });
-  }
-
-  getAlerts() {
-    const alertifiable = [1, 2, 3, 6, 7];
-    const types = {
-      1: 'mentioned you in',
-      2: 'replied to',
-      3: 'quoted you in',
-      6: 'messaged you in',
-      7: 'invited you to',
-    };
-
-    return new Promise((resolve, reject) => {
-      this.jsonApi('/notifications.json?recent=true&limit=25')
-        .then(results => {
-          const unreadAlerts = [];
-          if (results.notifications) {
-            results.notifications.forEach(r => {
-              let excerpt = '';
-              if (!r.read && alertifiable.indexOf(r.notification_type) > -1) {
-                if (r.data.display_username.match(/\sreplies/)) {
-                  excerpt = `${r.data.display_username} to "${r.fancy_title}"`;
-                } else {
-                  excerpt = `@${r.data.display_username} ${
-                    types[r.notification_type]
-                  } "${r.fancy_title}"`;
-                }
-                let url = DiscourseUtils.endpointForSiteNotification(this, r);
-                unreadAlerts.push({
-                  excerpt: excerpt,
-                  url: url,
-                  id: r.id,
-                });
-              }
-            });
-            resolve(unreadAlerts);
-          }
-        })
-        .catch(e => {
-          console.log('failed to fetch notifications ' + e);
-          resolve({});
         });
     });
   }
