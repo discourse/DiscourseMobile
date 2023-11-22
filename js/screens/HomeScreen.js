@@ -36,9 +36,7 @@ const toastConfig = {
       style={{borderLeftColor: 'transparent'}}
       onPress={() => {
         if (Platform.OS === 'android') {
-          PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-          );
+          Linking.openSettings();
         }
         if (Platform.OS === 'ios') {
           // We can't call PushNotificationIOS.requestPermissions again
