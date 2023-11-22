@@ -105,6 +105,26 @@ class Discourse extends React.Component {
 
     this._handleOpenUrl = this._handleOpenUrl.bind(this);
 
+    if (Platform.OS === 'ios') {
+      PushNotificationIOS.addEventListener('notification', e =>
+        this._handleRemoteNotification(e),
+      );
+
+      // PushNotificationIOS.addEventListener('localNotification', e =>
+      //   this._handleRemoteNotification(e),
+      // );
+
+      PushNotificationIOS.addEventListener('register', s => {
+        this._siteManager.registerClientId(s);
+      });
+
+      PushNotificationIOS.getInitialNotification().then(e => {
+        if (e) {
+          this._handleRemoteNotification(e);
+        }
+      });
+    }
+
     if (Platform.OS === 'android') {
       PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
@@ -279,24 +299,6 @@ class Discourse extends React.Component {
         alert: true,
         badge: true,
         sound: true,
-      });
-
-      PushNotificationIOS.addEventListener('notification', e =>
-        this._handleRemoteNotification(e),
-      );
-
-      // PushNotificationIOS.addEventListener('localNotification', e =>
-      //   this._handleRemoteNotification(e),
-      // );
-
-      PushNotificationIOS.addEventListener('register', s => {
-        this._siteManager.registerClientId(s);
-      });
-
-      PushNotificationIOS.getInitialNotification().then(e => {
-        if (e) {
-          this._handleRemoteNotification(e);
-        }
       });
 
       addShortcutListener(({userInfo, activityType}) => {
