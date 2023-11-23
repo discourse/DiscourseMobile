@@ -14,6 +14,7 @@ import {
   NativeEventEmitter,
   Settings,
   StatusBar,
+  ToastAndroid,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
@@ -143,6 +144,36 @@ class Discourse extends React.Component {
           }
         },
       );
+
+      // notification received while app is in foreground
+      // visible alert currently unsupported by react-native-firebase v6
+      // show just a toast for now
+      firebaseMessaging.onMessage(async remoteMessage => {
+        console.log(remoteMessage.notification);
+        const message =
+          remoteMessage.notification.title +
+          '\n' +
+          remoteMessage.notification.body;
+        ToastAndroid.show(message, ToastAndroid.LONG);
+      });
+
+      // notification received while app is in background/closed
+      firebaseMessaging.setBackgroundMessageHandler(async remoteMessage => {
+        let url = null;
+
+        if (remoteMessage.data.payload) {
+          // new v1 FCM API
+          const payload = JSON.parse(remoteMessage.data.payload);
+          url = payload.discourse_url;
+        } else {
+          // legacy FCM API
+          url = remoteMessage.data.discourse_url;
+        }
+
+        if (url) {
+          AsyncStorage.setItem('@AndroidMessageUrl', url);
+        }
+      });
     }
 
     const colorScheme = Appearance.getColorScheme();
@@ -323,24 +354,6 @@ class Discourse extends React.Component {
             this.openUrl(site.url);
           }
         }
-      });
-    }
-
-    if (Platform.OS === 'android') {
-      // notification received while app is in foreground
-      // visible alert currently unsupported by react-native-firebase v6
-      // a possible TODO
-      // firebaseMessaging.onMessage(async remoteMessage => {
-      //   console.log(remoteMessage);
-      // });
-
-      // notification received while app is in background/closed
-      firebaseMessaging.setBackgroundMessageHandler(async remoteMessage => {
-        // console.log(remoteMessage);
-        AsyncStorage.setItem(
-          '@AndroidMessageUrl',
-          remoteMessage.data.discourse_url,
-        );
       });
     }
 
