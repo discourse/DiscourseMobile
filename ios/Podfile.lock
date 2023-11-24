@@ -431,11 +431,11 @@ PODS:
     - React-jsi (= 0.71.7)
     - React-logger (= 0.71.7)
     - React-perflogger (= 0.71.7)
-  - RNBackgroundFetch (4.1.2):
+  - RNBackgroundFetch (4.2.1):
     - React-Core
   - RNCAsyncStorage (1.17.11):
     - React-Core
-  - RNCPushNotificationIOS (1.10.1):
+  - RNCPushNotificationIOS (1.11.0):
     - React-Core
   - RNDeviceInfo (10.11.0):
     - React-Core
@@ -741,9 +741,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: 08f132cad9896458776f37c112e71d60aef1c6ae
   React-runtimeexecutor: c5c89f8f543842dd864b63ded1b0bbb9c9445328
   ReactCommon: dbfbe2f7f3c5ce4ce44f43f2fd0d5950d1eb67c5
-  RNBackgroundFetch: eef260dc500d8ed344fed205fe617d056e381978
+  RNBackgroundFetch: 501c34ad6e880818ba17e7840b23f20a2d112923
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
-  RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
+  RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
   RNDeviceInfo: bf8a32acbcb875f568217285d1793b0e8588c974
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNLocalize: a64514b46a01375fdfae9349036b4dc7130333b5

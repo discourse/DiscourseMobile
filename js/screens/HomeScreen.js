@@ -6,6 +6,8 @@ import {
   Alert,
   Animated,
   Easing,
+  Linking,
+  PermissionsAndroid,
   Platform,
   RefreshControl,
   SafeAreaView,
@@ -13,6 +15,7 @@ import {
   UIManager,
   View,
 } from 'react-native';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import SafariWebAuth from 'react-native-safari-web-auth';
 import Site from '../site';
@@ -21,9 +24,38 @@ import {HEIGHT as TERM_BAR_HEIGHT} from './HomeScreenComponents/TermBar';
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
 import {donateShortcut} from 'react-native-siri-shortcut';
+import Toast, {BaseToast} from 'react-native-toast-message';
 
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
+
+const toastConfig = {
+  success: props => (
+    <BaseToast
+      {...props}
+      style={{borderLeftColor: 'transparent'}}
+      onPress={() => {
+        if (Platform.OS === 'android') {
+          Linking.openSettings();
+        }
+        if (Platform.OS === 'ios') {
+          // We can't call PushNotificationIOS.requestPermissions again
+          // per https://developer.apple.com/documentation/usernotifications/asking_permission_to_use_notifications?language=objc
+          // only the first authorization request is honored
+          Linking.openURL('App-Prefs:NOTIFICATIONS_ID');
+        }
+      }}
+      contentContainerStyle={{paddingHorizontal: 10}}
+      text1Style={{
+        fontSize: 17,
+        fontWeight: '400',
+      }}
+      text2Style={{
+        fontSize: 17,
+      }}
+    />
+  ),
+};
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -127,6 +159,40 @@ class HomeScreen extends React.Component {
     }
   }
 
+  async promptForNotifications() {
+    if (Platform.OS === 'ios') {
+      PushNotificationIOS.checkPermissions(permissions => {
+        console.log(permissions);
+        if (permissions.alert === false) {
+          this.showPNToast();
+        }
+      });
+    }
+
+    // Android 33+ has a permission request prompt
+    // versions before that permissions is always granted
+    if (Platform.OS === 'android' && Platform.Version >= 33) {
+      let granted = true;
+
+      granted = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
+      if (!granted) {
+        this.showPNToast();
+      }
+    }
+  }
+
+  showPNToast() {
+    Toast.show({
+      type: 'success',
+      text1: i18n.t('site_added'),
+      text2: i18n.t('enable_notifications'),
+      position: 'bottom',
+      visibilityTime: 6000,
+    });
+  }
+
   doSearch(term) {
     if (term.length === 0) {
       return new Promise((resolve, reject) => reject());
@@ -153,6 +219,8 @@ class HomeScreen extends React.Component {
             }
             this._siteManager.add(site);
           }
+
+          this.promptForNotifications();
 
           resolve(site);
         })
@@ -181,9 +249,6 @@ class HomeScreen extends React.Component {
   }
 
   pullDownToRefresh() {
-    console.log('pullDownToRefresh');
-    this.setState({isRefreshing: true});
-
     this._siteManager
       .refreshSites()
       .catch(e => {
@@ -308,27 +373,30 @@ class HomeScreen extends React.Component {
       outputRange: [0, TERM_BAR_HEIGHT],
     });
     return (
-      <SafeAreaView
-        style={[styles.container, {backgroundColor: theme.background}]}>
-        <Components.NavigationBar
-          leftButtonIconRotated={this.state.displayTermBar}
-          anim={this.state.anim}
-          rightButtonIconColor={theme.grayUI}
-          onDidPressLeftButton={() => this.onDidPressLeftButton()}
-          onDidPressRightButton={() => this.onDidPressRightButton()}
-          progress={this.state.addSiteProgress}
-        />
-        <Components.TermBar
-          anim={this.state.anim}
-          getInputRef={ref => (this._input = ref)}
-          onDidSubmitTerm={term => this.doSearch(term)}
-        />
-        <Animated.View
-          style={[styles.sitesContainer, {transform: [{translateY}]}]}>
-          {this._renderSites()}
-          {this._renderDebugRow()}
-        </Animated.View>
-      </SafeAreaView>
+      <>
+        <SafeAreaView
+          style={[styles.container, {backgroundColor: theme.background}]}>
+          <Components.NavigationBar
+            leftButtonIconRotated={this.state.displayTermBar}
+            anim={this.state.anim}
+            rightButtonIconColor={theme.grayUI}
+            onDidPressLeftButton={() => this.onDidPressLeftButton()}
+            onDidPressRightButton={() => this.onDidPressRightButton()}
+            progress={this.state.addSiteProgress}
+          />
+          <Components.TermBar
+            anim={this.state.anim}
+            getInputRef={ref => (this._input = ref)}
+            onDidSubmitTerm={term => this.doSearch(term)}
+          />
+          <Animated.View
+            style={[styles.sitesContainer, {transform: [{translateY}]}]}>
+            {this._renderSites()}
+            {this._renderDebugRow()}
+          </Animated.View>
+        </SafeAreaView>
+        <Toast config={toastConfig} />
+      </>
     );
   }
 }

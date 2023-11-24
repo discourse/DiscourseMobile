@@ -62,6 +62,7 @@
 		B52583FD1E5551D7001E9B7C /* nav-icon-gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "nav-icon-gray@3x.png"; path = "../img/nav-icon-gray@3x.png"; sourceTree = "<group>"; };
 		B587A4F11E5549B8003AAE26 /* Discourse.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Discourse.entitlements; path = Discourse/Discourse.entitlements; sourceTree = "<group>"; };
 		BD11887223DB333D00A2EFC9 /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
+		BD34D9672ADEF17500AC757D /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
 		BD4A208027B54F6500574A58 /* DiscourseKeyboardShortcuts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiscourseKeyboardShortcuts.h; sourceTree = "<group>"; };
 		BD4A208127B54FA300574A58 /* DiscourseKeyboardShortcuts.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiscourseKeyboardShortcuts.m; sourceTree = "<group>"; };
 		BD9F665D23F5B02C001001B3 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -166,6 +167,7 @@
 		BD9F665E23F5B02C001001B3 /* ShareExtension */ = {
 			isa = PBXGroup;
 			children = (
+				BD34D9672ADEF17500AC757D /* ShareExtension.entitlements */,
 				BD9F665F23F5B02C001001B3 /* ShareViewController.swift */,
 				BD9F666123F5B02C001001B3 /* MainInterface.storyboard */,
 				BD9F666423F5B02C001001B3 /* Info.plist */,
@@ -481,7 +483,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 417;
+				CURRENT_PROJECT_VERSION = 431;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6T3LU73T8S;
@@ -499,7 +501,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Discourse\"/**",
 				);
-				MARKETING_VERSION = 1.8.10;
+				MARKETING_VERSION = 1.8.13;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -526,7 +528,7 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 417;
+				CURRENT_PROJECT_VERSION = 431;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6T3LU73T8S;
 				ENABLE_BITCODE = NO;
@@ -543,7 +545,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Discourse\"/**",
 				);
-				MARKETING_VERSION = 1.8.10;
+				MARKETING_VERSION = 1.8.13;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -680,6 +682,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -714,6 +717,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = YES;

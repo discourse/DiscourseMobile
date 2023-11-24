@@ -8,11 +8,13 @@ import {
   Appearance,
   AppState,
   Linking,
+  PermissionsAndroid,
   Platform,
   NativeModules,
   NativeEventEmitter,
   Settings,
   StatusBar,
+  ToastAndroid,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
@@ -23,9 +25,7 @@ import SiteManager from './site_manager';
 import SafariView from 'react-native-safari-view';
 import SafariWebAuth from 'react-native-safari-web-auth';
 import DeviceInfo from 'react-native-device-info';
-import firebase from './firebase/helper';
-import bgMessaging from './firebase/bgMessaging';
-import BackgroundFetch from 'react-native-background-fetch';
+import firebaseMessaging from './platforms/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RootViewBackgroundColor from 'react-native-root-view-background-color';
 import {CustomTabs} from 'react-native-custom-tabs';
@@ -33,7 +33,8 @@ import i18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
 import {addShortcutListener} from 'react-native-siri-shortcut';
 import {enableScreens} from 'react-native-screens';
-import type {Notification, NotificationOpen} from './firebase/helper';
+
+// import BackgroundFetch from './platforms/background-fetch';
 
 const {DiscourseKeyboardShortcuts} = NativeModules;
 
@@ -91,6 +92,15 @@ class Discourse extends React.Component {
 
         clearTimeout(this.refreshTimerId);
         this.refreshTimerId = setTimeout(this._refresh, 30000);
+
+        if (Platform.OS === 'android') {
+          AsyncStorage.getItem('@AndroidMessageUrl').then(url => {
+            if (url) {
+              this.openUrl(url);
+              AsyncStorage.removeItem('@AndroidMessageUrl');
+            }
+          });
+        }
       }
     };
 
@@ -100,12 +110,12 @@ class Discourse extends React.Component {
       PushNotificationIOS.addEventListener('notification', e =>
         this._handleRemoteNotification(e),
       );
-      // PushNotificationIOS.addEventListener("localNotification", e =>
-      //   this._handleLocalNotification(e)
+
+      // PushNotificationIOS.addEventListener('localNotification', e =>
+      //   this._handleRemoteNotification(e),
       // );
 
       PushNotificationIOS.addEventListener('register', s => {
-        console.log('registered for push notifications', s);
         this._siteManager.registerClientId(s);
       });
 
@@ -117,31 +127,53 @@ class Discourse extends React.Component {
     }
 
     if (Platform.OS === 'android') {
-      const channel = new firebase.notifications.Android.Channel(
-        'discourse',
-        'Discourse',
-        firebase.notifications.Android.Importance.Max,
-      ).setDescription('Discourse notifications channel.');
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
 
-      // Create the channel
-      firebase.notifications().android.createChannel(channel);
+      firebaseMessaging.getToken().then(fcmToken => {
+        if (fcmToken) {
+          this._siteManager.registerClientId(fcmToken);
+        }
+      });
 
-      firebase
-        .messaging()
-        .getToken()
-        .then(fcmToken => {
+      this.onTokenRefreshListener = firebaseMessaging.onTokenRefresh(
+        fcmToken => {
           if (fcmToken) {
             this._siteManager.registerClientId(fcmToken);
           }
-        });
+        },
+      );
 
-      this.onTokenRefreshListener = firebase
-        .messaging()
-        .onTokenRefresh(fcmToken => {
-          if (fcmToken) {
-            this._siteManager.registerClientId(fcmToken);
-          }
-        });
+      // notification received while app is in foreground
+      // visible alert currently unsupported by react-native-firebase v6
+      // show just a toast for now
+      firebaseMessaging.onMessage(async remoteMessage => {
+        console.log(remoteMessage.notification);
+        const message =
+          remoteMessage.notification.title +
+          '\n' +
+          remoteMessage.notification.body;
+        ToastAndroid.show(message, ToastAndroid.LONG);
+      });
+
+      // notification received while app is in background/closed
+      firebaseMessaging.setBackgroundMessageHandler(async remoteMessage => {
+        let url = null;
+
+        if (remoteMessage.data.payload) {
+          // new v1 FCM API
+          const payload = JSON.parse(remoteMessage.data.payload);
+          url = payload.discourse_url;
+        } else {
+          // legacy FCM API
+          url = remoteMessage.data.discourse_url;
+        }
+
+        if (url) {
+          AsyncStorage.setItem('@AndroidMessageUrl', url);
+        }
+      });
     }
 
     const colorScheme = Appearance.getColorScheme();
@@ -301,7 +333,6 @@ class Discourse extends React.Component {
       });
 
       addShortcutListener(({userInfo, activityType}) => {
-        // Do something with the userInfo and/or activityType
         if (userInfo.siteUrl) {
           this._handleOpenUrl({
             url: `discourse://share?sharedUrl=${userInfo.siteUrl}`,
@@ -326,55 +357,38 @@ class Discourse extends React.Component {
       });
     }
 
-    if (Platform.OS === 'android') {
-      // notification opened while app is in foreground or background
-      this.removeNotificationOpenedListener = firebase
-        .notifications()
-        .onNotificationOpened((notificationOpen: NotificationOpen) => {
-          console.log('onNotificationOpened');
-          this.handleAndroidOpeNotification(notificationOpen);
-        });
-
-      // notification opened from closed app
-      firebase
-        .notifications()
-        .getInitialNotification()
-        .then((notificationOpen: NotificationOpen) => {
-          console.log('getInitialNotification');
-          this.handleAndroidOpeNotification(notificationOpen);
-        });
-
-      // notification received while in foreground
-      this.foregroundNNotificationListener = firebase
-        .notifications()
-        .onNotification(notification => {
-          bgMessaging(notification);
-        });
-    }
-
     // BackgroundFetch register (15-minute minimum interval allowed)
-    BackgroundFetch.configure(
-      {minimumFetchInterval: 15},
-      async taskId => {
-        console.log('[js] Received background-fetch event: ', taskId);
-
-        this._siteManager.refreshing = false;
-        this._siteManager.refreshSites().then(() => {
-          this._siteManager.updateUnreadBadge();
-          // Required: Signal completion of your task to native code
-          // If you fail to do this, the OS can terminate your app
-          // or assign battery-blame for consuming too much background-time
-          BackgroundFetch.finish(taskId);
-        });
-      },
-      error => {
-        console.log('[js] RNBackgroundFetch failed to start');
-      },
-    );
+    // this._initBackgroundFetch();
 
     clearTimeout(this.refreshTimerId);
     this.refreshTimerId = setTimeout(this._refresh, 30000);
   }
+
+  // TODO: Restore background fetch
+  // async _initBackgroundFetch() {
+  // BackgroundFetch event handler.
+  // const onEvent = async taskId => {
+  //   console.log('[BackgroundFetch] task: ', taskId);
+  //   // Do your background work...
+  //   this._siteManager = new SiteManager();
+  //   await this._siteManager.backgroundRefresh();
+  //   // IMPORTANT:  You must signal to the OS that your task is complete.
+  //   BackgroundFetch.finish(taskId);
+  // };
+  // // Timeout callback is executed when your Task has exceeded its allowed running-time.
+  // // You must stop what you're doing immediately BackgroundFetch.finish(taskId)
+  // const onTimeout = async taskId => {
+  //   console.warn('[BackgroundFetch] TIMEOUT task: ', taskId);
+  //   BackgroundFetch.finish(taskId);
+  // };
+  // // Initialize BackgroundFetch only once when component mounts.
+  // let status = await BackgroundFetch.configure(
+  //   {minimumFetchInterval: 15},
+  //   onEvent,
+  //   onTimeout,
+  // );
+  // console.log('[BackgroundFetch] configure status: ', status);
+  // }
 
   async _refresh() {
     clearTimeout(this.refreshTimerId);
@@ -428,11 +442,6 @@ class Discourse extends React.Component {
     this.subscription?.remove();
     clearTimeout(this.safariViewTimeout);
     clearTimeout(this.refreshTimerId);
-
-    if (Platform.OS === 'android') {
-      this.removeNotificationOpenedListener();
-      this.foregroundNNotificationListener();
-    }
   }
 
   parseURLparameters(string) {
@@ -446,15 +455,6 @@ class Discourse extends React.Component {
         parsed[item[0]] = decodeURIComponent(item[1]);
       });
     return parsed;
-  }
-
-  handleAndroidOpeNotification(notificationOpen) {
-    if (notificationOpen && notificationOpen.notification) {
-      const notification: Notification = notificationOpen.notification;
-      if (notification._data && notification._data.discourse_url) {
-        this.openUrl(notification._data.discourse_url);
-      }
-    }
   }
 
   openUrl(url, supportsDelegatedAuth = true) {

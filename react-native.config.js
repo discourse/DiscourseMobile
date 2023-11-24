@@ -1,6 +1,11 @@
 module.exports = {
   dependencies: {
-    'react-native-firebase': {
+    '@react-native-firebase/app': {
+      platforms: {
+        ios: null,
+      },
+    },
+    '@react-native-firebase/messaging': {
       platforms: {
         ios: null,
       },
@@ -11,6 +16,11 @@ module.exports = {
       },
     },
     'react-native-root-view-background-color': {
+      platforms: {
+        android: null,
+      },
+    },
+    'react-native-background-fetch': {
       platforms: {
         android: null,
       },
