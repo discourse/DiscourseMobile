@@ -1,15 +1,22 @@
 {
   "all": "Ամբողջը",
+  "connect": "կապել",
   "inbox_message": {
     "one": "%{count} հաղորդագրություն Ձեր %{group_name} մուտքային արկղում",
     "other": "%{count} հաղորդագրություն Ձեր %{group_name}-ի մուտքային արկղում"
   },
   "last_updated": "Վերջին թարմացումը. ",
   "liked": "հավանել է Ձեր %{count} գրառում",
+  "liked_more": {
+    "one": "%{user1}, %{user2} and %{count} other",
+    "other": "%{user1}, %{user2} և ևս %{count}-ը"
+  },
   "loading": "Բեռնվում է...",
+  "new_with_count": "նոր (%{count})",
   "new": "Նոր",
   "no_replies": "Պատասխան չկա",
   "notifications": "Ծանուցումներ",
   "replies": "Պատասխան",
+  "unread_with_count": "չկարդացած (%{count})",
   "settings": "Կարգավորումներ"
 }

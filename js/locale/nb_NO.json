@@ -1,13 +1,19 @@
 {
   "all": "Alle",
+  "connect": "koble til",
   "inbox_message": {
     "one": "%{count} melding i din %{group_name} innboks",
     "other": "%{count} meldinger i din innboks for %{group_name}"
   },
+  "last_updated": "Sist oppdatert:",
+  "liked": "likte %{count} av dine innlegg",
   "loading": "Laster…",
   "votes_released": "%{description} - fullført",
+  "new_with_count": "nye (%{count})",
   "new": "Nye",
+  "no_replies": "Ingen svar",
   "notifications": "Varsler",
   "replies": "Svar",
+  "unread_with_count": "ulest (%{count})",
   "settings": "Innstillinger"
 }

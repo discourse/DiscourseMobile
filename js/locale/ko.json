@@ -15,6 +15,7 @@
     "other": " %{group_name} 사서함에 %{count}개의 메시지가 있습니다"
   },
   "incorrect_url": "죄송합니다. %{term} 사이트는 Discourse 포럼의 올바른 URL이 아니거나 모바일 API를 지원하지 않습니다. 사이트 소유자가 Discourse를 최신 버전으로 업그레이드해야 합니다!",
+  "cannot_load_url": "해당 URL을 DiscourseHub에 추가할 수 없습니다.",
   "last_updated": "마지막 업데이트 :",
   "liked": "내 게시물 중 %{count}개를 좋아합니다.",
   "liked_two_users": "%{user1} 및 %{user2}",
@@ -47,6 +48,8 @@
   "term_placeholder": "사이트 주소 입력",
   "please_wait": "잠시만 기다려주세요...",
   "settings": "설정",
+  "site_added": "🎉 사이트가 추가되었습니다!",
+  "enable_notifications": "알림을 활성화하려면 여기를 탭하세요",
   "browser_toggle_label": "인앱 브라우저로 사이트 열기",
   "browser_toggle_description": "이 설정을 비활성화하면 PWA를 포함하여 선택한 브라우저를 통해 사이트가 실행됩니다."
 }

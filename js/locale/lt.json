@@ -1,16 +1,28 @@
 {
+  "add": "+ Pridėti",
   "all": "Visi",
+  "connect": "prisijungti",
   "inbox_message": {
     "one": "%{count} žinutė, jūsų %{group_name}pato dėžutėje",
     "few": "%{count} žinutės, jūsų %{group_name}pato dėžutėje",
     "many": "%{count}žinučių, jūsų %{group_name} pato dėžutėje",
     "other": "%{count} žinutės, jūsų %{group_name} pašto dėžutėje"
   },
+  "last_updated": "Paskutinį kartą atnaujinta:",
+  "liked": "patiko %{count} jūsų įrašų",
+  "liked_more": {
+    "one": "%{user1}, %{user2} ir dar %{count}",
+    "few": "%{user1}, %{user2}ir %{count} kiti",
+    "many": "%{user1}, %{user2} ir %{count}kitų",
+    "other": "%{user1}, %{user2} ir %{count}kitų"
+  },
   "loading": "Kraunama...",
   "votes_released": "%{description} - baigtas",
+  "new_with_count": "naujas (%{count})",
   "new": "Naujos",
   "no_replies": "Jokių atsakymų",
   "notifications": "Perspėjimai",
   "replies": "Atsakymai",
+  "unread_with_count": "neperskaitytas (%{count})",
   "settings": "Nustatymai"
 }

@@ -1,16 +1,25 @@
 {
+  "add": "+ Tilføj",
   "all": "Alle",
+  "connect": "forbind",
   "inbox_message": {
     "one": "%{count} besked i din %{group_name} indbakke",
     "other": "%{count} beskeder i din %{group_name} indbakke"
   },
   "last_updated": "Sidst opdateret:",
   "liked": "syntes godt om %{count} af dine indlæg",
+  "liked_more": {
+    "one": "%{user1}, %{user2} og %{count} anden",
+    "other": "%{user1}, %{user2} og %{count} andre"
+  },
   "loading": "Indlæser…",
   "votes_released": "%{description} - afsluttet",
+  "new_features": "Nye funktioner tilgængelige!",
+  "new_with_count": "nye (%{count})",
   "new": "Nye",
   "no_replies": "Ingen svar",
   "notifications": "Underretninger",
   "replies": "Svar",
+  "unread_with_count": "ulæst (%{count})",
   "settings": "Indstillinger"
 }

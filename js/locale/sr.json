@@ -1,8 +1,10 @@
 {
   "all": "Sve",
   "loading": "Učitavanje...",
+  "new_with_count": "nove (%{count})",
   "new": "Novo",
   "notifications": "Obaveštenja",
   "replies": "Odgovori",
+  "unread_with_count": "nepročitane (%{count})",
   "settings": "Podešavanje"
 }

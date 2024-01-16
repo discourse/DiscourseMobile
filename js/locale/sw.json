@@ -1,5 +1,6 @@
 {
   "all": "Zote",
+  "connect": "unganisha",
   "inbox_message": {
     "one": "Kuna meseji %{count} kwenye %{group_name} inbox",
     "other": "kuna meseji %{count} kwenye %{group_name} inbox"
@@ -9,5 +10,6 @@
   "no_replies": "Hakuna majibu",
   "notifications": "Taarifa",
   "replies": "Majibu",
+  "unread_with_count": "haijasomwa (%{count})",
   "settings": "Mpangilio"
 }

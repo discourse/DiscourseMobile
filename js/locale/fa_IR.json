@@ -1,17 +1,28 @@
 {
   "add_first_site": "+ افزودن اولین سایت خود",
   "add_site": "افزودن سایت",
+  "add": "+ افزودن",
   "all": "همه",
+  "connect": "وصل شدن",
   "inbox_message": {
     "one": "%{count} پیام در صندوق ورودی %{group_name}",
     "other": "%{count} پیام در صندوق ورودی %{group_name}"
   },
   "last_updated": "آخرین به‌روزرسانی:",
   "liked": "%{count} نفر نوشته شما را پسندیدن",
+  "liked_more": {
+    "one": "%{user1}، %{user2} و %{count} دیگر",
+    "other": "%{user1}، %{user2} و %{count} دیگر"
+  },
   "loading": "بارگذاری...",
+  "votes_released": "%{description} - تکمیل شد",
   "new_features": "ویژگی‌های جدید در دسترس است!",
+  "new_with_count": "(%{count}) جدید",
   "new": "جدید",
+  "no_replies": "بدون پاسخ",
+  "no_sites_yet": "شما هنوز هیچ سایتی ندارید!",
   "notifications": "آگاه‌سازی‌ها",
   "replies": "پاسخ‌ها",
+  "unread_with_count": " (%{count}) خوانده‌ نشده‌",
   "settings": "تنظیمات"
 }

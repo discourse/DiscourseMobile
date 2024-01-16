@@ -1,9 +1,18 @@
 {
   "all": "Всички",
+  "connect": "свържете се",
+  "inbox_message": {
+    "one": "%{count} съобщение във входящата ви поща %{group_name}",
+    "other": "%{count} съобщения във входящата ви поща %{group_name}"
+  },
   "last_updated": "Последно обновление:",
   "loading": "Зарежда се...",
+  "votes_released": "%{description} - завършено",
+  "new_features": "Налични са нови функции!",
+  "new_with_count": "нов (%{count})",
   "new": "Нов",
   "notifications": "Известия",
   "replies": "Отговори",
+  "unread_with_count": "непрочетен (%{count})",
   "settings": "Настройки"
 }

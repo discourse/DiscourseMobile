@@ -1,14 +1,24 @@
 {
+  "add": "+ اضافہ کریں",
   "all": "تمام",
+  "connect": "کنَیکٹ",
   "inbox_message": {
     "one": "آپ کے %{group_name} اِن باکس میں %{count} پیغام",
     "other": "آپ کے %{group_name} اِن باکس میں %{count} پیغامات"
   },
+  "last_updated": "آخری دفہ اپ ڈیٹ:",
   "liked": "آپ کی %{count} پوسٹس کو لائیک کیا",
+  "liked_more": {
+    "one": "%{user2}، %{user1} اور %{count} مزید",
+    "other": "%{user2}، %{user1} اور %{count} مزید"
+  },
   "loading": "لوڈ ہو رہا ہے...",
+  "votes_released": "%{description} - مکمل",
+  "new_with_count": "نیا (%{count})",
   "new": "نیا",
   "no_replies": "کوئی جوابات نہیں۔",
   "notifications": "اطلاعات",
   "replies": "جوابات",
+  "unread_with_count": "بغیر پڑھا (%{count})",
   "settings": "سیٹِنگ"
 }

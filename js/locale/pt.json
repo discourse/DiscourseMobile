@@ -1,15 +1,23 @@
 {
+  "add": "+ Adicionar",
   "all": "Todos",
+  "connect": "associar",
   "inbox_message": {
     "one": "%{count} mensagem no seu grupo %{group_name}",
     "other": "%{count} mensagens no seu grupo %{group_name}"
   },
   "last_updated": "Última Atualização:",
   "liked": "gostou de %{count} das suas publicações",
+  "liked_more": {
+    "one": "%{user1}, %{user2} e %{count} outro",
+    "other": "%{user1}, %{user2} e %{count} outros"
+  },
   "loading": "A carregar...",
   "votes_released": "%{description} - concluído",
+  "new_with_count": "novo (%{count})",
   "new": "Novo",
   "notifications": "Notificações",
   "replies": "Respostas",
+  "unread_with_count": "não Lido (%{count})",
   "settings": "Configurações"
 }

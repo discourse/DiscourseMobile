@@ -1,5 +1,7 @@
 {
+  "add": "+ Додавання",
   "all": "Усі",
+  "connect": "підключити",
   "inbox_message": {
     "one": "%{count} повідомлення в вашій групі: %{group_name} ",
     "few": "%{count} повідомлень в вашій групі: %{group_name} ",
@@ -8,11 +10,20 @@
   },
   "last_updated": "Останнє оновлення:",
   "liked": "Сподобався %{count} ваш пост",
+  "liked_more": {
+    "one": "%{user1}, %{user2} та %{count} інший",
+    "few": "%{user1}, %{user2} та %{count} інших",
+    "many": "%{user1}, %{user2} та %{count} інших",
+    "other": "%{user1}, %{user2} та %{count} інших"
+  },
   "loading": "Завантаження...",
   "votes_released": "%{description} - завершено",
+  "new_features": "Доступні нові функції!",
+  "new_with_count": "нові (%{count})",
   "new": "Новий",
   "no_replies": "Немає відповідей",
   "notifications": "Сповіщення",
   "replies": "Відповідей",
+  "unread_with_count": "непрочитані (%{count})",
   "settings": "Налаштування"
 }
