@@ -1,15 +1,29 @@
 {
+  "add": "+ Přidat",
   "all": "Všechny",
+  "connect": "připojit",
   "inbox_message": {
     "one": "%{count} zpráva ve schránce skupiny %{group_name}",
     "few": "%{count} zprávy ve schránce skupiny %{group_name}",
     "many": "%{count} zpráv ve schránce skupiny %{group_name}",
     "other": "%{count} zpráv ve schránce skupiny %{group_name}"
   },
+  "last_updated": "Naposledy aktualizováno:",
+  "liked": "olajkoval/a %{count} z vašich příspěvků",
+  "liked_more": {
+    "one": "%{user1}, %{user2} a %{count} další",
+    "few": "%{user1}, %{user2} a %{count} další",
+    "many": "%{user1}, %{user2} a %{count} dalších",
+    "other": "%{user1}, %{user2} a %{count} dalších"
+  },
   "loading": "Načítám...",
+  "votes_released": "%{description} - dokončeno",
+  "new_features": "Nové funkce jsou k dispozici!",
+  "new_with_count": "nové (%{count})",
   "new": "Nová",
   "no_replies": "Žádné odpovědi",
   "notifications": "Oznámení",
   "replies": "Odpovědi",
+  "unread_with_count": "nepřečtené (%{count})",
   "settings": "Nastavení"
 }

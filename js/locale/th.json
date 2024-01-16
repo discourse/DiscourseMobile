@@ -1,13 +1,17 @@
 {
+  "add": "+ เพิ่ม",
   "all": "ทั้งหมด",
+  "connect": "เชื่อมต่อ",
   "inbox_message": {
     "other": "%{count}ข้อความในกล่องขาเข้าของกลุ่ม %{group_name}"
   },
   "last_updated": "อัปเดตล่าสุด:",
   "liked": "ถูกใจ %{count} ครั้งต่อโพสต์ของคุณ",
   "loading": "กำลังโหลด...",
+  "new_with_count": "ใหม่ (%{count})",
   "new": "ใหม่",
   "notifications": "การแจ้งเตือน",
   "replies": "ตอบ",
+  "unread_with_count": "ยังไม่อ่าน (%{count})",
   "settings": "การตั้งค่า"
 }

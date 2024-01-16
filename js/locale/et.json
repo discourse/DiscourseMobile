@@ -1,10 +1,14 @@
 {
+  "add": "+ Lisa",
   "all": "Kõik",
+  "connect": "ühenda",
   "last_updated": "Viimati uuendatud:",
   "loading": "Laen...",
+  "new_with_count": "uus (%{count})",
   "new": "Uus",
   "no_replies": "Vastuseid pole",
   "notifications": "Teavitused",
   "replies": "Vastuseid",
+  "unread_with_count": "lugemata (%{count})",
   "settings": "Seaded"
 }

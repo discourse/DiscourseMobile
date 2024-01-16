@@ -1,16 +1,24 @@
 {
+  "add": "+ Engadir",
   "all": "Todo",
+  "connect": "conectar",
   "inbox_message": {
     "one": "%{count} mensaxe na caixa %{group_name}",
     "other": "%{count} mensaxes na caixa %{group_name}"
   },
   "last_updated": "Última actualización:",
   "liked": "gustoulles %{count} das súas publicacións",
+  "liked_more": {
+    "one": "%{user1}, %{user2} e %{count} outro",
+    "other": "%{user1}, %{user2} e %{count} outros"
+  },
   "loading": "Cargando...",
   "votes_released": "%{description} - completado",
+  "new_with_count": "(%{count}) novo",
   "new": "Novo",
   "no_replies": "Sen respostas",
   "notifications": "Notificacións",
   "replies": "Respostas",
+  "unread_with_count": "(%{count}) pendente de ler",
   "settings": "Configuración"
 }

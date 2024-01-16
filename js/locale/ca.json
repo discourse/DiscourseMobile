@@ -1,15 +1,23 @@
 {
+  "add": "+ Afegeix",
   "all": "Tot",
+  "connect": "connecta",
   "inbox_message": {
     "one": "%{count} missatge en la vostra bústia de %{group_name}",
     "other": "%{count} missatges en la vostra bústia de %{group_name}"
   },
   "last_updated": "Última actualització:",
   "liked": "li agrada %{count} de les vostres publicacions",
+  "liked_more": {
+    "one": "%{user1}, %{user2} i %{count} altre",
+    "other": "%{user1}, %{user2} i %{count} altres"
+  },
   "loading": "Carregant...",
+  "new_with_count": "nou (%{count})",
   "new": "Nous",
   "no_replies": "No hi ha respostes",
   "notifications": "Notificacions",
   "replies": "Respostes",
+  "unread_with_count": "no llegit (%{count})",
   "settings": "Configuració"
 }

@@ -1,5 +1,7 @@
 {
+  "add": "+ Dodaj",
   "all": "Sve",
+  "connect": "povežite se",
   "inbox_message": {
     "one": "%{count} poruka u vašem %{group_name} dolaznom pretincu",
     "few": "%{count} poruka u vašem %{group_name} dolaznom pretincu",
@@ -7,13 +9,20 @@
   },
   "last_updated": "Zadnji put ažurirano:",
   "liked": "svidjelo se %{count} vaših postova",
+  "liked_more": {
+    "one": "%{user1}, %{user2} i %{count} ostalo",
+    "few": "%{user1}, %{user2} i %{count} ostalih",
+    "other": "%{user1}, %{user2} i %{count} ostalih"
+  },
   "loading": "Očitavanje...",
   "votes_released": "%{description} - dovršeno",
   "new_features": "Dostupne su nove značajke!",
+  "new_with_count": "novi (%{count})",
   "new": "Hello",
   "no_replies": "Nema odgovora",
   "notifications": "Obavijest",
   "replies": "Odgovori",
+  "unread_with_count": "nepročitanih (%{count})",
   "please_wait": "Molimo pričekajte...",
   "settings": "Postavke"
 }

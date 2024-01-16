@@ -1,14 +1,22 @@
 {
+  "add": "+ Thêm",
   "all": "Tất cả",
+  "connect": "kết nối",
   "inbox_message": {
     "other": "%{count} thư trong %{group_name} hộp thư đến của bạn"
   },
   "last_updated": "Cập nhật lần cuối:",
   "liked": "đã thích %{count} bài viết của bạn",
+  "liked_more": {
+    "other": "%{user1}, %{user2} và %{count} người khác"
+  },
   "loading": "Đang tải...",
   "votes_released": "%{description} - hoàn thành",
+  "new_with_count": "mới (%{count})",
   "new": "Mới",
+  "no_replies": "Không có câu trả lời",
   "notifications": "Thông báo",
   "replies": "Trả lời",
+  "unread_with_count": "chưa đọc (%{count})",
   "settings": "Cài đặt"
 }

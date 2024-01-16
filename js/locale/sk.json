@@ -1,8 +1,12 @@
 {
+  "add": "+ Pridať",
   "all": "Všetky",
+  "connect": "pripojiť",
   "loading": "Prebieha načítavanie...",
+  "new_with_count": "nová (%{count})",
   "new": "Nové",
   "notifications": "Upozornenia",
   "replies": "Odpovede",
+  "unread_with_count": "neprečítaná (%{count})",
   "settings": "Nastavenia"
 }
