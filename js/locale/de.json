@@ -17,6 +17,7 @@
     "other": "%{count} Nachrichten in deinem %{group_name} Posteingang"
   },
   "incorrect_url": "Entschuldigung, %{term} ist keine korrekte URL eines Discourse-Forums oder unterstützt keine mobilen APIs. Bitte den Betreiber, Discourse zu aktualisieren.",
+  "cannot_load_url": "Diese URL konnte nicht zu DiscourseHub hinzugefügt werden.",
   "last_updated": "Letzte Aktualisierung:",
   "liked": "gefallen %{count} deiner Beiträge",
   "liked_two_users": "%{user1} und %{user2}",
@@ -50,6 +51,8 @@
   "term_placeholder": "Gib die Adresse deiner Website ein",
   "please_wait": "Bitte warten …",
   "settings": "Einstellungen",
+  "site_added": "🎉 Website hinzugefügt!",
+  "enable_notifications": "Tippe hier, um Benachrichtigungen zu aktivieren",
   "browser_toggle_label": "Websites mit In-App-Browser öffnen",
   "browser_toggle_description": "Wenn diese Einstellung deaktiviert ist, werden Websites über den Browser deiner Wahl aufgerufen, einschließlich PWAs"
 }

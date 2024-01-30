@@ -15,6 +15,7 @@
     "other": "%{group_name} の受信トレイに %{count} 件のメッセージがあります"
   },
   "incorrect_url": "%{term} は Discourse フォーラムへの正しい URL でないか、モバイル API をサポートしていません。オーナーに最新の Discourse にアップグレードしてもらいましょう！",
+  "cannot_load_url": "その URL を DiscourseHub に追加できませんでした。",
   "last_updated": "最終更新:",
   "liked": "はあなたの %{count} 件の投稿に「いいね！」しました",
   "liked_two_users": "%{user1} と %{user2}",
@@ -47,6 +48,8 @@
   "term_placeholder": "サイドのアドレスを入力してください",
   "please_wait": "お待ちください...",
   "settings": "設定",
+  "site_added": "🎉 サイトが追加されました！",
+  "enable_notifications": "通知を有効にするにはここをタップ",
   "browser_toggle_label": "アプリ内ブラウザでサイトを開く",
   "browser_toggle_description": "この設定を無効にすると、サイトは PWA を含む任意のブラウザで起動します。"
 }

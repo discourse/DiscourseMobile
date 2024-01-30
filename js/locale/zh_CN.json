@@ -15,6 +15,7 @@
     "other": "您的“%{group_name}”收件箱中有 %{count} 条消息"
   },
   "incorrect_url": "抱歉，%{term} 不是 Discourse 论坛的正确 URL 或不支持移动 API，请让所有者将 Discourse 升级到最新版本！",
+  "cannot_load_url": "该 URL 无法添加到 DiscourseHub。",
   "last_updated": "最近更新：",
   "liked": "赞了您的 %{count} 个帖子",
   "liked_two_users": "%{user1} 和 %{user2}",
@@ -47,6 +48,8 @@
   "term_placeholder": "输入您的站点地址",
   "please_wait": "请稍候…",
   "settings": "设置",
+  "site_added": "🎉 站点已添加！",
+  "enable_notifications": "点按此处启用通知",
   "browser_toggle_label": "使用应用内浏览器打开站点",
   "browser_toggle_description": "禁用此设置后，站点将通过您选择的浏览器启动，包括 PWA"
 }
