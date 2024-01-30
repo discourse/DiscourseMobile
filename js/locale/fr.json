@@ -17,6 +17,7 @@
     "other": "%{count} messages dans votre boîte de réception %{group_name}"
   },
   "incorrect_url": "Nous sommes désolés, %{term} n'est pas une URL correcte vers un forum Discourse ou ne prend pas en charge les API mobiles. Demandez au propriétaire d'actualiser Discourse vers la version la plus récente !",
+  "cannot_load_url": "Cette URL n'a pas pu être ajoutée à DiscourseHub.",
   "last_updated": "Dernière mise à jour :",
   "liked": "a aimé %{count} de vos messages",
   "liked_two_users": "%{user1} et %{user2}",
@@ -50,6 +51,8 @@
   "term_placeholder": "Saisissez l'adresse de votre site",
   "please_wait": "Veuillez patienter…",
   "settings": "Paramètres",
+  "site_added": "🎉 Site ajouté !",
+  "enable_notifications": "Appuyez ici pour activer les notifications",
   "browser_toggle_label": "Ouvrir les sites avec un navigateur intégré à l'application",
   "browser_toggle_description": "Lorsque ce paramètre est désactivé, les sites seront lancés via le navigateur de votre choix, y compris les PWA"
 }

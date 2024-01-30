@@ -17,6 +17,7 @@
     "other": "%{count} berichten in uw Postvak IN voor %{group_name}"
   },
   "incorrect_url": "Sorry, %{term} is geen correcte URL naar een Discourse-forum of ondersteunt geen mobiele API's. Laat de eigenaar Discourse upgraden naar de nieuwste versie!",
+  "cannot_load_url": "Die URL kon niet worden toegevoegd aan DiscourseHub.",
   "last_updated": "Laatst bijgewerkt:",
   "liked": "heeft %{count} van uw berichten geliket",
   "liked_two_users": "%{user1} en %{user2}",
@@ -50,6 +51,8 @@
   "term_placeholder": "Voer het adres van je site in",
   "please_wait": "Even geduld...",
   "settings": "Instellingen",
+  "site_added": "🎉 Site toegevoegd!",
+  "enable_notifications": "Tik hier om meldingen in te schakelen",
   "browser_toggle_label": "Sites openen met in-app browser",
   "browser_toggle_description": "Als deze instelling is uitgeschakeld, worden sites geopend in de browser van je keuze, inclusief PWA's"
 }

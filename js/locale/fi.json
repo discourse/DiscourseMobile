@@ -17,6 +17,7 @@
     "other": "%{count} viestiä ryhmän %{group_name} saapuneissa"
   },
   "incorrect_url": "%{term} ei ole oikea Discourse-foorumin URL tai se ei tue mobiili-APIa, pyydä omistajaa päivittämään Discourse uusimpaan versioon.",
+  "cannot_load_url": "Tätä URL-osoitetta ei voitu lisätä DiscourseHubiin.",
   "last_updated": "Viimeksi päivitetty:",
   "liked": "tykkäsi %{count} viestistäsi",
   "liked_two_users": "%{user1} ja %{user2}",
@@ -50,6 +51,8 @@
   "term_placeholder": "Anna sivustosi osoite",
   "please_wait": "Odota...",
   "settings": "Asetukset",
+  "site_added": "🎉 Sivusto lisätty!",
+  "enable_notifications": "Ota ilmoitukset käyttöön napauttamalla tätä",
   "browser_toggle_label": "Avaa sivustot sovelluksen sisäisellä selaimella",
   "browser_toggle_description": "Kun tämä asetus on poistettu käytöstä, sivustot käynnistetään valitsemasi selaimen kautta, mukaan lukien PWA:t"
 }

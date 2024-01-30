@@ -17,6 +17,7 @@
     "other": "%{group_name} gelen kutunuzda %{count} mesaj var"
   },
   "incorrect_url": "Üzgünüz, %{term} bir Discourse forumu için doğru bir URL değil veya mobil API'leri desteklemiyor, sahibinin Discourse'u en son sürüme yükseltmesini sağlayın!",
+  "cannot_load_url": "Bu URL, DiscourseHub'a eklenemedi.",
   "last_updated": "Son Güncelleme:",
   "liked": "gönderilerinizden %{count} tanesini beğendi",
   "liked_two_users": "%{user1} ve %{user2}",
@@ -50,6 +51,8 @@
   "term_placeholder": "Sitenizin adresini girin",
   "please_wait": "Lütfen bekleyin...",
   "settings": "Ayarlar",
+  "site_added": "🎉 Site eklendi!",
+  "enable_notifications": "Bildirimleri etkinleştirmek için buraya dokunun",
   "browser_toggle_label": "Siteleri uygulama içi tarayıcıyla açın",
   "browser_toggle_description": "Bu ayar devre dışı bırakıldığında, siteler PWA'lar da dâhil olmak üzere tercih ettiğiniz tarayıcı üzerinden başlatılır"
 }
