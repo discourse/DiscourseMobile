@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     marginTop: 3,
+    borderRadius: 18,
   },
   info: {
     flex: 1,
