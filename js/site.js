@@ -259,6 +259,35 @@ class Site {
       return;
     }
 
+    let useApiFallbacks = false;
+
+    try {
+      let totals = await this.jsonApi('/notifications/totals.json');
+
+      this.unreadNotifications = totals.unread_notifications || 0;
+      this.unreadPrivateMessages = totals.unread_personal_messages || 0;
+      this.flagCount = totals.unseen_reviewables || 0;
+      this.totalUnread = totals?.topic_tracking.unread || 0;
+      this.totalNew = totals?.topic_tracking.new || 0;
+      this.chatNotifications = totals.chat_notifications || 0;
+      if (totals.group_inboxes) {
+        this.groupInboxes = totals.group_inboxes;
+      }
+    } catch (error) {
+      console.log(
+        '/notifications/totals.json endpoint not available, using fallback.',
+      );
+      console.log(error);
+      useApiFallbacks = true;
+    }
+
+    if (!useApiFallbacks) {
+      return;
+    }
+
+    // TODO(pmusaraj): remove after June 2024
+    // once most sites will have received the new API at /notifications/totals.json
+
     let json = await this.jsonApi('/session/current.json');
     let currentUser = json.current_user;
     this.isStaff = !!(currentUser.admin || currentUser.moderator);
