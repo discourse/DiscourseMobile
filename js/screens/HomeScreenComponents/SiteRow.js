@@ -32,13 +32,11 @@ const SiteRow = props => {
           count={props.site.unreadPrivateMessages}
           icon={'envelope'}
         />
-        {props.site.chatNotifications && (
-          <Notification
-            color={theme.purpleChat}
-            count={props.site.chatNotifications}
-            icon={'comment'}
-          />
-        )}
+        <Notification
+          color={theme.purpleChat}
+          count={props.site.chatNotifications}
+          icon={'comment'}
+        />
         <Notification
           color={theme.blueUnread}
           count={props.site.unreadNotifications}
