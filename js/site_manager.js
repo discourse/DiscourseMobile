@@ -2,7 +2,6 @@
 'use strict';
 
 import _ from 'lodash';
-import Moment from 'moment';
 import {Alert, NativeModules, Platform} from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -182,7 +181,7 @@ class SiteManager {
                   this.sites[index].icon = s.icon;
                 }
 
-                this.sites[index].lastChecked = Moment().format();
+                this.sites[index].lastChecked = Date.now();
               }),
             );
           });

@@ -4,7 +4,6 @@
 
 import {Platform} from 'react-native';
 import _ from 'lodash';
-import Moment from 'moment';
 import fetch from './../lib/fetch';
 
 class Site {
@@ -194,10 +193,13 @@ class Site {
       this.logoff();
     }
 
-    const timeOffset = new Moment().subtract(1, 'hours').format();
+    const timeOffset = 14400 * 1000; // check every 4 hours
 
     return new Promise((resolve, reject) => {
-      if (!this.lastChecked || Moment(this.lastChecked).isBefore(timeOffset)) {
+      if (
+        isNaN(this.lastChecked) ||
+        Date.now() - this.lastChecked > timeOffset
+      ) {
         Site.fromURL(this.url)
           .then(site => {
             console.log('fromUrl request for', this.url);
