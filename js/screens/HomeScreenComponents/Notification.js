@@ -21,7 +21,7 @@ const Notification = props => {
             <FontAwesome5
               name={props.icon}
               solid
-              size={12}
+              size={11}
               color={theme.buttonTextColor}
             />
           </View>
