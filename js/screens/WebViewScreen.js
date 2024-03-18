@@ -272,9 +272,7 @@ class WebViewScreen extends React.Component {
     this.keyboardWillShow?.remove();
     this.keyboardWillHide?.remove();
 
-    this.siteManager.activeSite.refresh();
-    this.siteManager.activeSite = null;
-
+    this.siteManager.refreshActiveSite();
     this.appStateSubscription?.remove();
   }
 

@@ -266,6 +266,7 @@ class SiteManager {
         ' sites at ' +
         this.lastRefresh.toJSON(),
     );
+
     AsyncStorage.setItem('@Discourse.lastRefresh', this.lastRefresh.toJSON());
 
     let sites = this.sites.slice(0);
@@ -498,6 +499,13 @@ class SiteManager {
 
   _onChange() {
     this._subscribers.forEach(sub => sub({event: 'change'}));
+  }
+
+  async refreshActiveSite() {
+    await this.activeSite.refresh();
+    this._onChange();
+    this.updateUnreadBadge();
+    this.activeSite = null;
   }
 
   supportsDelegatedAuth(site) {
