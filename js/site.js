@@ -94,22 +94,9 @@ class Site {
 
         if ('login_required' in info) {
           siteInfo.loginRequired = info.login_required;
-
-          return new Site(siteInfo);
         }
 
-        // TODO: Remove in June 2022, Discourse core includes `login_required` in /site/basic-info.json as of Aug 2021
-        return fetch(`${url}/about.json`).then(aboutResp => {
-          console.log(aboutResp.url);
-          if (
-            aboutResp.url.indexOf('discourse/sso') > 0 ||
-            aboutResp.url.endsWith('/login')
-          ) {
-            siteInfo.loginRequired = true;
-          }
-
-          return new Site(siteInfo);
-        });
+        return new Site(siteInfo);
       });
   }
 
