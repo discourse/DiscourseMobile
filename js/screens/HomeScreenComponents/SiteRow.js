@@ -22,14 +22,25 @@ const SiteRow = props => {
 
     return (
       <View style={styles.notifications}>
-        <Notification color={theme.redDanger} count={props.site.flagCount} />
+        <Notification
+          color={theme.redDanger}
+          count={props.site.flagCount}
+          icon={'flag'}
+        />
         <Notification
           color={theme.greenPrivateUnread}
           count={props.site.unreadPrivateMessages}
+          icon={'envelope'}
+        />
+        <Notification
+          color={theme.purpleChat}
+          count={props.site.chatNotifications}
+          icon={'comment'}
         />
         <Notification
           color={theme.blueUnread}
           count={props.site.unreadNotifications}
+          icon={'bell'}
         />
       </View>
     );
@@ -97,10 +108,14 @@ const SiteRow = props => {
       });
 
       props.site.groupInboxes.forEach(group => {
-        if (group.inbox_count !== undefined) {
+        // TODO(pmusaraj): remove inbox_count after June 2024
+        // at the same time as old API fallbacks in site#refresh()
+        const count = group.count || group.inbox_count;
+
+        if (count !== undefined) {
           counts[group.group_name] = {
             link: `/u/${group.username}/messages/group/${group.group_name}`,
-            text: `${group.group_name} (${group.inbox_count})`,
+            text: `${group.group_name} (${count})`,
           };
         }
       });
@@ -184,6 +199,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     marginTop: 3,
+    borderRadius: 18,
   },
   info: {
     flex: 1,
@@ -204,7 +220,10 @@ const styles = StyleSheet.create({
   },
   notifications: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-end',
     paddingLeft: 12,
+    maxWidth: '30%',
   },
   connect: {
     alignSelf: 'flex-start',

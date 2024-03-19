@@ -2,7 +2,6 @@
 'use strict';
 
 import _ from 'lodash';
-import Moment from 'moment';
 import {Alert, NativeModules, Platform} from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -182,7 +181,7 @@ class SiteManager {
                   this.sites[index].icon = s.icon;
                 }
 
-                this.sites[index].lastChecked = Moment().format();
+                this.sites[index].lastChecked = Date.now();
               }),
             );
           });
@@ -266,6 +265,7 @@ class SiteManager {
         ' sites at ' +
         this.lastRefresh.toJSON(),
     );
+
     AsyncStorage.setItem('@Discourse.lastRefresh', this.lastRefresh.toJSON());
 
     let sites = this.sites.slice(0);
@@ -498,6 +498,13 @@ class SiteManager {
 
   _onChange() {
     this._subscribers.forEach(sub => sub({event: 'change'}));
+  }
+
+  async refreshActiveSite() {
+    await this.activeSite.refresh();
+    this._onChange();
+    this.updateUnreadBadge();
+    this.activeSite = null;
   }
 
   supportsDelegatedAuth(site) {

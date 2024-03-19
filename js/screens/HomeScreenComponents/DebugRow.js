@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {
   Platform,
   StyleSheet,
@@ -9,26 +9,26 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import Moment from 'moment';
+
 import {ThemeContext} from '../../ThemeContext';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import i18n from 'i18n-js';
 
 const DebugRow = props => {
   const theme = useContext(ThemeContext);
-  const [lastRefresh, setLastRefresh] = useState(props.siteManager.lastRefresh);
 
-  const _subscription = () => {
-    setLastRefresh(props.siteManager.lastRefresh);
+  const lastRefreshString = () => {
+    const lastRefresh = new Date(props.siteManager.lastRefresh);
+
+    if (isNaN(lastRefresh)) {
+      return '';
+    }
+
+    return `${i18n.t('last_updated')} ${lastRefresh.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    })}`;
   };
-
-  useEffect(() => {
-    props.siteManager.subscribe(_subscription);
-
-    return () => {
-      props.siteManager.unsubscribe(_subscription);
-    };
-  });
 
   const renderCogButton = () => {
     if (Platform.OS !== 'android') {
@@ -52,9 +52,7 @@ const DebugRow = props => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.background}]}>
-      <Text style={styles.debugText}>
-        {i18n.t('last_updated')} {Moment(lastRefresh).format('h:mmA')}
-      </Text>
+      <Text style={styles.debugText}>{lastRefreshString()}</Text>
       {renderCogButton()}
     </View>
   );

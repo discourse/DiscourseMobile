@@ -301,6 +301,7 @@ const styles = StyleSheet.create({
     height: 25,
     alignSelf: 'center',
     marginLeft: 12,
+    borderRadius: 12,
   },
   notificationIcon: {
     alignSelf: 'center',

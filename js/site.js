@@ -4,7 +4,6 @@
 
 import {Platform} from 'react-native';
 import _ from 'lodash';
-import Moment from 'moment';
 import fetch from './../lib/fetch';
 
 class Site {
@@ -95,22 +94,9 @@ class Site {
 
         if ('login_required' in info) {
           siteInfo.loginRequired = info.login_required;
-
-          return new Site(siteInfo);
         }
 
-        // TODO: Remove in June 2022, Discourse core includes `login_required` in /site/basic-info.json as of Aug 2021
-        return fetch(`${url}/about.json`).then(aboutResp => {
-          console.log(aboutResp.url);
-          if (
-            aboutResp.url.indexOf('discourse/sso') > 0 ||
-            aboutResp.url.endsWith('/login')
-          ) {
-            siteInfo.loginRequired = true;
-          }
-
-          return new Site(siteInfo);
-        });
+        return new Site(siteInfo);
       });
   }
 
@@ -194,10 +180,13 @@ class Site {
       this.logoff();
     }
 
-    const timeOffset = new Moment().subtract(1, 'hours').format();
+    const timeOffset = 14400 * 1000; // check every 4 hours
 
     return new Promise((resolve, reject) => {
-      if (!this.lastChecked || Moment(this.lastChecked).isBefore(timeOffset)) {
+      if (
+        isNaN(this.lastChecked) ||
+        Date.now() - this.lastChecked > timeOffset
+      ) {
         Site.fromURL(this.url)
           .then(site => {
             console.log('fromUrl request for', this.url);
@@ -258,6 +247,35 @@ class Site {
     if (!this.authToken) {
       return;
     }
+
+    let useApiFallbacks = false;
+
+    try {
+      let totals = await this.jsonApi('/notifications/totals.json');
+
+      this.unreadNotifications = totals.unread_notifications || 0;
+      this.unreadPrivateMessages = totals.unread_personal_messages || 0;
+      this.flagCount = totals.unseen_reviewables || 0;
+      this.totalUnread = totals?.topic_tracking.unread || 0;
+      this.totalNew = totals?.topic_tracking.new || 0;
+      this.chatNotifications = totals.chat_notifications || 0;
+      if (totals.group_inboxes) {
+        this.groupInboxes = totals.group_inboxes;
+      }
+    } catch (error) {
+      console.log(
+        '/notifications/totals.json endpoint not available, using fallback.',
+      );
+      console.log(error);
+      useApiFallbacks = true;
+    }
+
+    if (!useApiFallbacks) {
+      return;
+    }
+
+    // TODO(pmusaraj): remove after June 2024
+    // once most sites will have received the new API at /notifications/totals.json
 
     let json = await this.jsonApi('/session/current.json');
     let currentUser = json.current_user;

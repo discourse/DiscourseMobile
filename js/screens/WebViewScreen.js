@@ -271,7 +271,8 @@ class WebViewScreen extends React.Component {
     clearTimeout(this.progressTimeout);
     this.keyboardWillShow?.remove();
     this.keyboardWillHide?.remove();
-    this.siteManager.refreshSites();
+
+    this.siteManager.refreshActiveSite();
     this.appStateSubscription?.remove();
   }
 
@@ -329,7 +330,6 @@ class WebViewScreen extends React.Component {
     if (dismiss) {
       // react-navigation back action (exits webview)
       this.props.navigation.goBack();
-      this.siteManager.activeSite = null;
     }
 
     if (markRead) {
