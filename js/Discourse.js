@@ -34,7 +34,7 @@ import * as RNLocalize from 'react-native-localize';
 import {addShortcutListener} from 'react-native-siri-shortcut';
 import {enableScreens} from 'react-native-screens';
 
-// import BackgroundFetch from './platforms/background-fetch';
+import BackgroundFetch from './platforms/background-fetch';
 
 const {DiscourseKeyboardShortcuts} = NativeModules;
 
@@ -79,6 +79,7 @@ class Discourse extends React.Component {
     super(props);
     this._siteManager = new SiteManager();
     this._refresh = this._refresh.bind(this);
+    this._initBackgroundFetch = this._initBackgroundFetch.bind(this);
 
     this._handleAppStateChange = nextAppState => {
       console.log('Detected appState change: ' + nextAppState);
@@ -92,15 +93,6 @@ class Discourse extends React.Component {
 
         clearTimeout(this.refreshTimerId);
         this.refreshTimerId = setTimeout(this._refresh, 30000);
-
-        if (Platform.OS === 'android') {
-          AsyncStorage.getItem('@AndroidMessageUrl').then(url => {
-            if (url) {
-              this.openUrl(url);
-              AsyncStorage.removeItem('@AndroidMessageUrl');
-            }
-          });
-        }
       }
     };
 
@@ -108,12 +100,14 @@ class Discourse extends React.Component {
 
     if (Platform.OS === 'ios') {
       PushNotificationIOS.addEventListener('notification', e =>
-        this._handleRemoteNotification(e),
+        this._handleNotification(e),
       );
 
-      // PushNotificationIOS.addEventListener('localNotification', e =>
-      //   this._handleRemoteNotification(e),
-      // );
+      // local notifications, triggered via background fetch
+      // for non-hosted sites only (sites where hasPush = false)
+      PushNotificationIOS.addEventListener('localNotification', e =>
+        this._handleNotification(e),
+      );
 
       PushNotificationIOS.addEventListener('register', s => {
         this._siteManager.registerClientId(s);
@@ -121,7 +115,7 @@ class Discourse extends React.Component {
 
       PushNotificationIOS.getInitialNotification().then(e => {
         if (e) {
-          this._handleRemoteNotification(e);
+          this._handleNotification(e);
         }
       });
     }
@@ -157,8 +151,9 @@ class Discourse extends React.Component {
         ToastAndroid.show(message, ToastAndroid.LONG);
       });
 
-      // notification received while app is in background/closed
-      firebaseMessaging.setBackgroundMessageHandler(async remoteMessage => {
+      // notification clicked while app is in background/closed
+      firebaseMessaging.onNotificationOpenedApp(async remoteMessage => {
+        console.log('onNotificationOpenedApp');
         let url = null;
 
         if (remoteMessage.data.payload) {
@@ -171,7 +166,7 @@ class Discourse extends React.Component {
         }
 
         if (url) {
-          AsyncStorage.setItem('@AndroidMessageUrl', url);
+          this.openUrl(url);
         }
       });
     }
@@ -221,29 +216,18 @@ class Discourse extends React.Component {
     }
   }
 
-  // _handleLocalNotification(e) {
-  //   console.log("got local notification", e);
-  //   if (
-  //     AppState.currentState !== "active" &&
-  //     e._data &&
-  //     e._data.discourse_url
-  //   ) {
-  //     this.openUrl(e._data.discourse_url);
-  //   }
-  // }
+  _handleNotification(e) {
+    console.log('got notification', e);
+    const url = e._data && e._data.discourse_url;
 
-  _handleRemoteNotification(e) {
-    console.log('got remote notification', e);
-    if (e._data && e._data.discourse_url) {
-      this._siteManager
-        .setActiveSite(e._data.discourse_url)
-        .then(activeSite => {
-          let supportsDelegatedAuth = false;
-          if (this._siteManager.supportsDelegatedAuth(activeSite)) {
-            supportsDelegatedAuth = true;
-          }
-          this.openUrl(e._data.discourse_url, supportsDelegatedAuth);
-        });
+    if (url) {
+      this._siteManager.setActiveSite(url).then(activeSite => {
+        let supportsDelegatedAuth = false;
+        if (this._siteManager.supportsDelegatedAuth(activeSite)) {
+          supportsDelegatedAuth = true;
+        }
+        this.openUrl(url, supportsDelegatedAuth);
+      });
     }
   }
 
@@ -355,40 +339,45 @@ class Discourse extends React.Component {
           }
         }
       });
-    }
 
-    // BackgroundFetch register (15-minute minimum interval allowed)
-    // this._initBackgroundFetch();
+      // delay here may be redundant, but it ensures site data is loaded
+      setTimeout(this._initBackgroundFetch, 2000);
+    }
 
     clearTimeout(this.refreshTimerId);
     this.refreshTimerId = setTimeout(this._refresh, 30000);
   }
 
-  // TODO: Restore background fetch
-  // async _initBackgroundFetch() {
-  // BackgroundFetch event handler.
-  // const onEvent = async taskId => {
-  //   console.log('[BackgroundFetch] task: ', taskId);
-  //   // Do your background work...
-  //   this._siteManager = new SiteManager();
-  //   await this._siteManager.backgroundRefresh();
-  //   // IMPORTANT:  You must signal to the OS that your task is complete.
-  //   BackgroundFetch.finish(taskId);
-  // };
-  // // Timeout callback is executed when your Task has exceeded its allowed running-time.
-  // // You must stop what you're doing immediately BackgroundFetch.finish(taskId)
-  // const onTimeout = async taskId => {
-  //   console.warn('[BackgroundFetch] TIMEOUT task: ', taskId);
-  //   BackgroundFetch.finish(taskId);
-  // };
-  // // Initialize BackgroundFetch only once when component mounts.
-  // let status = await BackgroundFetch.configure(
-  //   {minimumFetchInterval: 15},
-  //   onEvent,
-  //   onTimeout,
-  // );
-  // console.log('[BackgroundFetch] configure status: ', status);
-  // }
+  // runs on background, ever 15 mins max
+  // updates site unread counts, app badge
+  // and for non-hosted sites, triggers a local notification if new count > old count
+  async _initBackgroundFetch() {
+    // uncomment to test iOS background
+    // this will run on app live reload
+    // await this._siteManager.iOSbackgroundRefresh();
+
+    const onEvent = async taskId => {
+      console.log('[BackgroundFetch] task: ', taskId);
+      await this._siteManager.iOSbackgroundRefresh();
+
+      // You must signal to the OS that your task is complete.
+      BackgroundFetch.finish(taskId);
+    };
+
+    // Timeout callback is executed when your Task has exceeded its allowed running-time.
+    // You must stop what you're doing immediately BackgroundFetch.finish(taskId)
+    const onTimeout = async taskId => {
+      console.warn('[BackgroundFetch] TIMEOUT task: ', taskId);
+      BackgroundFetch.finish(taskId);
+    };
+    // Initialize BackgroundFetch only once when component mounts.
+    let status = await BackgroundFetch.configure(
+      {minimumFetchInterval: 15},
+      onEvent,
+      onTimeout,
+    );
+    console.log('[BackgroundFetch] configure status: ', status);
+  }
 
   async _refresh() {
     clearTimeout(this.refreshTimerId);

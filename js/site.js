@@ -15,6 +15,7 @@ class Site {
     'url',
     'unreadNotifications',
     'unreadPrivateMessages',
+    'chatNotifications',
     'lastSeenNotificationId',
     'flagCount',
     'queueCount',
@@ -243,10 +244,16 @@ class Site {
     return changed;
   }
 
-  async refresh() {
+  async refresh(options = {}) {
     if (!this.authToken) {
-      return;
+      return 0;
     }
+
+    const _oldTotal =
+      (this.unreadNotifications || 0) +
+      (this.unreadPrivateMessages || 0) +
+      (this.chatNotifications || 0) +
+      (this.flagCount || 0);
 
     let useApiFallbacks = false;
 
@@ -256,22 +263,33 @@ class Site {
       this.unreadNotifications = totals.unread_notifications || 0;
       this.unreadPrivateMessages = totals.unread_personal_messages || 0;
       this.flagCount = totals.unseen_reviewables || 0;
+      this.chatNotifications = totals.chat_notifications || 0;
       this.totalUnread = totals?.topic_tracking.unread || 0;
       this.totalNew = totals?.topic_tracking.new || 0;
-      this.chatNotifications = totals.chat_notifications || 0;
       if (totals.group_inboxes) {
         this.groupInboxes = totals.group_inboxes;
+      }
+      if (options.bgTask) {
+        return {
+          newTotal:
+            this.unreadNotifications +
+            this.unreadPrivateMessages +
+            this.chatNotifications +
+            this.flagCount,
+          oldTotal: _oldTotal,
+          hasPush: this.hasPush,
+          url: this.url,
+        };
       }
     } catch (error) {
       console.log(
         '/notifications/totals.json endpoint not available, using fallback.',
       );
-      console.log(error);
       useApiFallbacks = true;
     }
 
     if (!useApiFallbacks) {
-      return;
+      return 0;
     }
 
     // TODO(pmusaraj): remove after June 2024
@@ -284,15 +302,10 @@ class Site {
     // in case of old API fallback
     this._seenNotificationId =
       currentUser.seen_notification_id || this._seenNotificationId;
-
-    this.unreadNotifications = currentUser.unread_notifications;
-
+    this.unreadNotifications = currentUser.unread_notifications || 0;
     this.unreadPrivateMessages =
       currentUser.new_personal_messages_notifications_count || 0;
-
-    if (this.isStaff) {
-      this.flagCount = currentUser.reviewable_count;
-    }
+    this.flagCount = this.isStaff ? currentUser.reviewable_count || 0 : 0;
 
     this.trackingState = {};
     let tS = await this.jsonApi(
@@ -314,6 +327,18 @@ class Site {
     }
 
     this.updateTotals();
+
+    if (options.bgTask) {
+      return {
+        newTotal:
+          this.unreadNotifications +
+          this.unreadPrivateMessages +
+          this.flagCount,
+        oldTotal: _oldTotal,
+        hasPush: this.hasPush,
+        url: this.url,
+      };
+    }
   }
 
   readNotification(notification) {
