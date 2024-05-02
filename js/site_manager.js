@@ -10,6 +10,7 @@ import RNKeyPair from 'react-native-key-pair';
 import DeviceInfo from 'react-native-device-info';
 import JSEncrypt from './../lib/jsencrypt';
 import randomBytes from './../lib/random-bytes';
+import i18n from 'i18n-js';
 
 const {DiscourseKeyboardShortcuts} = NativeModules;
 const REFRESH_THROTTLE_MS = 5000;
@@ -211,10 +212,10 @@ class SiteManager {
     this.sites.forEach(site => {
       if (site.authToken) {
         count +=
-          (site.unreadNotifications || 0) + (site.unreadPrivateMessages || 0);
-        if (site.isStaff) {
-          count += site.flagCount || 0;
-        }
+          (site.unreadNotifications || 0) +
+          (site.flagCount || 0) +
+          (site.unreadPrivateMessages || 0) +
+          (site.chatNotifications || 0);
       }
     });
     return count;
@@ -292,6 +293,42 @@ class SiteManager {
           reject(e);
         });
     });
+  }
+
+  async iOSbackgroundRefresh() {
+    const results = await Promise.all(
+      this.sites.map(site => site.refresh({bgTask: true})),
+    );
+
+    let badgeCount = 0;
+    results.forEach(result => {
+      if (result) {
+        badgeCount += result.newTotal;
+        // schedule a local notification for sites with no push capability
+        // there is room for improvement here, this currently does not show you
+        // a notification if new count is lower than old count (but it might have a
+        // new notification nonetheless...)
+        if (!result.hasPush && result.newTotal > result.oldTotal) {
+          PushNotificationIOS.scheduleLocalNotification({
+            alertTitle: i18n.t('generic_notification_title', {
+              count: result.newTotal - result.oldTotal,
+            }),
+            alertBody: i18n.t('generic_notification_body', {
+              url: result.url.replace(/^https?:\/\//, ''),
+            }),
+            userInfo: {discourse_url: result.url},
+          });
+        }
+      }
+    });
+
+    PushNotificationIOS.checkPermissions(p => {
+      if (p.badge) {
+        PushNotificationIOS.setApplicationIconBadgeNumber(badgeCount);
+      }
+    });
+
+    this.save();
   }
 
   serializeParams(obj) {

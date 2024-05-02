@@ -352,6 +352,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Discourse/Pods-Discourse-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNBackgroundFetch/TSBackgroundFetch.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -372,6 +373,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TSBackgroundFetch.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
@@ -477,7 +479,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 443;
+				CURRENT_PROJECT_VERSION = 455;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6T3LU73T8S;
@@ -522,7 +524,7 @@
 				CODE_SIGN_ENTITLEMENTS = Discourse/Discourse.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 443;
+				CURRENT_PROJECT_VERSION = 455;
 				DEVELOPMENT_TEAM = 6T3LU73T8S;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6T3LU73T8S;
 				ENABLE_BITCODE = NO;

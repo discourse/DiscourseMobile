@@ -16,6 +16,11 @@
     "one": "%{count} message in your %{group_name} inbox",
     "other": "%{count} messages in your %{group_name} inbox"
   },
+  "generic_notification_title": {
+    "one": "%{count} new notification",
+    "other": "%{count} new notifications"
+  },
+  "generic_notification_body": "See what's new on %{url}",
   "incorrect_url": "Sorry, %{term} is not a correct URL to a Discourse forum or does not support mobile APIs, have owner upgrade Discourse to latest!",
   "cannot_load_url": "That URL could not be added to DiscourseHub.",
   "last_updated": "Last Updated:",

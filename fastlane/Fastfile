@@ -2,8 +2,8 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "1.8.14"
-ANDROID_APP_VERSION = "1.8.12"
+IOS_APP_VERSION = "1.8.15"
+ANDROID_APP_VERSION = "1.8.14" # run `fastlane bootstrap` after editing this
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
@@ -150,7 +150,7 @@ platform :ios do
   lane :certs do
     system("rm -rf ~/Library/MobileDevice/Provisioning\ Profiles/*.mobile*")
 
-    register_devices(devices_file: File.expand_path("./keys/ios-beta-devices.txt"))
+    # register_devices(devices_file: File.expand_path("./keys/ios-beta-devices.txt"))
 
     match(
       force: true,
@@ -184,7 +184,11 @@ platform :ios do
       workspace: "./ios/#{PROJECT_NAME}.xcworkspace"
     )
 
-    pilot(skip_waiting_for_build_processing: true, api_key_path: "fastlane/keys/appstoreconnect-key.json")
+    pilot(
+      skip_waiting_for_build_processing: true,
+      api_key_path: "fastlane/keys/appstoreconnect-key.json"
+      # notify_external_testers: false
+    )
   end
 
   desc "Install on connected device"
@@ -233,8 +237,9 @@ platform :android do
       project_dir: "android/"
     )
 
-    supply(
+    upload_to_play_store(
       track: "alpha",
+      json_key: "fastlane/google-play-api-secret.json",
       skip_upload_apk: true
     )
   end
