@@ -16,6 +16,11 @@
     "one": "%{count} Nachricht in deinem %{group_name} Posteingang",
     "other": "%{count} Nachrichten in deinem %{group_name} Posteingang"
   },
+  "generic_notification_title": {
+    "one": "%{count} neue Benachrichtigung",
+    "other": "%{count} neue Benachrichtigungen"
+  },
+  "generic_notification_body": "Schau, was es Neues auf %{url} gibt.",
   "incorrect_url": "Entschuldigung, %{term} ist keine korrekte URL eines Discourse-Forums oder unterstützt keine mobilen APIs. Bitte den Betreiber, Discourse zu aktualisieren.",
   "cannot_load_url": "Diese URL konnte nicht zu DiscourseHub hinzugefügt werden.",
   "last_updated": "Letzte Aktualisierung:",

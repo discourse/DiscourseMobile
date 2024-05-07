@@ -8,6 +8,10 @@
     "one": "%{count} پیام در صندوق ورودی %{group_name}",
     "other": "%{count} پیام در صندوق ورودی %{group_name}"
   },
+  "generic_notification_title": {
+    "one": "%{count} آگاه‌سازی جدید",
+    "other": "%{count} آگاه‌سازی جدید"
+  },
   "last_updated": "آخرین به‌روزرسانی:",
   "liked": "%{count} نفر نوشته شما را پسندیدن",
   "liked_more": {
@@ -24,5 +28,6 @@
   "notifications": "آگاه‌سازی‌ها",
   "replies": "پاسخ‌ها",
   "unread_with_count": " (%{count}) خوانده‌ نشده‌",
+  "please_wait": "لطفا صبر کنید...",
   "settings": "تنظیمات"
 }
