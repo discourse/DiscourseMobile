@@ -16,12 +16,10 @@ class Site {
     'unreadNotifications',
     'unreadPrivateMessages',
     'chatNotifications',
-    'lastSeenNotificationId',
     'flagCount',
     'queueCount',
     'totalUnread',
     'totalNew',
-    'userId',
     'username',
     'hasPush',
     'isStaff',
@@ -171,7 +169,6 @@ class Site {
 
   logoff() {
     this.authToken = null;
-    this.userId = null;
     this.username = null;
     this.isStaff = null;
   }
@@ -255,17 +252,15 @@ class Site {
       (this.chatNotifications || 0) +
       (this.flagCount || 0);
 
-    let useApiFallbacks = false;
-
     try {
       let totals = await this.jsonApi('/notifications/totals.json');
-
       this.unreadNotifications = totals.unread_notifications || 0;
       this.unreadPrivateMessages = totals.unread_personal_messages || 0;
       this.flagCount = totals.unseen_reviewables || 0;
       this.chatNotifications = totals.chat_notifications || 0;
       this.totalUnread = totals?.topic_tracking.unread || 0;
       this.totalNew = totals?.topic_tracking.new || 0;
+      this.username = totals.username;
       if (totals.group_inboxes) {
         this.groupInboxes = totals.group_inboxes;
       }
@@ -283,61 +278,8 @@ class Site {
       }
     } catch (error) {
       console.log(
-        '/notifications/totals.json endpoint not available, using fallback.',
+        `${this.url}/notifications/totals.json endpoint not available, exiting.`,
       );
-      useApiFallbacks = true;
-    }
-
-    if (!useApiFallbacks) {
-      return 0;
-    }
-
-    // TODO(pmusaraj): remove after June 2024
-    // once most sites will have received the new API at /notifications/totals.json
-
-    let json = await this.jsonApi('/session/current.json');
-    let currentUser = json.current_user;
-    this.isStaff = !!(currentUser.admin || currentUser.moderator);
-
-    // in case of old API fallback
-    this._seenNotificationId =
-      currentUser.seen_notification_id || this._seenNotificationId;
-    this.unreadNotifications = currentUser.unread_notifications || 0;
-    this.unreadPrivateMessages =
-      currentUser.new_personal_messages_notifications_count || 0;
-    this.flagCount = this.isStaff ? currentUser.reviewable_count || 0 : 0;
-
-    this.trackingState = {};
-    let tS = await this.jsonApi(
-      `/users/${json.current_user.username}/topic-tracking-state.json`,
-    );
-    tS.forEach(state => {
-      this.trackingState[`t${state.topic_id}`] = state;
-    });
-
-    if (this.isStaff) {
-      this.groupInboxes = [];
-
-      let notifications = await this.groupInboxesFromNotifications();
-      notifications.forEach(n => {
-        if (n.data && n.data.group_id && n.data.group_name) {
-          this.groupInboxes.push(n.data);
-        }
-      });
-    }
-
-    this.updateTotals();
-
-    if (options.bgTask) {
-      return {
-        newTotal:
-          this.unreadNotifications +
-          this.unreadPrivateMessages +
-          this.flagCount,
-        oldTotal: _oldTotal,
-        hasPush: this.hasPush,
-        url: this.url,
-      };
     }
   }
 
@@ -442,23 +384,6 @@ class Site {
         })
         .finally(() => {
           this._loadingNotifications = false;
-        });
-    });
-  }
-
-  groupInboxesFromNotifications() {
-    return new Promise((resolve, reject) => {
-      this.jsonApi('/notifications.json?filter=unread&limit=25')
-        .then(results => {
-          if (results && results.notifications) {
-            resolve(results.notifications);
-          } else {
-            resolve([]);
-          }
-        })
-        .catch(e => {
-          console.log('failed to fetch notifications ' + e);
-          resolve([]);
         });
     });
   }

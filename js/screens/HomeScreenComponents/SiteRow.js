@@ -114,7 +114,7 @@ const SiteRow = props => {
 
         if (count !== undefined) {
           counts[group.group_name] = {
-            link: `/u/${group.username}/messages/group/${group.group_name}`,
+            link: `/u/${props.site.username}/messages/group/${group.group_name}`,
             text: `${group.group_name} (${count})`,
           };
         }

@@ -348,10 +348,6 @@ class SiteManager {
       if (existing !== id) {
         this.clientId = id;
         AsyncStorage.setItem('@ClientId', this.clientId);
-        this.sites.forEach(site => {
-          site.authToken = null;
-          site.userId = null;
-        });
         this.save();
       }
     });
