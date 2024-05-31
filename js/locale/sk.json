@@ -2,7 +2,17 @@
   "add": "+ Pridať",
   "all": "Všetky",
   "connect": "pripojiť",
+  "inbox_message": {
+    "one": "%{count} správu v tvojej schránke pre %{group_name}",
+    "few": "%{count} správ v tvojej schránke pre %{group_name}",
+    "many": "%{count} správy v tvojej schránke pre %{group_name}",
+    "other": "%{count} správy v tvojej schránke pre %{group_name}"
+  },
+  "last_updated": "Naposledy aktualizovaný:",
+  "liked": "páčilo sa ti %{count} tvojich príspevkov.",
   "loading": "Prebieha načítavanie...",
+  "votes_released": "%{description} - dokončené",
+  "new_features": "K dispozícii sú nové funkcie!",
   "new_with_count": "nová (%{count})",
   "new": "Nové",
   "notifications": "Upozornenia",

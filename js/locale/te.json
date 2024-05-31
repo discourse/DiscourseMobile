@@ -1,8 +1,19 @@
 {
   "all": "అన్నీ",
+  "connect": "కనెక్ట్ చేయండి",
+  "inbox_message": {
+    "one": "మీ %{group_name} ఇన్‌బాక్స్‌లో %{count} సందేశం",
+    "other": "మీ %{group_name} ఇన్‌బాక్స్‌లో %{count} సందేశాలు"
+  },
+  "last_updated": "చివరిగా నవీకరించబడింది:",
+  "liked": "మీ పోస్ట్‌లలో %{count} ని ఇష్టపడ్డారు",
   "loading": "లోడవుతోంది...",
+  "votes_released": "%{description} - పూర్తయింది",
+  "new_features": "కొత్త ఫీచర్లు అందుబాటులో ఉన్నాయి!",
+  "new_with_count": "కొత్తవి (%{count})",
   "new": "కొత్త",
   "notifications": "ప్రకటనలు",
   "replies": "జవాబులు",
+  "unread_with_count": "చదవనివి (%{count})",
   "settings": "అమరికలు"
 }

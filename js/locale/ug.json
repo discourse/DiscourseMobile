@@ -1,0 +1,19 @@
+{
+  "add": "+ قوش",
+  "all": "ھەممىسى",
+  "connect": "ئۇلا",
+  "inbox_message": {
+    "one": "%{group_name} قۇبۇللاش ساندۇقىڭىزدا %{count} ئۇچۇر بار",
+    "other": "%{group_name} قۇبۇللاش ساندۇقىڭىزدا %{count} ئۇچۇر بار"
+  },
+  "last_updated": "ئاخىرقى يېڭىلانغان ۋاقىت:",
+  "liked": "%{count} يازمىڭىزنى ياقتۇردى",
+  "votes_released": "%{description} - تاماملاندى",
+  "new_features": "يېڭى ئىقتىدار مەۋجۇت!",
+  "new_with_count": "يېڭى (%{count})",
+  "new": "يېڭى",
+  "notifications": "ئۇقتۇرۇش",
+  "replies": "جاۋاب",
+  "unread_with_count": "ئوقۇلمىغان (%{count})",
+  "settings": "تەڭشەكلەر"
+}
