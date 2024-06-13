@@ -14,6 +14,18 @@ const SiteRow = props => {
 
   const iconUrl = props.site.discover_entry_logo_url;
 
+  // When dominant color is white on light or black on dark
+  // add a background color to the icon
+  const dominantColor = props.site.discover_entry_logo_dominant_color;
+  let iconBgColor = 'transparent';
+  if (theme.name === 'dark' && dominantColor === '000000') {
+    iconBgColor = '#FFFFFF';
+  }
+
+  if (theme.name === 'light' && dominantColor === 'FFFFFF') {
+    iconBgColor = '#333333';
+  }
+
   const iconPath =
     iconUrl && !iconUrl.endsWith('.webp') && !iconUrl.endsWith('.svg')
       ? {uri: iconUrl}
@@ -48,7 +60,7 @@ const SiteRow = props => {
       <View style={{...styles.row, borderBottomColor: theme.grayBorder}}>
         <View style={styles.iconWrapper}>
           <Image
-            style={{...styles.icon, backgroundColor: theme.grayUI}}
+            style={{...styles.icon, backgroundColor: iconBgColor}}
             source={iconPath}
             resizeMode="contain"
           />

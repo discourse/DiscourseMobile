@@ -16,6 +16,7 @@ import {
   StatusBar,
   StyleSheet,
   ToastAndroid,
+  View,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
@@ -491,18 +492,26 @@ class Discourse extends React.Component {
   }
 
   _blurView(themeName) {
+    const positionStyle = {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+    };
+    if (Platform.OS !== 'ios') {
+      return (
+        <View
+          style={{
+            ...positionStyle,
+            backgroundColor: this.state.theme.background,
+          }}
+        />
+      );
+    }
+
     return (
-      <BlurView
-        blurType={themeName}
-        blurAmount={15}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-        }}
-      />
+      <BlurView blurType={themeName} blurAmount={15} style={positionStyle} />
     );
   }
 
@@ -543,6 +552,7 @@ class Discourse extends React.Component {
                 <Tab.Navigator
                   screenOptions={{
                     headerShown: false,
+
                     tabBarStyle: {
                       position: 'absolute',
                       borderTopWidth: StyleSheet.hairlineWidth,
