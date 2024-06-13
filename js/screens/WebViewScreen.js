@@ -5,12 +5,12 @@ import React from 'react';
 import {
   Animated,
   AppState,
-  View,
   Linking,
   Keyboard,
   Settings,
   Share,
   StatusBar,
+  View,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import Components from './WebViewScreenComponents';
@@ -217,8 +217,11 @@ class WebViewScreen extends React.Component {
                   return true;
                 }
 
-                // launch externally and stop loading request if external link
+                if (request.url.startsWith(this.props.route.params.url)) {
+                  return true;
+                }
                 if (!this.siteManager.urlInSites(request.url)) {
+                  // launch externally and stop loading request if external link
                   // ensure URL can be opened, before opening an external URL
                   Linking.canOpenURL(request.url)
                     .then(() => {

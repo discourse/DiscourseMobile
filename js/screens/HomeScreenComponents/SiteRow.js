@@ -11,9 +11,13 @@ import i18n from 'i18n-js';
 
 const SiteRow = props => {
   const theme = useContext(ThemeContext);
-  const iconPath = props.site.icon
-    ? {uri: props.site.icon}
-    : require('../../../img/nav-icon-gray.png');
+
+  const iconUrl = props.site.icon;
+
+  let iconPath =
+    iconUrl && !iconUrl.endsWith('.webp') && !iconUrl.endsWith('.svg')
+      ? {uri: iconUrl}
+      : require('../../../img/nav-icon-gray.png');
 
   const _renderNotifications = () => {
     if (!props.site.authToken) {
@@ -158,12 +162,18 @@ const SiteRow = props => {
           <View
             accessibilityTraits="link"
             style={{...styles.row, borderBottomColor: theme.grayBorder}}>
-            <Image style={styles.icon} source={iconPath} />
+            <Image style={styles.icon} source={iconPath} resizeMode="contain" />
             <View style={styles.info}>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
-                style={{...styles.url, color: theme.grayTitle}}>
+                style={{...styles.title, color: theme.grayTitle}}>
+                {props.site.title}
+              </Text>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={{...styles.url, color: theme.graySubtitle}}>
                 {props.site.url.replace(/^https?:\/\//, '')}
               </Text>
               <Text
@@ -199,7 +209,8 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     marginTop: 3,
-    borderRadius: 18,
+    borderRadius: 10,
+    marginHorizontal: 4,
   },
   info: {
     flex: 1,
@@ -208,6 +219,12 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   url: {
+    fontSize: 14,
+    fontWeight: 'normal',
+    paddingLeft: 6,
+    paddingTop: 6,
+  },
+  title: {
     fontSize: 16,
     fontWeight: 'normal',
     paddingLeft: 6,

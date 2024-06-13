@@ -529,11 +529,25 @@ class SiteManager {
     return this.sites;
   }
 
+  connectedSitesCount() {
+    let count = 0;
+    this.sites.forEach(site => {
+      if (site.authToken) {
+        count++;
+      }
+    });
+
+    return count;
+  }
+
   _onChange() {
     this._subscribers.forEach(sub => sub({event: 'change'}));
   }
 
   async refreshActiveSite() {
+    if (!this.activeSite) {
+      return;
+    }
     await this.activeSite.refresh();
     this._onChange();
     this.updateUnreadBadge();

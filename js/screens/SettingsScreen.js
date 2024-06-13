@@ -11,7 +11,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import Components from './NotificationsScreenComponents';
+
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
 
@@ -38,12 +38,6 @@ class SettingsScreen extends React.Component {
     const theme = this.context;
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
-        <Components.NavigationBar
-          onDidPressRightButton={() => this._onDidPressRightButton()}
-          progress={this.state.progress}
-          title={i18n.t('settings')}
-        />
-
         {this._renderSettings()}
       </SafeAreaView>
     );
@@ -100,10 +94,6 @@ class SettingsScreen extends React.Component {
         )}
       </View>
     );
-  }
-
-  _onDidPressRightButton() {
-    this.props.navigation.goBack();
   }
 }
 

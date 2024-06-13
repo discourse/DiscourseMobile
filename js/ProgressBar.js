@@ -3,7 +3,7 @@
 
 import React, {useContext} from 'react';
 import {Dimensions, View} from 'react-native';
-import {Bar} from 'react-native-progress';
+import Bar from 'react-native-progress/Bar';
 import {ThemeContext} from './ThemeContext';
 
 const ProgressBar = ({progress}) => {
