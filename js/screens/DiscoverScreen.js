@@ -97,9 +97,7 @@ class DiscoverScreen extends React.Component {
               ? this.state.results.concat(json.topics)
               : json.topics,
             loading: false,
-            hasMoreResults:
-              json.grouped_search_result &&
-              json.grouped_search_result.more_full_page_results,
+            hasMoreResults: json.grouped_search_result?.more_full_page_results,
           });
         } else {
           if (opts.pageNumber > 1) {
