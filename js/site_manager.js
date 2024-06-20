@@ -530,7 +530,7 @@ class SiteManager {
   }
 
   connectedSitesCount() {
-    return this.sites.filter((site) => site.authToken).length;
+    return this.sites.filter(site => site.authToken).length;
   }
 
   _onChange() {
