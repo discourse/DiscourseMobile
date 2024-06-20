@@ -9,6 +9,7 @@ import Components from './NotificationsScreenComponents';
 import DiscourseUtils from '../DiscourseUtils';
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
+import {BottomTabBarHeightContext} from '@react-navigation/bottom-tabs';
 
 class NotificationsScreen extends React.Component {
   static replyTypes = [1, 2, 3, 6, 9, 11, 15, 16, 17];
@@ -20,11 +21,15 @@ class NotificationsScreen extends React.Component {
       progress: 0,
       renderPlaceholderOnly: true,
       selectedIndex: 0,
+      connectedSites: 0,
     };
 
     this._onSiteChange = e => {
       if (e.event === 'change') {
         this.refresh();
+        this.setState({
+          connectedSites: this._siteManager.connectedSitesCount(),
+        });
       }
     };
 
@@ -44,6 +49,8 @@ class NotificationsScreen extends React.Component {
 
   componentDidMount() {
     this._siteManager.subscribe(this._onSiteChange);
+
+    this.setState({connectedSites: this._siteManager.connectedSitesCount()});
     this._mounted = true;
 
     if (this._refreshed) {
@@ -121,18 +128,27 @@ class NotificationsScreen extends React.Component {
         text = '';
     }
 
+    if (this.state.connectedSites === 0) {
+      text = i18n.t('no_connected_sites');
+    }
+
     return <Components.EmptyNotificationsView text={text} />;
   }
 
   _renderList() {
     return (
-      <ImmutableVirtualizedList
-        enableEmptySections={true}
-        immutableData={this.state.dataSource}
-        renderItem={rowData => this._renderListRow(rowData)}
-        keyExtractor={rowData => this._listIndex(rowData)}
-        ListEmptyComponent={''}
-      />
+      <BottomTabBarHeightContext.Consumer>
+        {tabBarHeight => (
+          <ImmutableVirtualizedList
+            contentContainerStyle={{paddingBottom: tabBarHeight}}
+            enableEmptySections={true}
+            immutableData={this.state.dataSource}
+            renderItem={rowData => this._renderListRow(rowData)}
+            keyExtractor={rowData => this._listIndex(rowData)}
+            ListEmptyComponent={''}
+          />
+        )}
+      </BottomTabBarHeightContext.Consumer>
     );
   }
 

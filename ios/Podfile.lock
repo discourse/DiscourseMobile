@@ -266,6 +266,9 @@ PODS:
   - React-jsinspector (0.71.7)
   - React-logger (0.71.7):
     - glog
+  - react-native-blur (4.4.0):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - react-native-key-pair (1.1.1):
     - React
   - react-native-root-view-background-color (1.0.2):
@@ -412,8 +415,6 @@ PODS:
     - React-RCTImage
   - RNSiriShortcuts (3.2.2):
     - React
-  - RNSVG (13.8.0):
-    - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
   - Yoga (1.14.0)
@@ -441,6 +442,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-key-pair (from `../node_modules/react-native-key-pair`)
   - react-native-root-view-background-color (from `../node_modules/react-native-root-view-background-color`)
   - react-native-safari-view (from `../node_modules/react-native-safari-view`)
@@ -470,7 +472,6 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSiriShortcuts (from `../node_modules/react-native-siri-shortcut`)
-  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -520,6 +521,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-blur:
+    :path: "../node_modules/@react-native-community/blur"
   react-native-key-pair:
     :path: "../node_modules/react-native-key-pair"
   react-native-root-view-background-color:
@@ -578,8 +581,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSiriShortcuts:
     :path: "../node_modules/react-native-siri-shortcut"
-  RNSVG:
-    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -608,6 +609,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: eaa5f71eb8f6861cf0e57f1a0f52aeb020d9e18e
   React-jsinspector: 9885f6f94d231b95a739ef7bb50536fb87ce7539
   React-logger: 3f8ebad1be1bf3299d1ab6d7f971802d7395c7ef
+  react-native-blur: 69ecfe61d81b32ee7baae10f5d17aeb4e2594b10
   react-native-key-pair: d45fb2e417ffb0fca307e9bbe22111aa38c3233f
   react-native-root-view-background-color: e7ba21b82c8b7b2a1f902750f08c9dc1a5b38cea
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
@@ -637,7 +639,6 @@ SPEC CHECKSUMS:
   RNReanimated: cc5e3aa479cb9170bcccf8204291a6950a3be128
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSiriShortcuts: cf7c7c69927abacc1bb9679cf680acc2f543fdae
-  RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   Yoga: d56980c8914db0b51692f55533409e844b66133c
 

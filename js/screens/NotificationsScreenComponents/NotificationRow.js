@@ -277,7 +277,7 @@ class NotificationRow extends React.Component {
     if (read) {
       return {backgroundColor: theme.background};
     } else {
-      return {backgroundColor: theme.grayUILight};
+      return {backgroundColor: theme.grayBackground};
     }
   }
 }
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignSelf: 'center',
-    fontSize: 14,
+    fontSize: 15,
   },
   container: {
     flex: 1,
@@ -297,8 +297,8 @@ const styles = StyleSheet.create({
     margin: 12,
   },
   siteIcon: {
-    width: 25,
-    height: 25,
+    width: 32,
+    height: 32,
     alignSelf: 'center',
     marginLeft: 12,
     borderRadius: 12,
@@ -306,6 +306,7 @@ const styles = StyleSheet.create({
   notificationIcon: {
     alignSelf: 'center',
     marginRight: 12,
+    marginLeft: 6,
   },
 });
 

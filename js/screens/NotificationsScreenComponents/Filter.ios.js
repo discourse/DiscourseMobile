@@ -19,7 +19,6 @@ class Filter extends React.Component {
       <View style={{flex: 0, backgroundColor: theme.background}}>
         <SegmentedControl
           values={this.props.tabs}
-          tintColor={theme.grayUI}
           style={{margin: 12}}
           selectedIndex={this.props.selectedIndex}
           onChange={event => {

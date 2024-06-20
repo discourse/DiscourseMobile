@@ -15,7 +15,7 @@ const OnBoardingView = props => {
       : require('../../../img/onboarding-dark.png');
 
   return (
-    <View style={{backgroundColor: theme.grayBackground, flex: 1}}>
+    <View style={{backgroundColor: theme.grayBackground, ...styles.container}}>
       <View style={styles.illustrationContainer}>
         <Image
           style={{width: '100%', height: '100%'}}
@@ -53,9 +53,12 @@ OnBoardingView.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   illustrationContainer: {
     marginTop: 100,
-    height: '40%',
+    height: '35%',
     width: '100%',
   },
   addSiteContainer: {
@@ -69,11 +72,13 @@ const styles = StyleSheet.create({
     padding: 32,
   },
   title: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: '500',
+    paddingBottom: 20,
   },
   subtitle: {
     fontSize: 18,
+    textAlign: 'center',
   },
   addSiteButtonText: {
     fontSize: 20,

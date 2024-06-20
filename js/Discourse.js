@@ -14,10 +14,13 @@ import {
   NativeEventEmitter,
   Settings,
   StatusBar,
+  StyleSheet,
   ToastAndroid,
+  View,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import Screens from './screens';
 import Site from './site';
@@ -33,6 +36,8 @@ import i18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
 import {addShortcutListener} from 'react-native-siri-shortcut';
 import {enableScreens} from 'react-native-screens';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {BlurView} from '@react-native-community/blur';
 
 import BackgroundFetch from './platforms/background-fetch';
 
@@ -71,6 +76,7 @@ enableScreens();
 
 // TODO: Use NativeStackNavigator instead?
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 class Discourse extends React.Component {
   refreshTimerId = null;
@@ -172,10 +178,14 @@ class Discourse extends React.Component {
     }
 
     const colorScheme = Appearance.getColorScheme();
+    const largerUI =
+      DeviceInfo.getDeviceType() === 'Tablet' ||
+      DeviceInfo.getDeviceType() === 'Desktop';
 
     this.state = {
       hasNotch: DeviceInfo.hasNotch(),
       deviceId: DeviceInfo.getDeviceId(),
+      largerUI: largerUI,
       theme: colorScheme === 'dark' ? themes.dark : themes.light,
     };
 
@@ -481,6 +491,30 @@ class Discourse extends React.Component {
     });
   }
 
+  _blurView(themeName) {
+    const positionStyle = {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+    };
+    if (Platform.OS !== 'ios') {
+      return (
+        <View
+          style={{
+            ...positionStyle,
+            backgroundColor: this.state.theme.background,
+          }}
+        />
+      );
+    }
+
+    return (
+      <BlurView blurType={themeName} blurAmount={15} style={positionStyle} />
+    );
+  }
+
   render() {
     // TODO: pass only relevant props to each screen component
     const screenProps = {
@@ -493,13 +527,16 @@ class Discourse extends React.Component {
       siteManager: this._siteManager,
       hasNotch: this.state.hasNotch,
       deviceId: this.state.deviceId,
+      largerUI: this.state.largerUI,
       toggleTheme: this._toggleTheme.bind(this),
     };
 
+    const theme = this.state.theme;
+
     return (
       <NavigationContainer>
-        <ThemeContext.Provider value={this.state.theme}>
-          <StatusBar barStyle={this.state.theme.barStyle} />
+        <ThemeContext.Provider value={theme}>
+          <StatusBar barStyle={theme.barStyle} />
           <Stack.Navigator
             initialRouteName="Home"
             presentation="modal"
@@ -510,20 +547,89 @@ class Discourse extends React.Component {
                 ...TransitionPresets.ModalSlideFromBottomIOS,
               };
             }}>
-            <Stack.Screen name="Home">
-              {props => (
-                <Screens.Home {...props} screenProps={{...screenProps}} />
+            <Stack.Screen name="HomeWrapper">
+              {stackProps => (
+                <Tab.Navigator
+                  screenOptions={{
+                    headerShown: false,
+
+                    tabBarStyle: {
+                      position: 'absolute',
+                      borderTopWidth: StyleSheet.hairlineWidth,
+                      borderTopColor: theme.grayBorder,
+                    },
+                    tabBarLabelStyle: {
+                      fontSize: this.state.largerUI ? 16 : 12,
+                    },
+                    tabBarActiveTintColor: theme.blueCallToAction,
+                    tabBarInactiveTintColor: theme.grayTabInactiveColor,
+                    tabBarBackground: () => this._blurView(theme.name),
+                  }}>
+                  <Tab.Screen
+                    name="Home"
+                    options={{
+                      // eslint-disable-next-line react/no-unstable-nested-components
+                      tabBarIcon: ({color}) => (
+                        <FontAwesome5
+                          name={'home'}
+                          size={18}
+                          color={color}
+                          solid
+                        />
+                      ),
+                    }}>
+                    {props => (
+                      <Screens.Home {...props} screenProps={{...screenProps}} />
+                    )}
+                  </Tab.Screen>
+                  <Tab.Screen
+                    name="Discover"
+                    options={{
+                      // eslint-disable-next-line react/no-unstable-nested-components
+                      tabBarIcon: ({color}) => (
+                        <FontAwesome5
+                          name={'compass'}
+                          size={18}
+                          color={color}
+                          solid
+                        />
+                      ),
+                    }}>
+                    {props => (
+                      <Screens.Discover
+                        {...props}
+                        screenProps={{...screenProps}}
+                      />
+                    )}
+                  </Tab.Screen>
+                  <Tab.Screen
+                    name="Notifications"
+                    options={{
+                      // eslint-disable-next-line react/no-unstable-nested-components
+                      tabBarIcon: ({color}) => (
+                        <FontAwesome5
+                          name={'bell'}
+                          size={18}
+                          color={color}
+                          solid
+                        />
+                      ),
+                    }}>
+                    {props => (
+                      <Screens.Notifications
+                        {...props}
+                        screenProps={{...screenProps}}
+                      />
+                    )}
+                  </Tab.Screen>
+                </Tab.Navigator>
               )}
             </Stack.Screen>
-            <Stack.Screen name="Notifications">
-              {props => (
-                <Screens.Notifications
-                  {...props}
-                  screenProps={{...screenProps}}
-                />
-              )}
-            </Stack.Screen>
-            <Stack.Screen name="Settings">
+            <Stack.Screen
+              name={i18n.t('settings')}
+              options={{
+                headerShown: true,
+              }}>
               {props => (
                 <Screens.Settings {...props} screenProps={{...screenProps}} />
               )}

@@ -1,88 +1,55 @@
 /* @flow */
 'use strict';
 
-import React, {useContext, useEffect, useRef} from 'react';
-import PropTypes from 'prop-types';
+import React, {useContext} from 'react';
 import {
-  Animated,
+  Linking,
   Platform,
   StyleSheet,
   TouchableHighlight,
   View,
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import ProgressBar from '../../ProgressBar';
 import {ThemeContext} from '../../ThemeContext';
-import i18n from 'i18n-js';
 
 const NavigationBar = props => {
   const theme = useContext(ThemeContext);
+  const discourseUrl = 'https://www.discourse.org';
 
-  const rotationValue = useRef(
-    new Animated.Value(props.leftButtonIconRotated ? 1 : 0),
-  ).current;
+  const renderCogButton = () => {
+    if (Platform.OS !== 'android') {
+      return null;
+    }
 
-  useEffect(() => {
-    Animated.spring(rotationValue, {
-      toValue: props.leftButtonIconRotated ? 1 : 0,
-      duration: 50,
-      useNativeDriver: true,
-    }).start();
-  }, [rotationValue, props.leftButtonIconRotated]);
-
+    return (
+      <TouchableHighlight
+        style={{...styles.androidSettingsButton}}
+        underlayColor={'transparent'}
+        onPress={props.onDidPressAndroidSettingsIcon}>
+        <FontAwesome5
+          name={'cog'}
+          size={20}
+          style={{color: theme.grayUI}}
+          solid
+        />
+      </TouchableHighlight>
+    );
+  };
   return (
     <View style={[styles.container, {backgroundColor: theme.background}]}>
-      <ProgressBar progress={props.progress} />
-      <View style={styles.leftContainer}>
+      <View style={styles.titleContainer}>
         <TouchableHighlight
           underlayColor={'transparent'}
-          accessibilityLabel={i18n.t('add_site')}
-          style={[styles.button]}
-          onPress={props.onDidPressLeftButton}>
-          <AnimatedIcon
-            name="plus"
-            color={theme.grayUI}
-            size={20}
-            style={[
-              styles.animatedIcon,
-              {
-                transform: [
-                  {
-                    rotate: rotationValue.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: ['0deg', '225deg'],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          />
-        </TouchableHighlight>
-      </View>
-      <View style={styles.titleContainer}>
-        <TouchableHighlight underlayColor={'transparent'}>
+          onPress={() => Linking.openURL(discourseUrl)}>
           <FontAwesome5
             name={'discourse'}
-            size={20}
+            size={26}
             brand
             style={{color: theme.grayTitle}}
           />
         </TouchableHighlight>
       </View>
-      <View style={styles.rightContainer}>
-        <TouchableHighlight
-          underlayColor={'transparent'}
-          accessibilityLabel={i18n.t('notifications')}
-          style={styles.button}
-          onPress={props.onDidPressRightButton}>
-          <FontAwesome5
-            name={'bell'}
-            color={props.rightButtonIconColor}
-            size={20}
-            solid
-          />
-        </TouchableHighlight>
-      </View>
+      {renderCogButton()}
       <View
         style={[styles.separator, {backgroundColor: theme.grayBackground}]}
       />
@@ -90,31 +57,16 @@ const NavigationBar = props => {
   );
 };
 
-NavigationBar.propTypes = {
-  leftButtonIconRotated: PropTypes.bool.isRequired,
-  rightButtonIconColor: PropTypes.string.isRequired,
-  onDidPressRightButton: PropTypes.func.isRequired,
-  onDidPressLeftButton: PropTypes.func.isRequired,
-};
-
-const AnimatedIcon = Animated.createAnimatedComponent(FontAwesome5);
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: Platform.OS === 'ios' ? 40 : 55,
-  },
-  leftContainer: {
-    flex: 1,
-  },
-  rightContainer: {
-    alignItems: 'flex-end',
-    flex: 1,
+    height: Platform.OS === 'ios' ? 50 : 60,
   },
   titleContainer: {
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
+    padding: 0,
   },
   separator: {
     bottom: 0,
@@ -123,14 +75,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
   },
-  animatedIcon: {
+  androidSettingsButton: {
+    position: 'absolute',
+    right: 6,
+    top: 6,
     backgroundColor: 'transparent',
-  },
-  button: {
-    width: Platform.OS === 'ios' ? 44 : 55,
-    height: Platform.OS === 'ios' ? 44 : 55,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 12,
   },
 });
 

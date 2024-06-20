@@ -348,10 +348,6 @@ class SiteManager {
       if (existing !== id) {
         this.clientId = id;
         AsyncStorage.setItem('@ClientId', this.clientId);
-        this.sites.forEach(site => {
-          site.authToken = null;
-          site.userId = null;
-        });
         this.save();
       }
     });
@@ -533,11 +529,18 @@ class SiteManager {
     return this.sites;
   }
 
+  connectedSitesCount() {
+    return this.sites.filter(site => site.authToken).length;
+  }
+
   _onChange() {
     this._subscribers.forEach(sub => sub({event: 'change'}));
   }
 
   async refreshActiveSite() {
+    if (!this.activeSite) {
+      return;
+    }
     await this.activeSite.refresh();
     this._onChange();
     this.updateUnreadBadge();

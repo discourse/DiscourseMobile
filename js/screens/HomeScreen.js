@@ -3,59 +3,21 @@
 
 import React from 'react';
 import {
-  Alert,
   Animated,
-  Easing,
-  Linking,
-  PermissionsAndroid,
   Platform,
   RefreshControl,
   SafeAreaView,
   StyleSheet,
-  UIManager,
   View,
 } from 'react-native';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
+
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import SafariWebAuth from 'react-native-safari-web-auth';
-import Site from '../site';
 import Components from './HomeScreenComponents';
-import {HEIGHT as TERM_BAR_HEIGHT} from './HomeScreenComponents/TermBar';
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
 import {donateShortcut} from 'react-native-siri-shortcut';
-import Toast, {BaseToast} from 'react-native-toast-message';
-
-UIManager.setLayoutAnimationEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-
-const toastConfig = {
-  success: props => (
-    <BaseToast
-      {...props}
-      style={{borderLeftColor: 'transparent'}}
-      onPress={() => {
-        if (Platform.OS === 'android') {
-          Linking.openSettings();
-        }
-        if (Platform.OS === 'ios') {
-          // We can't call PushNotificationIOS.requestPermissions again
-          // per https://developer.apple.com/documentation/usernotifications/asking_permission_to_use_notifications?language=objc
-          // only the first authorization request is honored
-          Linking.openURL('App-Prefs:NOTIFICATIONS_ID');
-        }
-      }}
-      contentContainerStyle={{paddingHorizontal: 10}}
-      text1Style={{
-        fontSize: 17,
-        fontWeight: '400',
-      }}
-      text2Style={{
-        fontSize: 17,
-      }}
-    />
-  ),
-};
+import {BottomTabBarHeightContext} from '@react-navigation/bottom-tabs';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -159,95 +121,6 @@ class HomeScreen extends React.Component {
     }
   }
 
-  async promptForNotifications() {
-    if (Platform.OS === 'ios') {
-      PushNotificationIOS.checkPermissions(permissions => {
-        console.log(permissions);
-        if (permissions.alert === false) {
-          this.showPNToast();
-        }
-      });
-    }
-
-    // Android 33+ has a permission request prompt
-    // versions before that permissions is always granted
-    if (Platform.OS === 'android' && Platform.Version >= 33) {
-      let granted = true;
-
-      granted = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-      );
-      if (!granted) {
-        this.showPNToast();
-      }
-    }
-  }
-
-  showPNToast() {
-    Toast.show({
-      type: 'success',
-      text1: i18n.t('site_added'),
-      text2: i18n.t('enable_notifications'),
-      position: 'bottom',
-      visibilityTime: 6000,
-    });
-  }
-
-  doSearch(term) {
-    if (term.length === 0) {
-      return new Promise((resolve, reject) => reject());
-    }
-
-    this.setState({addSiteProgress: Math.random() * 0.4});
-
-    return new Promise((resolve, reject) => {
-      Site.fromTerm(term)
-        .then(site => {
-          this.setState(
-            {
-              displayTermBar: false,
-              addSiteProgress: 1,
-            },
-            () => {
-              this.onToggleTermBar(this.state.displayTermBar);
-            },
-          );
-
-          if (site) {
-            if (this._siteManager.exists(site)) {
-              throw 'dupe site';
-            }
-            this._siteManager.add(site);
-          }
-
-          this.promptForNotifications();
-
-          resolve(site);
-        })
-        .catch(e => {
-          console.log(e);
-
-          if (e === 'dupe site') {
-            Alert.alert(i18n.t('term_exists', {term}));
-          } else if (e === 'bad api') {
-            Alert.alert(i18n.t('incorrect_url', {term}));
-          } else {
-            Alert.alert(i18n.t('not_found', {term}));
-          }
-
-          this.setState({displayTermBar: true, addSiteProgress: 1});
-          this.onToggleTermBar(this.state.displayTermBar);
-
-          reject('failure');
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.setState({addSiteProgress: 0});
-          }, 1000);
-        });
-    });
-  }
-
   pullDownToRefresh() {
     this._siteManager
       .refreshSites()
@@ -281,7 +154,7 @@ class HomeScreen extends React.Component {
     }
   }
 
-  _renderItem({item, index, drag, isActive}) {
+  _renderItem({item, getIndex, drag, isActive}) {
     return (
       <Components.SiteRow
         site={item}
@@ -307,60 +180,62 @@ class HomeScreen extends React.Component {
     if (this.shouldDisplayOnBoarding()) {
       return (
         <Components.OnBoardingView
-          onDidPressAddSite={() =>
-            this.setState({displayTermBar: true}, () => {
-              this.onToggleTermBar(this.state.displayTermBar);
-            })
-          }
+          style={{backgroundColor: theme.grayBackground}}
+          onDidPressAddSite={() => this.props.navigation.navigate('Discover')}
         />
       );
     } else {
       return (
-        <DraggableFlatList
-          style={styles.sitesList}
-          activationDistance={20}
-          data={this.state.data}
-          renderItem={item => this._renderItem(item)}
-          keyExtractor={(item, index) => `draggable-item-${item.url}`}
-          onDragEnd={this._dragItem}
-          scaleSelectionFactor={1.05}
-          refreshControl={
-            <RefreshControl
-              style={{left: 500}}
-              enabled={this.state.refreshingEnabled}
-              refreshing={this.state.isRefreshing}
-              onRefresh={() => this.pullDownToRefresh()}
-              title={i18n.t('loading')}
-              titleColor={theme.graySubtitle}
+        <BottomTabBarHeightContext.Consumer>
+          {tabBarHeight => (
+            <DraggableFlatList
+              style={styles.sitesList}
+              contentContainerStyle={{paddingBottom: tabBarHeight}}
+              activationDistance={20}
+              data={this.state.data}
+              renderItem={item => this._renderItem(item)}
+              keyExtractor={(item, index) => `draggable-item-${item.url}`}
+              onDragEnd={this._dragItem}
+              scaleSelectionFactor={1.05}
+              refreshControl={
+                <RefreshControl
+                  style={{left: 500}}
+                  enabled={this.state.refreshingEnabled}
+                  refreshing={this.state.isRefreshing}
+                  onRefresh={() => this.pullDownToRefresh()}
+                  title={i18n.t('loading')}
+                  titleColor={theme.graySubtitle}
+                />
+              }
             />
-          }
-        />
+          )}
+        </BottomTabBarHeightContext.Consumer>
       );
     }
   }
 
-  onToggleTermBar(show) {
-    Animated.timing(this.state.anim, {
-      easing: Easing.inOut(Easing.ease),
-      duration: 200,
-      toValue: show ? 1 : 0,
-      useNativeDriver: true,
-    }).start(() => {
-      if (this._input) {
-        show ? this._input.focus() : this._input.blur();
-      }
-    });
-  }
+  // onToggleTermBar(show) {
+  //   Animated.timing(this.state.anim, {
+  //     easing: Easing.inOut(Easing.ease),
+  //     duration: 200,
+  //     toValue: show ? 1 : 0,
+  //     useNativeDriver: true,
+  //   }).start(() => {
+  //     if (this._input) {
+  //       show ? this._input.focus() : this._input.blur();
+  //     }
+  //   });
+  // }
 
-  onDidPressLeftButton() {
-    this.setState({displayTermBar: !this.state.displayTermBar}, () => {
-      this.onToggleTermBar(this.state.displayTermBar);
-    });
-  }
+  // onDidPressLeftButton() {
+  //   this.setState({displayTermBar: !this.state.displayTermBar}, () => {
+  //     this.onToggleTermBar(this.state.displayTermBar);
+  //   });
+  // }
 
-  onDidPressRightButton() {
-    this.props.navigation.navigate('Notifications');
-  }
+  // onDidPressRightButton() {
+  //   this.props.navigation.navigate('Notifications');
+  // }
 
   onDidPressAndroidSettingsIcon() {
     this.props.navigation.navigate('Settings');
@@ -368,34 +243,27 @@ class HomeScreen extends React.Component {
 
   render() {
     const theme = this.context;
-    const translateY = this.state.anim.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, TERM_BAR_HEIGHT],
-    });
+
     return (
       <>
         <SafeAreaView
           style={[styles.container, {backgroundColor: theme.background}]}>
           <Components.NavigationBar
-            leftButtonIconRotated={this.state.displayTermBar}
-            anim={this.state.anim}
-            rightButtonIconColor={theme.grayUI}
-            onDidPressLeftButton={() => this.onDidPressLeftButton()}
-            onDidPressRightButton={() => this.onDidPressRightButton()}
-            progress={this.state.addSiteProgress}
+            onDidPressAndroidSettingsIcon={() =>
+              this.onDidPressAndroidSettingsIcon()
+            }
           />
-          <Components.TermBar
-            anim={this.state.anim}
-            getInputRef={ref => (this._input = ref)}
-            onDidSubmitTerm={term => this.doSearch(term)}
-          />
-          <Animated.View
-            style={[styles.sitesContainer, {transform: [{translateY}]}]}>
+          <View
+            style={[
+              styles.sitesContainer,
+              {
+                backgroundColor: theme.grayBackground,
+              },
+            ]}>
             {this._renderSites()}
-            {this._renderDebugRow()}
-          </Animated.View>
+            {/* {this._renderDebugRow()} */}
+          </View>
         </SafeAreaView>
-        <Toast config={toastConfig} />
       </>
     );
   }
@@ -412,12 +280,8 @@ const styles = StyleSheet.create({
   },
   sitesContainer: {
     flex: 1,
-    marginTop: -TERM_BAR_HEIGHT,
-    paddingBottom: 40,
   },
-  sitesList: {
-    height: '100%',
-  },
+  sitesList: {},
 });
 
 export default HomeScreen;
