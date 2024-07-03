@@ -74,5 +74,5 @@
   "discover_recent": "recent",
   "active_counts": "%{active_users} active users",
   "cancel": "Cancel",
-  "no_connected_sites": "You have no connected sites on your Home screen. Once you connect one or more sites, you will see their notifications here.",
+  "no_connected_sites": "You have no connected sites on your Home screen. Once you connect one or more sites, you will see their notifications here."
 }
