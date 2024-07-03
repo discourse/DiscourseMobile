@@ -57,10 +57,13 @@ i18n.translations = {
   hu: require('./locale/hu.json'),
   it: require('./locale/it.json'),
   ja: require('./locale/ja.json'),
+  ko: require('./locale/ko.json'),
   nl: require('./locale/nl.json'),
+  pl: require('./locale/pl_PL.json'),
   'pt-BR': require('./locale/pt_BR.json'),
   ru: require('./locale/ru.json'),
   sv: require('./locale/sv.json'),
+  tr: require('./locale/tr_TR.json'),
   'zh-CN': require('./locale/zh_CN.json'),
   'zh-TW': require('./locale/zh_TW.json'),
 };
