@@ -20,5 +20,8 @@
   "notifications": "Obavijest",
   "replies": "Replike",
   "unread_with_count": "nepročitano (%{count})",
-  "settings": "Postavke"
+  "settings": "Postavke",
+  "discover_all": "sve",
+  "discover_recent": "nove",
+  "cancel": "Odustani"
 }

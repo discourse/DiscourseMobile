@@ -1,7 +1,6 @@
 {
   "add_first_site": "+ Aggiungi il tuo primo sito",
   "add_site": "Aggiungi sito",
-  "add_sites": "Aggiungi siti Discourse da seguire",
   "add": "+ Aggiungi",
   "all": "Tutti",
   "approved_commits": {
@@ -40,7 +39,6 @@
   "new": "Nuovi",
   "no_notifications": "Non hai ancora notifiche",
   "no_replies": "Ancora nessuna risposta",
-  "no_sites_yet": "Non hai ancora nessun sito!",
   "no_new_notifications": "Non hai nuove notifiche",
   "not_found": "%{term} non è stato trovato!",
   "notifications": "Notifiche",
@@ -48,11 +46,14 @@
   "switch_dark": "Usa il tema scuro",
   "term_exists": "%{term} esiste già",
   "unread_with_count": "non letti (%{count})",
-  "term_placeholder": "Inserisci l'indirizzo del tuo sito",
   "please_wait": "Attendere...",
   "settings": "Impostazioni",
   "site_added": "🎉 Sito aggiunto!",
   "enable_notifications": "Tocca qui per abilitare le notifiche",
   "browser_toggle_label": "Apri siti con browser in-app",
-  "browser_toggle_description": "Quando questa impostazione è disabilitata, i siti verranno avviati tramite il browser preferito, incluse le PWA"
+  "browser_toggle_description": "Quando questa impostazione è disabilitata, i siti verranno avviati tramite il browser preferito, incluse le PWA",
+  "discover_reset": "Mostra tutto",
+  "discover_all": "tutte",
+  "discover_recent": "recenti",
+  "cancel": "Annulla"
 }

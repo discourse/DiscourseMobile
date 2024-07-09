@@ -21,5 +21,9 @@
   "notifications": "Ειδοποιήσεις",
   "replies": "Απαντήσεις",
   "unread_with_count": "μη αναγνωσμένα (%{count})",
-  "settings": "Ρυθμίσεις"
+  "settings": "Ρυθμίσεις",
+  "discover_reset": "Εμφάνιση όλων",
+  "discover_all": "όλα",
+  "discover_recent": "πρόσφατα",
+  "cancel": "Ακύρωση"
 }

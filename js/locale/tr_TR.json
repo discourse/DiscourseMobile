@@ -1,7 +1,6 @@
 {
   "add_first_site": "+ İlk sitenizi ekleyin",
   "add_site": "Site ekle",
-  "add_sites": "Takip edilecek Discourse siteleri ekleyin",
   "add": "+ Ekle",
   "all": "Tümü",
   "approved_commits": {
@@ -40,7 +39,6 @@
   "new": "Yeni",
   "no_notifications": "Bildirim yok",
   "no_replies": "Yanıt yok",
-  "no_sites_yet": "Henüz siteniz yok!",
   "no_new_notifications": "Yeni bildirim yok",
   "not_found": "%{term} bulunamadı!",
   "notifications": "Bildirimler",
@@ -48,11 +46,14 @@
   "switch_dark": "Koyu temayı kullan",
   "term_exists": "%{term} zaten mevcut",
   "unread_with_count": "okunmamış (%{count})",
-  "term_placeholder": "Sitenizin adresini girin",
   "please_wait": "Lütfen bekleyin...",
   "settings": "Ayarlar",
   "site_added": "🎉 Site eklendi!",
   "enable_notifications": "Bildirimleri etkinleştirmek için buraya dokunun",
   "browser_toggle_label": "Siteleri uygulama içi tarayıcıyla açın",
-  "browser_toggle_description": "Bu ayar devre dışı bırakıldığında, siteler PWA'lar da dâhil olmak üzere tercih ettiğiniz tarayıcı üzerinden başlatılır"
+  "browser_toggle_description": "Bu ayar devre dışı bırakıldığında, siteler PWA'lar da dâhil olmak üzere tercih ettiğiniz tarayıcı üzerinden başlatılır",
+  "discover_reset": "Tümünü göster",
+  "discover_all": "tümü",
+  "discover_recent": "yakın zaman",
+  "cancel": "İptal et"
 }

@@ -20,5 +20,9 @@
   "notifications": "Notificacións",
   "replies": "Respostas",
   "unread_with_count": "(%{count}) pendente de ler",
-  "settings": "Configuración"
+  "settings": "Configuración",
+  "discover_reset": "Amosar todas",
+  "discover_all": "todo",
+  "discover_recent": "recentes",
+  "cancel": "Cancelar"
 }

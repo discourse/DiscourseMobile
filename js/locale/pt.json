@@ -19,5 +19,9 @@
   "notifications": "Notificações",
   "replies": "Respostas",
   "unread_with_count": "não Lido (%{count})",
-  "settings": "Configurações"
+  "settings": "Configurações",
+  "discover_reset": "Mostrar tudo",
+  "discover_all": "todos",
+  "discover_recent": "recente",
+  "cancel": "Cancelar"
 }

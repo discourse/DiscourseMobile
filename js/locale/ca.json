@@ -19,5 +19,8 @@
   "notifications": "Notificacions",
   "replies": "Respostes",
   "unread_with_count": "no llegit (%{count})",
-  "settings": "Configuració"
+  "settings": "Configuració",
+  "discover_all": "tots",
+  "discover_recent": "recents",
+  "cancel": "Cancel·la"
 }

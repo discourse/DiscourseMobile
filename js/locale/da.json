@@ -21,5 +21,9 @@
   "notifications": "Underretninger",
   "replies": "Svar",
   "unread_with_count": "ulæst (%{count})",
-  "settings": "Indstillinger"
+  "settings": "Indstillinger",
+  "discover_reset": "Vis alle",
+  "discover_all": "alle",
+  "discover_recent": "nye",
+  "cancel": "Annuller"
 }

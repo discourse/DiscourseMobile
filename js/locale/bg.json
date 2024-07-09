@@ -14,5 +14,8 @@
   "notifications": "Известия",
   "replies": "Отговори",
   "unread_with_count": "непрочетен (%{count})",
-  "settings": "Настройки"
+  "settings": "Настройки",
+  "discover_all": "всички подкатегории",
+  "discover_recent": "скорошни",
+  "cancel": "Прекрати"
 }

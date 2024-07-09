@@ -18,5 +18,8 @@
   "notifications": "Ծանուցումներ",
   "replies": "Պատասխան",
   "unread_with_count": "չկարդացած (%{count})",
-  "settings": "Կարգավորումներ"
+  "settings": "Կարգավորումներ",
+  "discover_all": "բոլորը",
+  "discover_recent": "վերջին",
+  "cancel": "Չեղարկել"
 }

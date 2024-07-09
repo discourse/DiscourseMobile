@@ -15,5 +15,9 @@
   "notifications": "ئۇقتۇرۇش",
   "replies": "جاۋاب",
   "unread_with_count": "ئوقۇلمىغان (%{count})",
-  "settings": "تەڭشەكلەر"
+  "settings": "تەڭشەكلەر",
+  "discover_reset": "ھەممىنى كۆرسەت",
+  "discover_all": "ھەممىسى",
+  "discover_recent": "يېقىنقى",
+  "cancel": "ۋاز كەچ"
 }

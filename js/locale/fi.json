@@ -1,7 +1,6 @@
 {
   "add_first_site": "+ Lisää ensimmäinen sivustosi",
   "add_site": "Lisää sivusto",
-  "add_sites": "Lisää Discourse-sivustoja seurattavaksi",
   "add": "+ Lisää",
   "all": "Kaikki",
   "approved_commits": {
@@ -40,7 +39,6 @@
   "new": "Uudet",
   "no_notifications": "Ei ilmoituksia",
   "no_replies": "Ei vastauksia",
-  "no_sites_yet": "Sinulla ei ole vielä sivustoja!",
   "no_new_notifications": "Ei uusia ilmoituksia",
   "not_found": "Kohdetta %{term} ei löytynyt!",
   "notifications": "Ilmoitukset",
@@ -48,11 +46,14 @@
   "switch_dark": "Käytä tummaa teemaa",
   "term_exists": "%{term} on jo olemassa",
   "unread_with_count": "lukematta (%{count})",
-  "term_placeholder": "Anna sivustosi osoite",
   "please_wait": "Odota...",
   "settings": "Asetukset",
   "site_added": "🎉 Sivusto lisätty!",
   "enable_notifications": "Ota ilmoitukset käyttöön napauttamalla tätä",
   "browser_toggle_label": "Avaa sivustot sovelluksen sisäisellä selaimella",
-  "browser_toggle_description": "Kun tämä asetus on poistettu käytöstä, sivustot käynnistetään valitsemasi selaimen kautta, mukaan lukien PWA:t"
+  "browser_toggle_description": "Kun tämä asetus on poistettu käytöstä, sivustot käynnistetään valitsemasi selaimen kautta, mukaan lukien PWA:t",
+  "discover_reset": "Näytä kaikki",
+  "discover_all": "kaikki",
+  "discover_recent": "tuoreimpia",
+  "cancel": "Peruuta"
 }

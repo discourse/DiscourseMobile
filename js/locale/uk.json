@@ -25,5 +25,9 @@
   "notifications": "Сповіщення",
   "replies": "Відповідей",
   "unread_with_count": "непрочитані (%{count})",
-  "settings": "Налаштування"
+  "settings": "Налаштування",
+  "discover_reset": "Показати всі",
+  "discover_all": "усі",
+  "discover_recent": "останні",
+  "cancel": "Скасувати"
 }

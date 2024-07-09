@@ -18,5 +18,9 @@
   "notifications": "Thông báo",
   "replies": "Trả lời",
   "unread_with_count": "chưa đọc (%{count})",
-  "settings": "Cài đặt"
+  "settings": "Cài đặt",
+  "discover_reset": "Hiển thị tất cả",
+  "discover_all": "Tất cả",
+  "discover_recent": "gân đây",
+  "cancel": "Huỷ"
 }
