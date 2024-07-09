@@ -1,7 +1,6 @@
 {
   "add_first_site": "+ Voeg je eerste site toe",
   "add_site": "Site toevoegen",
-  "add_sites": "Voeg Discourse-sites toe voor het bijhouden van",
   "add": "+ Toevoegen",
   "all": "Alle",
   "approved_commits": {
@@ -40,7 +39,6 @@
   "new": "Nieuw",
   "no_notifications": "Geen meldingen",
   "no_replies": "Geen antwoorden",
-  "no_sites_yet": "Je hebt nog geen sites!",
   "no_new_notifications": "Geen nieuwe meldingen",
   "not_found": "%{term} is niet gevonden!",
   "notifications": "Meldingen",
@@ -48,11 +46,14 @@
   "switch_dark": "Donker thema gebruiken",
   "term_exists": "%{term} bestaat al",
   "unread_with_count": "ongelezen (%{count})",
-  "term_placeholder": "Voer het adres van je site in",
   "please_wait": "Even geduld...",
   "settings": "Instellingen",
   "site_added": "🎉 Site toegevoegd!",
   "enable_notifications": "Tik hier om meldingen in te schakelen",
   "browser_toggle_label": "Sites openen met in-app browser",
-  "browser_toggle_description": "Als deze instelling is uitgeschakeld, worden sites geopend in de browser van je keuze, inclusief PWA's"
+  "browser_toggle_description": "Als deze instelling is uitgeschakeld, worden sites geopend in de browser van je keuze, inclusief PWA's",
+  "discover_reset": "Alles weergeven",
+  "discover_all": "alle",
+  "discover_recent": "recent",
+  "cancel": "Annuleren"
 }

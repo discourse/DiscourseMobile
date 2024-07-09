@@ -8,5 +8,8 @@
   "notifications": "Paziņojumi",
   "replies": "Atbildes",
   "unread_with_count": "nelasīts (%{count})",
-  "settings": "Iestatījumi"
+  "settings": "Iestatījumi",
+  "discover_all": "Viss",
+  "discover_recent": "neseni",
+  "cancel": "Atcelt"
 }

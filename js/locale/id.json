@@ -19,12 +19,13 @@
   "new": "Baru",
   "no_notifications": "Tak ada notifikasi",
   "no_replies": "Tak ada balasan",
-  "no_sites_yet": "Kamu belum memiliki satupun situs",
   "no_new_notifications": "Tak ada notifikasi baru",
   "not_found": "%{term} tidak ditemukan!",
   "notifications": "Notifikasi",
   "replies": "Balasan",
   "term_exists": "%{term} sudah ada",
   "unread_with_count": "belum dibaca (%{count})",
-  "settings": "Pengaturan"
+  "settings": "Pengaturan",
+  "discover_all": "Semua",
+  "cancel": "Batal"
 }

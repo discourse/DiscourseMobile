@@ -24,5 +24,8 @@
   "replies": "Odgovori",
   "unread_with_count": "nepročitanih (%{count})",
   "please_wait": "Molimo pričekajte...",
-  "settings": "Postavke"
+  "settings": "Postavke",
+  "discover_reset": "Prikaži sve",
+  "discover_all": "sve",
+  "cancel": "Odustani"
 }

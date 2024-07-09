@@ -20,5 +20,9 @@
   "notifications": "اطلاعات",
   "replies": "جوابات",
   "unread_with_count": "بغیر پڑھا (%{count})",
-  "settings": "سیٹِنگ"
+  "settings": "سیٹِنگ",
+  "discover_reset": "تمام دکھائیں",
+  "discover_all": "تمام",
+  "discover_recent": "حالیہ",
+  "cancel": "منسوخ"
 }

@@ -24,5 +24,9 @@
   "notifications": "Perspėjimai",
   "replies": "Atsakymai",
   "unread_with_count": "neperskaitytas (%{count})",
-  "settings": "Nustatymai"
+  "settings": "Nustatymai",
+  "discover_reset": "Rodyti viską",
+  "discover_all": "visi",
+  "discover_recent": "naujausios",
+  "cancel": "Atšaukti"
 }

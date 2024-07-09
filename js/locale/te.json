@@ -15,5 +15,9 @@
   "notifications": "ప్రకటనలు",
   "replies": "జవాబులు",
   "unread_with_count": "చదవనివి (%{count})",
-  "settings": "అమరికలు"
+  "settings": "అమరికలు",
+  "discover_reset": "అన్నీ చూపండి",
+  "discover_all": "అన్నీ",
+  "discover_recent": "తాజా",
+  "cancel": "రద్దుచేయండి"
 }

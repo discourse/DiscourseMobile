@@ -11,5 +11,8 @@
   "notifications": "Taarifa",
   "replies": "Majibu",
   "unread_with_count": "haijasomwa (%{count})",
-  "settings": "Mpangilio"
+  "settings": "Mpangilio",
+  "discover_all": "yote",
+  "discover_recent": "hivi Karibuni",
+  "cancel": "Ghairi"
 }

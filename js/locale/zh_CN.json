@@ -1,7 +1,6 @@
 {
   "add_first_site": "+ 添加您的第一个站点",
   "add_site": "添加站点",
-  "add_sites": "添加要跟踪的 Discourse 站点",
   "add": "+ 添加",
   "all": "所有",
   "approved_commits": {
@@ -37,7 +36,6 @@
   "new": "新",
   "no_notifications": "没有通知",
   "no_replies": "无回复",
-  "no_sites_yet": "您还没有任何站点！",
   "no_new_notifications": "没有新通知",
   "not_found": "找不到“%{term}”！",
   "notifications": "通知",
@@ -45,11 +43,14 @@
   "switch_dark": "使用深色主题",
   "term_exists": "“%{term}”已存在",
   "unread_with_count": "未读 (%{count})",
-  "term_placeholder": "输入您的站点地址",
   "please_wait": "请稍候…",
   "settings": "设置",
   "site_added": "🎉 站点已添加！",
   "enable_notifications": "点按此处启用通知",
   "browser_toggle_label": "使用应用内浏览器打开站点",
-  "browser_toggle_description": "禁用此设置后，站点将通过您选择的浏览器启动，包括 PWA"
+  "browser_toggle_description": "禁用此设置后，站点将通过您选择的浏览器启动，包括 PWA",
+  "discover_reset": "全部显示",
+  "discover_all": "所有",
+  "discover_recent": "最近",
+  "cancel": "取消"
 }

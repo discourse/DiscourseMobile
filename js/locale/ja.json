@@ -1,7 +1,6 @@
 {
   "add_first_site": "+ 最初のサイトを追加",
   "add_site": "サイトを追加",
-  "add_sites": "追跡する Discourse サイトを追加する",
   "add": "+ 追加",
   "all": "すべて",
   "approved_commits": {
@@ -37,7 +36,6 @@
   "new": "新着",
   "no_notifications": "通知はありません",
   "no_replies": "返信はありません",
-  "no_sites_yet": "サイトがまだありません！",
   "no_new_notifications": "新しい通知はありません",
   "not_found": "%{term} は見つかりませんでした！",
   "notifications": "通知",
@@ -45,11 +43,14 @@
   "switch_dark": "ダークテーマを使用する",
   "term_exists": "%{term} はすでに存在します",
   "unread_with_count": "未読 (%{count})",
-  "term_placeholder": "サイドのアドレスを入力してください",
   "please_wait": "お待ちください...",
   "settings": "設定",
   "site_added": "🎉 サイトが追加されました！",
   "enable_notifications": "通知を有効にするにはここをタップ",
   "browser_toggle_label": "アプリ内ブラウザでサイトを開く",
-  "browser_toggle_description": "この設定を無効にすると、サイトは PWA を含む任意のブラウザで起動します。"
+  "browser_toggle_description": "この設定を無効にすると、サイトは PWA を含む任意のブラウザで起動します。",
+  "discover_reset": "すべて表示",
+  "discover_all": "すべて",
+  "discover_recent": "最近",
+  "cancel": "キャンセル"
 }

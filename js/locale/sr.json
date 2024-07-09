@@ -6,5 +6,7 @@
   "notifications": "Obaveštenja",
   "replies": "Odgovori",
   "unread_with_count": "nepročitane (%{count})",
-  "settings": "Podešavanje"
+  "settings": "Podešavanje",
+  "discover_all": "sve",
+  "cancel": "Odustani"
 }

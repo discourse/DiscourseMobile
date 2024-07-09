@@ -15,5 +15,9 @@
   "notifications": "Varsler",
   "replies": "Svar",
   "unread_with_count": "ulest (%{count})",
-  "settings": "Innstillinger"
+  "settings": "Innstillinger",
+  "discover_reset": "Vis alle",
+  "discover_all": "alle",
+  "discover_recent": "nylig",
+  "cancel": "Avbryt"
 }

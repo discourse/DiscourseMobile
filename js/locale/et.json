@@ -10,5 +10,9 @@
   "notifications": "Teavitused",
   "replies": "Vastuseid",
   "unread_with_count": "lugemata (%{count})",
-  "settings": "Seaded"
+  "settings": "Seaded",
+  "discover_reset": "Näita kõiki",
+  "discover_all": "kõik",
+  "discover_recent": "viimased",
+  "cancel": "Tühista"
 }

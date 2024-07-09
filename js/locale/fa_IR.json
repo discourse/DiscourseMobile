@@ -24,10 +24,12 @@
   "new_with_count": "(%{count}) جدید",
   "new": "جدید",
   "no_replies": "بدون پاسخ",
-  "no_sites_yet": "شما هنوز هیچ سایتی ندارید!",
   "notifications": "آگاه‌سازی‌ها",
   "replies": "پاسخ‌ها",
   "unread_with_count": " (%{count}) خوانده‌ نشده‌",
   "please_wait": "لطفا صبر کنید...",
-  "settings": "تنظیمات"
+  "settings": "تنظیمات",
+  "discover_all": "همه",
+  "discover_recent": "اخیر",
+  "cancel": "انصراف"
 }

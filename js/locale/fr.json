@@ -1,7 +1,6 @@
 {
   "add_first_site": "+ Ajoutez votre premier site",
   "add_site": "Ajouter un site",
-  "add_sites": "Ajouter des sites Discourse à suivre",
   "add": "+ Ajouter",
   "all": "Tout",
   "approved_commits": {
@@ -40,7 +39,6 @@
   "new": "Nouveaux",
   "no_notifications": "Pas de notifications",
   "no_replies": "Pas de réponses",
-  "no_sites_yet": "Vous n'avez pas encore de sites !",
   "no_new_notifications": "Pas de nouvelles notifications",
   "not_found": "%{term} n'a pas été trouvé !",
   "notifications": "Notifications",
@@ -48,11 +46,14 @@
   "switch_dark": "Utiliser le thème sombre",
   "term_exists": "%{term} existe déjà",
   "unread_with_count": "non lus (%{count})",
-  "term_placeholder": "Saisissez l'adresse de votre site",
   "please_wait": "Veuillez patienter…",
   "settings": "Paramètres",
   "site_added": "🎉 Site ajouté !",
   "enable_notifications": "Appuyez ici pour activer les notifications",
   "browser_toggle_label": "Ouvrir les sites avec un navigateur intégré à l'application",
-  "browser_toggle_description": "Lorsque ce paramètre est désactivé, les sites seront lancés via le navigateur de votre choix, y compris les PWA"
+  "browser_toggle_description": "Lorsque ce paramètre est désactivé, les sites seront lancés via le navigateur de votre choix, y compris les PWA",
+  "discover_reset": "Tout afficher",
+  "discover_all": "tout",
+  "discover_recent": "récents",
+  "cancel": "Annuler"
 }

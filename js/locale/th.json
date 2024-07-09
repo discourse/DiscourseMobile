@@ -13,5 +13,7 @@
   "notifications": "การแจ้งเตือน",
   "replies": "ตอบ",
   "unread_with_count": "ยังไม่อ่าน (%{count})",
-  "settings": "การตั้งค่า"
+  "settings": "การตั้งค่า",
+  "discover_all": "ทั้งหมด",
+  "cancel": "ยกเลิก"
 }

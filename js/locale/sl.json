@@ -22,5 +22,9 @@
   "notifications": "Obvestila",
   "replies": "Odgovorov",
   "unread_with_count": "neprebrana (%{count})",
-  "settings": "Nastavitve"
+  "settings": "Nastavitve",
+  "discover_reset": "Pokaži vse",
+  "discover_all": "vse",
+  "discover_recent": "nedavno",
+  "cancel": "Prekliči"
 }

@@ -1,7 +1,6 @@
 {
   "add_first_site": "+ Dodaj swoją pierwszą witrynę",
   "add_site": "Dodaj witrynę",
-  "add_sites": "Dodaj strony Discourse, które chcesz śledzić",
   "add": "+ Dodaj",
   "all": "Wszystkie",
   "approved_commits": {
@@ -45,7 +44,6 @@
   "new": "Nowe",
   "no_notifications": "Brak powiadomień",
   "no_replies": "Brak odpowiedzi",
-  "no_sites_yet": "Nie masz jeszcze żadnych witryn!",
   "no_new_notifications": "Brak nowych powiadomień",
   "not_found": "%{term} nie został znaleziony!",
   "notifications": "Powiadomienia",
@@ -53,9 +51,12 @@
   "switch_dark": "Użyj ciemnego motywu",
   "term_exists": "%{term} już istnieje",
   "unread_with_count": "nieprzeczytane (%{count})",
-  "term_placeholder": "Wpisz adres swojej witryny",
   "please_wait": "Proszę czekać...",
   "settings": "Ustawienia",
   "browser_toggle_label": "Otwórz strony w przeglądarce aplikacji",
-  "browser_toggle_description": "Gdy to ustawienie jest wyłączone, witryny będą uruchamiane za pośrednictwem wybranej przeglądarki, w tym PWA"
+  "browser_toggle_description": "Gdy to ustawienie jest wyłączone, witryny będą uruchamiane za pośrednictwem wybranej przeglądarki, w tym PWA",
+  "discover_reset": "Pokaż wszystkie",
+  "discover_all": "wszystkie",
+  "discover_recent": "ostatnie",
+  "cancel": "Anuluj"
 }

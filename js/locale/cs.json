@@ -25,5 +25,9 @@
   "notifications": "Oznámení",
   "replies": "Odpovědi",
   "unread_with_count": "nepřečtené (%{count})",
-  "settings": "Nastavení"
+  "settings": "Nastavení",
+  "discover_reset": "Zobrazit vše",
+  "discover_all": "vše",
+  "discover_recent": "nedávné",
+  "cancel": "Zrušit"
 }

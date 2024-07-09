@@ -1,7 +1,6 @@
 {
   "add_first_site": "+ 新增您的第一個網站",
   "add_site": "新增網站",
-  "add_sites": "新增要追蹤的Discourse網站",
   "add": "+ 新增",
   "all": "全部",
   "approved_commits": {
@@ -34,7 +33,6 @@
   "new": "新的",
   "no_notifications": "沒有通知",
   "no_replies": "沒有回覆。",
-  "no_sites_yet": "您還沒有任何網站！",
   "no_new_notifications": "無新的通知",
   "not_found": "%{term} 未找到！",
   "notifications": "通知",
@@ -42,9 +40,12 @@
   "switch_dark": "使用深色佈景主題",
   "term_exists": "%{term} 已存在",
   "unread_with_count": "未讀 (%{count})",
-  "term_placeholder": "輸入您的網站地址",
   "please_wait": "請稍候...",
   "settings": "設定",
   "browser_toggle_label": "使用app內建瀏覽器開啟網站",
-  "browser_toggle_description": "禁用此設置後，將通過您選擇的瀏覽器啟動網站，包括 PWA"
+  "browser_toggle_description": "禁用此設置後，將通過您選擇的瀏覽器啟動網站，包括 PWA",
+  "discover_reset": "顯示全部",
+  "discover_all": "所有",
+  "discover_recent": "最近",
+  "cancel": "取消"
 }

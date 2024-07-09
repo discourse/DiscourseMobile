@@ -9,5 +9,8 @@
   "notifications": "Notificări",
   "replies": "Răspunsuri",
   "unread_with_count": "necitit (%{count})",
-  "settings": "Setări"
+  "settings": "Setări",
+  "discover_all": "toate",
+  "discover_recent": "recente",
+  "cancel": "Anulare"
 }

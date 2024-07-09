@@ -1,7 +1,6 @@
 {
   "add_first_site": "+ Első webhely hozzáadása",
   "add_site": "Webhely hozzáadása",
-  "add_sites": "Adja hozzá a nyomon követendő Discourse-oldalakat",
   "add": "+ Hozzáadás",
   "all": "Mind",
   "approved_commits": {
@@ -39,7 +38,6 @@
   "new": "Új",
   "no_notifications": "Nincsenek értesítések",
   "no_replies": "Nincsenek válaszok",
-  "no_sites_yet": "Még nincs egyetlen webhelye sem.",
   "no_new_notifications": "Nincsenek új értesítések",
   "not_found": "A(z) %{term} nem található.",
   "notifications": "Értesítések",
@@ -47,9 +45,12 @@
   "switch_dark": "Sötét téma használata",
   "term_exists": "A(z) %{term} már létezik",
   "unread_with_count": "olvasatlan (%{count})",
-  "term_placeholder": "Adja meg a webhely címét",
   "please_wait": "Kis türelmet…",
   "settings": "Beállítások",
   "browser_toggle_label": "Webhelyek megnyitása az alkalmazáson belüli böngészőben",
-  "browser_toggle_description": "Ha ez a beállítás ki van kapcsolva, a webhelyek a választott böngészőn keresztül indulnak el, beleértve a PWA-kat is"
+  "browser_toggle_description": "Ha ez a beállítás ki van kapcsolva, a webhelyek a választott böngészőn keresztül indulnak el, beleértve a PWA-kat is",
+  "discover_reset": "Mutasd mindet",
+  "discover_all": "Összes",
+  "discover_recent": "friss",
+  "cancel": "Mégse"
 }
