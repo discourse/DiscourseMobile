@@ -24,15 +24,6 @@ class NotificationsScreen extends React.Component {
       connectedSites: 0,
     };
 
-    this._onSiteChange = e => {
-      if (e.event === 'change') {
-        this.refresh();
-        this.setState({
-          connectedSites: this._siteManager.connectedSitesCount(),
-        });
-      }
-    };
-
     this._siteManager = this.props.screenProps.siteManager;
 
     if (this.props.screenProps.seenNotificationMap) {
@@ -48,8 +39,6 @@ class NotificationsScreen extends React.Component {
   }
 
   componentDidMount() {
-    this._siteManager.subscribe(this._onSiteChange);
-
     this.setState({connectedSites: this._siteManager.connectedSitesCount()});
     this._mounted = true;
 
@@ -77,7 +66,6 @@ class NotificationsScreen extends React.Component {
   }
 
   componentWillUnmount() {
-    this._siteManager.unsubscribe(this._onSiteChange);
     this._mounted = false;
   }
 
@@ -97,11 +85,7 @@ class NotificationsScreen extends React.Component {
 
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
-        <Components.NavigationBar
-          onDidPressRightButton={() => this._onDidPressRightButton()}
-          onDidPressLeftButton={() => this._onDidPressLeftButton()}
-          progress={this.state.progress}
-        />
+        <Components.NavigationBar progress={this.state.progress} />
 
         {this._renderListHeader()}
 
@@ -160,14 +144,6 @@ class NotificationsScreen extends React.Component {
     let url = DiscourseUtils.endpointForSiteNotification(site, notification);
     this._siteManager.setActiveSite(site);
     this.props.screenProps.openUrl(url);
-  }
-
-  _onDidPressLeftButton() {
-    this.refresh();
-  }
-
-  _onDidPressRightButton() {
-    this.props.navigation.goBack();
   }
 
   _listIndex(row) {
