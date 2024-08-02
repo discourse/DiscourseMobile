@@ -238,7 +238,7 @@ class HomeScreen extends React.Component {
   // }
 
   onDidPressAndroidSettingsIcon() {
-    this.props.navigation.navigate('Settings');
+    this.props.navigation.navigate(i18n.t('settings'));
   }
 
   render() {
