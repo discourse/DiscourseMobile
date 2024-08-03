@@ -249,15 +249,8 @@ class WebViewScreen extends React.Component {
             onLoadProgress={({nativeEvent}) => {
               const progress = nativeEvent.progress;
               this.setState({
-                progress: progress,
+                progress: progress === 1 ? 0 : progress,
               });
-
-              if (progress === 1) {
-                this.progressTimeout = setTimeout(
-                  () => this.setState({progress: 0}),
-                  400,
-                );
-              }
             }}
             onMessage={event => this._onMessage(event)}
             onContentProcessDidTerminate={event => {
@@ -275,7 +268,7 @@ class WebViewScreen extends React.Component {
     this.keyboardWillShow?.remove();
     this.keyboardWillHide?.remove();
 
-    this.siteManager.refreshActiveSite();
+    this.siteManager.refreshSites();
     this.appStateSubscription?.remove();
   }
 

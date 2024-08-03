@@ -394,7 +394,10 @@ class Discourse extends React.Component {
 
   async _refresh() {
     clearTimeout(this.refreshTimerId);
-    await this._siteManager.refreshSites();
+    if (!this._siteManager.activeSite) {
+      // don't run background refresh while user is on a site
+      await this._siteManager.refreshSites();
+    }
     this.refreshTimerId = setTimeout(this._refresh, 30000);
   }
 
