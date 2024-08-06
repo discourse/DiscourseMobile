@@ -1,6 +1,8 @@
 {
   "add_first_site": "+ İlk sitenizi ekleyin",
   "add_site": "Site ekle",
+  "add_sites": "Başlayın ve sevdiğiniz Discourse topluluklarını takip edin!",
+  "no_sites_yet": "Discourse Hub'a hoş geldiniz!",
   "add": "+ Ekle",
   "all": "Tümü",
   "approved_commits": {
@@ -15,6 +17,11 @@
     "one": "%{group_name} gelen kutunuzda %{count} mesaj var",
     "other": "%{group_name} gelen kutunuzda %{count} mesaj var"
   },
+  "generic_notification_title": {
+    "one": "%{count} yeni bildirim",
+    "other": "%{count} yeni bildirim"
+  },
+  "generic_notification_body": "%{url} üzerindeki yeniliklere bakın",
   "incorrect_url": "Üzgünüz, %{term} bir Discourse forumu için doğru bir URL değil veya mobil API'leri desteklemiyor, sahibinin Discourse'u en son sürüme yükseltmesini sağlayın!",
   "cannot_load_url": "Bu URL, DiscourseHub'a eklenemedi.",
   "last_updated": "Son Güncelleme:",
@@ -46,14 +53,26 @@
   "switch_dark": "Koyu temayı kullan",
   "term_exists": "%{term} zaten mevcut",
   "unread_with_count": "okunmamış (%{count})",
+  "term_placeholder": "Topluluk URL'sini arayın veya girin",
   "please_wait": "Lütfen bekleyin...",
   "settings": "Ayarlar",
+  "discover": "Keşfedin",
   "site_added": "🎉 Site eklendi!",
   "enable_notifications": "Bildirimleri etkinleştirmek için buraya dokunun",
   "browser_toggle_label": "Siteleri uygulama içi tarayıcıyla açın",
   "browser_toggle_description": "Bu ayar devre dışı bırakıldığında, siteler PWA'lar da dâhil olmak üzere tercih ettiğiniz tarayıcı üzerinden başlatılır",
+  "discover_no_results": "Site bulunamadı. Ayrıca bir Discourse topluluğunun tam alan alanına girip ekleyebilirsiniz!",
   "discover_reset": "Tümünü göster",
   "discover_all": "tümü",
+  "discover_tech": "teknoloji",
+  "discover_interests": "ilgi alanları",
+  "discover_support": "destek",
+  "discover_media": "medya",
+  "discover_gaming": "oyun",
+  "discover_open_source": "açık-kaynak",
+  "discover_international": "uluslararası",
   "discover_recent": "yakın zaman",
-  "cancel": "İptal et"
+  "active_counts": "%{active_users} aktif kullanıcı",
+  "cancel": "İptal et",
+  "no_connected_sites": "Ana Sayfa ekranınızda bağlı siteniz yok. Bir veya daha fazla siteyi bağladığınızda bildirimlerini burada görürsünüz."
 }

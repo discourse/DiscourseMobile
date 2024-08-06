@@ -1,6 +1,8 @@
 {
   "add_first_site": "+ 最初のサイトを追加",
   "add_site": "サイトを追加",
+  "add_sites": "まずはお気に入りの Discourse コミュニティーをフォローしましょう！",
+  "no_sites_yet": "Discrouse Hub へようこそ！",
   "add": "+ 追加",
   "all": "すべて",
   "approved_commits": {
@@ -13,6 +15,10 @@
   "inbox_message": {
     "other": "%{group_name} の受信トレイに %{count} 件のメッセージがあります"
   },
+  "generic_notification_title": {
+    "other": "%{count} 新規通知"
+  },
+  "generic_notification_body": "%{url} の新着情報をご覧ください",
   "incorrect_url": "%{term} は Discourse フォーラムへの正しい URL でないか、モバイル API をサポートしていません。オーナーに最新の Discourse にアップグレードしてもらいましょう！",
   "cannot_load_url": "その URL を DiscourseHub に追加できませんでした。",
   "last_updated": "最終更新:",
@@ -43,14 +49,26 @@
   "switch_dark": "ダークテーマを使用する",
   "term_exists": "%{term} はすでに存在します",
   "unread_with_count": "未読 (%{count})",
+  "term_placeholder": "コミュニティーの URL を検索または入力",
   "please_wait": "お待ちください...",
   "settings": "設定",
+  "discover": "発見",
   "site_added": "🎉 サイトが追加されました！",
   "enable_notifications": "通知を有効にするにはここをタップ",
   "browser_toggle_label": "アプリ内ブラウザでサイトを開く",
   "browser_toggle_description": "この設定を無効にすると、サイトは PWA を含む任意のブラウザで起動します。",
+  "discover_no_results": "サイトが見つかりません。Discourse コミュニティーの完全なドメインを入力して追加することもできます！",
   "discover_reset": "すべて表示",
   "discover_all": "すべて",
+  "discover_tech": "テクノロジー",
+  "discover_interests": "関心",
+  "discover_support": "サポート",
+  "discover_media": "メディア",
+  "discover_gaming": "ゲーミング",
+  "discover_open_source": "オープンソース",
+  "discover_international": "海外",
   "discover_recent": "最近",
-  "cancel": "キャンセル"
+  "active_counts": "%{active_users} アクティブユーザー",
+  "cancel": "キャンセル",
+  "no_connected_sites": "ホーム画面には接続されたサイトがありません。1 つ以上のサイトを接続すると、ここにその通知が表示されるようになります。"
 }
