@@ -1,6 +1,8 @@
 {
   "add_first_site": "+ Voeg je eerste site toe",
   "add_site": "Site toevoegen",
+  "add_sites": "Ga aan de slag en volg de Discourse-community's waar je van houdt!",
+  "no_sites_yet": "Welkom bij Discourse Hub!",
   "add": "+ Toevoegen",
   "all": "Alle",
   "approved_commits": {
@@ -15,6 +17,11 @@
     "one": "%{count} bericht in uw Postvak IN voor %{group_name}",
     "other": "%{count} berichten in uw Postvak IN voor %{group_name}"
   },
+  "generic_notification_title": {
+    "one": "%{count} nieuwe melding",
+    "other": "%{count} nieuwe meldingen"
+  },
+  "generic_notification_body": "Bekijk wat er nieuw is op %{url}",
   "incorrect_url": "Sorry, %{term} is geen correcte URL naar een Discourse-forum of ondersteunt geen mobiele API's. Laat de eigenaar Discourse upgraden naar de nieuwste versie!",
   "cannot_load_url": "Die URL kon niet worden toegevoegd aan DiscourseHub.",
   "last_updated": "Laatst bijgewerkt:",
@@ -46,14 +53,26 @@
   "switch_dark": "Donker thema gebruiken",
   "term_exists": "%{term} bestaat al",
   "unread_with_count": "ongelezen (%{count})",
+  "term_placeholder": "Zoek of voer een community-URL in",
   "please_wait": "Even geduld...",
   "settings": "Instellingen",
+  "discover": "Ontdekken",
   "site_added": "🎉 Site toegevoegd!",
   "enable_notifications": "Tik hier om meldingen in te schakelen",
   "browser_toggle_label": "Sites openen met in-app browser",
   "browser_toggle_description": "Als deze instelling is uitgeschakeld, worden sites geopend in de browser van je keuze, inclusief PWA's",
+  "discover_no_results": "Geen sites gevonden. Je kunt ook het volledige domein van een Discourse-community invoeren en toevoegen!",
   "discover_reset": "Alles weergeven",
-  "discover_all": "alle",
+  "discover_all": "alles",
+  "discover_tech": "technologie",
+  "discover_interests": "interesses",
+  "discover_support": "ondersteuning",
+  "discover_media": "media",
+  "discover_gaming": "gamen",
+  "discover_open_source": "open source",
+  "discover_international": "internationaal",
   "discover_recent": "recent",
-  "cancel": "Annuleren"
+  "active_counts": "%{active_users} actieve gebruikers",
+  "cancel": "Annuleren",
+  "no_connected_sites": "Je hebt geen verbonden sites op je startscherm. Wanneer je verbinding hebt gemaakt met een of meer sites, worden meldingen ervan hier weergegeven."
 }

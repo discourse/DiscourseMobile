@@ -1,6 +1,8 @@
 {
   "add_first_site": "+ Aggiungi il tuo primo sito",
   "add_site": "Aggiungi sito",
+  "add_sites": "Inizia e segui le community di Discourse che ami!",
+  "no_sites_yet": "Eccoti nell'Hub di Discourse!",
   "add": "+ Aggiungi",
   "all": "Tutti",
   "approved_commits": {
@@ -15,6 +17,11 @@
     "one": "%{count} messaggio in arrivo nella casella %{group_name}",
     "other": "%{count} messaggi in arrivo nella casella %{group_name}"
   },
+  "generic_notification_title": {
+    "one": "%{count} nuova notifica",
+    "other": "%{count} nuove notifiche"
+  },
+  "generic_notification_body": "Scopri le novità su %{url}",
   "incorrect_url": "Spiacenti, %{term} non è un URL corretto di un forum Discourse o non supporta le API mobile, chiedi al proprietario di aggiornare Discourse alla versione più recente!",
   "cannot_load_url": "Impossibile aggiungere l'URL a DiscourseHub.",
   "last_updated": "Ultimo aggiornamento:",
@@ -46,14 +53,26 @@
   "switch_dark": "Usa il tema scuro",
   "term_exists": "%{term} esiste già",
   "unread_with_count": "non letti (%{count})",
+  "term_placeholder": "Cerca o inserisci l'URL di una community",
   "please_wait": "Attendere...",
   "settings": "Impostazioni",
+  "discover": "Scopri",
   "site_added": "🎉 Sito aggiunto!",
   "enable_notifications": "Tocca qui per abilitare le notifiche",
   "browser_toggle_label": "Apri siti con browser in-app",
   "browser_toggle_description": "Quando questa impostazione è disabilitata, i siti verranno avviati tramite il browser preferito, incluse le PWA",
+  "discover_no_results": "Nessun sito trovato. Puoi anche inserire il dominio completo di una community di Discourse per aggiungerla!",
   "discover_reset": "Mostra tutto",
   "discover_all": "tutte",
+  "discover_tech": "tecnologia",
+  "discover_interests": "interessi",
+  "discover_support": "supporto",
+  "discover_media": "media",
+  "discover_gaming": "giochi",
+  "discover_open_source": "open-source",
+  "discover_international": "internazionale",
   "discover_recent": "recenti",
-  "cancel": "Annulla"
+  "active_counts": "%{active_users} utenti attivi",
+  "cancel": "Annulla",
+  "no_connected_sites": "Non sono presenti siti collegati nella schermata Home. Una volta effettuata la connessione a uno o più siti, vedrai le relative notifiche qui."
 }

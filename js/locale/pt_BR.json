@@ -1,6 +1,8 @@
 {
   "add_first_site": "+ Adicione seu primeiro site",
   "add_site": "Adicionar site",
+  "add_sites": "Comece agora mesmo e siga suas comunidades favoritas do Discourse!",
+  "no_sites_yet": "Boas-vindas à Central do Discourse!",
   "add": "+ Add",
   "all": "Tudo",
   "approved_commits": {
@@ -15,6 +17,11 @@
     "one": "%{count} mensagem na caixa de entrada de %{group_name}",
     "other": "%{count} mensagens na caixa de entrada de %{group_name}"
   },
+  "generic_notification_title": {
+    "one": "%{count} nova notificação",
+    "other": "%{count} novas notificações"
+  },
+  "generic_notification_body": "Veja as novidades em %{url}",
   "incorrect_url": "Desculpe, %{term} não é uma URL correta para um fórum do Discourse ou não é compatível com APIs móveis, faça com que o proprietário atualize o Discourse para a versão mais recente!",
   "cannot_load_url": "Não foi possível adicionar esta URL ao DiscourseHub.",
   "last_updated": "Última atualização:",
@@ -46,14 +53,26 @@
   "switch_dark": "Usar tema escuro",
   "term_exists": "%{term} já existe",
   "unread_with_count": "não lido(s) (%{count})",
+  "term_placeholder": "Pesquise ou insira uma URL da comunidade",
   "please_wait": "Aguarde...",
   "settings": "Configurações",
+  "discover": "Descoberta",
   "site_added": "Site 🎉 adicionado!",
   "enable_notifications": "Toque aqui para ativar notificações",
   "browser_toggle_label": "Abrir sites com navegador no aplicativo",
   "browser_toggle_description": "Quando essa configuração estiver desativada, os sites serão lançados por meio do navegador de sua escolha, incluindo PWAs",
+  "discover_no_results": "Nenhum site encontrado. Você também pode inserir o domínio completo de uma comunidade do Discourse e adicioná-la!",
   "discover_reset": "Exibir tudo",
   "discover_all": "tudo",
+  "discover_tech": "tecnologia",
+  "discover_interests": "interesses",
+  "discover_support": "suporte",
+  "discover_media": "mídia",
+  "discover_gaming": "jogos",
+  "discover_open_source": "código aberto",
+  "discover_international": "internacional",
   "discover_recent": "recente",
-  "cancel": "Cancelar"
+  "active_counts": "%{active_users} usuários(as) ativos(as)",
+  "cancel": "Cancelar",
+  "no_connected_sites": "Você não tem nenhum site conectado na sua página inicial. Ao conectar pelo menos um site, as notificações dele serão exibidas aqui."
 }
