@@ -379,37 +379,25 @@ PODS:
     - React-Core
   - RNDeviceInfo (10.11.0):
     - React-Core
-  - RNGestureHandler (2.9.0):
+  - RNGestureHandler (2.18.1):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNLocalize (2.2.3):
     - React-Core
-  - RNReanimated (2.14.4):
-    - DoubleConversion
-    - FBLazyVector
-    - FBReactNativeSpec
-    - glog
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
-    - React-callinvoker
+  - RNReanimated (3.15.0):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
-    - React-Core/DevSupport
-    - React-Core/RCTWebSocket
-    - React-CoreModules
-    - React-cxxreact
-    - React-jsi
-    - React-jsiexecutor
-    - React-jsinspector
-    - React-RCTActionSheet
-    - React-RCTAnimation
-    - React-RCTBlob
-    - React-RCTImage
-    - React-RCTLinking
-    - React-RCTNetwork
-    - React-RCTSettings
-    - React-RCTText
     - ReactCommon/turbomodule/core
-    - Yoga
+    - RNReanimated/reanimated (= 3.15.0)
+    - RNReanimated/worklets (= 3.15.0)
+  - RNReanimated/reanimated (3.15.0):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
+    - ReactCommon/turbomodule/core
+  - RNReanimated/worklets (3.15.0):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
+    - ReactCommon/turbomodule/core
   - RNScreens (3.20.0):
     - React-Core
     - React-RCTImage
@@ -634,9 +622,9 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
   RNDeviceInfo: bf8a32acbcb875f568217285d1793b0e8588c974
-  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
+  RNGestureHandler: 325d972e9402b427e819c950eae2b07d4c529802
   RNLocalize: a64514b46a01375fdfae9349036b4dc7130333b5
-  RNReanimated: cc5e3aa479cb9170bcccf8204291a6950a3be128
+  RNReanimated: 23c5e3940d5f4e6206480bcea18139d976324b00
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSiriShortcuts: cf7c7c69927abacc1bb9679cf680acc2f543fdae
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8

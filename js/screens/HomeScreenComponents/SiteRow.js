@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-import React, {useContext} from 'react';
+import React, {useContext, useRef} from 'react';
 import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {SwipeRow} from 'react-native-swipe-list-view';
 import Notification from './Notification';
@@ -9,10 +9,15 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ThemeContext} from '../../ThemeContext';
 import i18n from 'i18n-js';
 
-const SiteRow = props => {
-  const theme = useContext(ThemeContext);
+const SWIPE_BUTTON_WIDTH = 70;
 
+export default function SiteRow(props) {
+  const theme = useContext(ThemeContext);
   const iconUrl = props.site.icon;
+  const milliseconds = (h, m, s) => (h * 60 * 60 + m * 60 + s) * 1000;
+  // only remember last visited for 1 day
+  const lastVisitedThreshold = milliseconds(24, 0, 0);
+  let swipeRowRef = useRef(0);
 
   let iconPath =
     iconUrl && !iconUrl.endsWith('.webp') && !iconUrl.endsWith('.svg')
@@ -78,24 +83,24 @@ const SiteRow = props => {
         key={index}
         style={styles.countItem}
         underlayColor={theme.yellowUIFeedback}
-        onPress={() => props.onClick(item.link)}>
+        onPress={() => _click(item.link)}>
         <Text style={{color: theme.blueUnread, fontSize: 15}}>{item.text}</Text>
       </TouchableHighlight>
     );
   };
 
-  const _renderCounts = () => {
-    const counts = {};
+  const _renderShortcuts = () => {
+    const shortcuts = {};
 
     if (props.site.authToken) {
       if (props.site.totalNew > 0) {
-        counts.new = {
+        shortcuts.new = {
           link: '/new',
           text: i18n.t('new_with_count', {count: props.site.totalNew}),
         };
       }
       if (props.site.totalUnread > 0) {
-        counts.unread = {
+        shortcuts.unread = {
           link: '/unread',
           text: i18n.t('unread_with_count', {count: props.site.totalUnread}),
         };
@@ -117,7 +122,7 @@ const SiteRow = props => {
         const count = group.count || group.inbox_count;
 
         if (count !== undefined) {
-          counts[group.group_name] = {
+          shortcuts[group.group_name] = {
             link: `/u/${props.site.username}/messages/group/${group.group_name}`,
             text: `${group.group_name} (${count})`,
           };
@@ -125,24 +130,97 @@ const SiteRow = props => {
       });
     }
 
-    const countButtons = Object.values(counts);
+    const buttons = Object.values(shortcuts);
 
-    if (countButtons.length > 0) {
+    if (buttons.length > 0) {
       return (
-        <View style={styles.counts}>{countButtons.map(_renderCountItem)}</View>
+        <View style={styles.shortcuts}>{buttons.map(_renderCountItem)}</View>
       );
     }
   };
 
+  const _click = url => {
+    swipeRowRef.current && swipeRowRef.current.closeRow();
+    props.onClick(url);
+  };
+
+  const chatEnabled = props.site.hasChatEnabled;
+  const now = new Date().getTime();
+
+  const hasLastVisitedAction =
+    props.site.lastVisitedPath &&
+    props.site.lastVisitedPathAt > now - lastVisitedThreshold;
+
+  let leftOpenValue = SWIPE_BUTTON_WIDTH;
+  if (chatEnabled) {
+    leftOpenValue += SWIPE_BUTTON_WIDTH;
+  }
+  if (hasLastVisitedAction) {
+    leftOpenValue += SWIPE_BUTTON_WIDTH;
+  }
   return (
     <SwipeRow
-      disableRightSwipe={true}
-      rightOpenValue={-80}
+      ref={swipeRowRef}
+      rightOpenValue={-SWIPE_BUTTON_WIDTH}
+      leftOpenValue={leftOpenValue}
       recalculateHiddenLayout={true}
-      style={{backgroundColor: theme.redDanger}}>
+      swipeToOpenPercent={20}
+      swipeToClosePercent={10}>
       <View style={{...styles.hiddenRow}}>
+        <View style={{...styles.leftButtons}}>
+          <TouchableHighlight
+            style={{
+              ...styles.hiddenButton,
+              backgroundColor: theme.blueCallToAction,
+            }}
+            underlayColor={theme.blueCallToAction}
+            onPress={() => _click('/hot')}
+            {...props.sortHandlers}>
+            <FontAwesome5
+              name={'fire'}
+              size={24}
+              color={theme.buttonTextColor}
+            />
+          </TouchableHighlight>
+          {chatEnabled && (
+            <TouchableHighlight
+              style={{
+                ...styles.hiddenButton,
+                backgroundColor: theme.purpleChat,
+              }}
+              underlayColor={theme.purpleChat}
+              onPress={() => _click('/chat')}
+              {...props.sortHandlers}>
+              <FontAwesome5
+                name={'comment'}
+                size={24}
+                color={theme.buttonTextColor}
+                solid
+              />
+            </TouchableHighlight>
+          )}
+          {hasLastVisitedAction && (
+            <TouchableHighlight
+              style={{
+                ...styles.hiddenButton,
+                backgroundColor: theme.grayUI,
+              }}
+              underlayColor={theme.grayUI}
+              onPress={() => _click(props.site.lastVisitedPath)}
+              {...props.sortHandlers}>
+              <FontAwesome5
+                name={'history'}
+                size={24}
+                color={theme.buttonTextColor}
+              />
+            </TouchableHighlight>
+          )}
+        </View>
         <TouchableHighlight
-          style={{paddingHorizontal: 28, backgroundColor: theme.redDanger}}
+          style={{
+            ...styles.hiddenButton,
+            backgroundColor: theme.redDanger,
+          }}
           underlayColor={theme.redDanger}
           onPress={props.onDelete}
           {...props.sortHandlers}>
@@ -155,43 +233,49 @@ const SiteRow = props => {
       </View>
       <View style={{backgroundColor: theme.background}}>
         <TouchableHighlight
-          underlayColor={theme.yellowUIFeedback}
-          onPress={() => props.onClick()}
+          underlayColor={theme.background}
+          activeOpacity={0.6}
+          onPress={() => _click()}
           onLongPress={() => props.onLongPress()}
+          onPressOut={() => props.onPressOut()}
           {...props.sortHandlers}>
           <View
             accessibilityTraits="link"
             style={{...styles.row, borderBottomColor: theme.grayBorder}}>
             <Image style={styles.icon} source={iconPath} resizeMode="contain" />
             <View style={styles.info}>
+              <View style={styles.titleAndBadges}>
+                <View style={styles.titleParent}>
+                  <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    style={{...styles.title, color: theme.grayTitle}}>
+                    {props.site.title}
+                  </Text>
+                  <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    style={{...styles.url, color: theme.graySubtitle}}>
+                    {props.site.url.replace(/^https?:\/\//, '')}
+                  </Text>
+                </View>
+                {_renderNotifications()}
+                {_renderShouldLogin()}
+              </View>
               <Text
                 ellipsizeMode="tail"
-                numberOfLines={1}
-                style={{...styles.title, color: theme.grayTitle}}>
-                {props.site.title}
-              </Text>
-              <Text
-                ellipsizeMode="tail"
-                numberOfLines={1}
-                style={{...styles.url, color: theme.graySubtitle}}>
-                {props.site.url.replace(/^https?:\/\//, '')}
-              </Text>
-              <Text
-                ellipsizeMode="tail"
-                numberOfLines={2}
+                numberOfLines={3}
                 style={{...styles.description, color: theme.graySubtitle}}>
                 {props.site.description}
               </Text>
-              {_renderCounts()}
+              {_renderShortcuts()}
             </View>
-            {_renderShouldLogin()}
-            {_renderNotifications()}
           </View>
         </TouchableHighlight>
       </View>
     </SwipeRow>
   );
-};
+}
 
 const styles = StyleSheet.create({
   row: {
@@ -201,8 +285,20 @@ const styles = StyleSheet.create({
   },
   hiddenRow: {
     height: '100%',
-    alignItems: 'flex-end',
+    width: '100%',
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'space-between',
+  },
+  hiddenButton: {
     justifyContent: 'center',
+    alignItems: 'center',
+    width: SWIPE_BUTTON_WIDTH,
+  },
+  leftButtons: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
   },
   icon: {
     alignSelf: 'flex-start',
@@ -218,16 +314,31 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: 8,
   },
-  url: {
-    fontSize: 14,
-    fontWeight: 'normal',
-    paddingLeft: 6,
-    paddingTop: 6,
+  titleAndBadges: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+  },
+  titleParent: {
+    // needed for ellipsizeMode to work on title child element
+    flex: 1,
+    alignContent: 'flex-start',
   },
   title: {
     fontSize: 16,
     fontWeight: 'normal',
     paddingLeft: 6,
+    flexBasis: 'auto',
+    flexGrow: 0,
+  },
+  url: {
+    fontSize: 14,
+    fontWeight: 'normal',
+    paddingLeft: 6,
+    paddingTop: 6,
+    flexBasis: 'auto',
+    flexGrow: 0,
   },
   description: {
     flex: 10,
@@ -240,7 +351,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'flex-end',
     paddingLeft: 12,
-    maxWidth: '30%',
+    maxWidth: '50%',
   },
   connect: {
     alignSelf: 'flex-start',
@@ -252,7 +363,7 @@ const styles = StyleSheet.create({
     padding: 6,
     borderRadius: 6,
   },
-  counts: {
+  shortcuts: {
     marginTop: 6,
     flexDirection: 'row',
     display: 'flex',
@@ -263,5 +374,3 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
   },
 });
-
-export default SiteRow;

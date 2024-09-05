@@ -16,6 +16,7 @@ class Site {
     'unreadNotifications',
     'unreadPrivateMessages',
     'chatNotifications',
+    'hasChatEnabled',
     'flagCount',
     'queueCount',
     'totalUnread',
@@ -26,6 +27,8 @@ class Site {
     'apiVersion',
     'lastChecked',
     'loginRequired',
+    'lastVisitedPath',
+    'lastVisitedPathAt',
   ];
 
   static fromTerm(term) {
@@ -254,6 +257,10 @@ class Site {
 
     try {
       let totals = await this.jsonApi('/notifications/totals.json');
+
+      // with a chat_notifications key, user has chat enabled
+      this.hasChatEnabled = typeof totals.chat_notifications === 'number';
+
       this.unreadNotifications = totals.unread_notifications || 0;
       this.unreadPrivateMessages = totals.unread_personal_messages || 0;
       this.flagCount = totals.unseen_reviewables || 0;

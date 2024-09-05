@@ -2,22 +2,16 @@
 'use strict';
 
 import React from 'react';
-import {
-  Animated,
-  Platform,
-  RefreshControl,
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Platform, RefreshControl, StyleSheet, View} from 'react-native';
 
-import DraggableFlatList from 'react-native-draggable-flatlist';
 import SafariWebAuth from 'react-native-safari-web-auth';
 import Components from './HomeScreenComponents';
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
 import {donateShortcut} from 'react-native-siri-shortcut';
 import {BottomTabBarHeightContext} from '@react-navigation/bottom-tabs';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import DragList from 'react-native-draglist';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -26,9 +20,6 @@ class HomeScreen extends React.Component {
     this._siteManager = this.props.screenProps.siteManager;
 
     this.state = {
-      addSiteProgress: 0,
-      displayTermBar: false,
-      anim: new Animated.Value(0),
       data: [],
       isRefreshing: false,
       lastRefreshTime: null,
@@ -38,12 +29,13 @@ class HomeScreen extends React.Component {
     };
 
     this._onChangeSites = e => this.onChangeSites(e);
-    this._dragItem = this._dragItem.bind(this);
+    this.onReordered = this.onReordered.bind(this);
     this._renderItem = this._renderItem.bind(this);
   }
 
   visitSite(site, connect = false, endpoint = '') {
     this._siteManager.setActiveSite(site);
+    this.donateShortcut(site);
 
     if (site.authToken) {
       if (site.oneTimePassword) {
@@ -51,32 +43,19 @@ class HomeScreen extends React.Component {
           `${site.url}/session/otp/${site.oneTimePassword}`,
         );
       } else {
-        if (this._siteManager.supportsDelegatedAuth(site)) {
-          this._siteManager.generateURLParams(site).then(params => {
-            this.props.screenProps.openUrl(`${site.url}${endpoint}?${params}`);
-          });
-        } else {
-          this.donateShortcut(site);
-          this.props.screenProps.openUrl(
-            `${site.url}${endpoint}?discourse_app=1`,
-            false,
-          );
-        }
+        this._siteManager.generateURLParams(site).then(params => {
+          this.props.screenProps.openUrl(`${site.url}${endpoint}?${params}`);
+        });
       }
       return;
     }
 
     if (connect || site.loginRequired) {
       this._siteManager.generateAuthURL(site).then(url => {
-        if (this._siteManager.supportsDelegatedAuth(site)) {
-          SafariWebAuth.requestAuth(url);
-        } else {
-          this.props.screenProps.openUrl(url, false);
-        }
+        SafariWebAuth.requestAuth(url);
       });
     } else {
-      this.donateShortcut(site);
-      this.props.screenProps.openUrl(`${site.url}`);
+      this.props.screenProps.openUrl(`${site.url}${endpoint}`);
     }
   }
 
@@ -136,8 +115,7 @@ class HomeScreen extends React.Component {
     return (
       this._siteManager.sites.length === 0 &&
       !this.refreshing &&
-      !this.state.isRefreshing &&
-      this.state.addSiteProgress === 0
+      !this.state.isRefreshing
     );
   }
 
@@ -154,7 +132,9 @@ class HomeScreen extends React.Component {
     }
   }
 
-  _renderItem({item, getIndex, drag, isActive}) {
+  _renderItem(info) {
+    const {item, onDragStart, onDragEnd} = info;
+
     return (
       <Components.SiteRow
         site={item}
@@ -162,12 +142,14 @@ class HomeScreen extends React.Component {
         onClick={(endpoint = '') => this.visitSite(item, false, endpoint)}
         onClickConnect={() => this.visitSite(item, true)}
         onDelete={() => this._siteManager.remove(item)}
-        onLongPress={drag}
+        onLongPress={onDragStart}
+        onPressOut={onDragEnd}
+        keyExtractor={() => `site-row-${item.url}`}
       />
     );
   }
 
-  _dragItem({data, from, to}) {
+  onReordered(from, to) {
     this._siteManager.updateOrder(from, to);
   }
 
@@ -188,15 +170,16 @@ class HomeScreen extends React.Component {
       return (
         <BottomTabBarHeightContext.Consumer>
           {tabBarHeight => (
-            <DraggableFlatList
+            <DragList
               style={styles.sitesList}
               contentContainerStyle={{paddingBottom: tabBarHeight}}
               activationDistance={20}
               data={this.state.data}
               renderItem={item => this._renderItem(item)}
               keyExtractor={(item, index) => `draggable-item-${item.url}`}
-              onDragEnd={this._dragItem}
+              onReordered={this.onReordered}
               scaleSelectionFactor={1.05}
+              estimatedItemSize={130}
               refreshControl={
                 <RefreshControl
                   style={{left: 500}}
@@ -213,29 +196,6 @@ class HomeScreen extends React.Component {
       );
     }
   }
-
-  // onToggleTermBar(show) {
-  //   Animated.timing(this.state.anim, {
-  //     easing: Easing.inOut(Easing.ease),
-  //     duration: 200,
-  //     toValue: show ? 1 : 0,
-  //     useNativeDriver: true,
-  //   }).start(() => {
-  //     if (this._input) {
-  //       show ? this._input.focus() : this._input.blur();
-  //     }
-  //   });
-  // }
-
-  // onDidPressLeftButton() {
-  //   this.setState({displayTermBar: !this.state.displayTermBar}, () => {
-  //     this.onToggleTermBar(this.state.displayTermBar);
-  //   });
-  // }
-
-  // onDidPressRightButton() {
-  //   this.props.navigation.navigate('Notifications');
-  // }
 
   onDidPressAndroidSettingsIcon() {
     this.props.navigation.navigate(i18n.t('settings'));

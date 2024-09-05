@@ -8,7 +8,7 @@ import {ThemeContext} from './ThemeContext';
 
 const ProgressBar = ({progress}) => {
   const theme = useContext(ThemeContext);
-  const height = progress === 0 ? 0 : 3;
+  const height = progress === 0 ? 0 : 4;
   const {width} = Dimensions.get('window');
 
   return (
@@ -16,7 +16,7 @@ const ProgressBar = ({progress}) => {
       style={[
         styles.container,
         {
-          backgroundColor: theme.grayBackground,
+          backgroundColor: 'transparent',
           height,
         },
       ]}>
@@ -36,7 +36,7 @@ const styles = {
   container: {
     zIndex: 10,
     position: 'absolute',
-    bottom: 0,
+    top: 0,
     left: 0,
   },
 };
