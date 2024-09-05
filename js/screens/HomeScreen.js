@@ -43,9 +43,15 @@ class HomeScreen extends React.Component {
           `${site.url}/session/otp/${site.oneTimePassword}`,
         );
       } else {
-        this._siteManager.generateURLParams(site).then(params => {
-          this.props.screenProps.openUrl(`${site.url}${endpoint}?${params}`);
-        });
+        if (Platform.OS === 'ios') {
+          this._siteManager.generateURLParams(site).then(params => {
+            this.props.screenProps.openUrl(`${site.url}${endpoint}?${params}`);
+          });
+        } else {
+          this.props.screenProps.openUrl(
+            `${site.url}${endpoint}?discourse_app=1`,
+          );
+        }
       }
       return;
     }

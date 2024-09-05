@@ -542,7 +542,6 @@ class SiteManager {
               : navState.url;
 
           if (currentUrl === site.url) {
-            console.log('resetting last visited path');
             site.lastVisitedPath = null;
             site.lastVisitedPathAt = null;
           } else {

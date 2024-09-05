@@ -255,8 +255,8 @@ class Discourse extends React.Component {
         this._siteManager.handleAuthPayload(params.payload);
       }
 
-      // received one-time-password request
-      if (params.otp) {
+      // received one-time-password request from SafariView
+      if (params.otp && Platform.OS === 'ios') {
         this._siteManager
           .generateURLParams(site, 'full')
           .then(generatedParams => {
