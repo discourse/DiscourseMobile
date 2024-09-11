@@ -1,6 +1,8 @@
 {
   "add_first_site": "+ Lisää ensimmäinen sivustosi",
   "add_site": "Lisää sivusto",
+  "add_sites": "Aloita ja seuraa rakastamiasi Discourse-yhteisöjä!",
+  "no_sites_yet": "Tervetuloa Discourse Hubiin!",
   "add": "+ Lisää",
   "all": "Kaikki",
   "approved_commits": {
@@ -15,6 +17,11 @@
     "one": "%{count} viesti ryhmän %{group_name} saapuneissa",
     "other": "%{count} viestiä ryhmän %{group_name} saapuneissa"
   },
+  "generic_notification_title": {
+    "one": "%{count} uusi ilmoitus",
+    "other": "%{count} uutta ilmoitusta"
+  },
+  "generic_notification_body": "Katso uutuudet kohteessa %{url}",
   "incorrect_url": "%{term} ei ole oikea Discourse-foorumin URL tai se ei tue mobiili-APIa, pyydä omistajaa päivittämään Discourse uusimpaan versioon.",
   "cannot_load_url": "Tätä URL-osoitetta ei voitu lisätä DiscourseHubiin.",
   "last_updated": "Viimeksi päivitetty:",
@@ -46,14 +53,26 @@
   "switch_dark": "Käytä tummaa teemaa",
   "term_exists": "%{term} on jo olemassa",
   "unread_with_count": "lukematta (%{count})",
+  "term_placeholder": "Hae tai kirjoita yhteisön URL-osoite",
   "please_wait": "Odota...",
   "settings": "Asetukset",
+  "discover": "Löydä",
   "site_added": "🎉 Sivusto lisätty!",
   "enable_notifications": "Ota ilmoitukset käyttöön napauttamalla tätä",
   "browser_toggle_label": "Avaa sivustot sovelluksen sisäisellä selaimella",
   "browser_toggle_description": "Kun tämä asetus on poistettu käytöstä, sivustot käynnistetään valitsemasi selaimen kautta, mukaan lukien PWA:t",
+  "discover_no_results": "Sivustoja ei löytynyt. Voit myös syöttää Discourse-yhteisön koko verkkotunnuksen ja lisätä sen!",
   "discover_reset": "Näytä kaikki",
   "discover_all": "kaikki",
-  "discover_recent": "tuoreimpia",
-  "cancel": "Peruuta"
+  "discover_tech": "teknologia",
+  "discover_interests": "kiinnostuksen kohteet",
+  "discover_support": "tuki",
+  "discover_media": "media",
+  "discover_gaming": "pelaaminen",
+  "discover_open_source": "avoin lähdekoodi",
+  "discover_international": "kansainvälinen",
+  "discover_recent": "viimeisimmät",
+  "active_counts": "%{active_users} aktiivista käyttäjää",
+  "cancel": "Peruuta",
+  "no_connected_sites": "Aloitusnäytölläsi ei ole yhdistettyjä sivustoja. Kun yhdistät yhden tai useamman sivuston, näet niiden ilmoitukset täällä."
 }

@@ -1,6 +1,8 @@
 {
   "add_first_site": "+ 添加您的第一个站点",
   "add_site": "添加站点",
+  "add_sites": "开始并关注您喜爱的 Discourse 社区！",
+  "no_sites_yet": "欢迎来到 Discourse Hub！",
   "add": "+ 添加",
   "all": "所有",
   "approved_commits": {
@@ -13,6 +15,10 @@
   "inbox_message": {
     "other": "您的“%{group_name}”收件箱中有 %{count} 条消息"
   },
+  "generic_notification_title": {
+    "other": "%{count} 条新通知"
+  },
+  "generic_notification_body": "点击 %{url} 查看最新变化",
   "incorrect_url": "抱歉，%{term} 不是 Discourse 论坛的正确 URL 或不支持移动 API，请让所有者将 Discourse 升级到最新版本！",
   "cannot_load_url": "该 URL 无法添加到 DiscourseHub。",
   "last_updated": "最近更新：",
@@ -43,14 +49,26 @@
   "switch_dark": "使用深色主题",
   "term_exists": "“%{term}”已存在",
   "unread_with_count": "未读 (%{count})",
+  "term_placeholder": "搜索或输入社区 URL",
   "please_wait": "请稍候…",
   "settings": "设置",
+  "discover": "发现",
   "site_added": "🎉 站点已添加！",
   "enable_notifications": "点按此处启用通知",
   "browser_toggle_label": "使用应用内浏览器打开站点",
   "browser_toggle_description": "禁用此设置后，站点将通过您选择的浏览器启动，包括 PWA",
+  "discover_no_results": "未找到任何网站。您也可以输入 Discourse 社区的完整域并添加！",
   "discover_reset": "全部显示",
   "discover_all": "所有",
+  "discover_tech": "技术",
+  "discover_interests": "兴趣",
+  "discover_support": "支持",
+  "discover_media": "媒体",
+  "discover_gaming": "游戏",
+  "discover_open_source": "开源",
+  "discover_international": "国际",
   "discover_recent": "最近",
-  "cancel": "取消"
+  "active_counts": "%{active_users} 个活跃用户",
+  "cancel": "取消",
+  "no_connected_sites": "您的主屏幕上尚未关联任何网站。一旦您关联一个或多个网站，您就会在此处看到它们的通知。"
 }

@@ -1,6 +1,8 @@
 {
   "add_first_site": "+ Ajoutez votre premier site",
   "add_site": "Ajouter un site",
+  "add_sites": "Lancez-vous et suivez les communautés Discourse que vous aimez !",
+  "no_sites_yet": "Bienvenue sur Discourse Hub !",
   "add": "+ Ajouter",
   "all": "Tout",
   "approved_commits": {
@@ -15,6 +17,11 @@
     "one": "%{count} message dans votre boîte de réception %{group_name}",
     "other": "%{count} messages dans votre boîte de réception %{group_name}"
   },
+  "generic_notification_title": {
+    "one": "%{count} nouvelle notification",
+    "other": "%{count} nouvelles notifications"
+  },
+  "generic_notification_body": "Découvrez les nouveautés sur %{url}",
   "incorrect_url": "Nous sommes désolés, %{term} n'est pas une URL correcte vers un forum Discourse ou ne prend pas en charge les API mobiles. Demandez au propriétaire d'actualiser Discourse vers la version la plus récente !",
   "cannot_load_url": "Cette URL n'a pas pu être ajoutée à DiscourseHub.",
   "last_updated": "Dernière mise à jour :",
@@ -46,14 +53,26 @@
   "switch_dark": "Utiliser le thème sombre",
   "term_exists": "%{term} existe déjà",
   "unread_with_count": "non lus (%{count})",
+  "term_placeholder": "Recherchez ou saisissez l'URL d'une communauté",
   "please_wait": "Veuillez patienter…",
   "settings": "Paramètres",
+  "discover": "Découvrir",
   "site_added": "🎉 Site ajouté !",
   "enable_notifications": "Appuyez ici pour activer les notifications",
   "browser_toggle_label": "Ouvrir les sites avec un navigateur intégré à l'application",
   "browser_toggle_description": "Lorsque ce paramètre est désactivé, les sites seront lancés via le navigateur de votre choix, y compris les PWA",
+  "discover_no_results": "Aucun site n'a été trouvé. Vous pouvez également saisir le domaine complet d'une communauté Discourse et l'ajouter !",
   "discover_reset": "Tout afficher",
   "discover_all": "tout",
+  "discover_tech": "technologie",
+  "discover_interests": "centres d'intérêt",
+  "discover_support": "assistance",
+  "discover_media": "médias",
+  "discover_gaming": "jeux vidéo",
+  "discover_open_source": "open-source",
+  "discover_international": "international",
   "discover_recent": "récents",
-  "cancel": "Annuler"
+  "active_counts": "%{active_users} utilisateurs actifs",
+  "cancel": "Annuler",
+  "no_connected_sites": "Vous n'avez aucun site connecté sur votre écran d'accueil. Une fois que vous avez connecté un ou plusieurs sites, vous verrez leurs notifications ici."
 }
