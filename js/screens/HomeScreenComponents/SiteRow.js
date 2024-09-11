@@ -55,24 +55,29 @@ export default function SiteRow(props) {
     );
   };
 
-  const _renderShouldLogin = () => {
-    if (props.site.authToken) {
-      return null;
-    }
-
+  const _renderConnect = () => {
     return (
       <TouchableHighlight
         style={styles.notifications}
         underlayColor={theme.background}
         onPress={() => props.onClickConnect()}>
-        <Text
+        <View
           style={{
             ...styles.connect,
             backgroundColor: theme.blueCallToAction,
             color: theme.buttonTextColor,
           }}>
-          {i18n.t('connect')}
-        </Text>
+          <FontAwesome5
+            name={'user'}
+            size={14}
+            color={theme.buttonTextColor}
+            style={{paddingRight: 6}}
+            solid
+          />
+          <Text style={{color: theme.buttonTextColor}}>
+            {i18n.t('connect')}
+          </Text>
+        </View>
       </TouchableHighlight>
     );
   };
@@ -158,10 +163,25 @@ export default function SiteRow(props) {
   if (hasLastVisitedAction) {
     leftOpenValue += SWIPE_BUTTON_WIDTH;
   }
+
+  // only show the full "Connect" button for 3 days
+  // after that time use a hidden button in swipe right area
+  const createdAtThreshold = milliseconds(24 * 3, 0, 0);
+
+  const alreadyAuthed = props.site.authToken;
+  const hasFullConnectButton =
+    !alreadyAuthed &&
+    props.site.createdAt &&
+    props.site.createdAt > now - createdAtThreshold;
+
+  const rightOpenValue = !alreadyAuthed
+    ? -SWIPE_BUTTON_WIDTH * 2
+    : -SWIPE_BUTTON_WIDTH;
+
   return (
     <SwipeRow
       ref={swipeRowRef}
-      rightOpenValue={-SWIPE_BUTTON_WIDTH}
+      rightOpenValue={rightOpenValue}
       leftOpenValue={leftOpenValue}
       recalculateHiddenLayout={true}
       swipeToOpenPercent={20}
@@ -216,20 +236,39 @@ export default function SiteRow(props) {
             </TouchableHighlight>
           )}
         </View>
-        <TouchableHighlight
-          style={{
-            ...styles.hiddenButton,
-            backgroundColor: theme.redDanger,
-          }}
-          underlayColor={theme.redDanger}
-          onPress={props.onDelete}
-          {...props.sortHandlers}>
-          <FontAwesome5
-            name={'trash-alt'}
-            size={24}
-            color={theme.buttonTextColor}
-          />
-        </TouchableHighlight>
+        <View style={{...styles.rightButtons}}>
+          {!alreadyAuthed && (
+            <TouchableHighlight
+              style={{
+                ...styles.hiddenButton,
+                backgroundColor: theme.blueCallToAction,
+              }}
+              underlayColor={theme.blueCallToAction}
+              onPress={() => props.onClickConnect()}
+              {...props.sortHandlers}>
+              <FontAwesome5
+                name={'user'}
+                size={24}
+                color={theme.buttonTextColor}
+                solid
+              />
+            </TouchableHighlight>
+          )}
+          <TouchableHighlight
+            style={{
+              ...styles.hiddenButton,
+              backgroundColor: theme.redDanger,
+            }}
+            underlayColor={theme.redDanger}
+            onPress={props.onDelete}
+            {...props.sortHandlers}>
+            <FontAwesome5
+              name={'trash-alt'}
+              size={24}
+              color={theme.buttonTextColor}
+            />
+          </TouchableHighlight>
+        </View>
       </View>
       <View style={{backgroundColor: theme.background}}>
         <TouchableHighlight
@@ -260,7 +299,7 @@ export default function SiteRow(props) {
                   </Text>
                 </View>
                 {_renderNotifications()}
-                {_renderShouldLogin()}
+                {hasFullConnectButton && _renderConnect()}
               </View>
               <Text
                 ellipsizeMode="tail"
@@ -297,6 +336,10 @@ const styles = StyleSheet.create({
     width: SWIPE_BUTTON_WIDTH,
   },
   leftButtons: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+  },
+  rightButtons: {
     flexDirection: 'row',
     alignItems: 'stretch',
   },
@@ -354,7 +397,10 @@ const styles = StyleSheet.create({
     maxWidth: '50%',
   },
   connect: {
+    flexDirection: 'row',
     alignSelf: 'flex-start',
+    alignItems: 'center',
+    flexWrap: 'nowrap',
     fontSize: 14,
     fontWeight: '500',
     marginLeft: 6,

@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>DiscourseHub</string>
+	<string>Discourse</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -37,7 +37,7 @@
 		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>507</string>
+	<string>513</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>

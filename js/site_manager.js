@@ -42,8 +42,10 @@ class SiteManager {
   }
 
   add(site) {
+    site.createdAt = Date.now();
     this.sites.push(site);
     this.save();
+    this._onChange();
     this.updateNativeMenu();
   }
 
@@ -59,6 +61,7 @@ class SiteManager {
         console.log(`Failed to revoke API Key ${e}`);
       });
       this.save();
+      this._onChange();
     }
     this.updateNativeMenu();
   }
