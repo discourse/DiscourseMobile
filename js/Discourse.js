@@ -321,7 +321,7 @@ class Discourse extends React.Component {
         sound: true,
       });
 
-      addShortcutListener(({userInfo, activityType}) => {
+      addShortcutListener(({userInfo, _activityType}) => {
         if (userInfo.siteUrl) {
           this._handleOpenUrl({
             url: `discourse://share?sharedUrl=${userInfo.siteUrl}`,

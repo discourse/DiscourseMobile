@@ -73,7 +73,7 @@ class HomeScreen extends React.Component {
     const shortcutOptions = {
       // This activity type needs to be set in `NSUserActivityTypes` on the Info.plist
       activityType: 'org.discourse.DiscourseApp.SiriShortcut',
-      keywords: ['discourse', 'forums', 'hub', site.title],
+      keywords: ['discourse', 'forums', 'hub', 'discoursehub', site.title],
       persistentIdentifier: 'DiscourseHubShortcut',
       isEligibleForSearch: true,
       isEligibleForPrediction: true,
@@ -83,6 +83,7 @@ class HomeScreen extends React.Component {
       userInfo: {
         siteUrl: site.url,
       },
+      requiredUserInfoKeys: ['siteUrl'],
     };
 
     donateShortcut(shortcutOptions);
