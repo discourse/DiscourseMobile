@@ -58,7 +58,11 @@ class HomeScreen extends React.Component {
 
     if (connect || site.loginRequired) {
       this._siteManager.generateAuthURL(site).then(url => {
-        SafariWebAuth.requestAuth(url);
+        if (Platform.OS === 'ios') {
+          SafariWebAuth.requestAuth(url);
+        } else {
+          this.props.screenProps.openUrl(url);
+        }
       });
     } else {
       this.props.screenProps.openUrl(`${site.url}${endpoint}`);
