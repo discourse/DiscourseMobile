@@ -7,6 +7,7 @@ import {
   AppState,
   Linking,
   Keyboard,
+  Platform,
   Settings,
   Share,
   StatusBar,
@@ -70,6 +71,7 @@ class WebViewComponent extends React.Component {
 
   componentDidMount() {
     const theme = this.context;
+
     this.setState({
       headerBg: theme.grayBackground,
       barStyle: theme.barStyle,
@@ -130,9 +132,7 @@ class WebViewComponent extends React.Component {
   }
 
   get viewTopPadding() {
-    const isIpad = this.props.screenProps.deviceId.startsWith('iPad');
-
-    if (isIpad) {
+    if (Platform.isPad) {
       return 15;
     } else if (this.state.isLandscape) {
       return 10;
@@ -145,7 +145,6 @@ class WebViewComponent extends React.Component {
 
   render() {
     const theme = this.context;
-    const isIpad = this.props.screenProps.deviceId.startsWith('iPad');
 
     return (
       <Animated.View
@@ -159,16 +158,6 @@ class WebViewComponent extends React.Component {
           }),
         }}>
         <StatusBar barStyle={this.state.barStyle} />
-        <View style={{marginTop: isIpad ? 10 : 4}}>
-          <View
-            style={{
-              ...styles.nudge,
-              backgroundColor: this.state.nudgeColor,
-              opacity: 0.35,
-            }}
-          />
-          <ProgressBar progress={this.state.progress} />
-        </View>
         {this.state.layoutCalculated && (
           <WebView
             style={{
@@ -261,6 +250,24 @@ class WebViewComponent extends React.Component {
             }}
           />
         )}
+        <ProgressBar
+          progress={this.state.progress}
+          topInset={this.props.insets.top}
+        />
+        <View
+          style={{
+            ...styles.nudge,
+            marginTop: this.props.insets.top,
+            height: Platform.isPad ? 45 : 25,
+          }}>
+          <View
+            style={{
+              ...styles.nudgeElement,
+              backgroundColor: this.state.nudgeColor,
+              opacity: 0.35,
+            }}
+          />
+        </View>
       </Animated.View>
     );
   }
@@ -349,11 +356,17 @@ WebViewComponent.contextType = ThemeContext;
 
 const styles = StyleSheet.create({
   nudge: {
-    height: 4,
-    width: '10%',
-    marginLeft: '45%',
-    marginBottom: 4,
+    width: '20%',
+    left: '40%',
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    borderRadius: 20,
+  },
+  nudgeElement: {
     borderRadius: 5,
+    width: '50%',
+    marginLeft: '25%',
+    height: 4,
   },
 });
 

@@ -6,20 +6,20 @@ import {Dimensions, View} from 'react-native';
 import Bar from 'react-native-progress/Bar';
 import {ThemeContext} from './ThemeContext';
 
-const ProgressBar = ({progress}) => {
+const ProgressBar = ({progress, topInset}) => {
   const theme = useContext(ThemeContext);
   const height = progress === 0 ? 0 : 4;
   const {width} = Dimensions.get('window');
 
   return (
     <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: 'transparent',
-          height,
-        },
-      ]}>
+      style={{
+        backgroundColor: 'transparent',
+        position: 'absolute',
+        top: topInset,
+        left: 0,
+        height,
+      }}>
       <Bar
         borderRadius={0}
         borderWidth={0}
@@ -30,15 +30,6 @@ const ProgressBar = ({progress}) => {
       />
     </View>
   );
-};
-
-const styles = {
-  container: {
-    zIndex: 10,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
 };
 
 export default ProgressBar;
