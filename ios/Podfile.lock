@@ -277,15 +277,12 @@ PODS:
     - React
   - react-native-safari-web-auth (1.0.4):
     - React
-  - react-native-safe-area-context (4.5.0):
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
+  - react-native-safe-area-context (4.11.0):
     - React-Core
-    - ReactCommon/turbomodule/core
   - react-native-segmented-control (2.2.2):
     - React-Core
-  - react-native-webview (13.6.0):
+  - react-native-webview (13.12.3):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - React-perflogger (0.71.7)
   - React-RCTActionSheet (0.71.7):
@@ -377,39 +374,17 @@ PODS:
     - React-Core
   - RNCPushNotificationIOS (1.11.0):
     - React-Core
-  - RNDeviceInfo (10.11.0):
+  - RNDeviceInfo (13.0.0):
     - React-Core
-  - RNGestureHandler (2.9.0):
+  - RNGestureHandler (2.18.1):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNLocalize (2.2.3):
     - React-Core
-  - RNReanimated (2.14.4):
-    - DoubleConversion
-    - FBLazyVector
-    - FBReactNativeSpec
-    - glog
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
-    - React-callinvoker
+  - RNReanimated (3.10.0):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
-    - React-Core/DevSupport
-    - React-Core/RCTWebSocket
-    - React-CoreModules
-    - React-cxxreact
-    - React-jsi
-    - React-jsiexecutor
-    - React-jsinspector
-    - React-RCTActionSheet
-    - React-RCTAnimation
-    - React-RCTBlob
-    - React-RCTImage
-    - React-RCTLinking
-    - React-RCTNetwork
-    - React-RCTSettings
-    - React-RCTText
     - ReactCommon/turbomodule/core
-    - Yoga
   - RNScreens (3.20.0):
     - React-Core
     - React-RCTImage
@@ -614,9 +589,9 @@ SPEC CHECKSUMS:
   react-native-root-view-background-color: e7ba21b82c8b7b2a1f902750f08c9dc1a5b38cea
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
   react-native-safari-web-auth: b6642abaa8084a8e5addba1cba4521fd30b95b64
-  react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
+  react-native-safe-area-context: 851c62c48dce80ccaa5637b6aa5991a1bc36eca9
   react-native-segmented-control: 65df6cd0619b780b3843d574a72d4c7cec396097
-  react-native-webview: 669ae162965f629a8d6a4bdd3b99a304d36ef1f2
+  react-native-webview: 849250e66239f661c802a879c59e019da8a08736
   React-perflogger: 2d505bbe298e3b7bacdd9e542b15535be07220f6
   React-RCTActionSheet: 0e96e4560bd733c9b37efbf68f5b1a47615892fb
   React-RCTAnimation: fd138e26f120371c87e406745a27535e2c8a04ef
@@ -633,15 +608,15 @@ SPEC CHECKSUMS:
   RNBackgroundFetch: b6cb89fa8ff0e1d8a245b19caca2944304b95fbf
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
-  RNDeviceInfo: bf8a32acbcb875f568217285d1793b0e8588c974
-  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
+  RNDeviceInfo: 55264dd7cc939dad6e9c231a7621311f5277f1dc
+  RNGestureHandler: 325d972e9402b427e819c950eae2b07d4c529802
   RNLocalize: a64514b46a01375fdfae9349036b4dc7130333b5
-  RNReanimated: cc5e3aa479cb9170bcccf8204291a6950a3be128
+  RNReanimated: 391269e28d02c036cf9dce84802345426715730e
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSiriShortcuts: cf7c7c69927abacc1bb9679cf680acc2f543fdae
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   Yoga: d56980c8914db0b51692f55533409e844b66133c
 
-PODFILE CHECKSUM: a93c9d114a7cc9a53598b5a4ddeaff4af97a7821
+PODFILE CHECKSUM: 6b385b845e3175e65f2060ab6f1252ee15ecf8f8
 
 COCOAPODS: 1.15.2
