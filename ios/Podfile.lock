@@ -281,7 +281,8 @@ PODS:
     - React-Core
   - react-native-segmented-control (2.2.2):
     - React-Core
-  - react-native-webview (13.6.0):
+  - react-native-webview (13.12.3):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - React-perflogger (0.71.7)
   - React-RCTActionSheet (0.71.7):
@@ -590,7 +591,7 @@ SPEC CHECKSUMS:
   react-native-safari-web-auth: b6642abaa8084a8e5addba1cba4521fd30b95b64
   react-native-safe-area-context: 851c62c48dce80ccaa5637b6aa5991a1bc36eca9
   react-native-segmented-control: 65df6cd0619b780b3843d574a72d4c7cec396097
-  react-native-webview: 669ae162965f629a8d6a4bdd3b99a304d36ef1f2
+  react-native-webview: 849250e66239f661c802a879c59e019da8a08736
   React-perflogger: 2d505bbe298e3b7bacdd9e542b15535be07220f6
   React-RCTActionSheet: 0e96e4560bd733c9b37efbf68f5b1a47615892fb
   React-RCTAnimation: fd138e26f120371c87e406745a27535e2c8a04ef

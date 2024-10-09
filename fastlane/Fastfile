@@ -2,7 +2,7 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "2.0.4"
+IOS_APP_VERSION = "2.0.5"
 ANDROID_APP_VERSION = "2.0.5" # run `fastlane bootstrap` after editing this
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
@@ -150,6 +150,7 @@ platform :ios do
   lane :certs do
     system("rm -rf ~/Library/MobileDevice/Provisioning\ Profiles/*.mobile*")
 
+    # Register devices manually in developer.apple.com and then pull the provisioning profile
     # register_devices(devices_file: File.expand_path("./keys/ios-beta-devices.txt"))
 
     match(

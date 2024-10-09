@@ -56,7 +56,7 @@
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-toast-message": "^2.1.7",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-webview": "^13.6.0"
+    "react-native-webview": "^13.12.3"
   },
   "devDependencies": {
     "@babel/core": "^7.23.4",

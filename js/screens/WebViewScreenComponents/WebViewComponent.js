@@ -19,6 +19,7 @@ import ErrorScreen from '../WebViewScreenComponents/ErrorScreen';
 import ProgressBar from '../../ProgressBar';
 import TinyColor from '../../../lib/tinycolor';
 import SafariView from 'react-native-safari-view';
+import SafariWebAuth from 'react-native-safari-web-auth';
 import {ThemeContext} from '../../ThemeContext';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
@@ -310,7 +311,8 @@ class WebViewComponent extends React.Component {
 
   _onMessage(event) {
     let data = JSON.parse(event.nativeEvent.data);
-    let {headerBg, shareUrl, dismiss, markRead} = data;
+
+    let {headerBg, shareUrl, dismiss, markRead, showLogin} = data;
 
     if (headerBg) {
       // when fully transparent, use black status bar
@@ -348,6 +350,14 @@ class WebViewComponent extends React.Component {
     if (markRead) {
       // refresh app icon badge count when one site's notifications are dismissed
       this.siteManager.refreshSites();
+    }
+
+    if (showLogin && Platform.OS === 'ios') {
+      this.siteManager
+        .generateAuthURL(this.siteManager.activeSite)
+        .then(url => {
+          SafariWebAuth.requestAuth(url);
+        });
     }
   }
 }
