@@ -25,6 +25,8 @@
   "replies": "Atsakymai",
   "unread_with_count": "neperskaitytas (%{count})",
   "settings": "Nustatymai",
+  "home": "Pradinis",
+  "back": "Atgal",
   "discover_reset": "Rodyti viską",
   "discover_all": "visi",
   "discover_recent": "naujausios",

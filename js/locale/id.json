@@ -26,6 +26,7 @@
   "term_exists": "%{term} sudah ada",
   "unread_with_count": "belum dibaca (%{count})",
   "settings": "Pengaturan",
+  "home": "Beranda",
   "discover_all": "Semua",
   "cancel": "Batal"
 }

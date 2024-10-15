@@ -16,6 +16,8 @@
   "replies": "Svar",
   "unread_with_count": "ulest (%{count})",
   "settings": "Innstillinger",
+  "home": "Hjem",
+  "back": "Forrige",
   "discover_reset": "Vis alle",
   "discover_all": "alle",
   "discover_recent": "nylig",

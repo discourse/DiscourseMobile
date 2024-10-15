@@ -11,6 +11,8 @@
   "replies": "Vastuseid",
   "unread_with_count": "lugemata (%{count})",
   "settings": "Seaded",
+  "home": "Avaleht",
+  "back": "Tagasi",
   "discover_reset": "Näita kõiki",
   "discover_all": "kõik",
   "discover_recent": "viimased",

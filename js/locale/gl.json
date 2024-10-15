@@ -21,6 +21,8 @@
   "replies": "Respostas",
   "unread_with_count": "(%{count}) pendente de ler",
   "settings": "Configuración",
+  "home": "Inicio",
+  "back": "Volver",
   "discover_reset": "Amosar todas",
   "discover_all": "todo",
   "discover_recent": "recentes",

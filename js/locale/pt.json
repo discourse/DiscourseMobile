@@ -20,6 +20,8 @@
   "replies": "Respostas",
   "unread_with_count": "não Lido (%{count})",
   "settings": "Configurações",
+  "home": "Início",
+  "back": "Retroceder",
   "discover_reset": "Mostrar tudo",
   "discover_all": "todos",
   "discover_recent": "recente",
