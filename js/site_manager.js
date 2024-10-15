@@ -42,8 +42,10 @@ class SiteManager {
   }
 
   add(site) {
+    site.createdAt = Date.now();
     this.sites.push(site);
     this.save();
+    this._onChange();
     this.updateNativeMenu();
   }
 
@@ -59,6 +61,7 @@ class SiteManager {
         console.log(`Failed to revoke API Key ${e}`);
       });
       this.save();
+      this._onChange();
     }
     this.updateNativeMenu();
   }
@@ -124,8 +127,6 @@ class SiteManager {
 
   save() {
     AsyncStorage.setItem('@Discourse.sites', JSON.stringify(this.sites));
-    this._onChange();
-    this.updateUnreadBadge();
   }
 
   ensureRSAKeys() {
@@ -190,10 +191,7 @@ class SiteManager {
           if (promises.length) {
             Promise.all(promises)
               .then(() => {
-                this.save();
-                this.refreshSites().then(() => {
-                  this._onChange();
-                });
+                this.refreshSites();
               })
               .catch(e => {
                 console.log(e);
@@ -287,6 +285,8 @@ class SiteManager {
       Promise.all(promises)
         .then(() => {
           this.save();
+          this._onChange();
+          this.updateUnreadBadge();
           resolve();
         })
         .catch(e => {
@@ -424,11 +424,7 @@ class SiteManager {
           let basePushUrl = 'https://api.discourse.org';
           //let basePushUrl = "http://l.discourse:3000"
 
-          let scopes = 'notifications,session_info';
-
-          if (this.supportsDelegatedAuth(site)) {
-            scopes = `${scopes},one_time_password`;
-          }
+          let scopes = 'notifications,session_info,one_time_password';
 
           let params = {
             scopes: scopes,
@@ -537,6 +533,34 @@ class SiteManager {
     this._subscribers.forEach(sub => sub({event: 'change'}));
   }
 
+  storeLastPath(navState) {
+    let shouldSave = false;
+
+    if (this.activeSite) {
+      this.sites.forEach(site => {
+        if (site === this.activeSite) {
+          const currentUrl =
+            navState.url && navState.url.endsWith('/')
+              ? navState.url.slice(0, -1)
+              : navState.url;
+
+          if (currentUrl === site.url) {
+            site.lastVisitedPath = null;
+            site.lastVisitedPathAt = null;
+          } else {
+            site.lastVisitedPath = currentUrl.replace(site.url, '');
+            site.lastVisitedPathAt = new Date().getTime();
+          }
+          shouldSave = true;
+        }
+      });
+
+      if (shouldSave) {
+        this.save();
+      }
+    }
+  }
+
   async refreshActiveSite() {
     if (!this.activeSite) {
       return;
@@ -545,21 +569,6 @@ class SiteManager {
     this._onChange();
     this.updateUnreadBadge();
     this.activeSite = null;
-  }
-
-  supportsDelegatedAuth(site) {
-    // delegated auth library is currently iOS 12+ only
-    // site needs user api >= 4
-
-    if (
-      Platform.OS !== 'ios' ||
-      parseInt(Platform.Version, 10) <= 11 ||
-      site.apiVersion < 4
-    ) {
-      return false;
-    }
-
-    return true;
   }
 
   urlInSites(url) {

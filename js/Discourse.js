@@ -234,13 +234,8 @@ class Discourse extends React.Component {
     const url = e._data && e._data.discourse_url;
 
     if (url) {
-      this._siteManager.setActiveSite(url).then(activeSite => {
-        let supportsDelegatedAuth = false;
-        if (this._siteManager.supportsDelegatedAuth(activeSite)) {
-          supportsDelegatedAuth = true;
-        }
-        this.openUrl(url, supportsDelegatedAuth);
-      });
+      this._siteManager.setActiveSite(url);
+      this.openUrl(url);
     }
   }
 
@@ -261,7 +256,7 @@ class Discourse extends React.Component {
       }
 
       // received one-time-password request from SafariView
-      if (params.otp) {
+      if (params.otp && Platform.OS === 'ios') {
         this._siteManager
           .generateURLParams(site, 'full')
           .then(generatedParams => {
@@ -269,6 +264,7 @@ class Discourse extends React.Component {
               `${site.url}/user-api-key/otp?${generatedParams}`,
             );
           });
+        this._navigation.navigate('Home');
       }
 
       // one-time-password received, launch site with it
@@ -292,11 +288,7 @@ class Discourse extends React.Component {
       if (params.sharedUrl) {
         this._siteManager.setActiveSite(params.sharedUrl).then(activeSite => {
           if (activeSite.activeSite !== undefined) {
-            let supportsDelegatedAuth = false;
-            if (this._siteManager.supportsDelegatedAuth(activeSite)) {
-              supportsDelegatedAuth = true;
-            }
-            this.openUrl(params.sharedUrl, supportsDelegatedAuth);
+            this.openUrl(params.sharedUrl);
           } else {
             this._addSite(params.sharedUrl);
           }
@@ -329,7 +321,7 @@ class Discourse extends React.Component {
         sound: true,
       });
 
-      addShortcutListener(({userInfo, activityType}) => {
+      addShortcutListener(({userInfo}) => {
         if (userInfo.siteUrl) {
           this._handleOpenUrl({
             url: `discourse://share?sharedUrl=${userInfo.siteUrl}`,
@@ -394,7 +386,10 @@ class Discourse extends React.Component {
 
   async _refresh() {
     clearTimeout(this.refreshTimerId);
-    await this._siteManager.refreshSites();
+    if (!this._siteManager.activeSite) {
+      // don't run background refresh while user is on a site
+      await this._siteManager.refreshSites();
+    }
     this.refreshTimerId = setTimeout(this._refresh, 30000);
   }
 
@@ -459,22 +454,16 @@ class Discourse extends React.Component {
     return parsed;
   }
 
-  openUrl(url, supportsDelegatedAuth = true) {
+  openUrl(url) {
     if (Platform.OS === 'ios') {
-      if (!supportsDelegatedAuth) {
-        this.safariViewTimeout = setTimeout(() => SafariView.show({url}), 400);
-      } else {
-        SafariView.dismiss();
-
-        this._navigation.navigate('WebView', {
-          url: url,
-        });
-      }
+      this._navigation.navigate('WebView', {
+        url: url,
+      });
     }
 
     if (Platform.OS === 'android') {
       AsyncStorage.getItem('@Discourse.androidCustomTabs').then(value => {
-        if (value) {
+        if (value === 'true') {
           CustomTabs.openURL(url, {
             enableUrlBarHiding: true,
             showPageTitle: false,
@@ -547,7 +536,10 @@ class Discourse extends React.Component {
               this._navigation = navigation;
               return {
                 headerShown: false,
+                gestureEnabled: true,
                 ...TransitionPresets.ModalSlideFromBottomIOS,
+                // ...TransitionPresets.ModalPresentationIOS is an interesting alternative
+                // see https://reactnavigation.org/docs/stack-navigator/#transitionpresets
               };
             }}>
             <Stack.Screen name="HomeWrapper">
@@ -569,7 +561,7 @@ class Discourse extends React.Component {
                     tabBarBackground: () => this._blurView(theme.name),
                   }}>
                   <Tab.Screen
-                    name="Home"
+                    name={i18n.t('home')}
                     options={{
                       // eslint-disable-next-line react/no-unstable-nested-components
                       tabBarIcon: ({color}) => (
@@ -586,7 +578,7 @@ class Discourse extends React.Component {
                     )}
                   </Tab.Screen>
                   <Tab.Screen
-                    name="Discover"
+                    name={i18n.t('discover')}
                     options={{
                       // eslint-disable-next-line react/no-unstable-nested-components
                       tabBarIcon: ({color}) => (
@@ -606,7 +598,7 @@ class Discourse extends React.Component {
                     )}
                   </Tab.Screen>
                   <Tab.Screen
-                    name="Notifications"
+                    name={i18n.t('notifications')}
                     options={{
                       // eslint-disable-next-line react/no-unstable-nested-components
                       tabBarIcon: ({color}) => (
@@ -632,6 +624,14 @@ class Discourse extends React.Component {
               name={i18n.t('settings')}
               options={{
                 headerShown: true,
+                headerStyle: {
+                  backgroundColor: theme.background,
+                },
+                headerTitleStyle: {
+                  color: theme.grayTitle,
+                },
+                headerMode: 'screen',
+                headerBackTitle: i18n.t('back'),
               }}>
               {props => (
                 <Screens.Settings {...props} screenProps={{...screenProps}} />
