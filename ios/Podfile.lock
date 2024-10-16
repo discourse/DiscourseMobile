@@ -275,8 +275,8 @@ PODS:
     - React
   - react-native-safari-view (1.0.0):
     - React
-  - react-native-safari-web-auth (1.0.4):
-    - React
+  - react-native-safari-web-auth (2.0.0):
+    - React-Core
   - react-native-safe-area-context (4.11.0):
     - React-Core
   - react-native-segmented-control (2.2.2):
@@ -588,7 +588,7 @@ SPEC CHECKSUMS:
   react-native-key-pair: d45fb2e417ffb0fca307e9bbe22111aa38c3233f
   react-native-root-view-background-color: e7ba21b82c8b7b2a1f902750f08c9dc1a5b38cea
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
-  react-native-safari-web-auth: b6642abaa8084a8e5addba1cba4521fd30b95b64
+  react-native-safari-web-auth: 73f4f00a0f1b6b1ad247e7e2b4ff7df5fe87a997
   react-native-safe-area-context: 851c62c48dce80ccaa5637b6aa5991a1bc36eca9
   react-native-segmented-control: 65df6cd0619b780b3843d574a72d4c7cec396097
   react-native-webview: 849250e66239f661c802a879c59e019da8a08736
