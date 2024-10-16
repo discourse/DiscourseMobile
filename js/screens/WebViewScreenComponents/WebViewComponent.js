@@ -290,6 +290,7 @@ class WebViewComponent extends React.Component {
     this.keyboardWillHide?.remove();
 
     this.siteManager.refreshSites();
+    this.siteManager.clearActiveSite();
     this.appStateSubscription?.remove();
   }
 

@@ -96,6 +96,10 @@ class SiteManager {
     });
   }
 
+  clearActiveSite() {
+    this.activeSite = null;
+  }
+
   updateOrder(from, to) {
     this.sites.splice(to, 0, this.sites.splice(from, 1)[0]);
     this.save();
