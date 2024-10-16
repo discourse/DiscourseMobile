@@ -2,9 +2,13 @@
 'use strict';
 
 import React from 'react';
-import {Platform, RefreshControl, StyleSheet, View} from 'react-native';
-
-import SafariWebAuth from 'react-native-safari-web-auth';
+import {
+  ActivityIndicator,
+  Platform,
+  RefreshControl,
+  StyleSheet,
+  View,
+} from 'react-native';
 import Components from './HomeScreenComponents';
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
@@ -26,6 +30,7 @@ class HomeScreen extends React.Component {
       scrollEnabled: true,
       refreshingEnabled: true,
       loadingSites: this._siteManager.isLoading(),
+      authProcessActive: false,
     };
 
     this._onChangeSites = e => this.onChangeSites(e);
@@ -33,7 +38,7 @@ class HomeScreen extends React.Component {
     this._renderItem = this._renderItem.bind(this);
   }
 
-  visitSite(site, connect = false, endpoint = '') {
+  async visitSite(site, connect = false, endpoint = '') {
     this._siteManager.setActiveSite(site);
     this.donateShortcut(site);
 
@@ -44,9 +49,8 @@ class HomeScreen extends React.Component {
         );
       } else {
         if (Platform.OS === 'ios') {
-          this._siteManager.generateURLParams(site).then(params => {
-            this.props.screenProps.openUrl(`${site.url}${endpoint}?${params}`);
-          });
+          const params = await this._siteManager.generateURLParams(site);
+          this.props.screenProps.openUrl(`${site.url}${endpoint}?${params}`);
         } else {
           this.props.screenProps.openUrl(
             `${site.url}${endpoint}?discourse_app=1`,
@@ -57,13 +61,20 @@ class HomeScreen extends React.Component {
     }
 
     if (connect || site.loginRequired) {
-      this._siteManager.generateAuthURL(site).then(url => {
-        if (Platform.OS === 'ios') {
-          SafariWebAuth.requestAuth(url);
+      const authUrl = await this._siteManager.generateAuthURL(site);
+      if (Platform.OS === 'ios') {
+        this.setState({authProcessActive: true});
+        const requestAuthURL = await this._siteManager.requestAuth(authUrl);
+
+        if (requestAuthURL) {
+          this.props.screenProps.openUrl(requestAuthURL);
         } else {
-          this.props.screenProps.openUrl(url);
+          // TODO: auth got cancelled or error, show a message?
         }
-      });
+        this.setState({authProcessActive: false});
+      } else {
+        this.props.screenProps.openUrl(authUrl);
+      }
     } else {
       this.props.screenProps.openUrl(`${site.url}${endpoint}`);
     }
@@ -182,7 +193,6 @@ class HomeScreen extends React.Component {
         <BottomTabBarHeightContext.Consumer>
           {tabBarHeight => (
             <DragList
-              style={styles.sitesList}
               contentContainerStyle={{paddingBottom: tabBarHeight}}
               activationDistance={20}
               data={this.state.data}
@@ -212,6 +222,10 @@ class HomeScreen extends React.Component {
     this.props.navigation.navigate(i18n.t('settings'));
   }
 
+  onDidPressPlusIcon() {
+    this.props.navigation.navigate(i18n.t('add_single_site'));
+  }
+
   render() {
     const theme = this.context;
 
@@ -223,6 +237,7 @@ class HomeScreen extends React.Component {
             onDidPressAndroidSettingsIcon={() =>
               this.onDidPressAndroidSettingsIcon()
             }
+            onDidPressPlusIcon={() => this.onDidPressPlusIcon()}
           />
           <View
             style={[
@@ -234,6 +249,15 @@ class HomeScreen extends React.Component {
             {this._renderSites()}
             {/* {this._renderDebugRow()} */}
           </View>
+          {this.state.authProcessActive && (
+            <View
+              style={{
+                ...styles.authenticatingOverlay,
+                backgroundColor: theme.background,
+              }}>
+              <ActivityIndicator size="large" color={theme.grayUI} />
+            </View>
+          )}
         </SafeAreaView>
       </>
     );
@@ -252,7 +276,17 @@ const styles = StyleSheet.create({
   sitesContainer: {
     flex: 1,
   },
-  sitesList: {},
+  authenticatingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+    opacity: 0.75,
+  },
 });
 
 export default HomeScreen;

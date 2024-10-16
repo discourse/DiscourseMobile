@@ -7039,10 +7039,10 @@ react-native-root-view-background-color@^1.0.2:
   version "1.0.2"
   resolved "git+https://github.com/samsaffron/react-native-safari-view.git#fa5fcb17a73435dd870e45c13818dbd8ebb909e7"
 
-react-native-safari-web-auth@1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/react-native-safari-web-auth/-/react-native-safari-web-auth-1.0.4.tgz#99e4155076f57f29b57e01a02c1b914d72b89976"
-  integrity sha512-CWcOSvre2mzFR3UIGOqGURZxOFp1TyUYPPkWwaGRY4IWw3G5dPiWFzcvO0SFNavaj3RzY5sGrsXhTiLrz/wkMA==
+react-native-safari-web-auth@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-safari-web-auth/-/react-native-safari-web-auth-2.0.0.tgz#b8f9171e484ae26853d3bccc2de99fe3738cd3b5"
+  integrity sha512-/RXxFHYmupdlDeymCJb9XUTG1MRxwRgE0qwtYnjzYj1LeRM3ZRrrHlH0DXg8U05pCgMnpGpiXOanjiWfy3Hxfw==
 
 react-native-safe-area-context@^4.11.0:
   version "4.11.0"
