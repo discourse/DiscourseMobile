@@ -25,6 +25,8 @@
   "unread_with_count": "nepročitanih (%{count})",
   "please_wait": "Molimo pričekajte...",
   "settings": "Postavke",
+  "home": "Naslovnica",
+  "back": "Natrag",
   "discover_reset": "Prikaži sve",
   "discover_all": "sve",
   "cancel": "Odustani"

@@ -26,6 +26,8 @@
   "replies": "Odpovědi",
   "unread_with_count": "nepřečtené (%{count})",
   "settings": "Nastavení",
+  "home": "Domů",
+  "back": "Zpět",
   "discover_reset": "Zobrazit vše",
   "discover_all": "vše",
   "discover_recent": "nedávné",

@@ -20,6 +20,8 @@
   "replies": "Respostes",
   "unread_with_count": "no llegit (%{count})",
   "settings": "Configuració",
+  "home": "Pàgina principal",
+  "back": "Enrere",
   "discover_all": "tots",
   "discover_recent": "recents",
   "cancel": "Cancel·la"

@@ -19,6 +19,8 @@
   "replies": "Odpovede",
   "unread_with_count": "neprečítaná (%{count})",
   "settings": "Nastavenia",
+  "home": "Domov",
+  "back": "Späť",
   "discover_reset": "Zobraziť všetko",
   "discover_all": "všetko",
   "discover_recent": "nedávne",

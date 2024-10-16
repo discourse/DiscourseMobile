@@ -23,6 +23,8 @@
   "replies": "Odgovorov",
   "unread_with_count": "neprebrana (%{count})",
   "settings": "Nastavitve",
+  "home": "Domov",
+  "back": "Nazaj",
   "discover_reset": "Pokaži vse",
   "discover_all": "vse",
   "discover_recent": "nedavno",

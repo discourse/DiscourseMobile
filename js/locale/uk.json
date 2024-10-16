@@ -26,6 +26,8 @@
   "replies": "Відповідей",
   "unread_with_count": "непрочитані (%{count})",
   "settings": "Налаштування",
+  "home": "Головна",
+  "back": "Назад",
   "discover_reset": "Показати всі",
   "discover_all": "усі",
   "discover_recent": "останні",

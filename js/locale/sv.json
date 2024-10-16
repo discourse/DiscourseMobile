@@ -40,6 +40,8 @@
   "unread_with_count": "olästa (%{count})",
   "please_wait": "Vänligen vänta...",
   "settings": "Inställningar",
+  "home": "Hem",
+  "back": "Tillbaka",
   "browser_toggle_label": "Öppna webbplatser med webbläsaren i appen",
   "browser_toggle_description": "När denna inställning är inaktiverad kommer webbplatser att öppnas via valfri webbläsare, även PWA",
   "discover_reset": "Visa alla",

@@ -14,6 +14,8 @@
   "replies": "ตอบ",
   "unread_with_count": "ยังไม่อ่าน (%{count})",
   "settings": "การตั้งค่า",
+  "home": "หน้าแรก",
+  "back": "กลับ",
   "discover_all": "ทั้งหมด",
   "cancel": "ยกเลิก"
 }

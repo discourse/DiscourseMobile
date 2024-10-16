@@ -9,6 +9,8 @@
   "replies": "Atbildes",
   "unread_with_count": "nelasīts (%{count})",
   "settings": "Iestatījumi",
+  "home": "Mājas",
+  "back": "Atpakaļ",
   "discover_all": "Viss",
   "discover_recent": "neseni",
   "cancel": "Atcelt"

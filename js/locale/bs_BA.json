@@ -21,6 +21,8 @@
   "replies": "Replike",
   "unread_with_count": "nepročitano (%{count})",
   "settings": "Postavke",
+  "home": "Naslovnica",
+  "back": "Prethodno",
   "discover_all": "sve",
   "discover_recent": "nove",
   "cancel": "Odustani"

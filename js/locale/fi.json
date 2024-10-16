@@ -57,6 +57,8 @@
   "please_wait": "Odota...",
   "settings": "Asetukset",
   "discover": "Löydä",
+  "home": "Aloitus",
+  "back": "Takaisin",
   "site_added": "🎉 Sivusto lisätty!",
   "enable_notifications": "Ota ilmoitukset käyttöön napauttamalla tätä",
   "browser_toggle_label": "Avaa sivustot sovelluksen sisäisellä selaimella",

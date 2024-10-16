@@ -22,6 +22,8 @@
   "replies": "Svar",
   "unread_with_count": "ulæst (%{count})",
   "settings": "Indstillinger",
+  "home": "Hjem",
+  "back": "Tilbage",
   "discover_reset": "Vis alle",
   "discover_all": "alle",
   "discover_recent": "nye",
