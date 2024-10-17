@@ -238,14 +238,38 @@ class Discourse extends React.Component {
     }
   }
 
-  _handleOpenUrl(event) {
+  async _handleOpenUrl(event) {
     console.log('_handleOpenUrl', event);
 
     if (event.url.startsWith('discourse://')) {
-      let params = this._siteManager.parseURLparameters(event.url);
+      const params = this._siteManager.parseURLparameters(event.url);
+      const site = this._siteManager.activeSite;
 
       if (Platform.OS === 'ios' && Settings.get('external_links_svc')) {
         SafariView.dismiss();
+      }
+
+      // initial auth payload
+      if (params.payload) {
+        this._siteManager.handleAuthPayload(params.payload);
+      }
+
+      // received one-time-password request from SafariView
+      if (params.otp && Platform.OS === 'ios') {
+        try {
+          const url = await this._siteManager.generateAuthURL(site);
+          const authURL = await this._siteManager.requestAuth(url);
+
+          this.openUrl(authURL);
+        } catch (error) {
+          console.log('Error handling OTP: ', error);
+        }
+      }
+
+      // one-time-password received, launch site with it
+      if (params.oneTimePassword) {
+        const OTP = this._siteManager.decryptHelper(params.oneTimePassword);
+        this.openUrl(`${site.url}/session/otp/${OTP}`);
       }
 
       // handle site URL passed via app-argument

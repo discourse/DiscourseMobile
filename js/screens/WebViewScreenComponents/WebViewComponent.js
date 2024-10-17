@@ -99,6 +99,16 @@ class WebViewComponent extends React.Component {
     );
   }
 
+  componentDidUpdate() {
+    const url = this.props.url;
+
+    if (url !== this.state.webviewUrl) {
+      this.setState({
+        webviewUrl: url,
+      });
+    }
+  }
+
   UNSAFE_componentWillUpdate(nextProps, nextState) {
     if (nextState.headerBg !== this.state.headerBg) {
       Animated.timing(this.state.headerBgAnim, {
@@ -208,11 +218,11 @@ class WebViewComponent extends React.Component {
                 return true;
               }
 
-              // intercept 3rd party auth requests and handle them using ASWebAuthenticationSession
-              if (
-                Platform.OS === 'ios' &&
-                request.url.startsWith(`${this.props.url}/auth/`)
-              ) {
+              // on iOS, intercept 3rd party auth requests and handle them using ASWebAuthenticationSession
+              const authRequest =
+                request.url.startsWith(`${this.props.url}/session/sso`) ||
+                request.url.startsWith(`${this.props.url}/auth/`);
+              if (Platform.OS === 'ios' && authRequest) {
                 if (!this.state.authProcessActive) {
                   this.requestAuth();
                 }
@@ -223,6 +233,12 @@ class WebViewComponent extends React.Component {
                 return true;
               }
 
+              if (
+                request.url.startsWith('discourse://') ||
+                request.url === 'about:blank'
+              ) {
+                return false;
+              }
               if (!this.siteManager.urlInSites(request.url)) {
                 // launch externally and stop loading request if external link
                 // ensure URL can be opened, before opening an external URL
@@ -238,7 +254,7 @@ class WebViewComponent extends React.Component {
                     }
                   })
                   .catch(e => {
-                    console.log('failed to fetch notifications ' + e);
+                    console.log('Linking.canOpenURL failed with ' + e);
                   });
                 return false;
               }
@@ -351,19 +367,16 @@ class WebViewComponent extends React.Component {
 
     this.setState({authProcessActive: true});
 
-    try {
-      const url = await this.siteManager.generateAuthURL(site);
-      const authURL = await this.siteManager.requestAuth(url);
+    const url = await this.siteManager.generateAuthURL(site);
+    const authURL = await this.siteManager.requestAuth(url);
 
-      this.setState({
-        webviewUrl: authURL,
-        authProcessActive: false,
-      });
-    } catch (error) {
-      console.error(error);
-      this.setState({
-        authProcessActive: false,
-      });
+    this.setState({authProcessActive: false});
+
+    if (authURL) {
+      // this may seem odd to navigate to the same screen
+      // but we want to use the same path as notifications and reset the local state
+      // via componentDidUpdate
+      this.props.navigation.navigate('WebView', {url: authURL});
     }
   }
 
