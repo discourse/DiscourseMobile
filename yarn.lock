@@ -6967,10 +6967,10 @@ react-native-codegen@^0.71.5:
   version "0.1.8"
   resolved "https://github.com/adminphoeniixx/react-native-custom-tabs#7605cda9d9d691c36367e98d8513937454627ecd"
 
-react-native-device-info@^13.0.0:
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-13.0.0.tgz#6c272ffe805f74b2aaa22c81ae989286448c83b4"
-  integrity sha512-TKCq4XKl8lzB04RdEbADxkbzDJwOfWcxZxNcf1LweT+A+KRAUv1no7bch7RM0WLyMVKMTa2hbusESnzxB5QQRA==
+react-native-device-info@^13.1.0:
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-13.1.0.tgz#e5076088e7f1eddba5cf5693ab46210946382e3f"
+  integrity sha512-tje+yRDG4ue2K7uC862IhxX7wFoufwozSdqLuzLKA8X1b4zgfF6iXId0Da8c2qS6FtaMr+vTsBFrY7Gxo1wTew==
 
 react-native-draglist@^3.6.2:
   version "3.6.2"

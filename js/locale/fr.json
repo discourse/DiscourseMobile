@@ -54,6 +54,7 @@
   "term_exists": "%{term} existe déjà",
   "unread_with_count": "non lus (%{count})",
   "term_placeholder": "Recherchez ou saisissez l'URL d'une communauté",
+  "term_placeholder_single_site": "saisissez l'URL de la communauté",
   "please_wait": "Veuillez patienter…",
   "settings": "Paramètres",
   "discover": "Découvrir",
@@ -74,5 +75,9 @@
   "discover_recent": "récents",
   "active_counts": "%{active_users} utilisateurs actifs",
   "cancel": "Annuler",
+  "clear": "Effacer",
+  "add_single_site": "Ajouter un site",
+  "single_site_no_results": "Aucun site trouvé avec ce domaine. Veuillez vérifier l'URL et réessayer.",
+  "single_site_blank_screen": "Ajoutez des communautés Discourse en écrivant l'URL dans le champ ci-dessus. Seul le domaine suffit, il n'est pas nécessaire d'inclure \"http://\" ou \"https://\".",
   "no_connected_sites": "Vous n'avez aucun site connecté sur votre écran d'accueil. Une fois que vous avez connecté un ou plusieurs sites, vous verrez leurs notifications ici."
 }

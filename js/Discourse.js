@@ -620,6 +620,7 @@ class Discourse extends React.Component {
                 headerTitleStyle: {
                   color: theme.grayTitle,
                 },
+                headerTintColor: theme.grayUI,
                 headerMode: 'screen',
                 headerBackTitle: i18n.t('back'),
                 headerShadowVisible: false,
@@ -636,6 +637,7 @@ class Discourse extends React.Component {
                 headerStyle: {
                   backgroundColor: theme.background,
                 },
+                headerTintColor: theme.grayUI,
                 headerTitleStyle: {
                   color: theme.grayTitle,
                 },
