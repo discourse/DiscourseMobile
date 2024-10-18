@@ -374,7 +374,7 @@ PODS:
     - React-Core
   - RNCPushNotificationIOS (1.11.0):
     - React-Core
-  - RNDeviceInfo (13.0.0):
+  - RNDeviceInfo (13.1.0):
     - React-Core
   - RNGestureHandler (2.18.1):
     - RCT-Folly (= 2021.07.22.00)
@@ -608,7 +608,7 @@ SPEC CHECKSUMS:
   RNBackgroundFetch: b6cb89fa8ff0e1d8a245b19caca2944304b95fbf
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
-  RNDeviceInfo: 55264dd7cc939dad6e9c231a7621311f5277f1dc
+  RNDeviceInfo: e13b7d68878fba693c9fbb13ca4d56ad57d95917
   RNGestureHandler: 325d972e9402b427e819c950eae2b07d4c529802
   RNLocalize: a64514b46a01375fdfae9349036b4dc7130333b5
   RNReanimated: 391269e28d02c036cf9dce84802345426715730e

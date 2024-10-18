@@ -2,7 +2,8 @@
 //  ShareViewController.swift
 //  ShareExtension
 //
-//  Created by Penar Musaraj on 2020-02-13.
+//  Shows a Discourse icon in the iOS share sheet
+// and lets users send URLs to the app.
 //
 
 import UIKit
