@@ -547,8 +547,9 @@ class Discourse extends React.Component {
                     tabBarBackground: () => this._blurView(theme.name),
                   }}>
                   <Tab.Screen
-                    name={i18n.t('home')}
+                    name="Home"
                     options={{
+                      title: i18n.t('home'),
                       // eslint-disable-next-line react/no-unstable-nested-components
                       tabBarIcon: ({color}) => (
                         <FontAwesome5
@@ -564,9 +565,9 @@ class Discourse extends React.Component {
                     )}
                   </Tab.Screen>
                   <Tab.Screen
-                    name={i18n.t('discover')}
-                    initialParams={{addDomain: false}}
+                    name="Discover"
                     options={{
+                      title: i18n.t('discover'),
                       // eslint-disable-next-line react/no-unstable-nested-components
                       tabBarIcon: ({color}) => (
                         <FontAwesome5
@@ -585,8 +586,9 @@ class Discourse extends React.Component {
                     )}
                   </Tab.Screen>
                   <Tab.Screen
-                    name={i18n.t('notifications')}
+                    name={'Notifications'}
                     options={{
+                      title: i18n.t('notifications'),
                       // eslint-disable-next-line react/no-unstable-nested-components
                       tabBarIcon: ({color}) => (
                         <FontAwesome5
@@ -608,8 +610,9 @@ class Discourse extends React.Component {
               )}
             </Stack.Screen>
             <Stack.Screen
-              name={i18n.t('settings')}
+              name={'Settings'}
               options={{
+                title: i18n.t('settings'),
                 headerShown: true,
                 headerStyle: {
                   backgroundColor: theme.background,
@@ -619,14 +622,16 @@ class Discourse extends React.Component {
                 },
                 headerMode: 'screen',
                 headerBackTitle: i18n.t('back'),
+                headerShadowVisible: false,
               }}>
               {props => (
                 <Screens.Settings {...props} screenProps={{...screenProps}} />
               )}
             </Stack.Screen>
             <Stack.Screen
-              name={i18n.t('add_single_site')}
+              name={'AddSite'}
               options={{
+                title: i18n.t('add_single_site'),
                 headerShown: true,
                 headerStyle: {
                   backgroundColor: theme.background,
@@ -636,6 +641,7 @@ class Discourse extends React.Component {
                 },
                 headerMode: 'screen',
                 headerBackTitle: i18n.t('back'),
+                headerShadowVisible: false,
               }}>
               {props => (
                 <Screens.AddSite

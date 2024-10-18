@@ -185,7 +185,7 @@ class HomeScreen extends React.Component {
       return (
         <Components.OnBoardingView
           style={{backgroundColor: theme.grayBackground}}
-          onDidPressAddSite={() => this.props.navigation.navigate('Discover')}
+          onDidPressAddSite={() => this.props.navigation.navigate('AddSite')}
         />
       );
     } else {
@@ -219,11 +219,11 @@ class HomeScreen extends React.Component {
   }
 
   onDidPressAndroidSettingsIcon() {
-    this.props.navigation.navigate(i18n.t('settings'));
+    this.props.navigation.navigate('Settings');
   }
 
   onDidPressPlusIcon() {
-    this.props.navigation.navigate(i18n.t('add_single_site'));
+    this.props.navigation.navigate('AddSite');
   }
 
   render() {

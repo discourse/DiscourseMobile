@@ -121,8 +121,8 @@ class AddSiteScreen extends React.Component {
       <BottomTabBarHeightContext.Consumer>
         {tabBarHeight => (
           <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
-            {this._renderSearchBox()}
             <View style={styles.container}>
+              {this._renderSearchBox()}
               <FlatList
                 ListEmptyComponent={emptyResult}
                 ref={ref => (this.discoverList = ref)}
@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'center',
     flex: 1,
+    paddingTop: 16,
   },
   intro: {
     flexDirection: 'row',
@@ -205,13 +206,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 32,
     paddingBottom: 120,
   },
   desc: {
     fontSize: 16,
-    padding: 12,
-    paddingTop: 24,
+    padding: 32,
     textAlign: 'center',
   },
 });

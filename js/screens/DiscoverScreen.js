@@ -408,8 +408,7 @@ const styles = StyleSheet.create({
   },
   desc: {
     fontSize: 16,
-    padding: 12,
-    paddingTop: 24,
+    padding: 24,
     textAlign: 'center',
   },
   noResultsReset: {
