@@ -274,7 +274,11 @@ class WebViewComponent extends React.Component {
             onMessage={event => this._onMessage(event)}
             onContentProcessDidTerminate={event => {
               console.log('onContentProcessDidTerminate', event);
-              this._onClose();
+              // reload the last URL when there is a crash
+              // emulates what Safari does on similar errors
+              this.props.navigation.navigate('WebView', {
+                url: event.nativeEvent.url,
+              });
             }}
           />
         )}
