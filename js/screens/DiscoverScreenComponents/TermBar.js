@@ -92,6 +92,7 @@ const TermBar = props => {
             onChangeText={newText => props.handleChangeText(newText)}
             underlineColorAndroid={'transparent'}
             value={props.text}
+            testID="search-add-input"
           />
         </View>
         {props.text ? searchCancel : infoIcon}

@@ -84,6 +84,7 @@ const SiteRow = props => {
           <TouchableHighlight
             style={styles.buttonWrapper}
             underlayColor={theme.background}
+            testID="add-site-icon"
             onPress={() =>
               !props.inLocalList &&
               props.handleSiteAdd(props.site.featured_link)
