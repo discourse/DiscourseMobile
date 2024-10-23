@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 describe('Onboarding', () => {
   beforeAll(async () => {
     await device.launchApp({permissions: {notifications: 'YES'}});
