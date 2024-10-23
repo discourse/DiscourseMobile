@@ -1,4 +1,5 @@
 /* @flow */
+/* global Request */
 'use strict';
 
 import React from 'react';
