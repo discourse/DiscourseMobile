@@ -3,6 +3,7 @@
 
 import React from 'react';
 import {
+  ActivityIndicator,
   Alert,
   FlatList,
   Linking,
@@ -125,6 +126,9 @@ class DiscoverScreen extends React.Component {
             })
             .catch(e => {
               console.log(e);
+            })
+            .finally(() => {
+              this.setState({loading: false});
             });
         }
       })
@@ -198,31 +202,38 @@ class DiscoverScreen extends React.Component {
   render() {
     const theme = this.context;
     const resultCount = this.state.results.length;
+    const messageText = i18n.t('discover_no_results');
 
     const emptyResult = (
       <ScrollView keyboardShouldPersistTaps="handled">
-        <Text style={{...styles.desc, color: theme.grayTitle}}>
-          {i18n.t('discover_no_results')}
-        </Text>
-        <TouchableHighlight
-          style={styles.noResultsReset}
-          underlayColor={theme.background}
-          onPress={() => {
-            this.setState({
-              selectedTag: '',
-              term: '',
-              page: 1,
-            });
-            this.doSearch('');
-          }}>
-          <Text
-            style={{
-              color: theme.blueUnread,
-              fontSize: 16,
-            }}>
-            {i18n.t('discover_reset')}
-          </Text>
-        </TouchableHighlight>
+        {this.state.term === '' ? (
+          <ActivityIndicator size="large" color={theme.grayUI} />
+        ) : (
+          <View>
+            <Text style={{...styles.desc, color: theme.grayTitle}}>
+              {messageText}
+            </Text>
+            <TouchableHighlight
+              style={styles.noResultsReset}
+              underlayColor={theme.background}
+              onPress={() => {
+                this.setState({
+                  selectedTag: '',
+                  term: '',
+                  page: 1,
+                });
+                this.doSearch('');
+              }}>
+              <Text
+                style={{
+                  color: theme.blueUnread,
+                  fontSize: 16,
+                }}>
+                {i18n.t('discover_reset')}
+              </Text>
+            </TouchableHighlight>
+          </View>
+        )}
       </ScrollView>
     );
 
@@ -233,33 +244,30 @@ class DiscoverScreen extends React.Component {
             {this._renderSearchBox()}
             {resultCount > 0 ? this._renderTags() : null}
             <View style={styles.container}>
-              {resultCount === 0 && !this.state.loading ? (
-                <View style={styles.emptyResult}>{emptyResult}</View>
-              ) : (
-                <FlatList
-                  ref={ref => (this.discoverList = ref)}
-                  contentContainerStyle={{paddingBottom: tabBarHeight}}
-                  data={this.state.results}
-                  refreshing={this.state.loading}
-                  refreshControl={
-                    <RefreshControl
-                      refreshing={this.state.loading}
-                      onRefresh={() => {
-                        // ensures we don't refresh for keyword searches
-                        if (this.state.selectedTag !== false) {
-                          this.debouncedSearch(this.state.selectedTag);
-                        }
-                      }}
-                    />
-                  }
-                  renderItem={({item}) => this._renderItem({item})}
-                  onEndReached={() => {
-                    this._fetchNextPage();
-                  }}
-                  extraData={this.state.selectionCount}
-                  maxToRenderPerBatch={20}
-                />
-              )}
+              <FlatList
+                ListEmptyComponent={emptyResult}
+                ref={ref => (this.discoverList = ref)}
+                contentContainerStyle={{paddingBottom: tabBarHeight}}
+                data={this.state.results}
+                refreshing={this.state.loading}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={this.state.loading}
+                    onRefresh={() => {
+                      // ensures we don't refresh for keyword searches
+                      if (this.state.selectedTag !== false) {
+                        this.debouncedSearch(this.state.selectedTag);
+                      }
+                    }}
+                  />
+                }
+                renderItem={({item}) => this._renderItem({item})}
+                onEndReached={() => {
+                  this._fetchNextPage();
+                }}
+                extraData={this.state.selectionCount}
+                maxToRenderPerBatch={20}
+              />
             </View>
             <Toast config={toastConfig} />
           </SafeAreaView>
@@ -345,6 +353,7 @@ class DiscoverScreen extends React.Component {
         onPress={() => {
           this.setState({
             selectedTag: searchString,
+            loading: true,
             page: 1,
           });
           if (this.discoverList) {
@@ -399,8 +408,7 @@ const styles = StyleSheet.create({
   },
   desc: {
     fontSize: 16,
-    padding: 12,
-    paddingTop: 24,
+    padding: 24,
     textAlign: 'center',
   },
   noResultsReset: {

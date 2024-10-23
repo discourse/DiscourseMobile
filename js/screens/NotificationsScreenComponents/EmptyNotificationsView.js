@@ -11,7 +11,7 @@ class EmptyNotificationsView extends React.Component {
     const theme = this.context;
     return (
       <View style={styles.container}>
-        <FontAwesome5 name={'bell'} size={26} color={theme.grayUI} solid />
+        <FontAwesome5 name={'bell'} size={48} color={theme.grayUI} solid />
         <Text style={{...styles.text, color: theme.grayTitle}}>
           {this.props.text}
         </Text>
@@ -31,9 +31,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    marginBottom: 48,
-    padding: 24,
-    paddingTop: 12,
+    padding: 30,
     textAlign: 'center',
   },
 });

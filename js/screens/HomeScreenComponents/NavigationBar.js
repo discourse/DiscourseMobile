@@ -35,6 +35,23 @@ const NavigationBar = props => {
       </TouchableHighlight>
     );
   };
+
+  const renderPlusButton = () => {
+    return (
+      <TouchableHighlight
+        style={{...styles.plusButton}}
+        underlayColor={'transparent'}
+        onPress={props.onDidPressPlusIcon}>
+        <FontAwesome5
+          name={'plus'}
+          size={20}
+          style={{color: theme.grayUI}}
+          solid
+        />
+      </TouchableHighlight>
+    );
+  };
+
   return (
     <View style={[styles.container, {backgroundColor: theme.background}]}>
       <View style={styles.titleContainer}>
@@ -50,6 +67,7 @@ const NavigationBar = props => {
         </TouchableHighlight>
       </View>
       {renderCogButton()}
+      {renderPlusButton()}
       <View
         style={[styles.separator, {backgroundColor: theme.grayBackground}]}
       />
@@ -78,6 +96,13 @@ const styles = StyleSheet.create({
   androidSettingsButton: {
     position: 'absolute',
     right: 6,
+    top: 6,
+    backgroundColor: 'transparent',
+    padding: 12,
+  },
+  plusButton: {
+    position: 'absolute',
+    left: 6,
     top: 6,
     backgroundColor: 'transparent',
     padding: 12,

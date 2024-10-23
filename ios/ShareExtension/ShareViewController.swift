@@ -2,8 +2,8 @@
 //  ShareViewController.swift
 //  ShareExtension
 //
-//  Created by Penar Musaraj on 2020-02-13.
-//  Copyright © 2020 Facebook. All rights reserved.
+//  Shows a Discourse icon in the iOS share sheet
+// and lets users send URLs to the app.
 //
 
 import UIKit
@@ -46,7 +46,9 @@ class ShareViewController: UIViewController {
                   }
 
                   DispatchQueue.main.async {
-                    self.openURL(URL(string: "discourse://share?sharedUrl=\(url)")!)
+                    if let application = UIApplication.value(forKeyPath: #keyPath(UIApplication.shared)) as? UIApplication {
+                        application.open(URL(string: "discourse://share?sharedUrl=\(url)")!, options: [:], completionHandler: nil)
+                    }
                   }
               }
           } else if attachment.isText {
@@ -60,7 +62,9 @@ class ShareViewController: UIViewController {
                   }
 
                   DispatchQueue.main.async {
-                    self.openURL(URL(string: "discourse://share?sharedUrl=\(url)")!)
+                    if let application = UIApplication.value(forKeyPath: #keyPath(UIApplication.shared)) as? UIApplication {
+                        application.open(URL(string: "discourse://share?sharedUrl=\(url)")!, options: [:], completionHandler: nil)
+                    }
                   }
               }
           }
@@ -74,16 +78,4 @@ class ShareViewController: UIViewController {
     })
   }
 
-  func openURL(_ url: URL) {
-    let selector = sel_registerName("openURL:")
-    var responder: UIResponder? = self
-
-    while responder != nil {
-        if let application = responder as? UIApplication {
-          application.perform(selector, with: url)
-          break
-        }
-        responder = responder?.next
-    }
-  }
 }
