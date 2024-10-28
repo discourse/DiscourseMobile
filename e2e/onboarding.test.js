@@ -38,7 +38,7 @@ describe.each([['en'], ['fr']])(`Onboarding (locale: %s)`, locale => {
 
   it('should show the Discover screen', async () => {
     await element(by.text(i18n.t('discover'))).tap();
-    await expect(element(by.text(i18n.t('all')))).toBeVisible();
+    await expect(element(by.text(i18n.t('discover_all')))).toBeVisible();
   });
 
   it('should show the Notifications screen', async () => {
@@ -48,9 +48,9 @@ describe.each([['en'], ['fr']])(`Onboarding (locale: %s)`, locale => {
     await expect(element(by.text(i18n.t('no_sites_yet')))).toBeVisible();
   });
 
-  it('should allow adding a site to the Home list', async () => {
+  it('should allow adding and removing a site to the Home list', async () => {
+    await expect(element(by.text(i18n.t('no_sites_yet')))).toBeVisible();
     await element(by.text(i18n.t('add_first_site'))).tap();
-    await expect(element(by.text(i18n.t('no_site_yet')))).toBeVisible();
     await element(by.id('search-add-input')).typeText('meta.discourse.org');
     await element(by.id('search-add-input')).tapReturnKey();
 
@@ -59,5 +59,11 @@ describe.each([['en'], ['fr']])(`Onboarding (locale: %s)`, locale => {
     await expect(element(by.text('Discourse Meta'))).toBeVisible();
     await expect(element(by.text(i18n.t('connect')))).toBeVisible();
     await expect(element(by.text(i18n.t('no_sites_yet')))).not.toBeVisible();
+
+    // cleanup added Home site row
+    await element(by.text('Discourse Meta')).swipe('left', 'fast', 0.5);
+    await element(by.id('site-row-delete')).tap();
+
+    await expect(element(by.text('Discourse Meta'))).not.toBeVisible();
   });
 });
