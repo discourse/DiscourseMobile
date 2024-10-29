@@ -75,6 +75,7 @@
   "discover_recent": "récents",
   "active_counts": "%{active_users} utilisateurs actifs",
   "cancel": "Annuler",
+  "back": "Retour",
   "clear": "Effacer",
   "add_single_site": "Ajouter un site",
   "single_site_no_results": "Aucun site trouvé avec ce domaine. Veuillez vérifier l'URL et réessayer.",
