@@ -3,6 +3,8 @@
 
 import React from 'react';
 import {
+  ActivityIndicator,
+  Alert,
   Animated,
   AppState,
   Linking,
@@ -19,7 +21,8 @@ import ErrorScreen from '../WebViewScreenComponents/ErrorScreen';
 import ProgressBar from '../../ProgressBar';
 import TinyColor from '../../../lib/tinycolor';
 import SafariView from 'react-native-safari-view';
-import SafariWebAuth from 'react-native-safari-web-auth';
+import i18n from 'i18n-js';
+import Site from '../../site';
 import {ThemeContext} from '../../ThemeContext';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
@@ -67,6 +70,7 @@ class WebViewComponent extends React.Component {
       hasNotch: this.props.screenProps.hasNotch,
       isLandscape: false,
       webviewUrl: this.props.url,
+      authProcessActive: false,
     };
   }
 
@@ -159,6 +163,15 @@ class WebViewComponent extends React.Component {
           }),
         }}>
         <StatusBar barStyle={this.state.barStyle} />
+        {this.state.layoutCalculated && this.state.authProcessActive && (
+          <View
+            style={{
+              ...styles.authenticatingOverlay,
+              backgroundColor: theme.background,
+            }}>
+            <ActivityIndicator size="large" color={theme.grayUI} />
+          </View>
+        )}
         {this.state.layoutCalculated && (
           <WebView
             style={{
@@ -198,40 +211,54 @@ class WebViewComponent extends React.Component {
             )}
             onShouldStartLoadWithRequest={request => {
               // console.log('onShouldStartLoadWithRequest', request);
-              if (request.url.startsWith('discourse://')) {
-                this.props.navigation.goBack();
-                return false;
-              } else {
-                // onShouldStartLoadWithRequest is sometimes triggered by ajax requests (ads, etc.)
-                // this is a workaround to avoid launching Safari for these events
-                if (request.url !== request.mainDocumentURL) {
-                  return true;
-                }
 
-                if (request.url.startsWith(this.props.url)) {
-                  return true;
-                }
-                if (!this.siteManager.urlInSites(request.url)) {
-                  // launch externally and stop loading request if external link
-                  // ensure URL can be opened, before opening an external URL
-                  Linking.canOpenURL(request.url)
-                    .then(() => {
-                      const useSVC = Settings.get('external_links_svc');
-                      if (useSVC) {
-                        if (!this.safariViewVisible) {
-                          SafariView.show({url: request.url});
-                        }
-                      } else {
-                        Linking.openURL(request.url);
-                      }
-                    })
-                    .catch(e => {
-                      console.log('failed to fetch notifications ' + e);
-                    });
-                  return false;
-                }
+              // onShouldStartLoadWithRequest is sometimes triggered by ajax requests (ads, etc.)
+              // this is a workaround to avoid launching Safari for these events
+              if (request.url !== request.mainDocumentURL) {
                 return true;
               }
+
+              // on iOS, intercept 3rd party auth requests and handle them using ASWebAuthenticationSession
+              const authRequest =
+                request.url.startsWith(`${this.props.url}/session/sso`) ||
+                request.url.startsWith(`${this.props.url}/auth/`);
+              if (Platform.OS === 'ios' && authRequest) {
+                if (!this.state.authProcessActive) {
+                  this.requestAuth();
+                }
+                return false;
+              }
+
+              if (request.url.startsWith(this.props.url)) {
+                return true;
+              }
+
+              if (
+                request.url.startsWith('discourse://') ||
+                request.url === 'about:blank'
+              ) {
+                return false;
+              }
+              if (!this.siteManager.urlInSites(request.url)) {
+                // launch externally and stop loading request if external link
+                // ensure URL can be opened, before opening an external URL
+                Linking.canOpenURL(request.url)
+                  .then(() => {
+                    const useSVC = Settings.get('external_links_svc');
+                    if (useSVC) {
+                      if (!this.safariViewVisible) {
+                        SafariView.show({url: request.url});
+                      }
+                    } else {
+                      Linking.openURL(request.url);
+                    }
+                  })
+                  .catch(e => {
+                    console.log('Linking.canOpenURL failed with ' + e);
+                  });
+                return false;
+              }
+              return true;
             }}
             onNavigationStateChange={navState => {
               this._storeLastPath(navState);
@@ -247,7 +274,11 @@ class WebViewComponent extends React.Component {
             onMessage={event => this._onMessage(event)}
             onContentProcessDidTerminate={event => {
               console.log('onContentProcessDidTerminate', event);
-              this._onClose();
+              // reload the last URL when there is a crash
+              // emulates what Safari does on similar errors
+              this.props.navigation.navigate('WebView', {
+                url: event.nativeEvent.url,
+              });
             }}
           />
         )}
@@ -279,6 +310,7 @@ class WebViewComponent extends React.Component {
     this.keyboardWillHide?.remove();
 
     this.siteManager.refreshSites();
+    this.siteManager.clearActiveSite();
     this.appStateSubscription?.remove();
   }
 
@@ -307,6 +339,49 @@ class WebViewComponent extends React.Component {
 
   _onClose() {
     this.props.navigation.goBack();
+  }
+
+  async addSite() {
+    try {
+      const newSite = await Site.fromTerm(this.state.webviewUrl);
+      if (newSite) {
+        this.siteManager.add(newSite);
+        await this.siteManager.setActiveSite(newSite);
+        this.requestAuth();
+      }
+    } catch (error) {
+      // Not sure we need to surface anything to the user here
+      console.error(error);
+    }
+  }
+
+  async requestAuth() {
+    const site = this.siteManager.activeSite;
+    if (!site) {
+      Alert.alert(
+        i18n.t('add_site_home_screen'),
+        i18n.t('add_site_home_screen_description'),
+        [
+          {text: i18n.t('cancel')},
+          {text: i18n.t('ok'), onPress: () => this.addSite()},
+        ],
+      );
+      return;
+    }
+
+    this.setState({authProcessActive: true});
+
+    const url = await this.siteManager.generateAuthURL(site);
+    const authURL = await this.siteManager.requestAuth(url);
+
+    this.setState({authProcessActive: false});
+
+    if (authURL) {
+      // this may seem odd to navigate to the same screen
+      // but we want to use the same path as notifications and reset the local state
+      // via componentDidUpdate
+      this.props.navigation.navigate('WebView', {url: authURL});
+    }
   }
 
   _onMessage(event) {
@@ -353,11 +428,8 @@ class WebViewComponent extends React.Component {
     }
 
     if (showLogin && Platform.OS === 'ios') {
-      this.siteManager
-        .generateAuthURL(this.siteManager.activeSite)
-        .then(url => {
-          SafariWebAuth.requestAuth(url);
-        });
+      // show login screen inside ASWebAuthenticationSession
+      this.requestAuth();
     }
   }
 }
@@ -377,6 +449,17 @@ const styles = StyleSheet.create({
     width: '50%',
     marginLeft: '25%',
     height: 4,
+  },
+  authenticatingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+    opacity: 0.75,
   },
 });
 

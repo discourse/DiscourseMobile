@@ -5,6 +5,7 @@ import _ from 'lodash';
 import {Alert, NativeModules, Platform} from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SafariWebAuth from 'react-native-safari-web-auth';
 import Site from './site';
 import RNKeyPair from 'react-native-key-pair';
 import DeviceInfo from 'react-native-device-info';
@@ -20,6 +21,7 @@ class SiteManager {
   _subscribers = [];
   sites = [];
   activeSite = null;
+  customScheme = 'discourse';
   urlScheme = 'discourse://auth_redirect';
   deviceName = 'Discourse - Unknown Mobile Device';
 
@@ -57,9 +59,12 @@ class SiteManager {
     let index = this.sites.indexOf(site);
     if (index >= 0) {
       let removableSite = this.sites.splice(index, 1)[0];
-      removableSite.revokeApiKey().catch(e => {
-        console.log(`Failed to revoke API Key ${e}`);
-      });
+
+      if (removableSite.authToken) {
+        removableSite.revokeApiKey().catch(e => {
+          console.log(`Failed to revoke API Key ${e}`);
+        });
+      }
       this.save();
       this._onChange();
     }
@@ -89,6 +94,10 @@ class SiteManager {
         return;
       }
     });
+  }
+
+  clearActiveSite() {
+    this.activeSite = null;
   }
 
   updateOrder(from, to) {
@@ -459,6 +468,50 @@ class SiteManager {
 
       return this.serializeParams(params);
     });
+  }
+
+  async requestAuth(url) {
+    try {
+      const authRequest = await SafariWebAuth.requestAuth(
+        url,
+        this.customScheme,
+        true,
+        // third parameter sets prefersEphemeralWebBrowserSession in ASWebAuthenticationSession,
+        // when true, it skips iOS dialog prompt but uses incognito mode (i.e. user always has to log in)
+      );
+
+      if (authRequest) {
+        const urlParams = this.parseURLparameters(authRequest);
+
+        if (urlParams.payload) {
+          this.handleAuthPayload(urlParams.payload);
+        }
+
+        if (urlParams.oneTimePassword) {
+          const OTP = this.decryptHelper(urlParams.oneTimePassword);
+          return `${this.activeSite.url}/session/otp/${OTP}`;
+        } else {
+          return this.activeSite.url;
+        }
+      }
+    } catch (error) {
+      // TODO: display error message?
+      console.error('auth process error: ', error);
+      return;
+    }
+  }
+
+  parseURLparameters(string) {
+    let parsed = {};
+    (string.split('?')[1] || string)
+      .split('&')
+      .map(item => {
+        return item.split('=');
+      })
+      .forEach(item => {
+        parsed[item[0]] = decodeURIComponent(item[1]);
+      });
+    return parsed;
   }
 
   getSeenNotificationMap() {

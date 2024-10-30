@@ -35,6 +35,9 @@ const SiteRow = props => {
   const siteAddColor = props.inLocalList
     ? theme.greenPrivateUnread
     : theme.blueCallToAction;
+  const siteAddIconA11YLabel = props.inLocalList
+    ? i18n.t('added_to_home_screen')
+    : i18n.t('add_to_home_screen');
 
   let activeUserCount = null;
 
@@ -53,37 +56,46 @@ const SiteRow = props => {
   }
 
   return (
-    <TouchableHighlight
-      style={{...styles.container, backgroundColor: theme.background}}
-      underlayColor={theme.yellowUIFeedback}
-      onPress={() => props.loadSite(props.site.featured_link)}>
+    <View style={{...styles.container, backgroundColor: theme.background}}>
       <View style={{...styles.row, borderBottomColor: theme.grayBorder}}>
-        <View style={styles.iconWrapper}>
-          <Image
-            style={{...styles.icon, backgroundColor: iconBgColor}}
-            source={iconPath}
-            resizeMode="contain"
-          />
-        </View>
-        <View style={styles.info}>
-          <Text
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={{...styles.url, color: theme.grayTitle}}>
-            {props.site.title}
-          </Text>
-          {activeUserCount}
-          <Text
-            ellipsizeMode="tail"
-            numberOfLines={4}
-            style={{...styles.description, color: theme.graySubtitle}}>
-            {decode(props.site.excerpt)}
-          </Text>
-        </View>
-        <View style={{paddingHorizontal: 8, justifyContent: 'center'}}>
+        <TouchableHighlight
+          style={{flex: 1, backgroundColor: theme.background}}
+          underlayColor={'transparent'}
+          onPress={() => props.loadSite(props.site.featured_link)}>
+          <View style={{flexDirection: 'row'}}>
+            <View style={styles.iconWrapper}>
+              <Image
+                style={{...styles.icon, backgroundColor: iconBgColor}}
+                source={iconPath}
+                resizeMode="contain"
+              />
+            </View>
+            <View style={styles.info}>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={{...styles.url, color: theme.grayTitle}}>
+                {props.site.title}
+              </Text>
+              {activeUserCount}
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={4}
+                style={{...styles.description, color: theme.graySubtitle}}>
+                {decode(props.site.excerpt)}
+              </Text>
+            </View>
+          </View>
+        </TouchableHighlight>
+        <View
+          style={{paddingHorizontal: 8, justifyContent: 'center'}}
+          importantForAccessibility="yes">
           <TouchableHighlight
+            accessible={true}
+            accessibilityLabel={siteAddIconA11YLabel}
             style={styles.buttonWrapper}
             underlayColor={theme.background}
+            testID="add-site-icon"
             onPress={() =>
               !props.inLocalList &&
               props.handleSiteAdd(props.site.featured_link)
@@ -103,7 +115,7 @@ const SiteRow = props => {
           </TouchableHighlight>
         </View>
       </View>
-    </TouchableHighlight>
+    </View>
   );
 };
 

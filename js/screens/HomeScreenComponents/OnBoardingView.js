@@ -81,9 +81,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   addSiteButtonText: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '500',
-    padding: 16,
+    padding: 12,
     textAlign: 'center',
   },
 });

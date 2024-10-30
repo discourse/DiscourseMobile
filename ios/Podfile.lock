@@ -11,9 +11,9 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.71.7)
   - fmt (6.2.1)
   - glog (0.3.5)
-  - hermes-engine (0.71.2):
-    - hermes-engine/Pre-built (= 0.71.2)
-  - hermes-engine/Pre-built (0.71.2)
+  - hermes-engine (0.71.7):
+    - hermes-engine/Pre-built (= 0.71.7)
+  - hermes-engine/Pre-built (0.71.7)
   - libevent (2.1.12)
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -275,8 +275,8 @@ PODS:
     - React
   - react-native-safari-view (1.0.0):
     - React
-  - react-native-safari-web-auth (1.0.4):
-    - React
+  - react-native-safari-web-auth (2.0.0):
+    - React-Core
   - react-native-safe-area-context (4.11.0):
     - React-Core
   - react-native-segmented-control (2.2.2):
@@ -374,7 +374,7 @@ PODS:
     - React-Core
   - RNCPushNotificationIOS (1.11.0):
     - React-Core
-  - RNDeviceInfo (13.0.0):
+  - RNDeviceInfo (13.1.0):
     - React-Core
   - RNGestureHandler (2.18.1):
     - RCT-Folly (= 2021.07.22.00)
@@ -568,7 +568,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 7714e6bc1e9ea23df6c4cb42f0b2fd9c6a3a559c
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
-  hermes-engine: 6351580c827b3b03e5f25aadcf989f582d0b0a86
+  hermes-engine: 4438d2b8bf8bebaba1b1ac0451160bab59e491f8
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: 5a4a30ac20c86eeadd6844a9328f78d4168cf9b2
@@ -588,7 +588,7 @@ SPEC CHECKSUMS:
   react-native-key-pair: d45fb2e417ffb0fca307e9bbe22111aa38c3233f
   react-native-root-view-background-color: e7ba21b82c8b7b2a1f902750f08c9dc1a5b38cea
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
-  react-native-safari-web-auth: b6642abaa8084a8e5addba1cba4521fd30b95b64
+  react-native-safari-web-auth: 73f4f00a0f1b6b1ad247e7e2b4ff7df5fe87a997
   react-native-safe-area-context: 851c62c48dce80ccaa5637b6aa5991a1bc36eca9
   react-native-segmented-control: 65df6cd0619b780b3843d574a72d4c7cec396097
   react-native-webview: 849250e66239f661c802a879c59e019da8a08736
@@ -608,7 +608,7 @@ SPEC CHECKSUMS:
   RNBackgroundFetch: b6cb89fa8ff0e1d8a245b19caca2944304b95fbf
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
-  RNDeviceInfo: 55264dd7cc939dad6e9c231a7621311f5277f1dc
+  RNDeviceInfo: e13b7d68878fba693c9fbb13ca4d56ad57d95917
   RNGestureHandler: 325d972e9402b427e819c950eae2b07d4c529802
   RNLocalize: a64514b46a01375fdfae9349036b4dc7130333b5
   RNReanimated: 391269e28d02c036cf9dce84802345426715730e
@@ -617,6 +617,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   Yoga: d56980c8914db0b51692f55533409e844b66133c
 
-PODFILE CHECKSUM: 6b385b845e3175e65f2060ab6f1252ee15ecf8f8
+PODFILE CHECKSUM: 2051591d60c7fcd37add8affa44d40810c3e999e
 
 COCOAPODS: 1.15.2

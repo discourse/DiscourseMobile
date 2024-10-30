@@ -26,7 +26,6 @@ import Screens from './screens';
 import Site from './site';
 import SiteManager from './site_manager';
 import SafariView from 'react-native-safari-view';
-import SafariWebAuth from 'react-native-safari-web-auth';
 import DeviceInfo from 'react-native-device-info';
 import firebaseMessaging from './platforms/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -239,12 +238,12 @@ class Discourse extends React.Component {
     }
   }
 
-  _handleOpenUrl(event) {
+  async _handleOpenUrl(event) {
     console.log('_handleOpenUrl', event);
 
     if (event.url.startsWith('discourse://')) {
-      let params = this.parseURLparameters(event.url);
-      let site = this._siteManager.activeSite;
+      const params = this._siteManager.parseURLparameters(event.url);
+      const site = this._siteManager.activeSite;
 
       if (Platform.OS === 'ios' && Settings.get('external_links_svc')) {
         SafariView.dismiss();
@@ -257,14 +256,14 @@ class Discourse extends React.Component {
 
       // received one-time-password request from SafariView
       if (params.otp && Platform.OS === 'ios') {
-        this._siteManager
-          .generateURLParams(site, 'full')
-          .then(generatedParams => {
-            SafariWebAuth.requestAuth(
-              `${site.url}/user-api-key/otp?${generatedParams}`,
-            );
-          });
-        this._navigation.navigate('Home');
+        try {
+          const url = await this._siteManager.generateAuthURL(site);
+          const authURL = await this._siteManager.requestAuth(url);
+
+          this.openUrl(authURL);
+        } catch (error) {
+          console.log('Error handling OTP: ', error);
+        }
       }
 
       // one-time-password received, launch site with it
@@ -441,19 +440,6 @@ class Discourse extends React.Component {
     clearTimeout(this.refreshTimerId);
   }
 
-  parseURLparameters(string) {
-    let parsed = {};
-    (string.split('?')[1] || string)
-      .split('&')
-      .map(item => {
-        return item.split('=');
-      })
-      .forEach(item => {
-        parsed[item[0]] = decodeURIComponent(item[1]);
-      });
-    return parsed;
-  }
-
   openUrl(url) {
     if (Platform.OS === 'ios') {
       this._navigation.navigate('WebView', {
@@ -561,8 +547,9 @@ class Discourse extends React.Component {
                     tabBarBackground: () => this._blurView(theme.name),
                   }}>
                   <Tab.Screen
-                    name={i18n.t('home')}
+                    name="Home"
                     options={{
+                      title: i18n.t('home'),
                       // eslint-disable-next-line react/no-unstable-nested-components
                       tabBarIcon: ({color}) => (
                         <FontAwesome5
@@ -578,8 +565,9 @@ class Discourse extends React.Component {
                     )}
                   </Tab.Screen>
                   <Tab.Screen
-                    name={i18n.t('discover')}
+                    name="Discover"
                     options={{
+                      title: i18n.t('discover'),
                       // eslint-disable-next-line react/no-unstable-nested-components
                       tabBarIcon: ({color}) => (
                         <FontAwesome5
@@ -598,8 +586,9 @@ class Discourse extends React.Component {
                     )}
                   </Tab.Screen>
                   <Tab.Screen
-                    name={i18n.t('notifications')}
+                    name={'Notifications'}
                     options={{
+                      title: i18n.t('notifications'),
                       // eslint-disable-next-line react/no-unstable-nested-components
                       tabBarIcon: ({color}) => (
                         <FontAwesome5
@@ -621,8 +610,9 @@ class Discourse extends React.Component {
               )}
             </Stack.Screen>
             <Stack.Screen
-              name={i18n.t('settings')}
+              name={'Settings'}
               options={{
+                title: i18n.t('settings'),
                 headerShown: true,
                 headerStyle: {
                   backgroundColor: theme.background,
@@ -630,11 +620,37 @@ class Discourse extends React.Component {
                 headerTitleStyle: {
                   color: theme.grayTitle,
                 },
+                headerTintColor: theme.grayUI,
                 headerMode: 'screen',
                 headerBackTitle: i18n.t('back'),
+                headerShadowVisible: false,
               }}>
               {props => (
                 <Screens.Settings {...props} screenProps={{...screenProps}} />
+              )}
+            </Stack.Screen>
+            <Stack.Screen
+              name={'AddSite'}
+              options={{
+                title: i18n.t('add_single_site'),
+                headerShown: true,
+                headerStyle: {
+                  backgroundColor: theme.background,
+                },
+                headerTintColor: theme.grayUI,
+                headerTitleStyle: {
+                  color: theme.grayTitle,
+                },
+                headerMode: 'screen',
+                headerBackTitle: i18n.t('back'),
+                headerShadowVisible: false,
+              }}>
+              {props => (
+                <Screens.AddSite
+                  {...props}
+                  screenProps={{...screenProps}}
+                  singleSiteAdd={true}
+                />
               )}
             </Stack.Screen>
             <Stack.Screen name="WebView">

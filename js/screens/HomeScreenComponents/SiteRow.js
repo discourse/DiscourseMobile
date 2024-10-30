@@ -255,6 +255,7 @@ export default function SiteRow(props) {
             </TouchableHighlight>
           )}
           <TouchableHighlight
+            testID="site-row-delete"
             style={{
               ...styles.hiddenButton,
               backgroundColor: theme.redDanger,

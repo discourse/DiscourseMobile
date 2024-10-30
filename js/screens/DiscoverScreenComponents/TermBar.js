@@ -23,7 +23,7 @@ const TermBar = props => {
 
   const isTablet = DeviceInfo.isTablet();
 
-  const infoIcon = (
+  const infoIcon = props.addSiteScreenParent ? null : (
     <TouchableHighlight
       style={styles.question}
       underlayColor={theme.background}
@@ -43,7 +43,7 @@ const TermBar = props => {
         props.handleChangeText('');
         Keyboard.dismiss();
       }}>
-      <Text style={{color: theme.blueUnread}}>{i18n.t('cancel')}</Text>
+      <Text style={{color: theme.blueUnread}}>{i18n.t('clear')}</Text>
     </TouchableHighlight>
   );
 
@@ -78,7 +78,12 @@ const TermBar = props => {
             autoCapitalize="none"
             autoCorrect={false}
             autoComplete={'off'}
-            placeholder={i18n.t('term_placeholder')}
+            autoFocus={props.addSiteScreenParent}
+            placeholder={
+              props.addSiteScreenParent
+                ? i18n.t('term_placeholder_single_site')
+                : i18n.t('term_placeholder')
+            }
             placeholderTextColor={theme.graySubtitle}
             style={[
               styles.term,
@@ -87,6 +92,7 @@ const TermBar = props => {
             onChangeText={newText => props.handleChangeText(newText)}
             underlineColorAndroid={'transparent'}
             value={props.text}
+            testID="search-add-input"
           />
         </View>
         {props.text ? searchCancel : infoIcon}
