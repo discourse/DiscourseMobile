@@ -26,5 +26,7 @@
   "discover_reset": "Amosar todas",
   "discover_all": "todo",
   "discover_recent": "recentes",
-  "cancel": "Cancelar"
+  "ok": "De acordo",
+  "cancel": "Cancelar",
+  "clear": "Borrar"
 }

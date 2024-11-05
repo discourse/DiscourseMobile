@@ -28,5 +28,7 @@
   "discover_reset": "Pokaži vse",
   "discover_all": "vse",
   "discover_recent": "nedavno",
-  "cancel": "Prekliči"
+  "ok": "V redu",
+  "cancel": "Prekliči",
+  "clear": "Počisti"
 }

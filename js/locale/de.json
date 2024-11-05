@@ -75,6 +75,8 @@
   "discover_international": "international",
   "discover_recent": "aktuell",
   "active_counts": "%{active_users} aktive Nutzer",
+  "ok": "OK",
   "cancel": "Abbrechen",
+  "clear": "Löschen",
   "no_connected_sites": "Du hast keine verbundenen Websites auf deinem Startbildschirm. Sobald du eine oder mehrere Websites verbunden hast, siehst du hier deren Benachrichtigungen."
 }

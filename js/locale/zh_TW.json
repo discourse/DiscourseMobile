@@ -49,5 +49,7 @@
   "discover_reset": "顯示全部",
   "discover_all": "所有",
   "discover_recent": "最近",
-  "cancel": "取消"
+  "ok": "確定",
+  "cancel": "取消",
+  "clear": "清除"
 }

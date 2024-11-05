@@ -25,5 +25,7 @@
   "discover_reset": "Mostrar tudo",
   "discover_all": "todos",
   "discover_recent": "recente",
-  "cancel": "Cancelar"
+  "ok": "CONFIRMAR",
+  "cancel": "Cancelar",
+  "clear": "Remover"
 }

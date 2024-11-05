@@ -24,5 +24,7 @@
   "discover_reset": "Zobraziť všetko",
   "discover_all": "všetko",
   "discover_recent": "nedávne",
-  "cancel": "Zrušiť"
+  "ok": "OK",
+  "cancel": "Zrušiť",
+  "clear": "Vyčistiť"
 }

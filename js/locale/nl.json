@@ -75,6 +75,8 @@
   "discover_international": "internationaal",
   "discover_recent": "recent",
   "active_counts": "%{active_users} actieve gebruikers",
+  "ok": "OK",
   "cancel": "Annuleren",
+  "clear": "Wissen",
   "no_connected_sites": "Je hebt geen verbonden sites op je startscherm. Wanneer je verbinding hebt gemaakt met een of meer sites, worden meldingen ervan hier weergegeven."
 }

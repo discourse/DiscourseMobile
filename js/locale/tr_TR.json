@@ -75,6 +75,8 @@
   "discover_international": "uluslararası",
   "discover_recent": "yakın zaman",
   "active_counts": "%{active_users} aktif kullanıcı",
+  "ok": "Tamam",
   "cancel": "İptal et",
+  "clear": "Temizle",
   "no_connected_sites": "Ana Sayfa ekranınızda bağlı siteniz yok. Bir veya daha fazla siteyi bağladığınızda bildirimlerini burada görürsünüz."
 }

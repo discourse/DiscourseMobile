@@ -71,6 +71,8 @@
   "discover_international": "国际",
   "discover_recent": "最近",
   "active_counts": "%{active_users} 个活跃用户",
+  "ok": "确定",
   "cancel": "取消",
+  "clear": "清除",
   "no_connected_sites": "您的主屏幕上尚未关联任何网站。一旦您关联一个或多个网站，您就会在此处看到它们的通知。"
 }

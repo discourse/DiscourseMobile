@@ -75,6 +75,8 @@
   "discover_international": "internacional",
   "discover_recent": "recente",
   "active_counts": "%{active_users} usuários(as) ativos(as)",
+  "ok": "Ok",
   "cancel": "Cancelar",
+  "clear": "Limpar",
   "no_connected_sites": "Você não tem nenhum site conectado na sua página inicial. Ao conectar pelo menos um site, as notificações dele serão exibidas aqui."
 }

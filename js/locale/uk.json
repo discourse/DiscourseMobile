@@ -31,5 +31,7 @@
   "discover_reset": "Показати всі",
   "discover_all": "усі",
   "discover_recent": "останні",
-  "cancel": "Скасувати"
+  "ok": "Гаразд",
+  "cancel": "Скасувати",
+  "clear": "Очистити"
 }

@@ -75,6 +75,8 @@
   "discover_international": "internazionale",
   "discover_recent": "recenti",
   "active_counts": "%{active_users} utenti attivi",
+  "ok": "OK",
   "cancel": "Annulla",
+  "clear": "Pulisci",
   "no_connected_sites": "Non sono presenti siti collegati nella schermata Home. Una volta effettuata la connessione a uno o più siti, vedrai le relative notifiche qui."
 }

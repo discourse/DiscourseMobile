@@ -27,5 +27,7 @@
   "discover_reset": "Εμφάνιση όλων",
   "discover_all": "όλα",
   "discover_recent": "πρόσφατα",
-  "cancel": "Ακύρωση"
+  "ok": "OK",
+  "cancel": "Ακύρωση",
+  "clear": "Καθάρισμα φίλτρου"
 }
