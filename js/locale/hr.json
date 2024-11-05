@@ -29,5 +29,7 @@
   "back": "Natrag",
   "discover_reset": "Prikaži sve",
   "discover_all": "sve",
-  "cancel": "Odustani"
+  "ok": "U redu",
+  "cancel": "Odustani",
+  "clear": "Izbriši"
 }

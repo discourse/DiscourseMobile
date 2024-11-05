@@ -47,5 +47,7 @@
   "discover_reset": "Visa alla",
   "discover_all": "alla",
   "discover_recent": "senaste",
-  "cancel": "Avbryt"
+  "ok": "OK",
+  "cancel": "Avbryt",
+  "clear": "Rensa"
 }

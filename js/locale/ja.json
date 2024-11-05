@@ -71,6 +71,8 @@
   "discover_international": "海外",
   "discover_recent": "最近",
   "active_counts": "%{active_users} アクティブユーザー",
+  "ok": "OK",
   "cancel": "キャンセル",
+  "clear": "クリア",
   "no_connected_sites": "ホーム画面には接続されたサイトがありません。1 つ以上のサイトを接続すると、ここにその通知が表示されるようになります。"
 }

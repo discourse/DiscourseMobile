@@ -54,5 +54,7 @@
   "discover_reset": "Mutasd mindet",
   "discover_all": "Összes",
   "discover_recent": "friss",
-  "cancel": "Mégse"
+  "ok": "Rendben",
+  "cancel": "Mégse",
+  "clear": "Törlés"
 }

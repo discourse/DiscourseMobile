@@ -62,6 +62,7 @@
   "term_exists": "%{term} כבר קיים",
   "unread_with_count": "לא נקראו (%{count})",
   "term_placeholder": "חיפוש או מילוי כתובת קהילה",
+  "term_placeholder_single_site": "נא למלא את כתובת הקהילה",
   "please_wait": "נא להמתין…",
   "settings": "הגדרות",
   "discover": "חשיפה",
@@ -83,6 +84,15 @@
   "discover_international": "בינלאומי",
   "discover_recent": "לאחרונה",
   "active_counts": "%{active_users} משתמשים פעילים",
+  "ok": "אישור",
   "cancel": "ביטול",
+  "clear": "ניקוי",
+  "add_single_site": "הוספת קהילה",
+  "add_to_home_screen": "הוספה למסך הבית",
+  "added_to_home_screen": "האתר כבר נוסף למסך הבית שלך",
+  "add_site_home_screen": "להוסיף למסך הבית?",
+  "add_site_home_screen_description": "יש תמיכה בכניסה רק לאחר הוספת הקהילה למסך הבית. אפשר להוסיף אותה כעת כדי להקל על הגישה, לקבל התראות ועוד.",
+  "single_site_no_results": "לא נמצא אתר בשם התחום הזה. נא לבדוק שהכתובת תקינה ולנסות שוב.",
+  "single_site_blank_screen": "אפשר להוסיף קהילות Discourse ליישומון הזה על ידי הוספת הכתובת שלהן בתיבת הקלט שלהלן. שם התחום מספיק, לא צריך להוסיף „http://‎” או „https://‎”.",
   "no_connected_sites": "אין אתרים מחוברים באתר הבית שלך. לאחר התחברות לאתר אחד או יותר, ההתראות שלהם יופיעו כאן."
 }

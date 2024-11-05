@@ -91,6 +91,8 @@
   "discover_international": "دولي",
   "discover_recent": "الحديثة",
   "active_counts": "%{active_users} من المستخدمين النشطين",
+  "ok": "حسنًا",
   "cancel": "إلغاء",
+  "clear": "مسح",
   "no_connected_sites": "ليس لديك أي مواقع متصلة على الشاشة الرئيسية. بمجرد ربط موقع واحد أو أكثر، سترى إشعاراتها هنا."
 }

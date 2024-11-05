@@ -28,5 +28,7 @@
   "settings": "Pengaturan",
   "home": "Beranda",
   "discover_all": "Semua",
-  "cancel": "Batal"
+  "ok": "OK",
+  "cancel": "Batal",
+  "clear": "Bersihkan"
 }

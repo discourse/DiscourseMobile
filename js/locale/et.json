@@ -16,5 +16,7 @@
   "discover_reset": "Näita kõiki",
   "discover_all": "kõik",
   "discover_recent": "viimased",
-  "cancel": "Tühista"
+  "ok": "OK",
+  "cancel": "Tühista",
+  "clear": "Tühjenda"
 }

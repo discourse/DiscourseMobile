@@ -30,5 +30,7 @@
   "discover_reset": "Rodyti viską",
   "discover_all": "visi",
   "discover_recent": "naujausios",
-  "cancel": "Atšaukti"
+  "ok": "OK",
+  "cancel": "Atšaukti",
+  "clear": "Išvalyti"
 }

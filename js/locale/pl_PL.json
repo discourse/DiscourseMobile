@@ -60,5 +60,7 @@
   "discover_reset": "Pokaż wszystkie",
   "discover_all": "wszystkie",
   "discover_recent": "ostatnie",
-  "cancel": "Anuluj"
+  "ok": "OK",
+  "cancel": "Anuluj",
+  "clear": "Wyczyść"
 }

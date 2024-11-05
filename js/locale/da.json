@@ -27,5 +27,7 @@
   "discover_reset": "Vis alle",
   "discover_all": "alle",
   "discover_recent": "nye",
-  "cancel": "Annuller"
+  "ok": "OK",
+  "cancel": "Annuller",
+  "clear": "Ryd"
 }

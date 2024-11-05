@@ -75,6 +75,8 @@
   "discover_international": "kansainvälinen",
   "discover_recent": "viimeisimmät",
   "active_counts": "%{active_users} aktiivista käyttäjää",
+  "ok": "OK",
   "cancel": "Peruuta",
+  "clear": "Tyhjennä",
   "no_connected_sites": "Aloitusnäytölläsi ei ole yhdistettyjä sivustoja. Kun yhdistät yhden tai useamman sivuston, näet niiden ilmoitukset täällä."
 }

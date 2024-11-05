@@ -54,5 +54,7 @@
   "discover_reset": "모두 보기",
   "discover_all": "모두",
   "discover_recent": "최근",
-  "cancel": "취소"
+  "ok": "확인",
+  "cancel": "취소",
+  "clear": "지우기"
 }
