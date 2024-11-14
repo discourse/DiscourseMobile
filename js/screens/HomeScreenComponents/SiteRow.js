@@ -8,6 +8,8 @@ import Notification from './Notification';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ThemeContext} from '../../ThemeContext';
 import i18n from 'i18n-js';
+import DeviceInfo from 'react-native-device-info';
+import TopicList from './TopicList';
 
 const SWIPE_BUTTON_WIDTH = 70;
 
@@ -148,6 +150,8 @@ export default function SiteRow(props) {
     swipeRowRef.current && swipeRowRef.current.closeRow();
     props.onClick(url);
   };
+
+  const isTablet = DeviceInfo.isTablet();
 
   const chatEnabled = props.site.hasChatEnabled;
   const now = new Date().getTime();
@@ -304,6 +308,11 @@ export default function SiteRow(props) {
               </View>
               {_renderShortcuts()}
             </View>
+            {isTablet && (
+              <View style={{...styles.hotBox}}>
+                <TopicList />
+              </View>
+            )}
           </View>
         </TouchableHighlight>
       </View>
@@ -349,7 +358,7 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     paddingLeft: 8,
   },
   titleAndBadges: {
@@ -357,6 +366,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
+    flexBasis: 'auto',
+    flexGrow: 0,
   },
   titleParent: {
     // needed for ellipsizeMode to work on title child element
@@ -413,5 +424,13 @@ const styles = StyleSheet.create({
   countItem: {
     paddingVertical: 3,
     paddingHorizontal: 6,
+  },
+  hotBox: {
+    width: '65%',
+    height: '100%',
+    borderLeftWidth: 2,
+    borderColor: '#EEEEEE',
+    marginBottom: 6,
+    marginLeft: 16,
   },
 });
