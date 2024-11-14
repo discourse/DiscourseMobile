@@ -85,6 +85,6 @@
   "add_site_home_screen": "Add to Home screen?",
   "add_site_home_screen_description": "Login is only supported after adding this community to the Home screen. Add it now for easier access, notifications and more.",
   "single_site_no_results": "No site found with that domain. Please check the URL and try again.",
-  "single_site_blank_screen": "Add Discourse communities to this app by typing their URL in the input above. Just the domain is sufficient, no need to include \"http://\" or \"https://\".",
+  "single_site_blank_screen": "Add Discourse communities to this app by typing their URL in the input above.",
   "no_connected_sites": "You have no connected sites on your Home screen. Once you connect one or more sites, you will see their notifications here."
 }

@@ -475,7 +475,7 @@ class SiteManager {
       const authRequest = await SafariWebAuth.requestAuth(
         url,
         this.customScheme,
-        true,
+        false,
         // third parameter sets prefersEphemeralWebBrowserSession in ASWebAuthenticationSession,
         // when true, it skips iOS dialog prompt but uses incognito mode (i.e. user always has to log in)
       );
