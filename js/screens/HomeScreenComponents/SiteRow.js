@@ -302,12 +302,6 @@ export default function SiteRow(props) {
                 {_renderNotifications()}
                 {hasFullConnectButton && _renderConnect()}
               </View>
-              <Text
-                ellipsizeMode="tail"
-                numberOfLines={3}
-                style={{...styles.description, color: theme.graySubtitle}}>
-                {props.site.description}
-              </Text>
               {_renderShortcuts()}
             </View>
           </View>
