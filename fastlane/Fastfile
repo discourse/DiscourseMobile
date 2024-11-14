@@ -2,7 +2,7 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "2.0.6"
+IOS_APP_VERSION = "2.0.7"
 ANDROID_APP_VERSION = "2.0.5" # run `fastlane bootstrap` after editing this
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
