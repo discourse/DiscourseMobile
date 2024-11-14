@@ -310,7 +310,10 @@ export default function SiteRow(props) {
             </View>
             {isTablet && (
               <View style={{...styles.hotBox}}>
-                <TopicList />
+                <TopicList
+                  site={props.site}
+                  onClickTopic={url => _click(url)}
+                />
               </View>
             )}
           </View>

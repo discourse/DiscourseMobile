@@ -39,6 +39,7 @@ class HomeScreen extends React.Component {
   }
 
   async visitSite(site, connect = false, endpoint = '') {
+    console.log(endpoint);
     this._siteManager.setActiveSite(site);
     this.donateShortcut(site);
 
@@ -160,6 +161,7 @@ class HomeScreen extends React.Component {
     return (
       <Components.SiteRow
         site={item}
+        siteManager={this._siteManager}
         onSwipe={scrollEnabled => this.setState({scrollEnabled: scrollEnabled})}
         onClick={(endpoint = '') => this.visitSite(item, false, endpoint)}
         onClickConnect={() => this.visitSite(item, true)}
