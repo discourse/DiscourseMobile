@@ -174,6 +174,7 @@ class WebViewComponent extends React.Component {
         )}
         {this.state.layoutCalculated && (
           <WebView
+            originWhitelist={['http://*', 'https://*', 'about:srcdoc']}
             style={{
               marginTop: -1, // hacky fix to a 1px overflow just above header
               backgroundColor: this.state.headerBg,
