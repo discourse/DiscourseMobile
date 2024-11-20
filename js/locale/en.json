@@ -60,7 +60,7 @@
   "discover": "Discover",
   "home": "Home",
   "back": "Back",
-  "site_added": "🎉 Site added!",
+  "site_added": "🎉 Site added to the Home screen!",
   "enable_notifications": "Tap here to enable notifications",
   "browser_toggle_label": "Open sites with in-app browser",
   "browser_toggle_description": "When this setting is disabled, sites will be launched via your browser of choice, including PWAs",
@@ -86,5 +86,8 @@
   "add_site_home_screen_description": "Login is only supported after adding this community to the Home screen. Add it now for easier access, notifications and more.",
   "single_site_no_results": "No site found with that domain. Please check the URL and try again.",
   "single_site_blank_screen": "Add Discourse communities to this app by typing their URL in the input above.",
-  "no_connected_sites": "You have no connected sites on your Home screen. Once you connect one or more sites, you will see their notifications here."
+  "no_connected_sites": "You have no connected sites on your Home screen. Once you connect one or more sites, you will see their notifications here.",
+  "show_hot_topics": "Show hot topics",
+  "hide_hot_topics": "Collapse hot topics",
+  "find_new_communities": "Find new communities to join"
 }

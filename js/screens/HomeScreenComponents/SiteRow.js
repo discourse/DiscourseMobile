@@ -15,6 +15,7 @@ const SWIPE_BUTTON_WIDTH = 70;
 
 export default function SiteRow(props) {
   const theme = useContext(ThemeContext);
+  const isTablet = DeviceInfo.isTablet();
   const iconUrl = props.site.icon;
   const milliseconds = (h, m, s) => (h * 60 * 60 + m * 60 + s) * 1000;
   // only remember last visited for 1 day
@@ -71,14 +72,21 @@ export default function SiteRow(props) {
           }}>
           <FontAwesome5
             name={'user'}
-            size={14}
+            size={15}
             color={theme.buttonTextColor}
-            style={{paddingRight: 6}}
+            style={{padding: 3}}
             solid
           />
-          <Text style={{color: theme.buttonTextColor}}>
-            {i18n.t('connect')}
-          </Text>
+          {isTablet && (
+            <Text
+              style={{
+                color: theme.buttonTextColor,
+                paddingHorizontal: 3,
+                fontSize: 16,
+              }}>
+              {i18n.t('connect')}
+            </Text>
+          )}
         </View>
       </TouchableHighlight>
     );
@@ -151,8 +159,6 @@ export default function SiteRow(props) {
     props.onClick(url);
   };
 
-  const isTablet = DeviceInfo.isTablet();
-
   const chatEnabled = props.site.hasChatEnabled;
   const now = new Date().getTime();
 
@@ -181,6 +187,9 @@ export default function SiteRow(props) {
   const rightOpenValue = !alreadyAuthed
     ? -SWIPE_BUTTON_WIDTH * 2
     : -SWIPE_BUTTON_WIDTH;
+
+  const showTopicList =
+    isTablet && !props.site.loginRequired && props.showTopicList;
 
   return (
     <SwipeRow
@@ -304,12 +313,12 @@ export default function SiteRow(props) {
                   </Text>
                 </View>
                 {_renderNotifications()}
-                {hasFullConnectButton && _renderConnect()}
+                {hasFullConnectButton && !showTopicList && _renderConnect()}
               </View>
               {_renderShortcuts()}
             </View>
-            {isTablet && (
-              <View style={{...styles.hotBox}}>
+            {showTopicList && (
+              <View style={{...styles.hotBox, borderColor: theme.grayBorder}}>
                 <TopicList
                   site={props.site}
                   onClickTopic={url => _click(url)}
@@ -328,6 +337,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     padding: 12,
+    paddingVertical: 16,
   },
   hiddenRow: {
     height: '100%',
@@ -429,11 +439,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
   },
   hotBox: {
-    width: '65%',
+    width: '68%',
     height: '100%',
-    borderLeftWidth: 2,
-    borderColor: '#EEEEEE',
-    marginBottom: 6,
-    marginLeft: 16,
+    borderLeftWidth: 1,
+    marginBottom: 20,
+    marginLeft: 30,
   },
 });

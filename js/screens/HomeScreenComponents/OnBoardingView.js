@@ -2,12 +2,14 @@
 'use strict';
 
 import React, {useContext} from 'react';
-import PropTypes from 'prop-types';
 import i18n from 'i18n-js';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
+import Popover, {PopoverMode} from 'react-native-popover-view';
 
-const OnBoardingView = props => {
+const OnBoardingView = _props => {
+  const dimensions = Dimensions.get('window');
+  const bottomPosition = dimensions.scale < 3 ? 150 : 190;
   const theme = useContext(ThemeContext);
   const img =
     theme.name === 'light'
@@ -16,6 +18,21 @@ const OnBoardingView = props => {
 
   return (
     <View style={{backgroundColor: theme.grayBackground, ...styles.container}}>
+      <Popover
+        from={{
+          x: dimensions.width / 2,
+          y: dimensions.height - bottomPosition,
+        }}
+        mode={PopoverMode.TOOLTIP}
+        isVisible={true}
+        popoverStyle={{
+          ...styles.popoverDiscover,
+          backgroundColor: theme.blueCallToAction,
+        }}>
+        <Text style={{color: theme.buttonTextColor}}>
+          {i18n.t('find_new_communities')}
+        </Text>
+      </Popover>
       <View style={styles.illustrationContainer}>
         <Image
           style={{width: '100%', height: '100%'}}
@@ -32,24 +49,9 @@ const OnBoardingView = props => {
             {i18n.t('add_sites')}
           </Text>
         </View>
-
-        <TouchableOpacity onPress={() => props.onDidPressAddSite()}>
-          <Text
-            style={{
-              ...styles.addSiteButtonText,
-              backgroundColor: theme.blueCallToAction,
-              color: theme.buttonTextColor,
-            }}>
-            {i18n.t('add_first_site')}
-          </Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
-};
-
-OnBoardingView.propTypes = {
-  onDidPressAddSite: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   illustrationContainer: {
-    marginTop: 100,
+    marginTop: 120,
     height: '35%',
     width: '100%',
   },
@@ -85,6 +87,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     padding: 12,
     textAlign: 'center',
+  },
+  popoverDiscover: {
+    padding: 10,
   },
 });
 
