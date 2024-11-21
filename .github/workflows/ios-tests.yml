@@ -63,8 +63,11 @@ jobs:
       - name: Detox build
         run: yarn detox build --configuration ios.sim.release
 
-      - name: Detox test
+      - name: Detox iPhone tests
         run: yarn detox test --configuration ios.sim.release --cleanup --headless --record-logs all
+
+      - name: Detox iPad tests
+        run: yarn detox test --configuration ios.sim.release --cleanup --headless --record-logs all -n 'iPad (10th generation)'
 
       - name: Upload artifacts
         if: failure()
