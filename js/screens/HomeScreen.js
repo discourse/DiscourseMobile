@@ -181,6 +181,7 @@ class HomeScreen extends React.Component {
             opacity: this.state.fadeIn,
           }}>
           <TouchableHighlight
+            testID="topic-list-toggle"
             style={{
               ...styles.topicListToggle,
               backgroundColor: theme.background,

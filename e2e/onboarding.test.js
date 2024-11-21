@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+import {by, device, element, expect} from 'detox';
 import i18n from 'i18n-js';
 
 describe.each([['en'], ['fr']])(`Onboarding (locale: %s)`, locale => {

@@ -318,7 +318,9 @@ export default function SiteRow(props) {
               {_renderShortcuts()}
             </View>
             {showTopicList && (
-              <View style={{...styles.hotBox, borderColor: theme.grayBorder}}>
+              <View
+                testID="topic-list"
+                style={{...styles.hotBox, borderColor: theme.grayBorder}}>
                 <TopicList
                   site={props.site}
                   onClickTopic={url => _click(url)}
