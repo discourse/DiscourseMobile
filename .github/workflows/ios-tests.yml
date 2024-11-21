@@ -36,17 +36,16 @@ jobs:
           bundler-cache: true
 
       - name: Install CocoaPods
-        if: steps.cache-cocoapods.outputs.cache-hit != 'true'
         run: cd ios ; pod install ; cd -
 
       - name: Detox build
         run: yarn detox build --configuration ios.sim.release
 
       - name: Detox iPhone tests
-        run: yarn detox test --configuration ios.sim.release --cleanup --headless --record-logs all
+        run: yarn detox test --configuration ios.sim.release --cleanup --record-logs all
 
       - name: Detox iPad tests
-        run: yarn detox test --configuration ios.sim.release --cleanup --headless --record-logs all -n 'iPad (10th generation)'
+        run: yarn detox test --configuration ios.sim.release --cleanup --record-logs all -n 'iPad (10th generation)'
 
       - name: Upload artifacts
         if: failure()
