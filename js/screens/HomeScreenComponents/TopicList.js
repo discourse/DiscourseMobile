@@ -57,7 +57,10 @@ const TopicList = props => {
   function _renderItems() {
     return (
       <View style={styles.itemsContainer}>
-        <FlatList data={topics} renderItem={({item}) => _renderTopic(item)} />
+        <FlatList
+          data={topics}
+          renderItem={({item, index}) => _renderTopic(item, index)}
+        />
       </View>
     );
   }
@@ -117,12 +120,14 @@ const TopicList = props => {
     );
   }
 
-  function _renderTopic(item) {
+  function _renderTopic(item, index) {
+    const styleKey = index === numberOfTopics - 1 ? 'topicRowLast' : 'topicRow';
     return (
       <TouchableHighlight
         onPress={() => _openTopic(item)}
         underlayColor={theme.grayBackground}>
-        <View style={{...styles.topicRow, borderBottomColor: theme.grayBorder}}>
+        <View
+          style={{...styles[styleKey], borderBottomColor: theme.grayBorder}}>
           <View>
             <Text style={{...styles.topicTitle, color: theme.grayTitle}}>
               {item.unicode_title || item.title}
@@ -235,6 +240,11 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     paddingBottom: 15,
     marginBottom: 15,
+    paddingRight: 20,
+    marginLeft: 30,
+  },
+  topicRowLast: {
+    paddingTop: 0,
     paddingRight: 20,
     marginLeft: 30,
   },
