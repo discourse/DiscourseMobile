@@ -343,7 +343,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     paddingHorizontal: 12,
-    paddingVertical: 4,
   },
   siteRowWrapper: {
     flex: 1,
@@ -381,7 +380,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     height: 40,
     width: 40,
-    marginTop: 3,
+    marginTop: 2,
     borderRadius: 10,
     marginHorizontal: 4,
   },
