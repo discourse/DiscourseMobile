@@ -2,20 +2,27 @@
 'use strict';
 
 import React, {useContext, useRef} from 'react';
-import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import {SwipeRow} from 'react-native-swipe-list-view';
 import Notification from './Notification';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ThemeContext} from '../../ThemeContext';
 import i18n from 'i18n-js';
-import DeviceInfo from 'react-native-device-info';
 import TopicList from './TopicList';
 
 const SWIPE_BUTTON_WIDTH = 70;
 
 export default function SiteRow(props) {
   const theme = useContext(ThemeContext);
-  const isTablet = DeviceInfo.isTablet();
+
+  const largeLayout = Dimensions.get('window').width > 600;
   const iconUrl = props.site.icon;
   const milliseconds = (h, m, s) => (h * 60 * 60 + m * 60 + s) * 1000;
   // only remember last visited for 1 day
@@ -77,7 +84,7 @@ export default function SiteRow(props) {
             style={{padding: 3}}
             solid
           />
-          {isTablet && (
+          {largeLayout && (
             <Text
               style={{
                 color: theme.buttonTextColor,
@@ -189,7 +196,7 @@ export default function SiteRow(props) {
     : -SWIPE_BUTTON_WIDTH;
 
   const showTopicList =
-    isTablet && !props.site.loginRequired && props.showTopicList;
+    largeLayout && !props.site.loginRequired && props.showTopicList;
 
   return (
     <SwipeRow

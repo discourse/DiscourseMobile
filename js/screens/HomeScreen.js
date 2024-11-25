@@ -5,6 +5,7 @@ import React from 'react';
 import {
   ActivityIndicator,
   Animated,
+  Dimensions,
   Platform,
   RefreshControl,
   StyleSheet,
@@ -27,6 +28,8 @@ class HomeScreen extends React.Component {
 
     this._siteManager = this.props.screenProps.siteManager;
 
+    this.largeLayout = Dimensions.get('window').width > 600;
+    console.log(Dimensions.get('window').width);
     this.state = {
       data: [],
       isRefreshing: false,
@@ -172,8 +175,8 @@ class HomeScreen extends React.Component {
 
   _renderTopicListToggle() {
     const theme = this.context;
-    const isTablet = DeviceInfo.isTablet();
-    if (isTablet && this._siteManager.sites.length > 1) {
+
+    if (this.largeLayout && this._siteManager.sites.length > 1) {
       return (
         <Animated.View
           style={{

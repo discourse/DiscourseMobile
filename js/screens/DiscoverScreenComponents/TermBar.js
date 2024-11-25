@@ -4,6 +4,7 @@
 import React, {useContext} from 'react';
 
 import {
+  Dimensions,
   Linking,
   Keyboard,
   StyleSheet,
@@ -15,13 +16,12 @@ import {
 import i18n from 'i18n-js';
 import {ThemeContext} from '../../ThemeContext';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import DeviceInfo from 'react-native-device-info';
 
 const TermBar = props => {
   const theme = useContext(ThemeContext);
   const discoverHelpUrl = 'https://discover.discourse.org/?faq';
 
-  const isTablet = DeviceInfo.isTablet();
+  const largeLayout = Dimensions.get('window').width > 600;
 
   const infoIcon = props.addSiteScreenParent ? null : (
     <TouchableHighlight
@@ -51,8 +51,8 @@ const TermBar = props => {
     <View
       style={{
         ...styles.container,
-        paddingTop: isTablet ? 20 : 6,
-        paddingBottom: isTablet ? 10 : 0,
+        paddingTop: largeLayout ? 20 : 6,
+        paddingBottom: largeLayout ? 10 : 0,
       }}>
       <View style={styles.leftContainer}>
         <View
@@ -87,7 +87,7 @@ const TermBar = props => {
             placeholderTextColor={theme.graySubtitle}
             style={[
               styles.term,
-              {color: theme.grayTitle, fontSize: isTablet ? 18 : 16},
+              {color: theme.grayTitle, fontSize: largeLayout ? 18 : 16},
             ]}
             onChangeText={newText => props.handleChangeText(newText)}
             underlineColorAndroid={'transparent'}
