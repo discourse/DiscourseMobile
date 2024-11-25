@@ -184,7 +184,7 @@ export default function SiteRow(props) {
     props.site.createdAt &&
     props.site.createdAt > now - createdAtThreshold;
 
-  const rightOpenValue = !alreadyAuthed
+  const rightOpenValue = !hasPrimaryConnectButton
     ? -SWIPE_BUTTON_WIDTH * 2
     : -SWIPE_BUTTON_WIDTH;
 

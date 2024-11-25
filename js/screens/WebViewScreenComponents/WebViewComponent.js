@@ -34,6 +34,8 @@ export const withInsets = Component => {
   };
 };
 
+const MAX_RELOAD_ATTEMPTS = 1;
+
 class WebViewComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -59,6 +61,7 @@ class WebViewComponent extends React.Component {
 
     this.state = {
       progress: 0,
+      webviewReloadAttempts: 0,
       scrollDirection: '',
       headerBg: 'transparent',
       headerBgAnim: new Animated.Value(0),
@@ -187,6 +190,7 @@ class WebViewComponent extends React.Component {
             allowsFullscreenVideo={true}
             allowsLinkPreview={true}
             hideKeyboardAccessoryView={true}
+            keyboardDisplayRequiresUserAction={false}
             webviewDebuggingEnabled={true}
             onLoadEnd={() => {
               this.webview.requestFocus();
@@ -274,12 +278,24 @@ class WebViewComponent extends React.Component {
             }}
             onMessage={event => this._onMessage(event)}
             onContentProcessDidTerminate={event => {
-              console.log('onContentProcessDidTerminate', event);
+              console.log('onContentProcessDidTerminate', event.nativeEvent);
               // reload the last URL when there is a crash
-              // emulates what Safari does on similar errors
-              this.props.navigation.navigate('WebView', {
-                url: event.nativeEvent.url,
+              // respect the MAX_RELOAD_ATTEMPTS limit
+              // otherwise, we could end up in a blank screen
+              this.setState({
+                webviewReloadAttempts: this.state.webviewReloadAttempts + 1,
               });
+
+              if (
+                this.state.webviewReloadAttempts < MAX_RELOAD_ATTEMPTS &&
+                event.nativeEvent.url
+              ) {
+                this.props.navigation.navigate('WebView', {
+                  url: event.nativeEvent.url,
+                });
+              } else {
+                this._onClose();
+              }
             }}
           />
         )}
