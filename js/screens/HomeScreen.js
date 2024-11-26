@@ -20,7 +20,6 @@ import {donateShortcut} from 'react-native-siri-shortcut';
 import {BottomTabBarHeightContext} from '@react-navigation/bottom-tabs';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import DragList from 'react-native-draglist';
-import DeviceInfo from 'react-native-device-info';
 
 class HomeScreen extends React.Component {
   constructor(props) {
