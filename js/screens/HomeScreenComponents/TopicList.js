@@ -208,8 +208,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   placeholder: {
-    minHeight: 480,
-    padding: 12,
+    marginLeft: 30,
+    minHeight: 560,
+    paddingVertical: 12,
     flex: 1,
   },
   placeholderHeading: {

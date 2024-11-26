@@ -353,14 +353,15 @@ const styles = StyleSheet.create({
   },
   siteRowWrapper: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: 'column',
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingVertical: 16,
   },
   touchableWrapper: {
     flex: 1,
+    flexDirection: 'row',
     justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
   hiddenRow: {
     height: '100%',
@@ -462,10 +463,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
   },
   hotBox: {
-    width: '68%',
-    height: '100%',
-    borderLeftWidth: 1,
-    marginBottom: 20,
-    marginLeft: 20,
+    width: '85%',
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    marginVertical: 20,
+    marginLeft: 36,
+    paddingLeft: 6,
   },
 });
