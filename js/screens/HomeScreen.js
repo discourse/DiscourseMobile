@@ -4,9 +4,13 @@
 import React from 'react';
 import {
   ActivityIndicator,
+  Animated,
+  Dimensions,
   Platform,
   RefreshControl,
   StyleSheet,
+  Text,
+  TouchableHighlight,
   View,
 } from 'react-native';
 import Components from './HomeScreenComponents';
@@ -23,6 +27,8 @@ class HomeScreen extends React.Component {
 
     this._siteManager = this.props.screenProps.siteManager;
 
+    this.largeLayout = Dimensions.get('window').width > 600;
+
     this.state = {
       data: [],
       isRefreshing: false,
@@ -31,8 +37,11 @@ class HomeScreen extends React.Component {
       refreshingEnabled: true,
       loadingSites: this._siteManager.isLoading(),
       authProcessActive: false,
+      showTopicList: false,
+      fadeIn: new Animated.Value(0),
     };
 
+    this._animateFadeIn();
     this._onChangeSites = e => this.onChangeSites(e);
     this.onReordered = this.onReordered.bind(this);
     this._renderItem = this._renderItem.bind(this);
@@ -141,6 +150,15 @@ class HomeScreen extends React.Component {
     );
   }
 
+  _animateFadeIn() {
+    Animated.timing(this.state.fadeIn, {
+      toValue: 0.9,
+      duration: 250,
+      delay: 2000,
+      useNativeDriver: true,
+    }).start();
+  }
+
   _renderDebugRow() {
     if (this._siteManager.sites.length !== 0) {
       return (
@@ -154,12 +172,47 @@ class HomeScreen extends React.Component {
     }
   }
 
+  _renderTopicListToggle() {
+    const theme = this.context;
+
+    if (this.largeLayout && this._siteManager.sites.length > 1) {
+      return (
+        <Animated.View
+          style={{
+            ...styles.topicListToggleWrapper,
+            opacity: this.state.fadeIn,
+          }}>
+          <TouchableHighlight
+            testID="topic-list-toggle"
+            style={{
+              ...styles.topicListToggle,
+              backgroundColor: theme.background,
+              borderColor: theme.grayBorder,
+            }}
+            underlayColor={theme.yellowUIFeedback}
+            onPress={() => {
+              this.setState({
+                showTopicList: !this.state.showTopicList,
+              });
+              this.dragListRef.scrollToOffset({animated: true, offset: 0});
+            }}>
+            <Text style={{color: theme.grayTitle}}>
+              {this.state.showTopicList
+                ? i18n.t('hide_hot_topics')
+                : i18n.t('show_hot_topics')}
+            </Text>
+          </TouchableHighlight>
+        </Animated.View>
+      );
+    }
+  }
   _renderItem(info) {
     const {item, onDragStart, onDragEnd} = info;
 
     return (
       <Components.SiteRow
         site={item}
+        siteManager={this._siteManager}
         onSwipe={scrollEnabled => this.setState({scrollEnabled: scrollEnabled})}
         onClick={(endpoint = '') => this.visitSite(item, false, endpoint)}
         onClickConnect={() => this.visitSite(item, true)}
@@ -167,6 +220,7 @@ class HomeScreen extends React.Component {
         onLongPress={onDragStart}
         onPressOut={onDragEnd}
         keyExtractor={() => `site-row-${item.url}`}
+        showTopicList={this.state.showTopicList}
       />
     );
   }
@@ -183,35 +237,42 @@ class HomeScreen extends React.Component {
 
     if (this.shouldDisplayOnBoarding()) {
       return (
-        <Components.OnBoardingView
-          style={{backgroundColor: theme.grayBackground}}
-          onDidPressAddSite={() => this.props.navigation.navigate('AddSite')}
-        />
+        <BottomTabBarHeightContext.Consumer>
+          {tabBarHeight => (
+            <Components.OnBoardingView tabBarHeight={tabBarHeight} />
+          )}
+        </BottomTabBarHeightContext.Consumer>
       );
     } else {
       return (
         <BottomTabBarHeightContext.Consumer>
           {tabBarHeight => (
-            <DragList
-              contentContainerStyle={{paddingBottom: tabBarHeight}}
-              activationDistance={20}
-              data={this.state.data}
-              renderItem={item => this._renderItem(item)}
-              keyExtractor={(item, index) => `draggable-item-${item.url}`}
-              onReordered={this.onReordered}
-              scaleSelectionFactor={1.05}
-              estimatedItemSize={130}
-              refreshControl={
-                <RefreshControl
-                  style={{left: 500}}
-                  enabled={this.state.refreshingEnabled}
-                  refreshing={this.state.isRefreshing}
-                  onRefresh={() => this.pullDownToRefresh()}
-                  title={i18n.t('loading')}
-                  titleColor={theme.graySubtitle}
-                />
-              }
-            />
+            <View style={{flex: 1}}>
+              <DragList
+                ref={ref => {
+                  this.dragListRef = ref;
+                }}
+                contentContainerStyle={{paddingBottom: tabBarHeight}}
+                activationDistance={20}
+                data={this.state.data}
+                renderItem={item => this._renderItem(item)}
+                keyExtractor={(item, index) => `draggable-item-${item.url}`}
+                onReordered={this.onReordered}
+                scaleSelectionFactor={1.05}
+                estimatedItemSize={130}
+                refreshControl={
+                  <RefreshControl
+                    style={{left: 500}}
+                    enabled={this.state.refreshingEnabled}
+                    refreshing={this.state.isRefreshing}
+                    onRefresh={() => this.pullDownToRefresh()}
+                    title={i18n.t('loading')}
+                    titleColor={theme.graySubtitle}
+                  />
+                }
+                ListFooterComponent={this._renderTopicListToggle()}
+              />
+            </View>
           )}
         </BottomTabBarHeightContext.Consumer>
       );
@@ -286,6 +347,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 1,
     opacity: 0.75,
+  },
+  topicListToggleWrapper: {
+    width: '100%',
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  topicListToggle: {
+    padding: 10,
+    borderRadius: 6,
+    borderWidth: 1,
   },
 });
 
