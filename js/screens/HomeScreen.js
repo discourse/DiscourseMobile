@@ -28,7 +28,7 @@ class HomeScreen extends React.Component {
     this._siteManager = this.props.screenProps.siteManager;
 
     this.largeLayout = Dimensions.get('window').width > 600;
-    console.log(Dimensions.get('window').width);
+
     this.state = {
       data: [],
       isRefreshing: false,
@@ -237,9 +237,11 @@ class HomeScreen extends React.Component {
 
     if (this.shouldDisplayOnBoarding()) {
       return (
-        <Components.OnBoardingView
-          style={{backgroundColor: theme.grayBackground}}
-        />
+        <BottomTabBarHeightContext.Consumer>
+          {tabBarHeight => (
+            <Components.OnBoardingView tabBarHeight={tabBarHeight} />
+          )}
+        </BottomTabBarHeightContext.Consumer>
       );
     } else {
       return (
