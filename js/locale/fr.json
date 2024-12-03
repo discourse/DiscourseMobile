@@ -54,7 +54,7 @@
   "term_exists": "%{term} existe déjà",
   "unread_with_count": "non lus (%{count})",
   "term_placeholder": "Recherchez ou saisissez l'URL d'une communauté",
-  "term_placeholder_single_site": "Entrez l'URL de la communauté",
+  "term_placeholder_single_site": "Saisissez l'URL de la communauté",
   "please_wait": "Veuillez patienter…",
   "settings": "Paramètres",
   "discover": "Découvrir",
@@ -82,8 +82,9 @@
   "add_single_site": "Ajouter une communauté",
   "add_to_home_screen": "Ajouter à l'écran d'accueil",
   "added_to_home_screen": "Site déjà ajouté à l'écran d'accueil",
-  "add_site_home_screen": "Ajouter à l'écran d'accueil?",
-  "add_site_home_screen_description": "La connexion n'est possible qu'après avoir ajouté cette communauté à l'écran d'accueil. Ajoutez-la maintenant!",
+  "add_site_home_screen": "Ajouter à l'écran d'accueil ?",
+  "add_site_home_screen_description": "La connexion n'est possible qu'après avoir ajouté cette communauté à l'écran d'accueil. Ajoutez-la maintenant pour profiter d'un accès plus facile, des notifications et plus encore.",
   "single_site_no_results": "Aucun site trouvé avec ce domaine. Veuillez vérifier l'URL et réessayer.",
+  "single_site_blank_screen": "Ajoutez des communautés Discourse à cette application en saisissant leurs URL dans le champ ci-dessus. Le domaine suffit, il n'est pas nécessaire d'inclure « http:// » ou « https:// ».",
   "no_connected_sites": "Vous n'avez aucun site connecté sur votre écran d'accueil. Une fois que vous avez connecté un ou plusieurs sites, vous verrez leurs notifications ici."
 }
