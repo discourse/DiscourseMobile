@@ -54,6 +54,7 @@
   "term_exists": "%{term} bestaat al",
   "unread_with_count": "ongelezen (%{count})",
   "term_placeholder": "Zoek of voer een community-URL in",
+  "term_placeholder_single_site": "Voer de community-URL in",
   "please_wait": "Even geduld...",
   "settings": "Instellingen",
   "discover": "Ontdekken",
@@ -78,5 +79,12 @@
   "ok": "OK",
   "cancel": "Annuleren",
   "clear": "Wissen",
+  "add_single_site": "Voeg een community toe",
+  "add_to_home_screen": "Toevoegen aan startscherm",
+  "added_to_home_screen": "Site al toegevoegd aan startscherm",
+  "add_site_home_screen": "Toevoegen aan startscherm?",
+  "add_site_home_screen_description": "Aanmelden wordt alleen ondersteund nadat deze community aan het startscherm is toegevoegd. Voeg de community nu toe voor eenvoudigere toegang, meldingen en meer.",
+  "single_site_no_results": "Geen site gevonden met dat domein. Controleer de URL en probeer het opnieuw.",
+  "single_site_blank_screen": "Voeg Discourse-community's toe aan deze app door hun URL in te voeren in het veld hierboven. Alleen het domein is voldoende, je hoeft geen \"http://\" of \"https://\" toe te voegen.",
   "no_connected_sites": "Je hebt geen verbonden sites op je startscherm. Wanneer je verbinding hebt gemaakt met een of meer sites, worden meldingen ervan hier weergegeven."
 }

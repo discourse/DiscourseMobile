@@ -54,6 +54,7 @@
   "term_exists": "%{term} zaten mevcut",
   "unread_with_count": "okunmamış (%{count})",
   "term_placeholder": "Topluluk URL'sini arayın veya girin",
+  "term_placeholder_single_site": "Topluluk URL'sini girin",
   "please_wait": "Lütfen bekleyin...",
   "settings": "Ayarlar",
   "discover": "Keşfedin",
@@ -78,5 +79,12 @@
   "ok": "Tamam",
   "cancel": "İptal et",
   "clear": "Temizle",
+  "add_single_site": "Topluluk ekle",
+  "add_to_home_screen": "Ana ekrana ekle",
+  "added_to_home_screen": "Site zaten Ana ekrana eklendi",
+  "add_site_home_screen": "Ana ekrana eklensin mi?",
+  "add_site_home_screen_description": "Giriş yalnızca bu topluluk Ana ekrana eklendikten sonra desteklenir. Daha kolay erişim, bildirimler ve daha fazlası için hemen ekleyin.",
+  "single_site_no_results": "Bu alan adına sahip site bulunamadı. Lütfen URL'yi kontrol edin ve tekrar deneyin.",
+  "single_site_blank_screen": "Yukarıdaki girişe URL'lerini yazarak Discourse topluluklarını bu uygulamaya ekleyin. Sadece alan adı yeterlidir, \"http://\" veya \"https://\" eklemenize gerek yoktur.",
   "no_connected_sites": "Ana Sayfa ekranınızda bağlı siteniz yok. Bir veya daha fazla siteyi bağladığınızda bildirimlerini burada görürsünüz."
 }

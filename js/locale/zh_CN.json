@@ -50,6 +50,7 @@
   "term_exists": "“%{term}”已存在",
   "unread_with_count": "未读 (%{count})",
   "term_placeholder": "搜索或输入社区 URL",
+  "term_placeholder_single_site": "输入社区 URL",
   "please_wait": "请稍候…",
   "settings": "设置",
   "discover": "发现",
@@ -74,5 +75,12 @@
   "ok": "确定",
   "cancel": "取消",
   "clear": "清除",
+  "add_single_site": "添加社区",
+  "add_to_home_screen": "添加到主屏幕",
+  "added_to_home_screen": "网站已添加到主屏幕",
+  "add_site_home_screen": "是否添加到主屏幕？",
+  "add_site_home_screen_description": "只有将此社区添加到主屏幕后才支持登录。立即添加以便更轻松地访问、接收通知等。",
+  "single_site_no_results": "找不到具有该域名的网站。请检查 URL 并重试。",
+  "single_site_blank_screen": "通过在上面的输入中输入 URL，将 Discourse 社区添加到此应用。只需输入域名即可，无需包含“http://”或“https://”。",
   "no_connected_sites": "您的主屏幕上尚未关联任何网站。一旦您关联一个或多个网站，您就会在此处看到它们的通知。"
 }

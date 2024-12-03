@@ -54,6 +54,7 @@
   "term_exists": "%{term} on jo olemassa",
   "unread_with_count": "lukematta (%{count})",
   "term_placeholder": "Hae tai kirjoita yhteisön URL-osoite",
+  "term_placeholder_single_site": "Anna yhteisön URL-osoite",
   "please_wait": "Odota...",
   "settings": "Asetukset",
   "discover": "Löydä",
@@ -78,5 +79,12 @@
   "ok": "OK",
   "cancel": "Peruuta",
   "clear": "Tyhjennä",
+  "add_single_site": "Lisää yhteisö",
+  "add_to_home_screen": "Lisää aloitusnäyttöön",
+  "added_to_home_screen": "Sivusto on jo lisätty aloitusnäyttöön",
+  "add_site_home_screen": "Lisää aloitusnäyttöön?",
+  "add_site_home_screen_description": "Kirjautumista tuetaan vasta, kun tämä yhteisö on lisätty aloitusnäyttöön. Lisää se nyt helpottaaksesi käyttöä, ilmoituksia ja muuta.",
+  "single_site_no_results": "Tällä verkkotunnuksella ei löytynyt sivustoa. Tarkista URL-osoite ja yritä uudelleen.",
+  "single_site_blank_screen": "Lisää Discourse-yhteisöjä tähän sovellukseen kirjoittamalla niiden URL-osoite yllä olevaan syötekenttään. Pelkkä verkkotunnus riittää, \"http://\"- tai \"https://\"-protokollaa ei tarvitse lisätä.",
   "no_connected_sites": "Aloitusnäytölläsi ei ole yhdistettyjä sivustoja. Kun yhdistät yhden tai useamman sivuston, näet niiden ilmoitukset täällä."
 }

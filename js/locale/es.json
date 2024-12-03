@@ -54,6 +54,7 @@
   "term_exists": "%{term} ya existe",
   "unread_with_count": "no leídos (%{count})",
   "term_placeholder": "Busca o introduce la URL de una comunidad",
+  "term_placeholder_single_site": "Introduce la URL de la comunidad",
   "please_wait": "Por favor, espera...",
   "settings": "Ajustes",
   "discover": "Descubrir",
@@ -78,5 +79,12 @@
   "ok": "Aceptar",
   "cancel": "Cancelar",
   "clear": "Quitar filtros",
+  "add_single_site": "Añadir una comunidad",
+  "add_to_home_screen": "Añadir a la pantalla de inicio",
+  "added_to_home_screen": "Sitio ya añadido a la pantalla de inicio",
+  "add_site_home_screen": "¿Añadir a la pantalla de inicio?",
+  "add_site_home_screen_description": "Solo se puede iniciar sesión después de añadir esta comunidad a la pantalla de inicio. Añádela ahora para facilitar el acceso, las notificaciones y mucho más.",
+  "single_site_no_results": "No se ha encontrado ningún sitio con ese dominio. Comprueba la URL e inténtalo de nuevo.",
+  "single_site_blank_screen": "Añade comunidades de Discourse a esta aplicación escribiendo su URL en la entrada de arriba. Basta con el dominio, no es necesario incluir «http://» o «https://».",
   "no_connected_sites": "No tienes sitios conectados en la pantalla de inicio. Cuando conectes uno o más sitios, verás sus notificaciones aquí."
 }

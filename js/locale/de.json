@@ -54,6 +54,7 @@
   "term_exists": "%{term} existiert bereits",
   "unread_with_count": "ungelesen (%{count})",
   "term_placeholder": "Suche oder gib eine Community-URL ein",
+  "term_placeholder_single_site": "Community-URL eingeben",
   "please_wait": "Bitte warten …",
   "settings": "Einstellungen",
   "discover": "Entdecken",
@@ -78,5 +79,12 @@
   "ok": "OK",
   "cancel": "Abbrechen",
   "clear": "Löschen",
+  "add_single_site": "Community hinzufügen",
+  "add_to_home_screen": "Zum Startbildschirm hinzufügen",
+  "added_to_home_screen": "Website wurde bereits zum Startbildschirm hinzugefügt",
+  "add_site_home_screen": "Zum Startbildschirm hinzufügen?",
+  "add_site_home_screen_description": "Die Anmeldung wird nur unterstützt, wenn du diese Community zum Startbildschirm hinzufügst. Füge sie jetzt hinzu, um leichteren Zugang, Benachrichtigungen und mehr zu erhalten.",
+  "single_site_no_results": "Es wurde keine Website mit dieser Domain gefunden. Bitte überprüfe die URL und versuche es erneut.",
+  "single_site_blank_screen": "Füge Discourse-Communitys zu dieser App hinzu, indem du ihre URL oben eingibst. Die Angabe der Domain reicht aus, du musst nicht „http://“ oder „https://“ hinzufügen.",
   "no_connected_sites": "Du hast keine verbundenen Websites auf deinem Startbildschirm. Sobald du eine oder mehrere Websites verbunden hast, siehst du hier deren Benachrichtigungen."
 }
