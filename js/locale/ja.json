@@ -50,6 +50,7 @@
   "term_exists": "%{term} はすでに存在します",
   "unread_with_count": "未読 (%{count})",
   "term_placeholder": "コミュニティーの URL を検索または入力",
+  "term_placeholder_single_site": "コミュニティーの URL を入力",
   "please_wait": "お待ちください...",
   "settings": "設定",
   "discover": "発見",
@@ -74,5 +75,12 @@
   "ok": "OK",
   "cancel": "キャンセル",
   "clear": "クリア",
+  "add_single_site": "コミュニティーを追加",
+  "add_to_home_screen": "ホーム画面に追加",
+  "added_to_home_screen": "サイトはすでにホーム画面に追加されています",
+  "add_site_home_screen": "ホーム画面に追加しますか？",
+  "add_site_home_screen_description": "ログインは、このコミュニティーをホーム画面に追加した後にのみサポートされます。簡単にアクセスしたり通知を受け取ったりできるように、今すぐ追加しましょう。",
+  "single_site_no_results": "そのドメインのサイトは見つかりません。URL を確認してもう一度お試しください。",
+  "single_site_blank_screen": "Discrouse コミュニティーの URL を上記の入力エリアに入力してこのアプリに追加します。ドメインだけで十分です。「http://」または「https://」を含める必要はありません。",
   "no_connected_sites": "ホーム画面には接続されたサイトがありません。1 つ以上のサイトを接続すると、ここにその通知が表示されるようになります。"
 }
