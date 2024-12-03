@@ -1,38 +1,31 @@
 /* @flow */
 'use strict';
 
-import React, {useContext} from 'react';
+import React, {useRef, useContext} from 'react';
 import i18n from 'i18n-js';
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
 import Popover, {PopoverMode} from 'react-native-popover-view';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const OnBoardingView = _props => {
-  const dimensions = Dimensions.get('window');
-  const bottomPosition = dimensions.scale < 3 ? 150 : 190;
   const theme = useContext(ThemeContext);
   const img =
     theme.name === 'light'
       ? require('../../../img/onboarding.png')
       : require('../../../img/onboarding-dark.png');
 
+  const popoverReference = useRef();
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={{backgroundColor: theme.grayBackground, ...styles.container}}>
-      <Popover
-        from={{
-          x: dimensions.width / 2,
-          y: dimensions.height - bottomPosition,
-        }}
-        mode={PopoverMode.TOOLTIP}
-        isVisible={true}
-        popoverStyle={{
-          ...styles.popoverDiscover,
-          backgroundColor: theme.blueCallToAction,
-        }}>
-        <Text style={{color: theme.buttonTextColor}}>
-          {i18n.t('find_new_communities')}
-        </Text>
-      </Popover>
+    <View
+      style={{
+        backgroundColor: theme.grayBackground,
+        ...styles.container,
+        marginBottom: _props.tabBarHeight - insets.bottom,
+        marginLeft: -2,
+      }}>
       <View style={styles.illustrationContainer}>
         <Image
           style={{width: '100%', height: '100%'}}
@@ -50,6 +43,19 @@ const OnBoardingView = _props => {
           </Text>
         </View>
       </View>
+      <View style={styles.popoverPlaceholder} ref={popoverReference} />
+      <Popover
+        from={popoverReference}
+        mode={PopoverMode.TOOLTIP}
+        isVisible={true}
+        popoverStyle={{
+          ...styles.popoverDiscover,
+          backgroundColor: theme.blueCallToAction,
+        }}>
+        <Text style={{color: theme.buttonTextColor}}>
+          {i18n.t('find_new_communities')}
+        </Text>
+      </Popover>
     </View>
   );
 };
@@ -65,9 +71,13 @@ const styles = StyleSheet.create({
   },
   addSiteContainer: {
     marginTop: 32,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'column',
+    flexGrow: 2,
+  },
+  popoverPlaceholder: {
+    height: 1,
   },
   text: {
     alignItems: 'center',
