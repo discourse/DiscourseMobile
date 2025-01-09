@@ -12,6 +12,7 @@ import {
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ThemeContext} from '../../ThemeContext';
 import fetch from './../../../lib/fetch';
+import i18n from 'i18n-js';
 
 const TopicList = props => {
   const theme = useContext(ThemeContext);
@@ -23,6 +24,80 @@ const TopicList = props => {
   const siteQuery = `${props.site.url}/site.json`;
   const listQuery = `${props.site.url}${endpoint}.json`;
   const numberOfTopics = 10;
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    placeholder: {
+      marginLeft: props.largeLayout ? 30 : 0,
+      minHeight: 560,
+      paddingVertical: 12,
+      flex: 1,
+    },
+    placeholderHeading: {
+      height: 40,
+      opacity: 0.3,
+      marginBottom: 20,
+    },
+    placeholderMetadata: {
+      height: 16,
+      opacity: 0.2,
+      marginBottom: 20,
+    },
+    itemsContainer: {
+      flex: 1,
+    },
+    topicTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    topicGist: {
+      fontSize: 14,
+      paddingTop: 6,
+      paddingBottom: 6,
+    },
+    topicRow: {
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      paddingTop: 0,
+      paddingBottom: 15,
+      marginBottom: 15,
+      paddingRight: props.largeLayout ? 20 : 0,
+      marginLeft: props.largeLayout ? 30 : 0,
+    },
+    topicRowLast: {
+      paddingTop: 0,
+    },
+    emmptyItemsText: {
+      marginLeft: props.largeLayout ? 30 : 0,
+    },
+    metadataFirstRow: {
+      flexDirection: 'row',
+      paddingTop: 6,
+    },
+    topicCounts: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      paddingLeft: 10,
+    },
+    topicCountsNum: {
+      fontSize: 14,
+      paddingRight: 8,
+      paddingLeft: 4,
+    },
+    categoryBadge: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      opacity: 0.8,
+    },
+    categoryPill: {
+      height: 9,
+      width: 9,
+      marginRight: 4,
+    },
+  });
 
   if (!loadCompleted) {
     fetch(siteQuery)
@@ -55,6 +130,15 @@ const TopicList = props => {
   }
 
   function _renderItems() {
+    if (topics.length === 0) {
+      return (
+        <View style={styles.itemsContainer}>
+          <Text style={{...styles.emmptyItemsText, color: theme.grayTitle}}>
+            {i18n.t('no_hot_topics')}
+          </Text>
+        </View>
+      );
+    }
     return (
       <View style={styles.itemsContainer}>
         <FlatList
@@ -202,79 +286,5 @@ const TopicList = props => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  placeholder: {
-    marginLeft: 30,
-    minHeight: 560,
-    paddingVertical: 12,
-    flex: 1,
-  },
-  placeholderHeading: {
-    height: 40,
-    opacity: 0.3,
-    marginVertical: 20,
-  },
-  placeholderMetadata: {
-    height: 16,
-    opacity: 0.2,
-    marginBottom: 20,
-  },
-  itemsContainer: {
-    flex: 1,
-  },
-  topicTitle: {
-    paddingRight: 10,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  topicGist: {
-    fontSize: 14,
-    paddingTop: 6,
-    paddingBottom: 6,
-  },
-  topicRow: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    paddingTop: 0,
-    paddingBottom: 15,
-    marginBottom: 15,
-    paddingRight: 20,
-    marginLeft: 30,
-  },
-  topicRowLast: {
-    paddingTop: 0,
-    paddingRight: 20,
-    marginLeft: 30,
-  },
-  metadataFirstRow: {
-    flexDirection: 'row',
-    paddingTop: 6,
-  },
-  topicCounts: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingLeft: 10,
-  },
-  topicCountsNum: {
-    fontSize: 14,
-    paddingRight: 8,
-    paddingLeft: 4,
-  },
-  categoryBadge: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    opacity: 0.8,
-  },
-  categoryPill: {
-    height: 9,
-    width: 9,
-    marginRight: 4,
-  },
-});
 
 export default TopicList;

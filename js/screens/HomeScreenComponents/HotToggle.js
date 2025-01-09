@@ -5,18 +5,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import SegmentedControl from '@react-native-community/segmented-control';
-import {ThemeContext} from '../../ThemeContext';
 
-class Filter extends React.Component {
+class HotToggle extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     selectedIndex: PropTypes.number.isRequired,
   };
 
   render() {
-    const theme = this.context;
     return (
-      <View style={{flex: 0, backgroundColor: theme.background}}>
+      <View
+        style={{
+          flex: 0,
+          marginHorizontal: '20%',
+        }}>
         <SegmentedControl
           values={this.props.tabs}
           style={{margin: 12, opacity: 0.85}}
@@ -30,6 +32,4 @@ class Filter extends React.Component {
   }
 }
 
-Filter.contextType = ThemeContext;
-
-export default Filter;
+export default HotToggle;

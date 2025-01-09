@@ -173,7 +173,7 @@ export default function SiteRow(props) {
     props.site.lastVisitedPath &&
     props.site.lastVisitedPathAt > now - lastVisitedThreshold;
 
-  let leftOpenValue = SWIPE_BUTTON_WIDTH;
+  let leftOpenValue = 0;
   if (chatEnabled) {
     leftOpenValue += SWIPE_BUTTON_WIDTH;
   }
@@ -191,38 +191,28 @@ export default function SiteRow(props) {
     props.site.createdAt &&
     props.site.createdAt > now - createdAtThreshold;
 
-  const rightOpenValue = !hasPrimaryConnectButton
-    ? -SWIPE_BUTTON_WIDTH * 2
-    : -SWIPE_BUTTON_WIDTH;
+  const rightOpenValue =
+    hasPrimaryConnectButton || alreadyAuthed
+      ? -SWIPE_BUTTON_WIDTH
+      : -SWIPE_BUTTON_WIDTH * 2;
 
-  const showTopicList =
-    largeLayout && !props.site.loginRequired && props.showTopicList;
+  const showTopicList = !props.site.loginRequired && props.showTopicList;
+
+  if (props.site.loginRequired && props.showTopicList) {
+    return;
+  }
 
   return (
     <SwipeRow
       ref={swipeRowRef}
       rightOpenValue={showTopicList ? 0 : rightOpenValue}
-      leftOpenValue={showTopicList ? 0 : leftOpenValue}
+      leftOpenValue={showTopicList || !chatEnabled ? 0 : leftOpenValue}
       recalculateHiddenLayout={true}
       swipeToOpenPercent={20}
       swipeToClosePercent={10}>
       <View style={{...styles.hiddenRow}}>
         {!showTopicList && (
           <View style={{...styles.leftButtons}}>
-            <TouchableHighlight
-              style={{
-                ...styles.hiddenButton,
-                backgroundColor: theme.blueCallToAction,
-              }}
-              underlayColor={theme.blueCallToAction}
-              onPress={() => _click('/hot')}
-              {...props.sortHandlers}>
-              <FontAwesome5
-                name={'fire'}
-                size={24}
-                color={theme.buttonTextColor}
-              />
-            </TouchableHighlight>
             {chatEnabled && (
               <TouchableHighlight
                 style={{
@@ -260,7 +250,7 @@ export default function SiteRow(props) {
         )}
         {!showTopicList && (
           <View style={{...styles.rightButtons}}>
-            {!hasPrimaryConnectButton && (
+            {!(hasPrimaryConnectButton || alreadyAuthed) && (
               <TouchableHighlight
                 style={{
                   ...styles.hiddenButton,
@@ -299,7 +289,6 @@ export default function SiteRow(props) {
         style={{
           ...styles.siteRowWrapper,
           backgroundColor: theme.background,
-          borderBottomColor: theme.grayBorder,
         }}>
         <TouchableHighlight
           underlayColor={'theme.background'}
@@ -307,7 +296,15 @@ export default function SiteRow(props) {
           onPress={() => _click()}
           onLongPress={() => !showTopicList && props.onLongPress()}
           onPressOut={() => !showTopicList && props.onPressOut()}
-          style={{...styles.touchableWrapper}}
+          style={{
+            ...styles.touchableWrapper,
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderColor: theme.grayBorder,
+            borderTopWidth: showTopicList ? StyleSheet.hairlineWidth : 0,
+            backgroundColor: showTopicList
+              ? theme.grayBackground
+              : theme.background,
+          }}
           {...props.sortHandlers}>
           <View accessibilityTraits="link" style={{...styles.row}}>
             <Image style={styles.icon} source={iconPath} resizeMode="contain" />
@@ -327,18 +324,27 @@ export default function SiteRow(props) {
                     {props.site.url.replace(/^https?:\/\//, '')}
                   </Text>
                 </View>
-                {_renderNotifications()}
+                {!showTopicList && _renderNotifications()}
                 {hasPrimaryConnectButton && !showTopicList && _renderConnect()}
               </View>
-              {_renderShortcuts()}
+              {!showTopicList && _renderShortcuts()}
             </View>
           </View>
         </TouchableHighlight>
         {showTopicList && (
           <View
             testID="topic-list"
-            style={{...styles.hotBox, borderColor: theme.grayBorder}}>
-            <TopicList site={props.site} onClickTopic={url => _click(url)} />
+            style={{
+              ...styles.hotBox,
+              borderColor: theme.grayBorder,
+              borderLeftWidth: largeLayout ? StyleSheet.hairlineWidth : 0,
+              marginLeft: largeLayout ? 36 : 18,
+            }}>
+            <TopicList
+              site={props.site}
+              onClickTopic={url => _click(url)}
+              largeLayout={largeLayout}
+            />
           </View>
         )}
       </View>
@@ -354,14 +360,14 @@ const styles = StyleSheet.create({
   siteRowWrapper: {
     flex: 1,
     flexDirection: 'column',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    paddingVertical: 16,
   },
   touchableWrapper: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingVertical: 16,
   },
   hiddenRow: {
     height: '100%',
@@ -463,10 +469,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
   },
   hotBox: {
-    width: '85%',
-    borderLeftWidth: StyleSheet.hairlineWidth,
+    width: '90%',
     marginVertical: 20,
-    marginLeft: 36,
     paddingLeft: 6,
   },
 });

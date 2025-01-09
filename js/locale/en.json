@@ -86,7 +86,8 @@
   "single_site_no_results": "No site found with that domain. Please check the URL and try again.",
   "single_site_blank_screen": "Add Discourse communities to this app by typing their URL in the input above.",
   "no_connected_sites": "You have no connected sites on your Home screen. Once you connect one or more sites, you will see their notifications here.",
-  "show_hot_topics": "Show hot topics",
-  "hide_hot_topics": "Collapse hot topics",
-  "find_new_communities": "Find new communities to join"
+  "hot_topics": "Hot topics",
+  "sites": "Sites",
+  "find_new_communities": "Find new communities to join",
+  "no_hot_topics": "No hot topics found for this site."
 }

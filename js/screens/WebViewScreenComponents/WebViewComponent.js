@@ -189,7 +189,7 @@ class WebViewComponent extends React.Component {
             allowsInlineMediaPlayback={true}
             allowsFullscreenVideo={true}
             allowsLinkPreview={true}
-            hideKeyboardAccessoryView={true}
+            hideKeyboardAccessoryView={false}
             keyboardDisplayRequiresUserAction={false}
             webviewDebuggingEnabled={true}
             onLoadEnd={() => {
@@ -307,7 +307,10 @@ class WebViewComponent extends React.Component {
           style={{
             ...styles.nudge,
             marginTop: this.props.insets.top,
-            height: Platform.isPad ? 45 : 25,
+            height: Platform.isPad ? 60 : 40,
+            // nudge element used to dismiss webview via swipe-down gesture
+            // uncomment background color to see the element
+            // backgroundColor: 'red',
           }}>
           <View
             style={{
@@ -459,13 +462,16 @@ const styles = StyleSheet.create({
     left: '40%',
     position: 'absolute',
     backgroundColor: 'transparent',
-    borderRadius: 20,
+    top: -10,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
   },
   nudgeElement: {
     borderRadius: 5,
     width: '50%',
     marginLeft: '25%',
     height: 4,
+    marginTop: 10,
   },
   authenticatingOverlay: {
     position: 'absolute',

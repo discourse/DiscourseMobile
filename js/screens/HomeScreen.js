@@ -3,14 +3,11 @@
 
 import React from 'react';
 import {
-  ActivityIndicator,
   Animated,
-  Dimensions,
+  ActivityIndicator,
   Platform,
   RefreshControl,
   StyleSheet,
-  Text,
-  TouchableHighlight,
   View,
 } from 'react-native';
 import Components from './HomeScreenComponents';
@@ -27,8 +24,6 @@ class HomeScreen extends React.Component {
 
     this._siteManager = this.props.screenProps.siteManager;
 
-    this.largeLayout = Dimensions.get('window').width > 600;
-
     this.state = {
       data: [],
       isRefreshing: false,
@@ -38,10 +33,11 @@ class HomeScreen extends React.Component {
       loadingSites: this._siteManager.isLoading(),
       authProcessActive: false,
       showTopicList: false,
-      fadeIn: new Animated.Value(0),
+      selectedTabIndex: 0,
+      scrollYOffset: 0,
+      showHotToggle: new Animated.Value(1),
     };
 
-    this._animateFadeIn();
     this._onChangeSites = e => this.onChangeSites(e);
     this.onReordered = this.onReordered.bind(this);
     this._renderItem = this._renderItem.bind(this);
@@ -150,15 +146,6 @@ class HomeScreen extends React.Component {
     );
   }
 
-  _animateFadeIn() {
-    Animated.timing(this.state.fadeIn, {
-      toValue: 0.9,
-      duration: 250,
-      delay: 2000,
-      useNativeDriver: true,
-    }).start();
-  }
-
   _renderDebugRow() {
     if (this._siteManager.sites.length !== 0) {
       return (
@@ -174,34 +161,37 @@ class HomeScreen extends React.Component {
 
   _renderTopicListToggle() {
     const theme = this.context;
+    const hotToggle = this.state.showHotToggle;
+    const maxHeight = hotToggle.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 90],
+    });
 
-    if (this.largeLayout && this._siteManager.sites.length > 1) {
+    const publicSiteCount = this._siteManager.sites.filter(
+      site => site.loginRequired === false,
+    ).length;
+
+    if (publicSiteCount > 0) {
       return (
         <Animated.View
           style={{
-            ...styles.topicListToggleWrapper,
-            opacity: this.state.fadeIn,
+            flex: 0,
+            backgroundColor: theme.background,
+            borderColor: theme.grayBorder,
+            borderWidth: StyleSheet.hairlineWidth,
+            maxHeight: maxHeight,
+            width: '100%',
           }}>
-          <TouchableHighlight
-            testID="topic-list-toggle"
-            style={{
-              ...styles.topicListToggle,
-              backgroundColor: theme.background,
-              borderColor: theme.grayBorder,
-            }}
-            underlayColor={theme.yellowUIFeedback}
-            onPress={() => {
+          <Components.HotToggle
+            selectedIndex={this.state.selectedTabIndex}
+            tabs={[i18n.t('sites'), i18n.t('hot_topics')]}
+            onChange={index => {
               this.setState({
-                showTopicList: !this.state.showTopicList,
+                showTopicList: Boolean(index),
+                selectedTabIndex: index,
               });
-              this.dragListRef.scrollToOffset({animated: true, offset: 0});
-            }}>
-            <Text style={{color: theme.grayTitle}}>
-              {this.state.showTopicList
-                ? i18n.t('hide_hot_topics')
-                : i18n.t('show_hot_topics')}
-            </Text>
-          </TouchableHighlight>
+            }}
+          />
         </Animated.View>
       );
     }
@@ -229,6 +219,36 @@ class HomeScreen extends React.Component {
     this._siteManager.updateOrder(from, to);
   }
 
+  _scrollEventHandler(e) {
+    // this hides/shows the hot topic toggle bar on scroll
+    // for non tablets only (given reduced space)
+    if (Platform.isPad) {
+      return;
+    }
+
+    const currentOffset = e.nativeEvent.contentOffset.y;
+    const diff = currentOffset - (this.state.scrollYOffset || 0);
+    if (currentOffset > 10 && Math.abs(diff) < 5) {
+      // small buffer if scroll direction is not yet clear
+    } else if (diff < 0 || currentOffset < 5) {
+      Animated.timing(this.state.showHotToggle, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
+    } else {
+      Animated.timing(this.state.showHotToggle, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
+    }
+
+    this.setState({
+      scrollYOffset: currentOffset,
+    });
+  }
+
   _renderSites() {
     const theme = this.context;
     if (this.state.loadingSites) {
@@ -248,16 +268,19 @@ class HomeScreen extends React.Component {
         <BottomTabBarHeightContext.Consumer>
           {tabBarHeight => (
             <View style={{flex: 1}}>
+              {this._renderTopicListToggle()}
               <DragList
                 ref={ref => {
                   this.dragListRef = ref;
                 }}
-                contentContainerStyle={{paddingBottom: tabBarHeight}}
+                contentContainerStyle={{paddingBottom: tabBarHeight + 25}}
                 activationDistance={20}
                 data={this.state.data}
                 renderItem={item => this._renderItem(item)}
-                keyExtractor={(item, index) => `draggable-item-${item.url}`}
+                keyExtractor={item => `draggable-item-${item.url}`}
                 onReordered={this.onReordered}
+                onScrollBeginDrag={e => this._scrollEventHandler(e)}
+                onScrollEndDrag={e => this._scrollEventHandler(e)}
                 scaleSelectionFactor={1.05}
                 estimatedItemSize={130}
                 refreshControl={
@@ -270,7 +293,6 @@ class HomeScreen extends React.Component {
                     titleColor={theme.graySubtitle}
                   />
                 }
-                ListFooterComponent={this._renderTopicListToggle()}
               />
             </View>
           )}
@@ -350,8 +372,6 @@ const styles = StyleSheet.create({
   },
   topicListToggleWrapper: {
     width: '100%',
-    height: 100,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   topicListToggle: {
