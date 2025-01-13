@@ -3,7 +3,6 @@
 
 import React from 'react';
 import {
-  Animated,
   ActivityIndicator,
   Platform,
   RefreshControl,
@@ -11,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import Components from './HomeScreenComponents';
+import Common from './CommonComponents';
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
 import {donateShortcut} from 'react-native-siri-shortcut';
@@ -34,8 +34,6 @@ class HomeScreen extends React.Component {
       authProcessActive: false,
       showTopicList: false,
       selectedTabIndex: 0,
-      scrollYOffset: 0,
-      showHotToggle: new Animated.Value(1),
     };
 
     this._onChangeSites = e => this.onChangeSites(e);
@@ -161,11 +159,6 @@ class HomeScreen extends React.Component {
 
   _renderTopicListToggle() {
     const theme = this.context;
-    const hotToggle = this.state.showHotToggle;
-    const maxHeight = hotToggle.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, 90],
-    });
 
     const publicSiteCount = this._siteManager.sites.filter(
       site => site.loginRequired === false,
@@ -173,18 +166,18 @@ class HomeScreen extends React.Component {
 
     if (publicSiteCount > 0) {
       return (
-        <Animated.View
+        <View
           style={{
             flex: 0,
             backgroundColor: theme.background,
             borderColor: theme.grayBorder,
             borderWidth: StyleSheet.hairlineWidth,
-            maxHeight: maxHeight,
             width: '100%',
           }}>
-          <Components.HotToggle
+          <Common.Filter
             selectedIndex={this.state.selectedTabIndex}
             tabs={[i18n.t('sites'), i18n.t('hot_topics')]}
+            marginHorizontal={'20%'}
             onChange={index => {
               this.setState({
                 showTopicList: Boolean(index),
@@ -192,7 +185,7 @@ class HomeScreen extends React.Component {
               });
             }}
           />
-        </Animated.View>
+        </View>
       );
     }
   }
@@ -217,36 +210,6 @@ class HomeScreen extends React.Component {
 
   onReordered(from, to) {
     this._siteManager.updateOrder(from, to);
-  }
-
-  _scrollEventHandler(e) {
-    // this hides/shows the hot topic toggle bar on scroll
-    // for non tablets only (given reduced space)
-    if (Platform.isPad) {
-      return;
-    }
-
-    const currentOffset = e.nativeEvent.contentOffset.y;
-    const diff = currentOffset - (this.state.scrollYOffset || 0);
-    if (currentOffset > 10 && Math.abs(diff) < 5) {
-      // small buffer if scroll direction is not yet clear
-    } else if (diff < 0 || currentOffset < 5) {
-      Animated.timing(this.state.showHotToggle, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: false,
-      }).start();
-    } else {
-      Animated.timing(this.state.showHotToggle, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: false,
-      }).start();
-    }
-
-    this.setState({
-      scrollYOffset: currentOffset,
-    });
   }
 
   _renderSites() {
@@ -279,8 +242,6 @@ class HomeScreen extends React.Component {
                 renderItem={item => this._renderItem(item)}
                 keyExtractor={item => `draggable-item-${item.url}`}
                 onReordered={this.onReordered}
-                onScrollBeginDrag={e => this._scrollEventHandler(e)}
-                onScrollEndDrag={e => this._scrollEventHandler(e)}
                 scaleSelectionFactor={1.05}
                 estimatedItemSize={130}
                 refreshControl={

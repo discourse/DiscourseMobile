@@ -98,7 +98,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 222
+        versionCode 223
         versionName MYAPP_VERSION
     }
 
