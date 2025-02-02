@@ -20,7 +20,7 @@ jobs:
           node-version-file: .node-version
 
       - name: Install Yarn dependencies
-        run: yarn --frozen-lockfile --prefer-offline
+        run: yarn --prefer-offline
 
       - name: Install macOS dependencies
         run: |
