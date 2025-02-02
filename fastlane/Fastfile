@@ -2,8 +2,8 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "2.0.6"
-ANDROID_APP_VERSION = "2.0.5" # run `fastlane bootstrap` after editing this
+IOS_APP_VERSION = "2.0.10"
+ANDROID_APP_VERSION = "2.0.6" # run `fastlane bootstrap` after editing this
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
 KEYS_REPOSITORY = "git@github.com:discourse-org/discourse-mobile-keys.git"
@@ -85,7 +85,7 @@ android.useAndroidX=true
 android.enableJetifier=true
 
 # Version of flipper SDK to use with React Native
-FLIPPER_VERSION=0.125.0
+# FLIPPER_VERSION=0.125.0
 
 # Use this property to specify which architecture you want to build.
 # You can also override it from the CLI using

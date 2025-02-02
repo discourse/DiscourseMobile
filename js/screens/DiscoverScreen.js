@@ -75,6 +75,7 @@ class DiscoverScreen extends React.Component {
 
     this._siteManager = this.props.screenProps.siteManager;
     this.baseUrl = 'https://discover.discourse.org/search.json?q=';
+    this.maxPageNumber = 10;
 
     this.debouncedSearch = debounce(this.doSearch, 750);
 
@@ -98,7 +99,9 @@ class DiscoverScreen extends React.Component {
               ? this.state.results.concat(json.topics)
               : json.topics,
             loading: false,
-            hasMoreResults: json.grouped_search_result?.more_full_page_results,
+            hasMoreResults:
+              this.state.page < this.maxPageNumber &&
+              json.grouped_search_result?.more_full_page_results,
           });
         } else {
           if (opts.pageNumber > 1) {
@@ -279,6 +282,7 @@ class DiscoverScreen extends React.Component {
   _fetchNextPage() {
     if (this.state.hasMoreResults) {
       const newPageNumber = this.state.page + 1;
+
       this.setState({page: newPageNumber, loading: true});
       this.doSearch(this.state.selectedTag || '', {
         append: true,

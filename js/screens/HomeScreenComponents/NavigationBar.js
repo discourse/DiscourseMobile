@@ -41,6 +41,7 @@ const NavigationBar = props => {
       <TouchableHighlight
         style={{...styles.plusButton}}
         underlayColor={'transparent'}
+        testID="nav-plus-icon"
         onPress={props.onDidPressPlusIcon}>
         <FontAwesome5
           name={'plus'}

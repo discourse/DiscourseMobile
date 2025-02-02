@@ -6,6 +6,7 @@ import Immutable from 'immutable';
 import {InteractionManager, SafeAreaView, View} from 'react-native';
 import {ImmutableVirtualizedList} from 'react-native-immutable-list-view';
 import Components from './NotificationsScreenComponents';
+import Common from './CommonComponents';
 import DiscourseUtils from '../DiscourseUtils';
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
@@ -179,7 +180,7 @@ class NotificationsScreen extends React.Component {
 
   _renderListHeader() {
     return (
-      <Components.Filter
+      <Common.Filter
         selectedIndex={this.state.selectedIndex}
         tabs={[i18n.t('new'), i18n.t('replies'), i18n.t('all')]}
         onChange={index => {
