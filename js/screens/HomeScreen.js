@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import Components from './HomeScreenComponents';
+import Common from './CommonComponents';
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
 import {donateShortcut} from 'react-native-siri-shortcut';
@@ -31,6 +32,8 @@ class HomeScreen extends React.Component {
       refreshingEnabled: true,
       loadingSites: this._siteManager.isLoading(),
       authProcessActive: false,
+      showTopicList: false,
+      selectedTabIndex: 0,
     };
 
     this._onChangeSites = e => this.onChangeSites(e);
@@ -154,12 +157,45 @@ class HomeScreen extends React.Component {
     }
   }
 
+  _renderTopicListToggle() {
+    const theme = this.context;
+
+    const publicSiteCount = this._siteManager.sites.filter(
+      site => site.loginRequired === false,
+    ).length;
+
+    if (publicSiteCount > 0) {
+      return (
+        <View
+          style={{
+            flex: 0,
+            backgroundColor: theme.background,
+            borderColor: theme.grayBorder,
+            borderWidth: StyleSheet.hairlineWidth,
+            width: '100%',
+          }}>
+          <Common.Filter
+            selectedIndex={this.state.selectedTabIndex}
+            tabs={[i18n.t('sites'), i18n.t('hot_topics')]}
+            marginHorizontal={'20%'}
+            onChange={index => {
+              this.setState({
+                showTopicList: Boolean(index),
+                selectedTabIndex: index,
+              });
+            }}
+          />
+        </View>
+      );
+    }
+  }
   _renderItem(info) {
     const {item, onDragStart, onDragEnd} = info;
 
     return (
       <Components.SiteRow
         site={item}
+        siteManager={this._siteManager}
         onSwipe={scrollEnabled => this.setState({scrollEnabled: scrollEnabled})}
         onClick={(endpoint = '') => this.visitSite(item, false, endpoint)}
         onClickConnect={() => this.visitSite(item, true)}
@@ -167,6 +203,7 @@ class HomeScreen extends React.Component {
         onLongPress={onDragStart}
         onPressOut={onDragEnd}
         keyExtractor={() => `site-row-${item.url}`}
+        showTopicList={this.state.showTopicList}
       />
     );
   }
@@ -183,35 +220,42 @@ class HomeScreen extends React.Component {
 
     if (this.shouldDisplayOnBoarding()) {
       return (
-        <Components.OnBoardingView
-          style={{backgroundColor: theme.grayBackground}}
-          onDidPressAddSite={() => this.props.navigation.navigate('AddSite')}
-        />
+        <BottomTabBarHeightContext.Consumer>
+          {tabBarHeight => (
+            <Components.OnBoardingView tabBarHeight={tabBarHeight} />
+          )}
+        </BottomTabBarHeightContext.Consumer>
       );
     } else {
       return (
         <BottomTabBarHeightContext.Consumer>
           {tabBarHeight => (
-            <DragList
-              contentContainerStyle={{paddingBottom: tabBarHeight}}
-              activationDistance={20}
-              data={this.state.data}
-              renderItem={item => this._renderItem(item)}
-              keyExtractor={(item, index) => `draggable-item-${item.url}`}
-              onReordered={this.onReordered}
-              scaleSelectionFactor={1.05}
-              estimatedItemSize={130}
-              refreshControl={
-                <RefreshControl
-                  style={{left: 500}}
-                  enabled={this.state.refreshingEnabled}
-                  refreshing={this.state.isRefreshing}
-                  onRefresh={() => this.pullDownToRefresh()}
-                  title={i18n.t('loading')}
-                  titleColor={theme.graySubtitle}
-                />
-              }
-            />
+            <View style={{flex: 1}}>
+              {this._renderTopicListToggle()}
+              <DragList
+                ref={ref => {
+                  this.dragListRef = ref;
+                }}
+                contentContainerStyle={{paddingBottom: tabBarHeight + 25}}
+                activationDistance={20}
+                data={this.state.data}
+                renderItem={item => this._renderItem(item)}
+                keyExtractor={item => `draggable-item-${item.url}`}
+                onReordered={this.onReordered}
+                scaleSelectionFactor={1.05}
+                estimatedItemSize={130}
+                refreshControl={
+                  <RefreshControl
+                    style={{left: 500}}
+                    enabled={this.state.refreshingEnabled}
+                    refreshing={this.state.isRefreshing}
+                    onRefresh={() => this.pullDownToRefresh()}
+                    title={i18n.t('loading')}
+                    titleColor={theme.graySubtitle}
+                  />
+                }
+              />
+            </View>
           )}
         </BottomTabBarHeightContext.Consumer>
       );
@@ -286,6 +330,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 1,
     opacity: 0.75,
+  },
+  topicListToggleWrapper: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  topicListToggle: {
+    padding: 10,
+    borderRadius: 6,
+    borderWidth: 1,
   },
 });
 

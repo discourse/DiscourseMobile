@@ -98,7 +98,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 222
+        versionCode 223
         versionName MYAPP_VERSION
     }
 
@@ -159,12 +159,6 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
-    }
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
-
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
@@ -174,6 +168,8 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    implementation 'org.jetbrains:annotations:16.0.2'
 }
 
 project.ext.vectoricons = [
