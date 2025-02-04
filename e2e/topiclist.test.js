@@ -2,7 +2,7 @@ import i18n from 'i18n-js';
 
 import {by, device, element, expect} from 'detox';
 
-describe('Test suite 1', () => {
+describe('Topic list', () => {
   beforeAll(async () => {
     i18n.translations = {
       en: require('../js/locale/en.json'),
@@ -20,7 +20,7 @@ describe('Test suite 1', () => {
     await device.reloadReactNative();
   });
 
-  it('should show topic list on tablets', async () => {
+  it('should show topic list when invoking Hot topics', async () => {
     await element(by.id('nav-plus-icon')).tap();
     await element(by.id('search-add-input')).typeText('meta.discourse.org');
     await element(by.id('search-add-input')).tapReturnKey();
@@ -35,12 +35,8 @@ describe('Test suite 1', () => {
 
     await expect(element(by.text('Swift Forums'))).toBeVisible();
 
-    if (device.name.includes('iPad')) {
-      await expect(element(by.text(i18n.t('home')))).toBeVisible();
-      await element(by.id('topic-list-toggle')).tap();
-      await expect(element(by.id('topic-list'))).toExist();
-    } else {
-      await expect(element(by.id('topic-list-toggle'))).not.toExist();
-    }
+    await expect(element(by.text(i18n.t('home')))).toBeVisible();
+    await element(by.text(i18n.t('hot_topics'))).tap();
+    await expect(element(by.id('topic-list'))).toExist();
   });
 });
