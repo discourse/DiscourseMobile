@@ -1,5 +1,4 @@
 {
-  "add_first_site": "+ 新增您的第一個網站",
   "add_site": "新增網站",
   "add": "+ 新增",
   "all": "全部",
@@ -51,5 +50,6 @@
   "discover_recent": "最近",
   "ok": "確定",
   "cancel": "取消",
-  "clear": "清除"
+  "clear": "清除",
+  "hot_topics": "熱門話題"
 }

@@ -1,5 +1,4 @@
 {
-  "add_first_site": "+ Adicione seu primeiro site",
   "add_site": "Adicionar site",
   "add_sites": "Comece agora mesmo e siga suas comunidades favoritas do Discourse!",
   "no_sites_yet": "Boas-vindas à Central do Discourse!",
@@ -60,7 +59,6 @@
   "discover": "Descoberta",
   "home": "Início",
   "back": "Voltar",
-  "site_added": "Site 🎉 adicionado!",
   "enable_notifications": "Toque aqui para ativar notificações",
   "browser_toggle_label": "Abrir sites com navegador no aplicativo",
   "browser_toggle_description": "Quando essa configuração estiver desativada, os sites serão lançados por meio do navegador de sua escolha, incluindo PWAs",
@@ -85,6 +83,6 @@
   "add_site_home_screen": "Adicionar à tela inicial?",
   "add_site_home_screen_description": "Será possível fazer login somente depois que esta comunidade for adicionada à tela inicial. Faça isso agora para ter acesso facilitado, receber notificações e muito mais.",
   "single_site_no_results": "Nenhum site encontrado com esse domínio. Confira a URL e tente novamente.",
-  "single_site_blank_screen": "Adicione comunidades do Discourse ao aplicativo inserindo da URL delas no espaço acima. Requer apenas o domínio, não é preciso incluir \"http://\" ou \"https://\".",
-  "no_connected_sites": "Você não tem nenhum site conectado na sua página inicial. Ao conectar pelo menos um site, as notificações dele serão exibidas aqui."
+  "no_connected_sites": "Você não tem nenhum site conectado na sua página inicial. Ao conectar pelo menos um site, as notificações dele serão exibidas aqui.",
+  "hot_topics": "Tópicos em alta"
 }

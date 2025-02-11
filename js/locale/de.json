@@ -1,5 +1,4 @@
 {
-  "add_first_site": "+ Füge das erste Forum hinzu",
   "add_site": "Forum hinzufügen",
   "add_sites": "Leg los und folge den Discourse-Communitys, die du liebst!",
   "no_sites_yet": "Willkommen im Discourse Hub!",
@@ -60,7 +59,7 @@
   "discover": "Entdecken",
   "home": "Startseite",
   "back": "Zurück",
-  "site_added": "🎉 Website hinzugefügt!",
+  "site_added": "🎉 Website zum Startbildschirm hinzugefügt!",
   "enable_notifications": "Tippe hier, um Benachrichtigungen zu aktivieren",
   "browser_toggle_label": "Websites mit In-App-Browser öffnen",
   "browser_toggle_description": "Wenn diese Einstellung deaktiviert ist, werden Websites über den Browser deiner Wahl aufgerufen, einschließlich PWAs",
@@ -85,6 +84,10 @@
   "add_site_home_screen": "Zum Startbildschirm hinzufügen?",
   "add_site_home_screen_description": "Die Anmeldung wird nur unterstützt, wenn du diese Community zum Startbildschirm hinzufügst. Füge sie jetzt hinzu, um leichteren Zugang, Benachrichtigungen und mehr zu erhalten.",
   "single_site_no_results": "Es wurde keine Website mit dieser Domain gefunden. Bitte überprüfe die URL und versuche es erneut.",
-  "single_site_blank_screen": "Füge Discourse-Communitys zu dieser App hinzu, indem du ihre URL oben eingibst. Die Angabe der Domain reicht aus, du musst nicht „http://“ oder „https://“ hinzufügen.",
-  "no_connected_sites": "Du hast keine verbundenen Websites auf deinem Startbildschirm. Sobald du eine oder mehrere Websites verbunden hast, siehst du hier deren Benachrichtigungen."
+  "single_site_blank_screen": "Füge Discourse-Communitys zu dieser App hinzu, indem du ihre URL in das obige Feld eingibst.",
+  "no_connected_sites": "Du hast keine verbundenen Websites auf deinem Startbildschirm. Sobald du eine oder mehrere Websites verbunden hast, siehst du hier deren Benachrichtigungen.",
+  "hot_topics": "Heiße Themen",
+  "sites": "Websites",
+  "find_new_communities": "Finde neue Communitys, denen du beitreten kannst",
+  "no_hot_topics": "Für diese Website wurden keine heißen Themen gefunden."
 }

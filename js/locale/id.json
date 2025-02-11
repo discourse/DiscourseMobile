@@ -1,5 +1,4 @@
 {
-  "add_first_site": "+ Tambahkan situs pertamamu",
   "add_site": "Tambahkan Situs",
   "add": "+ Tambah",
   "all": "Semua",
@@ -30,5 +29,6 @@
   "discover_all": "Semua",
   "ok": "OK",
   "cancel": "Batal",
-  "clear": "Bersihkan"
+  "clear": "Bersihkan",
+  "hot_topics": "Topik hangat"
 }

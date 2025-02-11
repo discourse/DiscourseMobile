@@ -1,5 +1,4 @@
 {
-  "add_first_site": "+ Dodaj swoją pierwszą witrynę",
   "add_site": "Dodaj witrynę",
   "add": "+ Dodaj",
   "all": "Wszystkie",
@@ -62,5 +61,6 @@
   "discover_recent": "ostatnie",
   "ok": "OK",
   "cancel": "Anuluj",
-  "clear": "Wyczyść"
+  "clear": "Wyczyść",
+  "hot_topics": "Gorące tematy"
 }

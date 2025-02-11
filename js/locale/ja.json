@@ -1,5 +1,4 @@
 {
-  "add_first_site": "+ 最初のサイトを追加",
   "add_site": "サイトを追加",
   "add_sites": "まずはお気に入りの Discourse コミュニティーをフォローしましょう！",
   "no_sites_yet": "Discrouse Hub へようこそ！",
@@ -56,7 +55,6 @@
   "discover": "発見",
   "home": "ホーム",
   "back": "戻る",
-  "site_added": "🎉 サイトが追加されました！",
   "enable_notifications": "通知を有効にするにはここをタップ",
   "browser_toggle_label": "アプリ内ブラウザでサイトを開く",
   "browser_toggle_description": "この設定を無効にすると、サイトは PWA を含む任意のブラウザで起動します。",
@@ -81,6 +79,6 @@
   "add_site_home_screen": "ホーム画面に追加しますか？",
   "add_site_home_screen_description": "ログインは、このコミュニティーをホーム画面に追加した後にのみサポートされます。簡単にアクセスしたり通知を受け取ったりできるように、今すぐ追加しましょう。",
   "single_site_no_results": "そのドメインのサイトは見つかりません。URL を確認してもう一度お試しください。",
-  "single_site_blank_screen": "Discrouse コミュニティーの URL を上記の入力エリアに入力してこのアプリに追加します。ドメインだけで十分です。「http://」または「https://」を含める必要はありません。",
-  "no_connected_sites": "ホーム画面には接続されたサイトがありません。1 つ以上のサイトを接続すると、ここにその通知が表示されるようになります。"
+  "no_connected_sites": "ホーム画面には接続されたサイトがありません。1 つ以上のサイトを接続すると、ここにその通知が表示されるようになります。",
+  "hot_topics": "ホットなトピック"
 }

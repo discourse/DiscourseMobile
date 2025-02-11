@@ -1,5 +1,4 @@
 {
-  "add_first_site": "+ Ajoutez votre premier site",
   "add_site": "Ajouter un site",
   "add_sites": "Lancez-vous et suivez les communautés Discourse que vous aimez !",
   "no_sites_yet": "Bienvenue sur Discourse Hub !",
@@ -60,7 +59,6 @@
   "discover": "Découvrir",
   "home": "Accueil",
   "back": "Retour",
-  "site_added": "🎉 Site ajouté !",
   "enable_notifications": "Appuyez ici pour activer les notifications",
   "browser_toggle_label": "Ouvrir les sites avec un navigateur intégré à l'application",
   "browser_toggle_description": "Lorsque ce paramètre est désactivé, les sites seront lancés via le navigateur de votre choix, y compris les PWA",
@@ -85,6 +83,6 @@
   "add_site_home_screen": "Ajouter à l'écran d'accueil ?",
   "add_site_home_screen_description": "La connexion n'est possible qu'après avoir ajouté cette communauté à l'écran d'accueil. Ajoutez-la maintenant pour profiter d'un accès plus facile, des notifications et plus encore.",
   "single_site_no_results": "Aucun site trouvé avec ce domaine. Veuillez vérifier l'URL et réessayer.",
-  "single_site_blank_screen": "Ajoutez des communautés Discourse à cette application en saisissant leurs URL dans le champ ci-dessus. Le domaine suffit, il n'est pas nécessaire d'inclure « http:// » ou « https:// ».",
-  "no_connected_sites": "Vous n'avez aucun site connecté sur votre écran d'accueil. Une fois que vous avez connecté un ou plusieurs sites, vous verrez leurs notifications ici."
+  "no_connected_sites": "Vous n'avez aucun site connecté sur votre écran d'accueil. Une fois que vous avez connecté un ou plusieurs sites, vous verrez leurs notifications ici.",
+  "hot_topics": "Sujets populaires"
 }
