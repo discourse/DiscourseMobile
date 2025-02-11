@@ -1,5 +1,4 @@
 {
-  "add_first_site": "+ Voeg je eerste site toe",
   "add_site": "Site toevoegen",
   "add_sites": "Ga aan de slag en volg de Discourse-community's waar je van houdt!",
   "no_sites_yet": "Welkom bij Discourse Hub!",
@@ -60,7 +59,6 @@
   "discover": "Ontdekken",
   "home": "Start",
   "back": "Vorige",
-  "site_added": "🎉 Site toegevoegd!",
   "enable_notifications": "Tik hier om meldingen in te schakelen",
   "browser_toggle_label": "Sites openen met in-app browser",
   "browser_toggle_description": "Als deze instelling is uitgeschakeld, worden sites geopend in de browser van je keuze, inclusief PWA's",
@@ -85,6 +83,6 @@
   "add_site_home_screen": "Toevoegen aan startscherm?",
   "add_site_home_screen_description": "Aanmelden wordt alleen ondersteund nadat deze community aan het startscherm is toegevoegd. Voeg de community nu toe voor eenvoudigere toegang, meldingen en meer.",
   "single_site_no_results": "Geen site gevonden met dat domein. Controleer de URL en probeer het opnieuw.",
-  "single_site_blank_screen": "Voeg Discourse-community's toe aan deze app door hun URL in te voeren in het veld hierboven. Alleen het domein is voldoende, je hoeft geen \"http://\" of \"https://\" toe te voegen.",
-  "no_connected_sites": "Je hebt geen verbonden sites op je startscherm. Wanneer je verbinding hebt gemaakt met een of meer sites, worden meldingen ervan hier weergegeven."
+  "no_connected_sites": "Je hebt geen verbonden sites op je startscherm. Wanneer je verbinding hebt gemaakt met een of meer sites, worden meldingen ervan hier weergegeven.",
+  "hot_topics": "Populaire topics"
 }

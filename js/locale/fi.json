@@ -1,5 +1,4 @@
 {
-  "add_first_site": "+ Lisää ensimmäinen sivustosi",
   "add_site": "Lisää sivusto",
   "add_sites": "Aloita ja seuraa rakastamiasi Discourse-yhteisöjä!",
   "no_sites_yet": "Tervetuloa Discourse Hubiin!",
@@ -60,7 +59,6 @@
   "discover": "Löydä",
   "home": "Aloitus",
   "back": "Takaisin",
-  "site_added": "🎉 Sivusto lisätty!",
   "enable_notifications": "Ota ilmoitukset käyttöön napauttamalla tätä",
   "browser_toggle_label": "Avaa sivustot sovelluksen sisäisellä selaimella",
   "browser_toggle_description": "Kun tämä asetus on poistettu käytöstä, sivustot käynnistetään valitsemasi selaimen kautta, mukaan lukien PWA:t",
@@ -85,6 +83,6 @@
   "add_site_home_screen": "Lisää aloitusnäyttöön?",
   "add_site_home_screen_description": "Kirjautumista tuetaan vasta, kun tämä yhteisö on lisätty aloitusnäyttöön. Lisää se nyt helpottaaksesi käyttöä, ilmoituksia ja muuta.",
   "single_site_no_results": "Tällä verkkotunnuksella ei löytynyt sivustoa. Tarkista URL-osoite ja yritä uudelleen.",
-  "single_site_blank_screen": "Lisää Discourse-yhteisöjä tähän sovellukseen kirjoittamalla niiden URL-osoite yllä olevaan syötekenttään. Pelkkä verkkotunnus riittää, \"http://\"- tai \"https://\"-protokollaa ei tarvitse lisätä.",
-  "no_connected_sites": "Aloitusnäytölläsi ei ole yhdistettyjä sivustoja. Kun yhdistät yhden tai useamman sivuston, näet niiden ilmoitukset täällä."
+  "no_connected_sites": "Aloitusnäytölläsi ei ole yhdistettyjä sivustoja. Kun yhdistät yhden tai useamman sivuston, näet niiden ilmoitukset täällä.",
+  "hot_topics": "Suositut ketjut"
 }

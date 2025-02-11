@@ -1,5 +1,4 @@
 {
-  "add_first_site": "+ Első webhely hozzáadása",
   "add_site": "Webhely hozzáadása",
   "add": "+ Hozzáadás",
   "all": "Mind",
@@ -56,5 +55,6 @@
   "discover_recent": "friss",
   "ok": "Rendben",
   "cancel": "Mégse",
-  "clear": "Törlés"
+  "clear": "Törlés",
+  "hot_topics": "Felkapott témák"
 }

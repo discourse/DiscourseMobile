@@ -1,5 +1,4 @@
 {
-  "add_first_site": "+ 첫 사이트 추가",
   "add_site": "사이트 추가",
   "add_sites": "지금 바로 좋아하는 Discourse 커뮤니티를 팔로우하세요!",
   "no_sites_yet": "Discourse Hub에 오신 것을 환영합니다!",
@@ -56,7 +55,6 @@
   "discover": "탐색",
   "home": "홈",
   "back": "뒤로",
-  "site_added": "🎉 사이트가 추가되었습니다!",
   "enable_notifications": "알림을 활성화하려면 여기를 탭하세요",
   "browser_toggle_label": "인앱 브라우저로 사이트 열기",
   "browser_toggle_description": "이 설정을 비활성화하면 PWA를 포함하여 선택한 브라우저를 통해 사이트가 실행됩니다.",
@@ -81,6 +79,6 @@
   "add_site_home_screen": "홈 화면에 추가하시겠어요?",
   "add_site_home_screen_description": "로그인은 이 커뮤니티를 홈 화면에 추가한 후에만 지원됩니다. 지금 추가하면 더 쉽게 접근하고 알림을 받을 수 있습니다.",
   "single_site_no_results": "해당 도메인에서 사이트를 찾을 수 없습니다. URL을 확인하고 다시 시도하세요.",
-  "single_site_blank_screen": "위의 입력란에 URL을 입력하여 Discourse 커뮤니티를 이 앱에 추가합니다. 도메인만 있으면 충분하며, \"http://\" 또는 \"https://\"를 포함할 필요는 없습니다.",
-  "no_connected_sites": "홈 화면에 연결된 사이트가 없습니다. 하나 이상의 사이트를 연결하면 여기에 알림이 표시됩니다."
+  "no_connected_sites": "홈 화면에 연결된 사이트가 없습니다. 하나 이상의 사이트를 연결하면 여기에 알림이 표시됩니다.",
+  "hot_topics": "인기 주제"
 }
