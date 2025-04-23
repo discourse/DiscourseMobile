@@ -5,10 +5,8 @@ import React from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Animated,
   AppState,
   Linking,
-  Keyboard,
   Platform,
   Settings,
   Share,
@@ -19,7 +17,7 @@ import {
 import {WebView} from 'react-native-webview';
 import ErrorScreen from '../WebViewScreenComponents/ErrorScreen';
 import ProgressBar from '../../ProgressBar';
-import TinyColor from '../../../lib/tinycolor';
+import chroma from 'chroma-js';
 import SafariView from 'react-native-safari-view';
 import i18n from 'i18n-js';
 import Site from '../../site';
@@ -63,8 +61,7 @@ class WebViewComponent extends React.Component {
       progress: 0,
       webviewReloadAttempts: 0,
       scrollDirection: '',
-      headerBg: 'transparent',
-      headerBgAnim: new Animated.Value(0),
+      headerBg: null,
       barStyle: 'dark-content', // default
       nudgeColor: 'black', // default
       errorData: null,
@@ -81,20 +78,8 @@ class WebViewComponent extends React.Component {
     const theme = this.context;
 
     this.setState({
-      headerBg: theme.grayBackground,
       barStyle: theme.barStyle,
     });
-
-    // Workaround for StatusBar bug in RN Webview
-    // https://github.com/react-native-community/react-native-webview/issues/735
-    this.keyboardWillShow = Keyboard.addListener(
-      'keyboardWillShow',
-      this._onKeyboardShow.bind(this),
-    );
-    this.keyboardWillHide = Keyboard.addListener(
-      'keyboardDidHide',
-      this._onKeyboardShow.bind(this),
-    );
 
     this.appStateSubscription = AppState.addEventListener(
       'change',
@@ -109,16 +94,6 @@ class WebViewComponent extends React.Component {
       this.setState({
         webviewUrl: url,
       });
-    }
-  }
-
-  UNSAFE_componentWillUpdate(nextProps, nextState) {
-    if (nextState.headerBg !== this.state.headerBg) {
-      Animated.timing(this.state.headerBgAnim, {
-        toValue: 1,
-        duration: 250,
-        useNativeDriver: false,
-      }).start();
     }
   }
 
@@ -155,15 +130,12 @@ class WebViewComponent extends React.Component {
     const theme = this.context;
 
     return (
-      <Animated.View
+      <View
         onLayout={e => this._onLayout(e)}
         style={{
           flex: 1,
           paddingTop: this.viewTopPadding,
-          backgroundColor: this.state.headerBgAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: [theme.grayBackground, this.state.headerBg],
-          }),
+          backgroundColor: this.state.headerBg || theme.grayBackground,
         }}>
         <StatusBar barStyle={this.state.barStyle} />
         {this.state.layoutCalculated && this.state.authProcessActive && (
@@ -267,7 +239,6 @@ class WebViewComponent extends React.Component {
             }}
             onNavigationStateChange={navState => {
               this._storeLastPath(navState);
-              StatusBar.setBarStyle(this.state.barStyle, true);
             }}
             decelerationRate={'normal'}
             onLoadProgress={({nativeEvent}) => {
@@ -320,7 +291,7 @@ class WebViewComponent extends React.Component {
             }}
           />
         </View>
-      </Animated.View>
+      </View>
     );
   }
 
@@ -347,10 +318,6 @@ class WebViewComponent extends React.Component {
     if (!navState.loading) {
       this.siteManager.storeLastPath(navState);
     }
-  }
-
-  _onKeyboardShow() {
-    StatusBar.setBarStyle(this.state.barStyle);
   }
 
   _onRefresh() {
@@ -409,26 +376,16 @@ class WebViewComponent extends React.Component {
 
     let {headerBg, shareUrl, dismiss, markRead, showLogin} = data;
 
-    if (headerBg) {
-      // when fully transparent, use black status bar
-      if (TinyColor(headerBg).getAlpha() === 0) {
-        headerBg = 'rgb(0,0,0)';
-      }
+    if (headerBg && chroma.valid(headerBg)) {
+      const headerBgChroma = chroma(headerBg);
+      const headerBgString = headerBgChroma.hex('rgb');
 
       this.setState({
-        headerBg: headerBg,
+        headerBg: headerBgString,
         barStyle:
-          TinyColor(headerBg).getBrightness() < 125
-            ? 'light-content'
-            : 'dark-content',
-        nudgeColor:
-          TinyColor(headerBg).getBrightness() < 125 ? 'white' : 'black',
+          headerBgChroma.luminance() < 0.5 ? 'light-content' : 'dark-content',
+        nudgeColor: headerBgChroma.luminance() < 0.5 ? 'white' : 'black',
       });
-      // ugly hack for an outstanding react-native-webview issue with the statusbar
-      // https://github.com/react-native-community/react-native-webview/issues/735
-      setTimeout(() => {
-        StatusBar.setBarStyle(this.state.barStyle);
-      }, 400);
     }
 
     if (shareUrl) {
