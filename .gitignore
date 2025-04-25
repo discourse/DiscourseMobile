@@ -86,3 +86,4 @@ fastlane/report.xml
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+.aider*

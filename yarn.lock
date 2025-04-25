@@ -3821,6 +3821,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chroma-js@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "chroma-js@npm:3.1.2"
+  checksum: 10/ea09b27d04b477a8fdc3314bfa6dc8de05feab47999ff1acdeba6cf3c32c76338baa5b4562d949d33d8adeca57754e5ea591c15b9985d65583c8771e7e07c2ef
+  languageName: node
+  linkType: hard
+
 "ci-info@npm:^2.0.0":
   version: 2.0.0
   resolution: "ci-info@npm:2.0.0"
@@ -4530,6 +4537,7 @@ __metadata:
     "@types/react": "npm:^18.0.24"
     "@types/react-test-renderer": "npm:^18.0.0"
     babel-jest: "npm:^29.2.1"
+    chroma-js: "npm:^3.1.2"
     detox: "npm:^20.27.3"
     eslint: "npm:^8.19.0"
     eslint-plugin-ft-flow: "npm:^2.0.1"

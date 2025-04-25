@@ -28,6 +28,7 @@
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/stack": "^6.2.0",
     "@shopify/flash-list": "^1.7.2",
+    "chroma-js": "^3.1.2",
     "html-entities": "^2.5.2",
     "i18n-js": "^3.8.0",
     "immutable": "^4.1.0",
