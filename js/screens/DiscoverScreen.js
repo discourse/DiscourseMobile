@@ -248,6 +248,7 @@ class DiscoverScreen extends React.Component {
             {resultCount > 0 ? this._renderTags() : null}
             <View style={styles.container}>
               <FlatList
+                keyboardDismissMode="on-drag"
                 ListEmptyComponent={emptyResult}
                 ref={ref => (this.discoverList = ref)}
                 contentContainerStyle={{paddingBottom: tabBarHeight}}

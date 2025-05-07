@@ -149,12 +149,11 @@ class AddSiteScreen extends React.Component {
     return (
       <BottomTabBarHeightContext.Consumer>
         {tabBarHeight => (
-          <ScrollView
-            keyboardDismissMode="on-drag"
-            style={{flex: 1, backgroundColor: theme.background}}>
+          <View style={{flex: 1, backgroundColor: theme.background}}>
             <View style={styles.container}>
               {this._renderSearchBox()}
               <FlatList
+                keyboardDismissMode="on-drag"
                 ListEmptyComponent={emptyResult}
                 ref={ref => (this.discoverList = ref)}
                 contentContainerStyle={{paddingBottom: tabBarHeight}}
@@ -163,7 +162,7 @@ class AddSiteScreen extends React.Component {
                 renderItem={({item}) => this._renderItem({item})}
               />
             </View>
-          </ScrollView>
+          </View>
         )}
       </BottomTabBarHeightContext.Consumer>
     );
@@ -227,7 +226,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'center',
     flex: 1,
-    paddingTop: 16,
+    paddingBottom: 20,
   },
   intro: {
     flexDirection: 'row',
