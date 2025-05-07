@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   Alert,
   FlatList,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -134,7 +133,7 @@ class AddSiteScreen extends React.Component {
         : i18n.t('single_site_blank_screen');
 
     const emptyResult = (
-      <ScrollView keyboardShouldPersistTaps="handled">
+      <ScrollView>
         {this.state.loading ? (
           <View style={{padding: 20, flex: 1, alignItems: 'center'}}>
             <ActivityIndicator size="large" color={theme.grayUI} />
@@ -150,7 +149,9 @@ class AddSiteScreen extends React.Component {
     return (
       <BottomTabBarHeightContext.Consumer>
         {tabBarHeight => (
-          <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
+          <ScrollView
+            keyboardDismissMode="on-drag"
+            style={{flex: 1, backgroundColor: theme.background}}>
             <View style={styles.container}>
               {this._renderSearchBox()}
               <FlatList
@@ -162,7 +163,7 @@ class AddSiteScreen extends React.Component {
                 renderItem={({item}) => this._renderItem({item})}
               />
             </View>
-          </SafeAreaView>
+          </ScrollView>
         )}
       </BottomTabBarHeightContext.Consumer>
     );
