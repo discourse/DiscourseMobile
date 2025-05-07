@@ -120,8 +120,10 @@ class AddSiteScreen extends React.Component {
         }
       })
       .catch(e => {
-        this.setState({loading: false});
         console.log(e);
+      })
+      .finally(() => {
+        this.setState({loading: false});
       });
   }
 
