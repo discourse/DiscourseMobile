@@ -54,7 +54,14 @@ class AddSiteScreen extends React.Component {
           loading: false,
         });
       } else {
-        this.setState({loading: false});
+        if (term.length > 1 && !term.includes('.')) {
+          this.fallbackDiscoverSearch(term);
+        } else {
+          this.setState({
+            results: [],
+            loading: false,
+          });
+        }
       }
     } catch (error) {
       // console.error(error);
@@ -95,6 +102,28 @@ class AddSiteScreen extends React.Component {
           reject('failure');
         });
     });
+  }
+
+  fallbackDiscoverSearch(term) {
+    const searchString = `#discover ${term} order:featured`;
+    const q = `${Site.discoverUrl()}/search.json?q=${encodeURIComponent(
+      searchString,
+    )}`;
+
+    fetch(q)
+      .then(res => res.json())
+      .then(json => {
+        if (json.topics) {
+          this.setState({
+            results: json.topics,
+            loading: false,
+          });
+        }
+      })
+      .catch(e => {
+        this.setState({loading: false});
+        console.log(e);
+      });
   }
 
   render() {

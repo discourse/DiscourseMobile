@@ -74,7 +74,7 @@ class DiscoverScreen extends React.Component {
     };
 
     this._siteManager = this.props.screenProps.siteManager;
-    this.baseUrl = 'https://discover.discourse.org/search.json?q=';
+    this.baseUrl = `${Site.discoverUrl()}/search.json?q=`;
     this.maxPageNumber = 10;
 
     this.debouncedSearch = debounce(this.doSearch, 750);
