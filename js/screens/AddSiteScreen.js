@@ -54,7 +54,7 @@ class AddSiteScreen extends React.Component {
           loading: false,
         });
       } else {
-        if (term.length > 1 && !term.includes('.')) {
+        if (term.length && !term.includes('.')) {
           this.fallbackDiscoverSearch(term);
         } else {
           this.setState({
