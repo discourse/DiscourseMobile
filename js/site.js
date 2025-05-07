@@ -7,6 +7,10 @@ import _ from 'lodash';
 import fetch from './../lib/fetch';
 
 class Site {
+  static discoverUrl() {
+    return 'https://discover.discourse.com/';
+  }
+
   static FIELDS = [
     'apiVersion',
     'authToken',
@@ -100,6 +104,10 @@ class Site {
         }
 
         return new Site(siteInfo);
+      })
+      .catch(e => {
+        console.log('error in fromURL', e);
+        return false;
       });
   }
 

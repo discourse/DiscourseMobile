@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   Alert,
   FlatList,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -54,7 +53,14 @@ class AddSiteScreen extends React.Component {
           loading: false,
         });
       } else {
-        this.setState({loading: false});
+        if (term.length && !term.includes('.')) {
+          this.fallbackDiscoverSearch(term);
+        } else {
+          this.setState({
+            results: [],
+            loading: false,
+          });
+        }
       }
     } catch (error) {
       // console.error(error);
@@ -97,6 +103,30 @@ class AddSiteScreen extends React.Component {
     });
   }
 
+  fallbackDiscoverSearch(term) {
+    const searchString = `#discover ${term} order:featured`;
+    const q = `${Site.discoverUrl()}/search.json?q=${encodeURIComponent(
+      searchString,
+    )}`;
+
+    fetch(q)
+      .then(res => res.json())
+      .then(json => {
+        if (json.topics) {
+          this.setState({
+            results: json.topics,
+            loading: false,
+          });
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      })
+      .finally(() => {
+        this.setState({loading: false});
+      });
+  }
+
   render() {
     const theme = this.context;
     const messageText =
@@ -105,7 +135,7 @@ class AddSiteScreen extends React.Component {
         : i18n.t('single_site_blank_screen');
 
     const emptyResult = (
-      <ScrollView keyboardShouldPersistTaps="handled">
+      <ScrollView>
         {this.state.loading ? (
           <View style={{padding: 20, flex: 1, alignItems: 'center'}}>
             <ActivityIndicator size="large" color={theme.grayUI} />
@@ -121,10 +151,11 @@ class AddSiteScreen extends React.Component {
     return (
       <BottomTabBarHeightContext.Consumer>
         {tabBarHeight => (
-          <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
+          <View style={{flex: 1, backgroundColor: theme.background}}>
             <View style={styles.container}>
               {this._renderSearchBox()}
               <FlatList
+                keyboardDismissMode="on-drag"
                 ListEmptyComponent={emptyResult}
                 ref={ref => (this.discoverList = ref)}
                 contentContainerStyle={{paddingBottom: tabBarHeight}}
@@ -133,7 +164,7 @@ class AddSiteScreen extends React.Component {
                 renderItem={({item}) => this._renderItem({item})}
               />
             </View>
-          </SafeAreaView>
+          </View>
         )}
       </BottomTabBarHeightContext.Consumer>
     );
@@ -197,7 +228,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'center',
     flex: 1,
-    paddingTop: 16,
+    paddingBottom: 20,
   },
   intro: {
     flexDirection: 'row',

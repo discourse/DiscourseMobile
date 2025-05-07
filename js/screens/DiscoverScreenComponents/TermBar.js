@@ -14,12 +14,13 @@ import {
   View,
 } from 'react-native';
 import i18n from 'i18n-js';
+import Site from '../../site';
 import {ThemeContext} from '../../ThemeContext';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const TermBar = props => {
   const theme = useContext(ThemeContext);
-  const discoverHelpUrl = 'https://discover.discourse.org/?faq';
+  const discoverHelpUrl = `${Site.discoverUrl()}/?faq`;
 
   const largeLayout = Dimensions.get('window').width > 600;
 

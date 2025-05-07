@@ -55,6 +55,8 @@ const SiteRow = props => {
     );
   }
 
+  const link = props.site.featured_link || props.site.url;
+
   return (
     <View style={{...styles.container, backgroundColor: theme.background}}>
       <View style={{...styles.row, borderBottomColor: theme.grayBorder}}>
@@ -78,12 +80,22 @@ const SiteRow = props => {
                 {props.site.title}
               </Text>
               {activeUserCount}
-              <Text
-                ellipsizeMode="tail"
-                numberOfLines={4}
-                style={{...styles.description, color: theme.graySubtitle}}>
-                {decode(props.site.excerpt)}
-              </Text>
+              {props.site.excerpt && (
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={5}
+                  style={{...styles.description, color: theme.graySubtitle}}>
+                  {decode(props.site.excerpt)}
+                </Text>
+              )}
+              {link && (
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={{...styles.secondaryUrl, color: theme.graySubtitle}}>
+                  {link.replace(/^https?:\/\//, '')}
+                </Text>
+              )}
             </View>
           </View>
         </TouchableHighlight>
@@ -158,6 +170,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingLeft: 6,
     paddingTop: 6,
+  },
+  secondaryUrl: {
+    fontSize: 14,
+    paddingTop: 6,
+    paddingLeft: 6,
   },
   buttonWrapper: {
     borderRadius: 30,
