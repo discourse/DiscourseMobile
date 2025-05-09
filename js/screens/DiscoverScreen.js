@@ -205,7 +205,10 @@ class DiscoverScreen extends React.Component {
   render() {
     const theme = this.context;
     const resultCount = this.state.results.length;
-    const messageText = i18n.t('discover_no_results');
+    const messageText =
+      this.state.term.length === 1
+        ? i18n.t('discover_no_results_one_character')
+        : i18n.t('discover_no_results');
 
     const emptyResult = (
       <ScrollView keyboardShouldPersistTaps="handled">

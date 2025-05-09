@@ -129,10 +129,19 @@ class AddSiteScreen extends React.Component {
 
   render() {
     const theme = this.context;
-    const messageText =
-      this.state.term !== ''
-        ? i18n.t('single_site_no_results')
-        : i18n.t('single_site_blank_screen');
+    let messageText;
+
+    switch (this.state.term.length) {
+      case 0:
+        messageText = i18n.t('single_site_blank_screen');
+        break;
+      case 1:
+        messageText = i18n.t('single_site_one_character');
+        break;
+      default:
+        messageText = i18n.t('single_site_no_results');
+        break;
+    }
 
     const emptyResult = (
       <ScrollView>
