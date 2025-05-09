@@ -6,7 +6,6 @@ import React, {useContext} from 'react';
 import {
   Dimensions,
   Linking,
-  Keyboard,
   StyleSheet,
   Text,
   TextInput,
@@ -42,7 +41,6 @@ const TermBar = props => {
       underlayColor={theme.background}
       onPress={() => {
         props.handleChangeText('');
-        Keyboard.dismiss();
       }}>
       <Text style={{color: theme.blueUnread}}>{i18n.t('clear')}</Text>
     </TouchableHighlight>
