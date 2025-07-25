@@ -59,10 +59,12 @@
   "discover": "Découvrir",
   "home": "Accueil",
   "back": "Retour",
+  "site_added": "🎉 Site ajouté à l'écran d'accueil !",
   "enable_notifications": "Appuyez ici pour activer les notifications",
   "browser_toggle_label": "Ouvrir les sites avec un navigateur intégré à l'application",
   "browser_toggle_description": "Lorsque ce paramètre est désactivé, les sites seront lancés via le navigateur de votre choix, y compris les PWA",
   "discover_no_results": "Aucun site n'a été trouvé. Vous pouvez également saisir le domaine complet d'une communauté Discourse et l'ajouter !",
+  "discover_no_results_one_character": "Ajoutez quelques caractères supplémentaires pour rechercher une communauté.",
   "discover_reset": "Tout afficher",
   "discover_all": "tout",
   "discover_tech": "technologie",
@@ -83,6 +85,11 @@
   "add_site_home_screen": "Ajouter à l'écran d'accueil ?",
   "add_site_home_screen_description": "La connexion n'est possible qu'après avoir ajouté cette communauté à l'écran d'accueil. Ajoutez-la maintenant pour profiter d'un accès plus facile, des notifications et plus encore.",
   "single_site_no_results": "Aucun site trouvé avec ce domaine. Veuillez vérifier l'URL et réessayer.",
+  "single_site_one_character": "Ajoutez quelques caractères supplémentaires pour rechercher une communauté.",
+  "single_site_blank_screen": "Ajoutez des communautés Discourse à cette application en saisissant leur URL dans la zone ci-dessus.",
   "no_connected_sites": "Vous n'avez aucun site connecté sur votre écran d'accueil. Une fois que vous avez connecté un ou plusieurs sites, vous verrez leurs notifications ici.",
-  "hot_topics": "Sujets populaires"
+  "hot_topics": "Sujets populaires",
+  "sites": "Sites",
+  "find_new_communities": "Cherchez de nouvelles communautés à rejoindre",
+  "no_hot_topics": "Aucun sujet populaire n'a été trouvé pour ce site."
 }

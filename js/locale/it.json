@@ -59,10 +59,12 @@
   "discover": "Scopri",
   "home": "Home",
   "back": "Indietro",
+  "site_added": "🎉 Sito aggiunto alla schermata Home!",
   "enable_notifications": "Tocca qui per abilitare le notifiche",
   "browser_toggle_label": "Apri siti con browser in-app",
   "browser_toggle_description": "Quando questa impostazione è disabilitata, i siti verranno avviati tramite il browser preferito, incluse le PWA",
   "discover_no_results": "Nessun sito trovato. Puoi anche inserire il dominio completo di una community di Discourse per aggiungerla!",
+  "discover_no_results_one_character": "Aggiungi ancora qualche carattere per poter cercare una community.",
   "discover_reset": "Mostra tutto",
   "discover_all": "tutte",
   "discover_tech": "tecnologia",
@@ -83,6 +85,11 @@
   "add_site_home_screen": "Aggiungere alla schermata Home?",
   "add_site_home_screen_description": "L'accesso è supportato solo dopo aver aggiunto questa community alla schermata Home. Aggiungila subito per un accesso più semplice, notifiche e altro.",
   "single_site_no_results": "Nessun sito trovato con quel dominio. Controlla l'URL e riprova.",
+  "single_site_one_character": "Aggiungi ancora qualche carattere per poter cercare una community.",
+  "single_site_blank_screen": "Aggiungi le community Discourse all'app digitando il loro URL nel campo qui sopra.",
   "no_connected_sites": "Non sono presenti siti collegati nella schermata Home. Una volta effettuata la connessione a uno o più siti, vedrai le relative notifiche qui.",
-  "hot_topics": "Argomenti popolari"
+  "hot_topics": "Argomenti popolari",
+  "sites": "Siti",
+  "find_new_communities": "Trova nuove comunità a cui iscriverti",
+  "no_hot_topics": "Nessun argomento popolare trovato su questo sito."
 }
