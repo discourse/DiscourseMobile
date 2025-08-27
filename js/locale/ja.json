@@ -55,10 +55,12 @@
   "discover": "発見",
   "home": "ホーム",
   "back": "戻る",
+  "site_added": "🎉 サイトがホーム画面に追加されました！",
   "enable_notifications": "通知を有効にするにはここをタップ",
   "browser_toggle_label": "アプリ内ブラウザでサイトを開く",
   "browser_toggle_description": "この設定を無効にすると、サイトは PWA を含む任意のブラウザで起動します。",
   "discover_no_results": "サイトが見つかりません。Discourse コミュニティーの完全なドメインを入力して追加することもできます！",
+  "discover_no_results_one_character": "さらに数文字追加してコミュニティーを検索してください。",
   "discover_reset": "すべて表示",
   "discover_all": "すべて",
   "discover_tech": "テクノロジー",
@@ -79,6 +81,11 @@
   "add_site_home_screen": "ホーム画面に追加しますか？",
   "add_site_home_screen_description": "ログインは、このコミュニティーをホーム画面に追加した後にのみサポートされます。簡単にアクセスしたり通知を受け取ったりできるように、今すぐ追加しましょう。",
   "single_site_no_results": "そのドメインのサイトは見つかりません。URL を確認してもう一度お試しください。",
+  "single_site_one_character": "さらに数文字追加してコミュニティーを検索してください。",
+  "single_site_blank_screen": "上記の入力欄に Discourse コミュニティーの URL を入力してコミュニティーを追加してください。",
   "no_connected_sites": "ホーム画面には接続されたサイトがありません。1 つ以上のサイトを接続すると、ここにその通知が表示されるようになります。",
-  "hot_topics": "ホットなトピック"
+  "hot_topics": "ホットなトピック",
+  "sites": "サイト",
+  "find_new_communities": "参加できる新しいコミュニティーを探す",
+  "no_hot_topics": "このサイトにはホットなトピックがありません。"
 }

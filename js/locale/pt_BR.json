@@ -59,10 +59,12 @@
   "discover": "Descoberta",
   "home": "Início",
   "back": "Voltar",
+  "site_added": "🎉 Site adicionado à tela inicial!",
   "enable_notifications": "Toque aqui para ativar notificações",
   "browser_toggle_label": "Abrir sites com navegador no aplicativo",
   "browser_toggle_description": "Quando essa configuração estiver desativada, os sites serão lançados por meio do navegador de sua escolha, incluindo PWAs",
   "discover_no_results": "Nenhum site encontrado. Você também pode inserir o domínio completo de uma comunidade do Discourse e adicioná-la!",
+  "discover_no_results_one_character": "Adicione mais alguns caracteres para pesquisar uma comunidade.",
   "discover_reset": "Exibir tudo",
   "discover_all": "tudo",
   "discover_tech": "tecnologia",
@@ -83,6 +85,11 @@
   "add_site_home_screen": "Adicionar à tela inicial?",
   "add_site_home_screen_description": "Será possível fazer login somente depois que esta comunidade for adicionada à tela inicial. Faça isso agora para ter acesso facilitado, receber notificações e muito mais.",
   "single_site_no_results": "Nenhum site encontrado com esse domínio. Confira a URL e tente novamente.",
+  "single_site_one_character": "Adicione mais alguns caracteres para pesquisar uma comunidade.",
+  "single_site_blank_screen": "Insira a URL do aplicativo na entrada acima para adicionar as comunidades do Discourse a este aplicativo.",
   "no_connected_sites": "Você não tem nenhum site conectado na sua página inicial. Ao conectar pelo menos um site, as notificações dele serão exibidas aqui.",
-  "hot_topics": "Tópicos em alta"
+  "hot_topics": "Tópicos em alta",
+  "sites": "Sites",
+  "find_new_communities": "Encontre comunidades novas para participar",
+  "no_hot_topics": "Nenhum tópico em alta encontrado para este site."
 }
