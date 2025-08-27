@@ -59,10 +59,12 @@
   "discover": "Keşfedin",
   "home": "Ana Sayfa",
   "back": "Geri",
+  "site_added": "🎉 Site Ana ekrana eklendi!",
   "enable_notifications": "Bildirimleri etkinleştirmek için buraya dokunun",
   "browser_toggle_label": "Siteleri uygulama içi tarayıcıyla açın",
   "browser_toggle_description": "Bu ayar devre dışı bırakıldığında, siteler PWA'lar da dâhil olmak üzere tercih ettiğiniz tarayıcı üzerinden başlatılır",
   "discover_no_results": "Site bulunamadı. Ayrıca bir Discourse topluluğunun tam alan alanına girip ekleyebilirsiniz!",
+  "discover_no_results_one_character": "Bir topluluğu aramak için birkaç karakter daha ekleyin.",
   "discover_reset": "Tümünü göster",
   "discover_all": "tümü",
   "discover_tech": "teknoloji",
@@ -83,6 +85,11 @@
   "add_site_home_screen": "Ana ekrana eklensin mi?",
   "add_site_home_screen_description": "Giriş yalnızca bu topluluk Ana ekrana eklendikten sonra desteklenir. Daha kolay erişim, bildirimler ve daha fazlası için hemen ekleyin.",
   "single_site_no_results": "Bu alan adına sahip site bulunamadı. Lütfen URL'yi kontrol edin ve tekrar deneyin.",
+  "single_site_one_character": "Bir topluluğu aramak için birkaç karakter daha ekleyin.",
+  "single_site_blank_screen": "Yukarıdaki girdiye URL'lerini yazarak Discourse topluluklarını bu uygulamaya ekleyin.",
   "no_connected_sites": "Ana Sayfa ekranınızda bağlı siteniz yok. Bir veya daha fazla siteyi bağladığınızda bildirimlerini burada görürsünüz.",
-  "hot_topics": "Popüler konular"
+  "hot_topics": "Gündem konuları",
+  "sites": "Siteler",
+  "find_new_communities": "Katılmak için yeni topluluklar bulun",
+  "no_hot_topics": "Bu site için gündem konusu bulunamadı."
 }
