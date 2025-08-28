@@ -29,7 +29,6 @@ import SafariView from 'react-native-safari-view';
 import DeviceInfo from 'react-native-device-info';
 import firebaseMessaging from './platforms/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import RootViewBackgroundColor from 'react-native-root-view-background-color';
 import {CustomTabs} from 'react-native-custom-tabs';
 import i18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
@@ -191,11 +190,8 @@ class Discourse extends React.Component {
       theme: colorScheme === 'dark' ? themes.dark : themes.light,
     };
 
-    this.setRootBackground(colorScheme);
-
     this.subscription = Appearance.addChangeListener(() => {
       const newColorScheme = Appearance.getColorScheme();
-      this.setRootBackground(newColorScheme);
       this.setState({
         theme: newColorScheme === 'dark' ? themes.dark : themes.light,
       });
@@ -213,18 +209,6 @@ class Discourse extends React.Component {
           });
         },
       );
-    }
-  }
-
-  setRootBackground(colorScheme) {
-    if (Platform.OS === 'android') {
-      return;
-    }
-
-    if (colorScheme === 'dark') {
-      RootViewBackgroundColor.setBackground(0, 0, 0, 1);
-    } else {
-      RootViewBackgroundColor.setBackground(255, 255, 255, 1);
     }
   }
 

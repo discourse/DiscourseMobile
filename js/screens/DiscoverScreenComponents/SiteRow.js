@@ -1,13 +1,14 @@
 /* @flow */
 'use strict';
 
-import React, {useContext} from 'react';
-import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {useContext} from 'react';
+import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ThemeContext} from '../../ThemeContext';
 import {decode} from 'html-entities';
 import i18n from 'i18n-js';
+import SiteLogo from '../CommonComponents/SiteLogo';
 
 const SiteRow = props => {
   const theme = useContext(ThemeContext);
@@ -26,10 +27,10 @@ const SiteRow = props => {
     iconBgColor = '#333333';
   }
 
-  const iconPath =
+  let logoImage =
     iconUrl && !iconUrl.endsWith('.webp') && !iconUrl.endsWith('.svg')
       ? {uri: iconUrl}
-      : require('../../../img/nav-icon-gray.png');
+      : false;
 
   const siteAddIcon = props.inLocalList ? 'check' : 'plus';
   const siteAddColor = props.inLocalList
@@ -66,11 +67,7 @@ const SiteRow = props => {
           onPress={() => props.loadSite(props.site.featured_link)}>
           <View style={{flexDirection: 'row'}}>
             <View style={styles.iconWrapper}>
-              <Image
-                style={{...styles.icon, backgroundColor: iconBgColor}}
-                source={iconPath}
-                resizeMode="contain"
-              />
+              <SiteLogo logoImage={logoImage} title={props.site.title} />
             </View>
             <View style={styles.info}>
               <Text

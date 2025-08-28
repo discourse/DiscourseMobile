@@ -17,6 +17,7 @@ import {donateShortcut} from 'react-native-siri-shortcut';
 import {BottomTabBarHeightContext} from '@react-navigation/bottom-tabs';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import DragList from 'react-native-draglist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -34,6 +35,8 @@ class HomeScreen extends React.Component {
       authProcessActive: false,
       showTopicList: false,
       selectedTabIndex: 0,
+      hotTopicsHidden: false,
+      siteURLsHidden: false,
     };
 
     this._onChangeSites = e => this.onChangeSites(e);
@@ -110,10 +113,17 @@ class HomeScreen extends React.Component {
   componentDidMount() {
     this._siteManager.subscribe(this._onChangeSites);
     this._onChangeSites();
+    this.navigationUnsubscribe = this.props.navigation.addListener(
+      'focus',
+      () => {
+        this._refreshStoredSettings();
+      },
+    );
   }
 
   componentWillUnmount() {
     this._siteManager.unsubscribe(this._onChangeSites);
+    this.navigationUnsubscribe();
   }
 
   onChangeSites(e) {
@@ -121,7 +131,11 @@ class HomeScreen extends React.Component {
       this.setState({loadingSites: this._siteManager.isLoading()});
     }
     if (e && e.event) {
-      this.setState({data: this._siteManager.listSites()});
+      this.setState({
+        data: this._siteManager.listSites(),
+        hotTopicsHidden: this._siteManager.hotTopicsHidden,
+        siteURLsHidden: this._siteManager.siteURLsHidden,
+      });
     }
   }
 
@@ -158,6 +172,10 @@ class HomeScreen extends React.Component {
   }
 
   _renderTopicListToggle() {
+    if (this.state.hotTopicsHidden) {
+      return;
+    }
+
     const theme = this.context;
 
     const publicSiteCount = this._siteManager.sites.filter(
@@ -189,6 +207,7 @@ class HomeScreen extends React.Component {
       );
     }
   }
+
   _renderItem(info) {
     const {item, onDragStart, onDragEnd} = info;
 
@@ -204,6 +223,7 @@ class HomeScreen extends React.Component {
         onPressOut={onDragEnd}
         keyExtractor={() => `site-row-${item.url}`}
         showTopicList={this.state.showTopicList}
+        showSiteAddress={!this.state.siteURLsHidden}
       />
     );
   }
@@ -268,6 +288,25 @@ class HomeScreen extends React.Component {
 
   onDidPressPlusIcon() {
     this.props.navigation.navigate('AddSite');
+  }
+
+  _refreshStoredSettings() {
+    AsyncStorage.getItem('@Discourse.hideHotTopics').then(val => {
+      this.setState({
+        hotTopicsHidden: val,
+      });
+      if (val) {
+        this.setState({
+          showTopicList: false,
+          selectedTabIndex: 0,
+        });
+      }
+    });
+    AsyncStorage.getItem('@Discourse.hideHomeSiteUrls').then(val => {
+      this.setState({
+        siteURLsHidden: Boolean(val),
+      });
+    });
   }
 
   render() {

@@ -18,10 +18,11 @@ import i18n from 'i18n-js';
 class SettingsScreen extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       progress: 0,
       androidCustomTabs: false,
+      hotTopicsHidden: false,
+      homeSiteUrlsHidden: false,
     };
 
     AsyncStorage.getItem('@Discourse.androidCustomTabs').then(val => {
@@ -30,8 +31,22 @@ class SettingsScreen extends React.Component {
       });
     });
 
+    AsyncStorage.getItem('@Discourse.hideHotTopics').then(val => {
+      this.setState({
+        hotTopicsHidden: val ? true : false,
+      });
+    });
+
+    AsyncStorage.getItem('@Discourse.hideHomeSiteUrls').then(val => {
+      this.setState({
+        homeSiteUrlsHidden: val ? true : false,
+      });
+    });
+
     this.toggleAndroidCustomTabs = this.toggleAndroidCustomTabs.bind(this);
     this.toggleDarkMode = this.toggleDarkMode.bind(this);
+    this.hideHotTopics = this.hideHotTopics.bind(this);
+    this.hideHomeSiteUrls = this.hideHomeSiteUrls.bind(this);
   }
 
   render() {
@@ -64,32 +79,83 @@ class SettingsScreen extends React.Component {
     });
   }
 
+  hideHotTopics() {
+    AsyncStorage.getItem('@Discourse.hideHotTopics').then(val => {
+      if (!val) {
+        AsyncStorage.setItem('@Discourse.hideHotTopics', 'true');
+        this.setState({hotTopicsHidden: true});
+      } else {
+        AsyncStorage.removeItem('@Discourse.hideHotTopics');
+        this.setState({hotTopicsHidden: false});
+      }
+    });
+  }
+
+  hideHomeSiteUrls() {
+    AsyncStorage.getItem('@Discourse.hideHomeSiteUrls').then(val => {
+      if (!val) {
+        AsyncStorage.setItem('@Discourse.hideHomeSiteUrls', 'true');
+        this.setState({homeSiteUrlsHidden: true});
+      } else {
+        AsyncStorage.removeItem('@Discourse.hideHomeSiteUrls');
+        this.setState({homeSiteUrlsHidden: false});
+      }
+    });
+  }
+
   _renderSettings() {
     const theme = this.context;
     const isDark = !!(theme.background !== '#FFFFFF');
     return (
-      <View style={styles.container}>
-        <View style={styles.settingItem}>
-          <Text style={{...styles.text, color: theme.grayTitle}}>
-            {i18n.t('browser_toggle_label')}
-          </Text>
-          <Switch
-            onValueChange={this.toggleAndroidCustomTabs}
-            value={this.state.androidCustomTabs}
-          />
-          <Text style={{...styles.desc, color: theme.grayTitle}}>
-            {i18n.t('browser_toggle_description')}
+      <View
+        style={{...styles.container, backgroundColor: theme.grayBackground}}>
+        <View>
+          <Text style={{...styles.settingHeading, color: theme.graySubtitle}}>
+            {i18n.t('home_layout_heading')}
           </Text>
         </View>
+        <View style={styles.settingItem}>
+          <Text style={{...styles.text, color: theme.grayTitle}}>
+            {i18n.t('disable_hot_topics_toggle_label')}
+          </Text>
+          <Switch
+            onValueChange={this.hideHotTopics}
+            value={this.state.hotTopicsHidden}
+          />
+        </View>
+        <View style={styles.settingItem}>
+          <Text style={{...styles.text, color: theme.grayTitle}}>
+            {i18n.t('disable_home_site_urls_toggle_label')}
+          </Text>
+          <Switch
+            onValueChange={this.hideHomeSiteUrls}
+            value={this.state.homeSiteUrlsHidden}
+          />
+        </View>
+        {Platform.OS === 'android' && (
+          <View>
+            <Text style={{...styles.settingHeading, color: theme.graySubtitle}}>
+              {i18n.t('other_heading')}
+            </Text>
+          </View>
+        )}
+        {Platform.OS === 'android' && (
+          <View style={styles.settingItem}>
+            <Text style={{...styles.text, color: theme.grayTitle}}>
+              {i18n.t('browser_toggle_label')}
+            </Text>
+            <Switch
+              onValueChange={this.toggleAndroidCustomTabs}
+              value={this.state.androidCustomTabs}
+            />
+          </View>
+        )}
         {Platform.OS === 'android' && Platform.Version < 29 && (
           <View style={styles.settingItem}>
             <Text style={{...styles.text, color: theme.grayTitle}}>
               {i18n.t('switch_dark')}
             </Text>
             <Switch onValueChange={this.toggleDarkMode} value={isDark} />
-            <Text style={{...styles.desc, color: theme.grayTitle}}>
-              {i18n.t('browser_toggle_description')}
-            </Text>
           </View>
         )}
       </View>
@@ -102,27 +168,35 @@ SettingsScreen.contextType = ThemeContext;
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: 'transparent',
     justifyContent: 'center',
-    flex: 5,
+    flex: 1,
   },
   settingItem: {
     alignItems: 'center',
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
-    marginBottom: 20,
+    backgroundColor: 'white',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    margin: 10,
+    padding: 10,
+    borderRadius: 10,
+    width: '95%',
   },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     padding: 12,
-    paddingBottom: 24,
     textAlign: 'center',
   },
-  desc: {
+  settingHeading: {
     fontSize: 16,
+    fontWeight: 'bold',
     padding: 12,
     paddingTop: 24,
     textAlign: 'center',
+  },
+  desc: {
+    fontSize: 15,
+    padding: 10,
+    paddingTop: 4,
   },
 });
 
