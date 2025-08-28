@@ -59,10 +59,12 @@
   "discover": "Ontdekken",
   "home": "Start",
   "back": "Vorige",
+  "site_added": "🎉 Site toegevoegd aan het startscherm!",
   "enable_notifications": "Tik hier om meldingen in te schakelen",
   "browser_toggle_label": "Sites openen met in-app browser",
   "browser_toggle_description": "Als deze instelling is uitgeschakeld, worden sites geopend in de browser van je keuze, inclusief PWA's",
   "discover_no_results": "Geen sites gevonden. Je kunt ook het volledige domein van een Discourse-community invoeren en toevoegen!",
+  "discover_no_results_one_character": "Voeg nog een paar tekens toe om naar een community te zoeken.",
   "discover_reset": "Alles weergeven",
   "discover_all": "alles",
   "discover_tech": "technologie",
@@ -83,6 +85,11 @@
   "add_site_home_screen": "Toevoegen aan startscherm?",
   "add_site_home_screen_description": "Aanmelden wordt alleen ondersteund nadat deze community aan het startscherm is toegevoegd. Voeg de community nu toe voor eenvoudigere toegang, meldingen en meer.",
   "single_site_no_results": "Geen site gevonden met dat domein. Controleer de URL en probeer het opnieuw.",
+  "single_site_one_character": "Voeg nog een paar tekens toe om naar een community te zoeken.",
+  "single_site_blank_screen": "Voeg Discourse-community's toe aan deze app door hun URL in het invoerveld hierboven te typen.",
   "no_connected_sites": "Je hebt geen verbonden sites op je startscherm. Wanneer je verbinding hebt gemaakt met een of meer sites, worden meldingen ervan hier weergegeven.",
-  "hot_topics": "Populaire topics"
+  "hot_topics": "Populaire topics",
+  "sites": "Sites",
+  "find_new_communities": "Vind nieuwe community's om lid van te worden",
+  "no_hot_topics": "Er zijn geen populaire topics gevonden voor deze site."
 }
