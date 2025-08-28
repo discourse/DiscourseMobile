@@ -24,6 +24,8 @@ class SiteManager {
   customScheme = 'discourse';
   urlScheme = 'discourse://auth_redirect';
   deviceName = 'Discourse - Unknown Mobile Device';
+  hotTopicsHidden = false;
+  siteURLsHidden = false;
 
   constructor() {
     this.load();
@@ -168,9 +170,17 @@ class SiteManager {
   }
 
   load() {
+    this._loading = true;
     // generate RSA Keys on load, they'll be needed
     this.ensureRSAKeys();
-    this._loading = true;
+
+    AsyncStorage.getItem('@Discourse.hideHotTopics').then(val => {
+      this.hotTopicsHidden = val;
+    });
+
+    AsyncStorage.getItem('@Discourse.hideHomeSiteUrls').then(val => {
+      this.siteURLsHidden = Boolean(val);
+    });
 
     AsyncStorage.getItem('@Discourse.sites')
       .then(json => {

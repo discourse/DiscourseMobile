@@ -117,20 +117,21 @@ const TopicList = props => {
                   .slice(0, numberOfTopics),
               );
             }
-            setLoadCompleted(true);
           })
           .catch(e => {
-            console.log(e);
-            setLoadCompleted(true);
+            console.log('Error fetching listQuery:', e);
           });
       })
       .catch(e => {
-        console.log(e);
+        console.log('Error fetching siteQuery:', e);
+      })
+      .finally(() => {
+        setLoadCompleted(true);
       });
   }
 
   function _renderItems() {
-    if (topics.length === 0) {
+    if (topics && topics.length === 0) {
       return (
         <View style={styles.itemsContainer}>
           <Text style={{...styles.emmptyItemsText, color: theme.grayTitle}}>

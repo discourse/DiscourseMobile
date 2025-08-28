@@ -1,10 +1,9 @@
 /* @flow */
 'use strict';
 
-import React, {useContext, useRef} from 'react';
+import {useContext, useRef} from 'react';
 import {
   Dimensions,
-  Image,
   StyleSheet,
   Text,
   TouchableHighlight,
@@ -16,6 +15,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ThemeContext} from '../../ThemeContext';
 import i18n from 'i18n-js';
 import TopicList from './TopicList';
+import SiteLogo from '../CommonComponents/SiteLogo';
 
 const SWIPE_BUTTON_WIDTH = 70;
 
@@ -29,10 +29,10 @@ export default function SiteRow(props) {
   const lastVisitedThreshold = milliseconds(24, 0, 0);
   let swipeRowRef = useRef(0);
 
-  let iconPath =
+  let logoImage =
     iconUrl && !iconUrl.endsWith('.webp') && !iconUrl.endsWith('.svg')
       ? {uri: iconUrl}
-      : require('../../../img/nav-icon-gray.png');
+      : false;
 
   const _renderNotifications = () => {
     if (!props.site.authToken) {
@@ -202,6 +202,9 @@ export default function SiteRow(props) {
     return;
   }
 
+  const showSiteAddress =
+    showTopicList || (props.showSiteAddress && !alreadyAuthed);
+
   return (
     <SwipeRow
       ref={swipeRowRef}
@@ -307,7 +310,7 @@ export default function SiteRow(props) {
           }}
           {...props.sortHandlers}>
           <View accessibilityTraits="link" style={{...styles.row}}>
-            <Image style={styles.icon} source={iconPath} resizeMode="contain" />
+            <SiteLogo logoImage={logoImage} title={props.site.title} />
             <View style={styles.info}>
               <View style={styles.titleAndBadges}>
                 <View style={styles.titleParent}>
@@ -317,12 +320,14 @@ export default function SiteRow(props) {
                     style={{...styles.title, color: theme.grayTitle}}>
                     {props.site.title}
                   </Text>
-                  <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                    style={{...styles.url, color: theme.graySubtitle}}>
-                    {props.site.url.replace(/^https?:\/\//, '')}
-                  </Text>
+                  {showSiteAddress && (
+                    <Text
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      style={{...styles.url, color: theme.graySubtitle}}>
+                      {props.site.url.replace(/^https?:\/\//, '')}
+                    </Text>
+                  )}
                 </View>
                 {!showTopicList && _renderNotifications()}
                 {hasPrimaryConnectButton && !showTopicList && _renderConnect()}
@@ -390,24 +395,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
   },
-  icon: {
-    alignSelf: 'flex-start',
-    height: 40,
-    width: 40,
-    marginTop: 2,
-    borderRadius: 10,
-    marginHorizontal: 4,
-  },
   info: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'flex-start',
+    justifyContent: 'center',
     paddingLeft: 8,
   },
   titleAndBadges: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'space-between',
     flexBasis: 'auto',
     flexGrow: 0,
@@ -442,6 +440,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-end',
+    alignSelf: 'center',
     paddingLeft: 12,
     maxWidth: '50%',
   },
@@ -453,7 +452,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     marginLeft: 6,
-    marginBottom: 6,
     overflow: 'hidden',
     padding: 6,
     borderRadius: 6,
