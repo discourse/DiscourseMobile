@@ -17,6 +17,10 @@ const NavigationBar = props => {
   const discourseUrl = 'https://www.discourse.org';
 
   const renderCogButton = () => {
+    if (Platform.OS !== 'android') {
+      return;
+    }
+
     return (
       <TouchableHighlight
         style={{...styles.androidSettingsButton}}

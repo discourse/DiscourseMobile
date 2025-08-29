@@ -15,138 +15,51 @@ import {
 import {ThemeContext} from '../ThemeContext';
 import i18n from 'i18n-js';
 
-class SettingsScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      progress: 0,
-      androidCustomTabs: false,
-      hotTopicsHidden: false,
-      homeSiteUrlsHidden: false,
-    };
+const SettingsScreen = props => {
+  const [androidCustomTabs, setAndroidCustomTabs] = React.useState(false);
+  const theme = React.useContext(ThemeContext);
 
+  React.useEffect(() => {
     AsyncStorage.getItem('@Discourse.androidCustomTabs').then(val => {
-      this.setState({
-        androidCustomTabs: val ? true : false,
-      });
+      setAndroidCustomTabs(val ? true : false);
     });
+  }, []);
 
-    AsyncStorage.getItem('@Discourse.hideHotTopics').then(val => {
-      this.setState({
-        hotTopicsHidden: val ? true : false,
-      });
-    });
-
-    AsyncStorage.getItem('@Discourse.hideHomeSiteUrls').then(val => {
-      this.setState({
-        homeSiteUrlsHidden: val ? true : false,
-      });
-    });
-
-    this.toggleAndroidCustomTabs = this.toggleAndroidCustomTabs.bind(this);
-    this.toggleDarkMode = this.toggleDarkMode.bind(this);
-    this.hideHotTopics = this.hideHotTopics.bind(this);
-    this.hideHomeSiteUrls = this.hideHomeSiteUrls.bind(this);
-  }
-
-  render() {
-    const theme = this.context;
-    return (
-      <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
-        {this._renderSettings()}
-      </SafeAreaView>
-    );
-  }
-
-  toggleAndroidCustomTabs() {
+  const toggleAndroidCustomTabs = () => {
     AsyncStorage.getItem('@Discourse.androidCustomTabs').then(val => {
       if (!val) {
         AsyncStorage.setItem('@Discourse.androidCustomTabs', 'true');
-        this.setState({androidCustomTabs: true});
+        setAndroidCustomTabs(true);
       } else {
         AsyncStorage.removeItem('@Discourse.androidCustomTabs');
-        this.setState({androidCustomTabs: false});
+        setAndroidCustomTabs(false);
       }
     });
-  }
+  };
 
-  toggleDarkMode() {
-    const theme = this.context;
+  // TODO: Remove this, it is a feature for Android version < 29
+  const toggleDarkMode = () => {
     const newTheme = theme.background === '#FFFFFF' ? 'dark' : 'light';
 
     AsyncStorage.setItem('@Discourse.androidLegacyTheme', newTheme).then(() => {
-      this.props.screenProps.toggleTheme(newTheme);
+      props.screenProps.toggleTheme(newTheme);
     });
-  }
+  };
 
-  hideHotTopics() {
-    AsyncStorage.getItem('@Discourse.hideHotTopics').then(val => {
-      if (!val) {
-        AsyncStorage.setItem('@Discourse.hideHotTopics', 'true');
-        this.setState({hotTopicsHidden: true});
-      } else {
-        AsyncStorage.removeItem('@Discourse.hideHotTopics');
-        this.setState({hotTopicsHidden: false});
-      }
-    });
-  }
+  const isDark = !!(theme.background !== '#FFFFFF');
 
-  hideHomeSiteUrls() {
-    AsyncStorage.getItem('@Discourse.hideHomeSiteUrls').then(val => {
-      if (!val) {
-        AsyncStorage.setItem('@Discourse.hideHomeSiteUrls', 'true');
-        this.setState({homeSiteUrlsHidden: true});
-      } else {
-        AsyncStorage.removeItem('@Discourse.hideHomeSiteUrls');
-        this.setState({homeSiteUrlsHidden: false});
-      }
-    });
-  }
-
-  _renderSettings() {
-    const theme = this.context;
-    const isDark = !!(theme.background !== '#FFFFFF');
-    return (
+  return (
+    <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
       <View
         style={{...styles.container, backgroundColor: theme.grayBackground}}>
-        <View>
-          <Text style={{...styles.settingHeading, color: theme.graySubtitle}}>
-            {i18n.t('home_layout_heading')}
-          </Text>
-        </View>
-        <View style={styles.settingItem}>
-          <Text style={{...styles.text, color: theme.grayTitle}}>
-            {i18n.t('disable_hot_topics_toggle_label')}
-          </Text>
-          <Switch
-            onValueChange={this.hideHotTopics}
-            value={this.state.hotTopicsHidden}
-          />
-        </View>
-        <View style={styles.settingItem}>
-          <Text style={{...styles.text, color: theme.grayTitle}}>
-            {i18n.t('disable_home_site_urls_toggle_label')}
-          </Text>
-          <Switch
-            onValueChange={this.hideHomeSiteUrls}
-            value={this.state.homeSiteUrlsHidden}
-          />
-        </View>
-        {Platform.OS === 'android' && (
-          <View>
-            <Text style={{...styles.settingHeading, color: theme.graySubtitle}}>
-              {i18n.t('other_heading')}
-            </Text>
-          </View>
-        )}
         {Platform.OS === 'android' && (
           <View style={styles.settingItem}>
             <Text style={{...styles.text, color: theme.grayTitle}}>
               {i18n.t('browser_toggle_label')}
             </Text>
             <Switch
-              onValueChange={this.toggleAndroidCustomTabs}
-              value={this.state.androidCustomTabs}
+              onValueChange={toggleAndroidCustomTabs}
+              value={androidCustomTabs}
             />
           </View>
         )}
@@ -155,15 +68,13 @@ class SettingsScreen extends React.Component {
             <Text style={{...styles.text, color: theme.grayTitle}}>
               {i18n.t('switch_dark')}
             </Text>
-            <Switch onValueChange={this.toggleDarkMode} value={isDark} />
+            <Switch onValueChange={toggleDarkMode} value={isDark} />
           </View>
         )}
       </View>
-    );
-  }
-}
-
-SettingsScreen.contextType = ThemeContext;
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

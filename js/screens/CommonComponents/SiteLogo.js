@@ -37,8 +37,8 @@ const SiteLogo = props => {
           alignSelf: 'flex-start',
           justifyContent: 'center',
           alignItems: 'center',
-          height: 40,
-          width: 40,
+          height: 42,
+          width: 42,
           marginTop: 2,
           borderRadius: 10,
           marginHorizontal: 4,
@@ -47,8 +47,8 @@ const SiteLogo = props => {
         <Text
           style={{
             color: pickColor(props.title, true),
-            fontSize: 20,
-            fontWeight: '800',
+            fontSize: 26,
+            fontWeight: '700',
           }}>
           {props.title[0]}
         </Text>
@@ -60,8 +60,8 @@ const SiteLogo = props => {
     <Image
       style={{
         alignSelf: 'flex-start',
-        height: 40,
-        width: 40,
+        height: 42,
+        width: 42,
         marginTop: 2,
         borderRadius: 10,
         marginHorizontal: 4,

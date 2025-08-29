@@ -111,6 +111,7 @@ const TopicList = props => {
           .then(json => {
             const jsonTopics = json.topic_list.topics;
             if (jsonTopics) {
+              setLoadCompleted(true);
               setTopics(
                 jsonTopics
                   .filter(o => o.pinned === false)
@@ -119,14 +120,13 @@ const TopicList = props => {
             }
           })
           .catch(e => {
+            setLoadCompleted(true);
             console.log('Error fetching listQuery:', e);
           });
       })
       .catch(e => {
-        console.log('Error fetching siteQuery:', e);
-      })
-      .finally(() => {
         setLoadCompleted(true);
+        console.log('Error fetching siteQuery:', e);
       });
   }
 
