@@ -23,6 +23,7 @@ const TopicList = props => {
   const endpoint = '/hot';
   const siteQuery = `${props.site.url}/site.json`;
   const listQuery = `${props.site.url}${endpoint}.json`;
+
   const numberOfTopics = 10;
 
   const styles = StyleSheet.create({
@@ -210,9 +211,10 @@ const TopicList = props => {
     return (
       <TouchableHighlight
         onPress={() => _openTopic(item)}
-        underlayColor={theme.grayBackground}>
-        <View
-          style={{...styles[styleKey], borderBottomColor: theme.grayBorder}}>
+        underlayColor={theme.background}
+        activeOpacity={0.6}
+        style={{...styles[styleKey], borderBottomColor: theme.grayBorder}}>
+        <View>
           <View>
             <Text style={{...styles.topicTitle, color: theme.grayTitle}}>
               {item.unicode_title || item.title}
