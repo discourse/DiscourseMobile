@@ -17,7 +17,6 @@ import {donateShortcut} from 'react-native-siri-shortcut';
 import {BottomTabBarHeightContext} from '@react-navigation/bottom-tabs';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import DragList from 'react-native-draglist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -113,17 +112,10 @@ class HomeScreen extends React.Component {
   componentDidMount() {
     this._siteManager.subscribe(this._onChangeSites);
     this._onChangeSites();
-    this.navigationUnsubscribe = this.props.navigation.addListener(
-      'focus',
-      () => {
-        this._refreshStoredSettings();
-      },
-    );
   }
 
   componentWillUnmount() {
     this._siteManager.unsubscribe(this._onChangeSites);
-    this.navigationUnsubscribe();
   }
 
   onChangeSites(e) {
@@ -158,19 +150,6 @@ class HomeScreen extends React.Component {
     );
   }
 
-  _renderDebugRow() {
-    if (this._siteManager.sites.length !== 0) {
-      return (
-        <Components.DebugRow
-          siteManager={this._siteManager}
-          onDidPressAndroidSettingsIcon={() =>
-            this.onDidPressAndroidSettingsIcon()
-          }
-        />
-      );
-    }
-  }
-
   _renderTopicListToggle() {
     if (this.state.hotTopicsHidden) {
       return;
@@ -201,6 +180,9 @@ class HomeScreen extends React.Component {
                 showTopicList: Boolean(index),
                 selectedTabIndex: index,
               });
+              if (this.dragListRef) {
+                this.dragListRef.scrollToOffset({offset: 0, animated: true});
+              }
             }}
           />
         </View>
@@ -290,25 +272,6 @@ class HomeScreen extends React.Component {
     this.props.navigation.navigate('AddSite');
   }
 
-  _refreshStoredSettings() {
-    AsyncStorage.getItem('@Discourse.hideHotTopics').then(val => {
-      this.setState({
-        hotTopicsHidden: val,
-      });
-      if (val) {
-        this.setState({
-          showTopicList: false,
-          selectedTabIndex: 0,
-        });
-      }
-    });
-    AsyncStorage.getItem('@Discourse.hideHomeSiteUrls').then(val => {
-      this.setState({
-        siteURLsHidden: Boolean(val),
-      });
-    });
-  }
-
   render() {
     const theme = this.context;
 
@@ -330,7 +293,6 @@ class HomeScreen extends React.Component {
               },
             ]}>
             {this._renderSites()}
-            {/* {this._renderDebugRow()} */}
           </View>
           {this.state.authProcessActive && (
             <View

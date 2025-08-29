@@ -203,7 +203,11 @@ export default function SiteRow(props) {
   }
 
   const showSiteAddress =
-    showTopicList || (props.showSiteAddress && !alreadyAuthed);
+    showTopicList ||
+    !alreadyAuthed ||
+    (props.site.totalNew === 0 &&
+      props.site.totalUnread === 0 &&
+      (props.site.groupInboxes || props.site.groupInboxes?.length === 0));
 
   return (
     <SwipeRow
@@ -423,12 +427,18 @@ const styles = StyleSheet.create({
     flexGrow: 0,
   },
   url: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: 'normal',
     paddingLeft: 6,
-    paddingTop: 6,
+    marginTop: 6,
     flexBasis: 'auto',
     flexGrow: 0,
+  },
+  shortcuts: {
+    marginTop: 6,
+    flexDirection: 'row',
+    display: 'flex',
+    flexWrap: 'wrap',
   },
   description: {
     flex: 10,
@@ -455,12 +465,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: 6,
     borderRadius: 6,
-  },
-  shortcuts: {
-    marginTop: 6,
-    flexDirection: 'row',
-    display: 'flex',
-    flexWrap: 'wrap',
   },
   countItem: {
     paddingVertical: 3,

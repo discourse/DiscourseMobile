@@ -271,8 +271,6 @@ PODS:
     - React-Core
   - react-native-key-pair (1.1.2):
     - React
-  - react-native-root-view-background-color (1.0.2):
-    - React
   - react-native-safari-view (1.0.0):
     - React
   - react-native-safari-web-auth (2.0.0):
@@ -379,7 +377,7 @@ PODS:
   - RNFlashList (1.7.3):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - RNGestureHandler (2.22.1):
+  - RNGestureHandler (2.18.1):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNLocalize (2.2.6):
@@ -423,7 +421,6 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-key-pair (from `../node_modules/react-native-key-pair`)
-  - react-native-root-view-background-color (from `../node_modules/react-native-root-view-background-color`)
   - react-native-safari-view (from `../node_modules/react-native-safari-view`)
   - react-native-safari-web-auth (from `../node_modules/react-native-safari-web-auth`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -505,8 +502,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/blur"
   react-native-key-pair:
     :path: "../node_modules/react-native-key-pair"
-  react-native-root-view-background-color:
-    :path: "../node_modules/react-native-root-view-background-color"
   react-native-safari-view:
     :path: "../node_modules/react-native-safari-view"
   react-native-safari-web-auth:
@@ -593,7 +588,6 @@ SPEC CHECKSUMS:
   React-logger: e1edee51442163c77f9fdfb4b08c7169cfc22424
   react-native-blur: 4541c56d40f9e4a980e9c10ff37b205c35d3767b
   react-native-key-pair: f69098449fa3f63baac4f4280910d4acb5ec3d89
-  react-native-root-view-background-color: 662cd1d02dc47d39706b522cc85e0054f23de3b1
   react-native-safari-view: 07dc856a2663fef31eaca6beb79b111b8f6cf1f2
   react-native-safari-web-auth: 63e920416493c35c795bae6b70fbda283497705e
   react-native-safe-area-context: 758e894ca5a9bd1868d2a9cfbca7326a2b6bf9dc
@@ -617,7 +611,7 @@ SPEC CHECKSUMS:
   RNCPushNotificationIOS: 6c4ca3388c7434e4a662b92e4dfeeee858e6f440
   RNDeviceInfo: ae26ae45db3f9937f038a284bcd0a1db8d70db96
   RNFlashList: 5c76d81f4975c6e8a3e8142b6e0e7d353668d8b1
-  RNGestureHandler: 1e8bd230189b9e27bc513868a091e3edcccb6055
+  RNGestureHandler: aff7256db65faaf624077051f0cee39c1c1e690d
   RNLocalize: 8bf466de4c92d4721b254aabe1ff0a1456e7b9f4
   RNReanimated: 814dc9d3885d6e3904417a67ba838951c971fb8c
   RNScreens: a568946532d3cabcb7f46fdc0a8dbada3dd5de44

@@ -174,14 +174,6 @@ class SiteManager {
     // generate RSA Keys on load, they'll be needed
     this.ensureRSAKeys();
 
-    AsyncStorage.getItem('@Discourse.hideHotTopics').then(val => {
-      this.hotTopicsHidden = val;
-    });
-
-    AsyncStorage.getItem('@Discourse.hideHomeSiteUrls').then(val => {
-      this.siteURLsHidden = Boolean(val);
-    });
-
     AsyncStorage.getItem('@Discourse.sites')
       .then(json => {
         if (json) {
