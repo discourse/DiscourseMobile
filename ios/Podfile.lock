@@ -279,7 +279,7 @@ PODS:
     - React-Core
   - react-native-segmented-control (2.2.2):
     - React-Core
-  - react-native-webview (13.13.2):
+  - react-native-webview (13.16.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - React-perflogger (0.71.19)
@@ -366,7 +366,7 @@ PODS:
     - React-jsi (= 0.71.19)
     - React-logger (= 0.71.19)
     - React-perflogger (= 0.71.19)
-  - RNBackgroundFetch (4.2.7):
+  - RNBackgroundFetch (4.2.8):
     - React-Core
   - RNCAsyncStorage (1.24.0):
     - React-Core
@@ -374,7 +374,7 @@ PODS:
     - React-Core
   - RNDeviceInfo (13.2.0):
     - React-Core
-  - RNFlashList (1.7.3):
+  - RNFlashList (1.8.3):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNGestureHandler (2.18.1):
@@ -386,7 +386,7 @@ PODS:
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
     - ReactCommon/turbomodule/core
-  - RNScreens (3.35.0):
+  - RNScreens (3.37.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
     - React-RCTImage
@@ -592,7 +592,7 @@ SPEC CHECKSUMS:
   react-native-safari-web-auth: 63e920416493c35c795bae6b70fbda283497705e
   react-native-safe-area-context: 758e894ca5a9bd1868d2a9cfbca7326a2b6bf9dc
   react-native-segmented-control: be570ddc1678933470a39471e0ebd824f23e39a8
-  react-native-webview: 491038485a769cc7d0574c42576f3caf14c6e2f9
+  react-native-webview: 97738780d18a786f76cb160909cf01d0fefa9bc5
   React-perflogger: 0ba097528e325435aca94b32b5330f58f6acb6fb
   React-RCTActionSheet: 805b3a83f3dd7ae5a1213ea9df0ed748eeb74b85
   React-RCTAnimation: 2a0233681dee47e468302b8233652b35b68329cb
@@ -606,15 +606,15 @@ SPEC CHECKSUMS:
   React-RCTVibration: 5b2bfab941e938ee5060acefdd7598077b394975
   React-runtimeexecutor: b9be1f58ce9a8b849cb8a37dd998f04ca97e3619
   ReactCommon: 9d5423a44441e73260000f780f209004e7a15678
-  RNBackgroundFetch: 005d4742a64a511ea54cf2929ace9f0804a7c511
+  RNBackgroundFetch: e44c9e85d7fb3122c37d8a806278f62c7682d7ea
   RNCAsyncStorage: b6410dead2732b5c72a7fdb1ecb5651bbcf4674b
   RNCPushNotificationIOS: 6c4ca3388c7434e4a662b92e4dfeeee858e6f440
   RNDeviceInfo: ae26ae45db3f9937f038a284bcd0a1db8d70db96
-  RNFlashList: 5c76d81f4975c6e8a3e8142b6e0e7d353668d8b1
+  RNFlashList: 3e34440d6aac0effeed715224bcf0ba055a826e0
   RNGestureHandler: aff7256db65faaf624077051f0cee39c1c1e690d
   RNLocalize: 8bf466de4c92d4721b254aabe1ff0a1456e7b9f4
   RNReanimated: 814dc9d3885d6e3904417a67ba838951c971fb8c
-  RNScreens: a568946532d3cabcb7f46fdc0a8dbada3dd5de44
+  RNScreens: c1a851e518284641160aa5af4894479773a6e719
   RNSiriShortcuts: 149966f5de0cac63bd9fd8c2d5c51235439d1760
   RNVectorIcons: 5784330be9dddb5474e8b378d5f6947996c84e55
   Yoga: d4f5b037672e6b68ba484c7cf7fe6790122df792
