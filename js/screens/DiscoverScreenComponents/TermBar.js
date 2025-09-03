@@ -33,7 +33,7 @@ const TermBar = props => {
         name={'info-circle'}
         size={16}
         style={{ color: theme.graySubtitle }}
-        iconStyle={'solid'}
+        iconStyle="solid"
       />
     </TouchableHighlight>
   );

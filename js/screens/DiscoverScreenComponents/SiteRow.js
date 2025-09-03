@@ -126,7 +126,7 @@ const SiteRow = props => {
                 name={siteAddIcon}
                 size={16}
                 color={theme.buttonTextColor}
-                iconStyle={'solid'}
+                iconStyle="solid"
               />
             </View>
           </TouchableHighlight>

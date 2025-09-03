@@ -496,9 +496,8 @@ class SiteManager {
           return this.activeSite.url;
         }
       }
-    } catch (error) {
-      // TODO: display error message?
-      console.error('auth process error: ', error);
+    } catch (e) {
+      console.log('auth process cancelled: ', e);
       return;
     }
   }
