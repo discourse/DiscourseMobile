@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.0</string>
+	<string>1.9.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -37,7 +37,7 @@
 		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>598</string>
+	<string>599</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -67,6 +67,10 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAllowsArbitraryLoads</key>
+	<false/>
+	<key>NSAllowsLocalNetworking</key>
+	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -90,6 +94,8 @@
 	<array>
 		<string>org.discourse.DiscourseApp.SiriShortcut</string>
 	</array>
+	<key>RCTNewArchEnabled</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>FontAwesome5_Brands.ttf</string>
@@ -106,7 +112,7 @@
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>armv7</string>
+		<string>arm64</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>

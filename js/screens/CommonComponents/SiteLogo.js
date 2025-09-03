@@ -1,9 +1,9 @@
 /* @flow */
 'use strict';
 
-import {useContext} from 'react';
-import {Image, Text, View} from 'react-native';
-import {ThemeContext} from '../../ThemeContext';
+import { useContext } from 'react';
+import { Image, Text, View } from 'react-native';
+import { ThemeContext } from '../../ThemeContext';
 
 const SiteLogo = props => {
   const theme = useContext(ThemeContext);
@@ -43,13 +43,15 @@ const SiteLogo = props => {
           borderRadius: 10,
           marginHorizontal: 4,
           backgroundColor: pickColor(props.title),
-        }}>
+        }}
+      >
         <Text
           style={{
             color: pickColor(props.title, true),
             fontSize: 26,
             fontWeight: '700',
-          }}>
+          }}
+        >
           {props.title[0]}
         </Text>
       </View>

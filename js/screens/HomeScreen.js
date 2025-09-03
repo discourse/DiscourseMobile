@@ -11,11 +11,11 @@ import {
 } from 'react-native';
 import Components from './HomeScreenComponents';
 import Common from './CommonComponents';
-import {ThemeContext} from '../ThemeContext';
+import { ThemeContext } from '../ThemeContext';
 import i18n from 'i18n-js';
-import {donateShortcut} from 'react-native-siri-shortcut';
-import {BottomTabBarHeightContext} from '@react-navigation/bottom-tabs';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { donateShortcut } from 'react-native-siri-shortcut';
+import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import DragList from 'react-native-draglist';
 
 class HomeScreen extends React.Component {
@@ -68,7 +68,7 @@ class HomeScreen extends React.Component {
     if (connect || site.loginRequired) {
       const authUrl = await this._siteManager.generateAuthURL(site);
       if (Platform.OS === 'ios') {
-        this.setState({authProcessActive: true});
+        this.setState({ authProcessActive: true });
         const requestAuthURL = await this._siteManager.requestAuth(authUrl);
 
         if (requestAuthURL) {
@@ -76,7 +76,7 @@ class HomeScreen extends React.Component {
         } else {
           // TODO: auth got cancelled or error, show a message?
         }
-        this.setState({authProcessActive: false});
+        this.setState({ authProcessActive: false });
       } else {
         this.props.screenProps.openUrl(authUrl);
       }
@@ -120,7 +120,7 @@ class HomeScreen extends React.Component {
 
   onChangeSites(e) {
     if (this._siteManager.isLoading() !== this.state.loadingSites) {
-      this.setState({loadingSites: this._siteManager.isLoading()});
+      this.setState({ loadingSites: this._siteManager.isLoading() });
     }
     if (e && e.event) {
       this.setState({
@@ -131,15 +131,15 @@ class HomeScreen extends React.Component {
     }
   }
 
-  pullDownToRefresh() {
-    this._siteManager
-      .refreshSites()
-      .catch(e => {
-        console.log(e);
-      })
-      .then(() => {
-        this.setState({isRefreshing: false});
-      });
+  async pullDownToRefresh() {
+    this.setState({ isRefreshing: true });
+    try {
+      await this._siteManager.refreshSites();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.setState({ isRefreshing: false });
+    }
   }
 
   shouldDisplayOnBoarding() {
@@ -170,7 +170,8 @@ class HomeScreen extends React.Component {
             borderColor: theme.grayBorder,
             borderWidth: StyleSheet.hairlineWidth,
             width: '100%',
-          }}>
+          }}
+        >
           <Common.Filter
             selectedIndex={this.state.selectedTabIndex}
             tabs={[i18n.t('sites'), i18n.t('hot_topics')]}
@@ -181,7 +182,7 @@ class HomeScreen extends React.Component {
                 selectedTabIndex: index,
               });
               if (this.dragListRef) {
-                this.dragListRef.scrollToOffset({offset: 0, animated: true});
+                this.dragListRef.scrollToOffset({ offset: 0, animated: true });
               }
             }}
           />
@@ -191,13 +192,15 @@ class HomeScreen extends React.Component {
   }
 
   _renderItem(info) {
-    const {item, onDragStart, onDragEnd} = info;
+    const { item, onDragStart, onDragEnd } = info;
 
     return (
       <Components.SiteRow
         site={item}
         siteManager={this._siteManager}
-        onSwipe={scrollEnabled => this.setState({scrollEnabled: scrollEnabled})}
+        onSwipe={scrollEnabled =>
+          this.setState({ scrollEnabled: scrollEnabled })
+        }
         onClick={(endpoint = '') => this.visitSite(item, false, endpoint)}
         onClickConnect={() => this.visitSite(item, true)}
         onDelete={() => this._siteManager.remove(item)}
@@ -217,7 +220,7 @@ class HomeScreen extends React.Component {
   _renderSites() {
     const theme = this.context;
     if (this.state.loadingSites) {
-      return <View style={{flex: 1}} />;
+      return <View style={{ flex: 1 }} />;
     }
 
     if (this.shouldDisplayOnBoarding()) {
@@ -232,13 +235,12 @@ class HomeScreen extends React.Component {
       return (
         <BottomTabBarHeightContext.Consumer>
           {tabBarHeight => (
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1, paddingBottom: tabBarHeight + 30 }}>
               {this._renderTopicListToggle()}
               <DragList
                 ref={ref => {
                   this.dragListRef = ref;
                 }}
-                contentContainerStyle={{paddingBottom: tabBarHeight + 25}}
                 activationDistance={20}
                 data={this.state.data}
                 renderItem={item => this._renderItem(item)}
@@ -248,7 +250,6 @@ class HomeScreen extends React.Component {
                 estimatedItemSize={130}
                 refreshControl={
                   <RefreshControl
-                    style={{left: 500}}
                     enabled={this.state.refreshingEnabled}
                     refreshing={this.state.isRefreshing}
                     onRefresh={() => this.pullDownToRefresh()}
@@ -278,7 +279,8 @@ class HomeScreen extends React.Component {
     return (
       <>
         <SafeAreaView
-          style={[styles.container, {backgroundColor: theme.background}]}>
+          style={[styles.container, { backgroundColor: theme.background }]}
+        >
           <Components.NavigationBar
             onDidPressAndroidSettingsIcon={() =>
               this.onDidPressAndroidSettingsIcon()
@@ -291,7 +293,8 @@ class HomeScreen extends React.Component {
               {
                 backgroundColor: theme.grayBackground,
               },
-            ]}>
+            ]}
+          >
             {this._renderSites()}
           </View>
           {this.state.authProcessActive && (
@@ -299,7 +302,8 @@ class HomeScreen extends React.Component {
               style={{
                 ...styles.authenticatingOverlay,
                 backgroundColor: theme.background,
-              }}>
+              }}
+            >
               <ActivityIndicator size="large" color={theme.grayUI} />
             </View>
           )}
@@ -312,9 +316,6 @@ class HomeScreen extends React.Component {
 HomeScreen.contextType = ThemeContext;
 
 const styles = StyleSheet.create({
-  list: {
-    flex: 1,
-  },
   container: {
     flex: 1,
   },
