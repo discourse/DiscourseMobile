@@ -90,5 +90,7 @@
   "hot_topics": "Hot topics",
   "sites": "Sites",
   "find_new_communities": "Find new communities to join",
-  "no_hot_topics": "No hot topics found for this site."
+  "no_hot_topics": "No hot topics found for this site.",
+  "oops": "Oops, something went wrong.",
+  "still_loading": "Still loading..."
 }

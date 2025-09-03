@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Notification from './Notification';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 import { ThemeContext } from '../../ThemeContext';
 import i18n from 'i18n-js';
 import TopicList from './TopicList';
@@ -84,7 +84,7 @@ export default function SiteRow(props) {
             size={15}
             color={theme.buttonTextColor}
             style={{ padding: 3 }}
-            solid
+            iconStyle="solid"
           />
           {largeLayout && (
             <Text
@@ -231,7 +231,7 @@ export default function SiteRow(props) {
             name={'comment'}
             size={24}
             color={theme.buttonTextColor}
-            solid
+            iconStyle="solid"
           />
         </TouchableHighlight>
       )}
@@ -249,6 +249,7 @@ export default function SiteRow(props) {
             name={'history'}
             size={24}
             color={theme.buttonTextColor}
+            iconStyle="solid"
           />
         </TouchableHighlight>
       )}
@@ -271,7 +272,7 @@ export default function SiteRow(props) {
             name={'user'}
             size={24}
             color={theme.buttonTextColor}
-            solid
+            iconStyle="solid"
           />
         </TouchableHighlight>
       )}

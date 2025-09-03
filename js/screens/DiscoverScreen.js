@@ -10,7 +10,6 @@ import {
   PermissionsAndroid,
   Platform,
   RefreshControl,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -19,19 +18,20 @@ import {
 } from 'react-native';
 
 import DiscoverComponents from './DiscoverScreenComponents';
-import {ThemeContext} from '../ThemeContext';
+import { ThemeContext } from '../ThemeContext';
 import Site from '../site';
 import i18n from 'i18n-js';
 import fetch from './../../lib/fetch';
-import {debounce} from 'lodash';
-import Toast, {BaseToast} from 'react-native-toast-message';
-import {BottomTabBarHeightContext} from '@react-navigation/bottom-tabs';
+import { debounce } from 'lodash';
+import Toast, { BaseToast } from 'react-native-toast-message';
+import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const toastConfig = {
   success: props => (
     <BaseToast
       {...props}
-      style={{borderLeftColor: 'transparent'}}
+      style={{ borderLeftColor: 'transparent' }}
       onPress={() => {
         if (Platform.OS === 'android') {
           Linking.openSettings();
@@ -43,7 +43,7 @@ const toastConfig = {
           Linking.openURL('App-Prefs:NOTIFICATIONS_ID');
         }
       }}
-      contentContainerStyle={{paddingHorizontal: 10}}
+      contentContainerStyle={{ paddingHorizontal: 10 }}
       text1Style={{
         fontSize: 17,
         fontWeight: '400',
@@ -111,7 +111,7 @@ class DiscoverScreen extends React.Component {
             return;
           }
 
-          this.setState({results: [], loading: false, hasMoreResults: false});
+          this.setState({ results: [], loading: false, hasMoreResults: false });
           Site.fromTerm(term)
             .then(site => {
               if (site) {
@@ -131,7 +131,7 @@ class DiscoverScreen extends React.Component {
               console.log(e);
             })
             .finally(() => {
-              this.setState({loading: false});
+              this.setState({ loading: false });
             });
         }
       })
@@ -153,7 +153,7 @@ class DiscoverScreen extends React.Component {
               throw 'dupe site';
             }
             this._siteManager.add(site);
-            this.setState({selectionCount: this.state.selectionCount + 1});
+            this.setState({ selectionCount: this.state.selectionCount + 1 });
           }
 
           if (opts.switchTabs) {
@@ -167,11 +167,11 @@ class DiscoverScreen extends React.Component {
           console.log(e);
 
           if (e === 'dupe site') {
-            Alert.alert(i18n.t('term_exists', {term}));
+            Alert.alert(i18n.t('term_exists', { term }));
           } else if (e === 'bad api') {
-            Alert.alert(i18n.t('incorrect_url', {term}));
+            Alert.alert(i18n.t('incorrect_url', { term }));
           } else {
-            Alert.alert(i18n.t('not_found', {term}));
+            Alert.alert(i18n.t('not_found', { term }));
           }
 
           reject('failure');
@@ -188,7 +188,7 @@ class DiscoverScreen extends React.Component {
         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
       );
     }
-    this.showPNToast({granted});
+    this.showPNToast({ granted });
   }
 
   showPNToast(opts = {}) {
@@ -216,7 +216,7 @@ class DiscoverScreen extends React.Component {
           <ActivityIndicator size="large" color={theme.grayUI} />
         ) : (
           <View>
-            <Text style={{...styles.desc, color: theme.grayTitle}}>
+            <Text style={{ ...styles.desc, color: theme.grayTitle }}>
               {messageText}
             </Text>
             <TouchableHighlight
@@ -229,12 +229,14 @@ class DiscoverScreen extends React.Component {
                   page: 1,
                 });
                 this.doSearch('');
-              }}>
+              }}
+            >
               <Text
                 style={{
                   color: theme.blueUnread,
                   fontSize: 16,
-                }}>
+                }}
+              >
                 {i18n.t('discover_reset')}
               </Text>
             </TouchableHighlight>
@@ -246,7 +248,7 @@ class DiscoverScreen extends React.Component {
     return (
       <BottomTabBarHeightContext.Consumer>
         {tabBarHeight => (
-          <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
             {this._renderSearchBox()}
             {resultCount > 0 ? this._renderTags() : null}
             <View style={styles.container}>
@@ -254,7 +256,7 @@ class DiscoverScreen extends React.Component {
                 keyboardDismissMode="on-drag"
                 ListEmptyComponent={emptyResult}
                 ref={ref => (this.discoverList = ref)}
-                contentContainerStyle={{paddingBottom: tabBarHeight}}
+                contentContainerStyle={{ paddingBottom: tabBarHeight }}
                 data={this.state.results}
                 refreshing={this.state.loading}
                 refreshControl={
@@ -268,7 +270,7 @@ class DiscoverScreen extends React.Component {
                     }}
                   />
                 }
-                renderItem={({item}) => this._renderItem({item})}
+                renderItem={({ item }) => this._renderItem({ item })}
                 onEndReached={() => {
                   this._fetchNextPage();
                 }}
@@ -287,7 +289,7 @@ class DiscoverScreen extends React.Component {
     if (this.state.hasMoreResults) {
       const newPageNumber = this.state.page + 1;
 
-      this.setState({page: newPageNumber, loading: true});
+      this.setState({ page: newPageNumber, loading: true });
       this.doSearch(this.state.selectedTag || '', {
         append: true,
         pageNumber: newPageNumber,
@@ -300,7 +302,7 @@ class DiscoverScreen extends React.Component {
       <DiscoverComponents.TermBar
         text={this.state.term}
         handleChangeText={term => {
-          this.setState({term, loading: true, selectedTag: false});
+          this.setState({ term, loading: true, selectedTag: false });
           this.debouncedSearch(term);
         }}
       />
@@ -329,7 +331,8 @@ class DiscoverScreen extends React.Component {
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        style={styles.tags}>
+        style={styles.tags}
+      >
         {this._renderTag(i18n.t('discover_all'), '')}
         {this._renderTag(i18n.t('discover_tech'), '#technology')}
         {this._renderTag(i18n.t('discover_interests'), '#interests')}
@@ -339,7 +342,7 @@ class DiscoverScreen extends React.Component {
         {this._renderTag(i18n.t('discover_open_source'), '#open-source')}
         {this._renderTag(i18n.t('discover_international'), '#locale-intl')}
         {this._renderTag(i18n.t('discover_recent'), 'order:latest_topic')}
-        <View style={{width: 24}} />
+        <View style={{ width: 24 }} />
       </ScrollView>
     );
   }
@@ -371,25 +374,27 @@ class DiscoverScreen extends React.Component {
             });
           }
           this.doSearch(searchString);
-        }}>
+        }}
+      >
         <Text
           style={{
             color: theme.tagButtonTextColor,
             fontSize: this.state.largerUI ? 15 : 13,
-          }}>
+          }}
+        >
           {label}
         </Text>
       </TouchableHighlight>
     );
   }
 
-  _renderItem({item}) {
+  _renderItem({ item }) {
     return (
       <DiscoverComponents.SiteRow
         site={item}
         handleSiteAdd={term => this.addSite(term)}
         loadSite={url => this.props.screenProps.openUrl(url)}
-        inLocalList={this._siteManager.exists({url: item.featured_link})}
+        inLocalList={this._siteManager.exists({ url: item.featured_link })}
       />
     );
   }

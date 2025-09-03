@@ -1775,6 +1775,7 @@ PODS:
     - Yoga
   - react-native-segmented-control (2.2.2):
     - React-Core
+  - react-native-vector-icons-fontawesome5 (12.2.0)
   - react-native-webview (13.16.0):
     - boost
     - DoubleConversion
@@ -2587,8 +2588,6 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNVectorIcons (9.2.0):
-    - React-Core
   - RNWorklets (0.5.0):
     - boost
     - DoubleConversion
@@ -2729,6 +2728,7 @@ DEPENDENCIES:
   - react-native-safari-web-auth (from `../node_modules/react-native-safari-web-auth`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-segmented-control (from `../node_modules/@react-native-community/segmented-control`)"
+  - "react-native-vector-icons-fontawesome5 (from `../node_modules/@react-native-vector-icons/fontawesome5`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-oscompat (from `../node_modules/react-native/ReactCommon/oscompat`)
@@ -2772,7 +2772,6 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSiriShortcuts (from `../node_modules/react-native-siri-shortcut`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - RNWorklets (from `../node_modules/react-native-worklets`)
   - SocketRocket (~> 0.7.1)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -2875,6 +2874,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-segmented-control:
     :path: "../node_modules/@react-native-community/segmented-control"
+  react-native-vector-icons-fontawesome5:
+    :path: "../node_modules/@react-native-vector-icons/fontawesome5"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-NativeModulesApple:
@@ -2961,8 +2962,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-siri-shortcut"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
   RNWorklets:
     :path: "../node_modules/react-native-worklets"
   Yoga:
@@ -3015,6 +3014,7 @@ SPEC CHECKSUMS:
   react-native-safari-web-auth: 63e920416493c35c795bae6b70fbda283497705e
   react-native-safe-area-context: 8ed800930eb7d0b6651218f69656e823d37b6ef7
   react-native-segmented-control: be570ddc1678933470a39471e0ebd824f23e39a8
+  react-native-vector-icons-fontawesome5: 1199fa2cf3323fac0b9b52b2aecb1329aa3602a5
   react-native-webview: 38b7d49cbe748b6fa02381be0a097d3922caf94a
   React-NativeModulesApple: 37c08c3c54db55854de816b0df0f3683832be35a
   React-oscompat: 56d6de59f9ae95cd006a1c40be2cde83bc06a4e1
@@ -3058,7 +3058,6 @@ SPEC CHECKSUMS:
   RNScreens: 26bb60cdb2ef2ca06fd87feefc495072f25982a7
   RNSiriShortcuts: 149966f5de0cac63bd9fd8c2d5c51235439d1760
   RNSVG: d407e5f2ede12bbcd92e4d23a405ad5a5f7294a3
-  RNVectorIcons: 5784330be9dddb5474e8b378d5f6947996c84e55
   RNWorklets: 83e051db94475b21fa729851b0d3aa523cd6f67a
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: a742cc68e8366fcfc681808162492bc0aa7a9498

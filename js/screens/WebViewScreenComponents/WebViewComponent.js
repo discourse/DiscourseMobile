@@ -14,15 +14,15 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {WebView} from 'react-native-webview';
+import { WebView } from 'react-native-webview';
 import ErrorScreen from '../WebViewScreenComponents/ErrorScreen';
 import ProgressBar from '../../ProgressBar';
 import chroma from 'chroma-js';
 import SafariView from 'react-native-safari-view';
 import i18n from 'i18n-js';
 import Site from '../../site';
-import {ThemeContext} from '../../ThemeContext';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { ThemeContext } from '../../ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const withInsets = Component => {
   return props => {
@@ -102,7 +102,7 @@ class WebViewComponent extends React.Component {
     // We want to serve desktop version on fullscreen iPad app
     // and mobile version on split view.
     // That's why we append the device ID (which includes "iPad" on large window sizes only)
-    const {width, height} = event.nativeEvent.layout;
+    const { width, height } = event.nativeEvent.layout;
 
     this.setState({
       userAgentSuffix:
@@ -136,14 +136,16 @@ class WebViewComponent extends React.Component {
           flex: 1,
           paddingTop: this.viewTopPadding,
           backgroundColor: this.state.headerBg || theme.grayBackground,
-        }}>
+        }}
+      >
         <StatusBar barStyle={this.state.barStyle} />
         {this.state.layoutCalculated && this.state.authProcessActive && (
           <View
             style={{
               ...styles.authenticatingOverlay,
               backgroundColor: theme.background,
-            }}>
+            }}
+          >
             <ActivityIndicator size="large" color={theme.grayUI} />
           </View>
         )}
@@ -155,7 +157,7 @@ class WebViewComponent extends React.Component {
               backgroundColor: this.state.headerBg,
             }}
             ref={ref => (this.webview = ref)}
-            source={{uri: this.state.webviewUrl}}
+            source={{ uri: 'this.state.webviewUrl' }}
             applicationNameForUserAgent={this.state.userAgentSuffix}
             allowsBackForwardNavigationGestures={true}
             allowsInlineMediaPlayback={true}
@@ -168,8 +170,8 @@ class WebViewComponent extends React.Component {
               this.webview.requestFocus();
             }}
             onError={syntheticEvent => {
-              const {nativeEvent} = syntheticEvent;
-              this.setState({errorData: nativeEvent});
+              const { nativeEvent } = syntheticEvent;
+              this.setState({ errorData: nativeEvent });
             }}
             renderError={errorName => (
               <ErrorScreen
@@ -224,7 +226,7 @@ class WebViewComponent extends React.Component {
                     const useSVC = Settings.get('external_links_svc');
                     if (useSVC) {
                       if (!this.safariViewVisible) {
-                        SafariView.show({url: request.url});
+                        SafariView.show({ url: request.url });
                       }
                     } else {
                       Linking.openURL(request.url);
@@ -241,7 +243,7 @@ class WebViewComponent extends React.Component {
               this._storeLastPath(navState);
             }}
             decelerationRate={'normal'}
-            onLoadProgress={({nativeEvent}) => {
+            onLoadProgress={({ nativeEvent }) => {
               const progress = nativeEvent.progress;
               this.setState({
                 progress: progress === 1 ? 0 : progress,
@@ -282,7 +284,8 @@ class WebViewComponent extends React.Component {
             // nudge element used to dismiss webview via swipe-down gesture
             // uncomment background color to see the element
             // backgroundColor: 'red',
-          }}>
+          }}
+        >
           <View
             style={{
               ...styles.nudgeElement,
@@ -349,32 +352,32 @@ class WebViewComponent extends React.Component {
         i18n.t('add_site_home_screen'),
         i18n.t('add_site_home_screen_description'),
         [
-          {text: i18n.t('cancel')},
-          {text: i18n.t('ok'), onPress: () => this.addSite()},
+          { text: i18n.t('cancel') },
+          { text: i18n.t('ok'), onPress: () => this.addSite() },
         ],
       );
       return;
     }
 
-    this.setState({authProcessActive: true});
+    this.setState({ authProcessActive: true });
 
     const url = await this.siteManager.generateAuthURL(site);
     const authURL = await this.siteManager.requestAuth(url);
 
-    this.setState({authProcessActive: false});
+    this.setState({ authProcessActive: false });
 
     if (authURL) {
       // this may seem odd to navigate to the same screen
       // but we want to use the same path as notifications and reset the local state
       // via componentDidUpdate
-      this.props.navigation.navigate('WebView', {url: authURL});
+      this.props.navigation.navigate('WebView', { url: authURL });
     }
   }
 
   _onMessage(event) {
     let data = JSON.parse(event.nativeEvent.data);
 
-    let {headerBg, shareUrl, dismiss, markRead, showLogin} = data;
+    let { headerBg, shareUrl, dismiss, markRead, showLogin } = data;
 
     if (headerBg && chroma.valid(headerBg)) {
       const headerBgChroma = chroma(headerBg);

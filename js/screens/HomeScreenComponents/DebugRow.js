@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import {ThemeContext} from '../../ThemeContext';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5 from "@react-native-vector-icons/fontawesome5";
 import i18n from 'i18n-js';
 
 const DebugRow = props => {
@@ -44,7 +44,7 @@ const DebugRow = props => {
           name={'cog'}
           size={20}
           style={{color: theme.grayUI}}
-          solid
+          iconStyle="solid"
         />
       </TouchableHighlight>
     );

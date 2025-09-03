@@ -3,7 +3,7 @@
 
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5 from "@react-native-vector-icons/fontawesome5";
 import DiscourseUtils from '../../DiscourseUtils';
 import {ThemeContext} from '../../ThemeContext';
 import i18n from 'i18n-js';

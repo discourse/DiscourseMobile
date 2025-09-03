@@ -4,7 +4,7 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ThemeContext } from '../../ThemeContext';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5 from "@react-native-vector-icons/fontawesome5";
 
 const Notification = props => {
   const theme = useContext(ThemeContext);
@@ -20,7 +20,7 @@ const Notification = props => {
           <View style={{ paddingRight: 6 }}>
             <FontAwesome5
               name={props.icon}
-              solid
+              iconStyle="solid"
               size={11}
               color={theme.buttonTextColor}
             />
