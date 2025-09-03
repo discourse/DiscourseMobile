@@ -1,6 +1,11 @@
+/*global describe*/
+/*global beforeAll*/
+/*global beforeEach*/
+/*global it*/
+
 import i18n from 'i18n-js';
 
-import {by, device, element, expect} from 'detox';
+import { by, device, element, expect } from 'detox';
 
 describe('Topic list', () => {
   beforeAll(async () => {
@@ -12,7 +17,7 @@ describe('Topic list', () => {
 
     await device.launchApp({
       newInstance: true,
-      permissions: {notifications: 'YES'},
+      permissions: { notifications: 'YES' },
     });
   });
 

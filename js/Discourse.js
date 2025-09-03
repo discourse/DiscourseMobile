@@ -521,7 +521,7 @@ class Discourse extends React.Component {
             }}
           >
             <Stack.Screen name="HomeWrapper">
-              {stackProps => (
+              {() => (
                 <Tab.Navigator
                   screenOptions={{
                     headerShown: false,
@@ -543,7 +543,6 @@ class Discourse extends React.Component {
                     name="Home"
                     options={{
                       title: i18n.t('home'),
-                      // eslint-disable-next-line react/no-unstable-nested-components
                       tabBarIcon: ({ color }) => (
                         <FontAwesome5
                           name={'home'}
@@ -565,7 +564,6 @@ class Discourse extends React.Component {
                     name="Discover"
                     options={{
                       title: i18n.t('discover'),
-                      // eslint-disable-next-line react/no-unstable-nested-components
                       tabBarIcon: ({ color }) => (
                         <FontAwesome5
                           name={'compass'}
@@ -587,7 +585,6 @@ class Discourse extends React.Component {
                     name={'Notifications'}
                     options={{
                       title: i18n.t('notifications'),
-                      // eslint-disable-next-line react/no-unstable-nested-components
                       tabBarIcon: ({ color }) => (
                         <FontAwesome5
                           name={'bell'}

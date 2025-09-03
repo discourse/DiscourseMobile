@@ -2,17 +2,22 @@
 'use strict';
 
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import FontAwesome5 from "@react-native-vector-icons/fontawesome5";
-import {ThemeContext} from '../../ThemeContext';
+import { StyleSheet, Text, View } from 'react-native';
+import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
+import { ThemeContext } from '../../ThemeContext';
 
 class EmptyNotificationsView extends React.Component {
   render() {
     const theme = this.context;
     return (
       <View style={styles.container}>
-        <FontAwesome5 name={'bell'} size={48} color={theme.grayUI} iconStyle="solid" />
-        <Text style={{...styles.text, color: theme.grayTitle}}>
+        <FontAwesome5
+          name={'bell'}
+          size={48}
+          color={theme.grayUI}
+          iconStyle="solid"
+        />
+        <Text style={{ ...styles.text, color: theme.grayTitle }}>
           {this.props.text}
         </Text>
       </View>

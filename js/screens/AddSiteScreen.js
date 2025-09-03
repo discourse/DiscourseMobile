@@ -1,5 +1,4 @@
 /* @flow */
-/* global Request */
 'use strict';
 
 import React from 'react';
@@ -14,12 +13,12 @@ import {
 } from 'react-native';
 
 import DiscoverComponents from './DiscoverScreenComponents';
-import {ThemeContext} from '../ThemeContext';
+import { ThemeContext } from '../ThemeContext';
 import Site from '../site';
 import i18n from 'i18n-js';
 import fetch from './../../lib/fetch';
-import {debounce} from 'lodash';
-import {BottomTabBarHeightContext} from '@react-navigation/bottom-tabs';
+import { debounce } from 'lodash';
+import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
 
 class AddSiteScreen extends React.Component {
   constructor(props) {
@@ -62,9 +61,9 @@ class AddSiteScreen extends React.Component {
           });
         }
       }
-    } catch (error) {
-      // console.error(error);
-      this.setState({loading: false});
+    } catch (e) {
+      console.log(e);
+      this.setState({ loading: false });
     }
   }
 
@@ -91,11 +90,11 @@ class AddSiteScreen extends React.Component {
           console.log(e);
 
           if (e === 'dupe site') {
-            Alert.alert(i18n.t('term_exists', {term}));
+            Alert.alert(i18n.t('term_exists', { term }));
           } else if (e === 'bad api') {
-            Alert.alert(i18n.t('incorrect_url', {term}));
+            Alert.alert(i18n.t('incorrect_url', { term }));
           } else {
-            Alert.alert(i18n.t('not_found', {term}));
+            Alert.alert(i18n.t('not_found', { term }));
           }
 
           reject('failure');
@@ -123,7 +122,7 @@ class AddSiteScreen extends React.Component {
         console.log(e);
       })
       .finally(() => {
-        this.setState({loading: false});
+        this.setState({ loading: false });
       });
   }
 
@@ -146,11 +145,11 @@ class AddSiteScreen extends React.Component {
     const emptyResult = (
       <ScrollView>
         {this.state.loading ? (
-          <View style={{padding: 20, flex: 1, alignItems: 'center'}}>
+          <View style={{ padding: 20, flex: 1, alignItems: 'center' }}>
             <ActivityIndicator size="large" color={theme.grayUI} />
           </View>
         ) : (
-          <Text style={{...styles.desc, color: theme.grayTitle}}>
+          <Text style={{ ...styles.desc, color: theme.grayTitle }}>
             {messageText}
           </Text>
         )}
@@ -160,17 +159,17 @@ class AddSiteScreen extends React.Component {
     return (
       <BottomTabBarHeightContext.Consumer>
         {tabBarHeight => (
-          <View style={{flex: 1, backgroundColor: theme.background}}>
+          <View style={{ flex: 1, backgroundColor: theme.background }}>
             <View style={styles.container}>
               {this._renderSearchBox()}
               <FlatList
                 keyboardDismissMode="on-drag"
                 ListEmptyComponent={emptyResult}
                 ref={ref => (this.discoverList = ref)}
-                contentContainerStyle={{paddingBottom: tabBarHeight}}
+                contentContainerStyle={{ paddingBottom: tabBarHeight }}
                 data={this.state.results}
                 refreshing={this.state.loading}
-                renderItem={({item}) => this._renderItem({item})}
+                renderItem={({ item }) => this._renderItem({ item })}
               />
             </View>
           </View>
@@ -185,20 +184,20 @@ class AddSiteScreen extends React.Component {
         text={this.state.term}
         addSiteScreenParent={true}
         handleChangeText={term => {
-          this.setState({term, loading: true, selectedTag: false});
+          this.setState({ term, loading: true, selectedTag: false });
           this.debouncedSearch(term);
         }}
       />
     );
   }
 
-  _renderItem({item}) {
+  _renderItem({ item }) {
     return (
       <DiscoverComponents.SiteRow
         site={item}
         handleSiteAdd={term => this.addSite(term)}
         loadSite={url => this.props.screenProps.openUrl(url)}
-        inLocalList={this._siteManager.exists({url: item.featured_link})}
+        inLocalList={this._siteManager.exists({ url: item.featured_link })}
       />
     );
   }
