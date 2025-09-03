@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -10,8 +10,8 @@ import {
   View,
 } from 'react-native';
 
-import {ThemeContext} from '../../ThemeContext';
-import FontAwesome5 from "@react-native-vector-icons/fontawesome5";
+import { ThemeContext } from '../../ThemeContext';
+import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 import i18n from 'i18n-js';
 
 const DebugRow = props => {
@@ -37,13 +37,14 @@ const DebugRow = props => {
 
     return (
       <TouchableHighlight
-        style={{...styles.androidSettingsButton}}
+        style={{ ...styles.androidSettingsButton }}
         underlayColor={'transparent'}
-        onPress={props.onDidPressAndroidSettingsIcon}>
+        onPress={props.onDidPressAndroidSettingsIcon}
+      >
         <FontAwesome5
           name={'cog'}
           size={20}
-          style={{color: theme.grayUI}}
+          style={{ color: theme.grayUI }}
           iconStyle="solid"
         />
       </TouchableHighlight>

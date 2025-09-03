@@ -1,15 +1,15 @@
 /* @flow */
 'use strict';
 
-import React, {useContext} from 'react';
-import {Dimensions, View} from 'react-native';
+import React, { useContext } from 'react';
+import { Dimensions, View } from 'react-native';
 import Bar from 'react-native-progress/Bar';
-import {ThemeContext} from './ThemeContext';
+import { ThemeContext } from './ThemeContext';
 
-const ProgressBar = ({progress, topInset}) => {
+const ProgressBar = ({ progress, topInset }) => {
   const theme = useContext(ThemeContext);
   const height = progress === 0 ? 0 : 4;
-  const {width} = Dimensions.get('window');
+  const { width } = Dimensions.get('window');
 
   return (
     <View
@@ -19,7 +19,8 @@ const ProgressBar = ({progress, topInset}) => {
         top: topInset,
         left: 0,
         height,
-      }}>
+      }}
+    >
       <Bar
         borderRadius={0}
         borderWidth={0}

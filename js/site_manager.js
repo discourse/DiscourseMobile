@@ -74,7 +74,7 @@ class SiteManager {
   }
 
   setActiveSite(site) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (typeof site === 'string' || site instanceof String) {
         let url = site;
         AsyncStorage.getItem('@Discourse.sites').then(json => {
@@ -141,7 +141,7 @@ class SiteManager {
   }
 
   ensureRSAKeys() {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.rsaKeys) {
         resolve();
         return;
