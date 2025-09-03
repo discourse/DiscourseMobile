@@ -2,7 +2,7 @@
 'use strict';
 
 import React from 'react';
-import {ThemeContext, themes} from './ThemeContext';
+import { ThemeContext, themes } from './ThemeContext';
 import {
   Alert,
   Appearance,
@@ -18,9 +18,12 @@ import {
   ToastAndroid,
   View,
 } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import Screens from './screens';
 import Site from './site';
@@ -29,17 +32,17 @@ import SafariView from 'react-native-safari-view';
 import DeviceInfo from 'react-native-device-info';
 import firebaseMessaging from './platforms/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {CustomTabs} from 'react-native-custom-tabs';
+import { CustomTabs } from 'react-native-custom-tabs';
 import i18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
-import {addShortcutListener} from 'react-native-siri-shortcut';
-import {enableScreens} from 'react-native-screens';
+import { addShortcutListener } from 'react-native-siri-shortcut';
+import { enableScreens } from 'react-native-screens';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {BlurView} from '@react-native-community/blur';
+import { BlurView } from '@react-native-community/blur';
 
 import BackgroundFetch from './platforms/background-fetch';
 
-const {DiscourseKeyboardShortcuts} = NativeModules;
+const { DiscourseKeyboardShortcuts } = NativeModules;
 
 // It's not ideal that we have to manually register languages here
 // but react-native doesn't make it easy to loop through files in a folder
@@ -66,9 +69,9 @@ i18n.translations = {
   'zh-TW': require('./locale/zh_TW.json'),
 };
 
-const {languageTag} = RNLocalize.findBestAvailableLanguage(
+const { languageTag } = RNLocalize.findBestAvailableLanguage(
   Object.keys(i18n.translations),
-) || {languageTag: 'en', isRTL: false};
+) || { languageTag: 'en', isRTL: false };
 
 i18n.locale = languageTag;
 i18n.fallbacks = true;
@@ -147,7 +150,7 @@ class Discourse extends React.Component {
       );
 
       // notification received while app is in foreground
-      // visible alert currently unsupported by react-native-firebase v6
+      // visible alert currently unsupported
       // show just a toast for now
       firebaseMessaging.onMessage(async remoteMessage => {
         console.log(remoteMessage.notification);
@@ -258,7 +261,7 @@ class Discourse extends React.Component {
 
       // handle site URL passed via app-argument
       if (params.siteUrl) {
-        if (this._siteManager.exists({url: params.siteUrl})) {
+        if (this._siteManager.exists({ url: params.siteUrl })) {
           console.log(`${params.siteUrl} exists!`);
           this.openUrl(params.siteUrl);
         } else {
@@ -293,7 +296,7 @@ class Discourse extends React.Component {
 
     Linking.getInitialURL().then(url => {
       if (url) {
-        this._handleOpenUrl({url: url});
+        this._handleOpenUrl({ url: url });
       }
     });
 
@@ -304,7 +307,7 @@ class Discourse extends React.Component {
         sound: true,
       });
 
-      addShortcutListener(({userInfo}) => {
+      addShortcutListener(({ userInfo }) => {
         if (userInfo.siteUrl) {
           this._handleOpenUrl({
             url: `discourse://share?sharedUrl=${userInfo.siteUrl}`,
@@ -314,7 +317,7 @@ class Discourse extends React.Component {
 
       this.eventEmitter = new NativeEventEmitter(DiscourseKeyboardShortcuts);
       this.eventEmitter.addListener('keyInputEvent', res => {
-        const {input} = res;
+        const { input } = res;
 
         if (input === 'W') {
           this._navigation.navigate('Home');
@@ -360,7 +363,7 @@ class Discourse extends React.Component {
     };
     // Initialize BackgroundFetch only once when component mounts.
     let status = await BackgroundFetch.configure(
-      {minimumFetchInterval: 15},
+      { minimumFetchInterval: 15 },
       onEvent,
       onTimeout,
     );
@@ -502,7 +505,7 @@ class Discourse extends React.Component {
           <Stack.Navigator
             initialRouteName="Home"
             presentation="modal"
-            screenOptions={({navigation}) => {
+            screenOptions={({ navigation }) => {
               this._navigation = navigation;
               return {
                 headerShown: false,
@@ -511,7 +514,8 @@ class Discourse extends React.Component {
                 // ...TransitionPresets.ModalPresentationIOS is an interesting alternative
                 // see https://reactnavigation.org/docs/stack-navigator/#transitionpresets
               };
-            }}>
+            }}
+          >
             <Stack.Screen name="HomeWrapper">
               {stackProps => (
                 <Tab.Navigator
@@ -529,13 +533,14 @@ class Discourse extends React.Component {
                     tabBarActiveTintColor: theme.blueCallToAction,
                     tabBarInactiveTintColor: theme.grayTabInactiveColor,
                     tabBarBackground: () => this._blurView(theme.name),
-                  }}>
+                  }}
+                >
                   <Tab.Screen
                     name="Home"
                     options={{
                       title: i18n.t('home'),
                       // eslint-disable-next-line react/no-unstable-nested-components
-                      tabBarIcon: ({color}) => (
+                      tabBarIcon: ({ color }) => (
                         <FontAwesome5
                           name={'home'}
                           size={18}
@@ -543,9 +548,13 @@ class Discourse extends React.Component {
                           solid
                         />
                       ),
-                    }}>
+                    }}
+                  >
                     {props => (
-                      <Screens.Home {...props} screenProps={{...screenProps}} />
+                      <Screens.Home
+                        {...props}
+                        screenProps={{ ...screenProps }}
+                      />
                     )}
                   </Tab.Screen>
                   <Tab.Screen
@@ -553,7 +562,7 @@ class Discourse extends React.Component {
                     options={{
                       title: i18n.t('discover'),
                       // eslint-disable-next-line react/no-unstable-nested-components
-                      tabBarIcon: ({color}) => (
+                      tabBarIcon: ({ color }) => (
                         <FontAwesome5
                           name={'compass'}
                           size={18}
@@ -561,11 +570,12 @@ class Discourse extends React.Component {
                           solid
                         />
                       ),
-                    }}>
+                    }}
+                  >
                     {props => (
                       <Screens.Discover
                         {...props}
-                        screenProps={{...screenProps}}
+                        screenProps={{ ...screenProps }}
                       />
                     )}
                   </Tab.Screen>
@@ -574,7 +584,7 @@ class Discourse extends React.Component {
                     options={{
                       title: i18n.t('notifications'),
                       // eslint-disable-next-line react/no-unstable-nested-components
-                      tabBarIcon: ({color}) => (
+                      tabBarIcon: ({ color }) => (
                         <FontAwesome5
                           name={'bell'}
                           size={18}
@@ -582,11 +592,12 @@ class Discourse extends React.Component {
                           solid
                         />
                       ),
-                    }}>
+                    }}
+                  >
                     {props => (
                       <Screens.Notifications
                         {...props}
-                        screenProps={{...screenProps}}
+                        screenProps={{ ...screenProps }}
                       />
                     )}
                   </Tab.Screen>
@@ -608,9 +619,10 @@ class Discourse extends React.Component {
                 headerMode: 'screen',
                 headerBackTitle: i18n.t('back'),
                 headerShadowVisible: false,
-              }}>
+              }}
+            >
               {props => (
-                <Screens.Settings {...props} screenProps={{...screenProps}} />
+                <Screens.Settings {...props} screenProps={{ ...screenProps }} />
               )}
             </Stack.Screen>
             <Stack.Screen
@@ -628,18 +640,19 @@ class Discourse extends React.Component {
                 headerMode: 'screen',
                 headerBackTitle: i18n.t('back'),
                 headerShadowVisible: false,
-              }}>
+              }}
+            >
               {props => (
                 <Screens.AddSite
                   {...props}
-                  screenProps={{...screenProps}}
+                  screenProps={{ ...screenProps }}
                   singleSiteAdd={true}
                 />
               )}
             </Stack.Screen>
             <Stack.Screen name="WebView">
               {props => (
-                <Screens.WebView {...props} screenProps={{...screenProps}} />
+                <Screens.WebView {...props} screenProps={{ ...screenProps }} />
               )}
             </Stack.Screen>
           </Stack.Navigator>

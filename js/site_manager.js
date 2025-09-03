@@ -2,7 +2,7 @@
 'use strict';
 
 import _ from 'lodash';
-import {Alert, NativeModules, Platform} from 'react-native';
+import { Alert, NativeModules, Platform } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SafariWebAuth from 'react-native-safari-web-auth';
@@ -13,7 +13,7 @@ import JSEncrypt from './../lib/jsencrypt';
 import randomBytes from './../lib/random-bytes';
 import i18n from 'i18n-js';
 
-const {DiscourseKeyboardShortcuts} = NativeModules;
+const { DiscourseKeyboardShortcuts } = NativeModules;
 const REFRESH_THROTTLE_MS = 5000;
 
 class SiteManager {
@@ -42,7 +42,7 @@ class SiteManager {
   }
 
   exists(site) {
-    return !!_.find(this.sites, {url: site.url});
+    return !!_.find(this.sites, { url: site.url });
   }
 
   add(site) {
@@ -88,11 +88,11 @@ class SiteManager {
             this.activeSite = activeSite;
           }
 
-          resolve({activeSite: activeSite});
+          resolve({ activeSite: activeSite });
         });
       } else {
         this.activeSite = site;
-        resolve({activeSite: site});
+        resolve({ activeSite: site });
         return;
       }
     });
@@ -253,17 +253,17 @@ class SiteManager {
     const previousRefresh = this.lastRefresh;
 
     if (!previousRefresh) {
-      this._throttledRefreshSites();
-      return;
+      return this._throttledRefreshSites();
     }
 
     const lastRun = new Date(previousRefresh).getTime();
     const now = new Date().getTime();
 
     if (now - lastRun >= REFRESH_THROTTLE_MS) {
-      this._throttledRefreshSites();
+      return this._throttledRefreshSites();
     } else {
       console.log('no refresh, it was last refreshed too recently');
+      return;
     }
   }
 
@@ -308,7 +308,7 @@ class SiteManager {
 
   async iOSbackgroundRefresh() {
     const results = await Promise.all(
-      this.sites.map(site => site.refresh({bgTask: true})),
+      this.sites.map(site => site.refresh({ bgTask: true })),
     );
 
     let badgeCount = 0;
@@ -327,7 +327,7 @@ class SiteManager {
             alertBody: i18n.t('generic_notification_body', {
               url: result.url.replace(/^https?:\/\//, ''),
             }),
-            userInfo: {discourse_url: result.url},
+            userInfo: { discourse_url: result.url },
           });
         }
       }
@@ -542,12 +542,12 @@ class SiteManager {
         let opts = options;
 
         if (opts.onlyNew) {
-          opts = _.merge(_.clone(opts), {minId: opts.newMap[site.url]});
+          opts = _.merge(_.clone(opts), { minId: opts.newMap[site.url] });
         }
 
         let promise = site.notifications(types, opts).then(notifications => {
           return notifications.map(n => {
-            return {notification: n, site: site};
+            return { notification: n, site: site };
           });
         });
 
@@ -585,7 +585,7 @@ class SiteManager {
   }
 
   _onChange() {
-    this._subscribers.forEach(sub => sub({event: 'change'}));
+    this._subscribers.forEach(sub => sub({ event: 'change' }));
   }
 
   storeLastPath(navState) {

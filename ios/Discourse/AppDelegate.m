@@ -3,6 +3,8 @@
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
+#import <ReactAppDependencyProvider/RCTAppDependencyProvider.h>
+
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
 #import <React/RCTLog.h>
@@ -16,32 +18,37 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  self.moduleName = @"Discourse";
+  self.dependencyProvider = [RCTAppDependencyProvider new];
+  // You can add your custom initial props in the dictionary below.
+  // They will be passed down to the ViewController used by React Native.
+  self.initialProps = @{};
 
-  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-    moduleName:@"Discourse"
-    initialProperties:nil];
+  // RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+  // RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+  //   moduleName:@"Discourse"
+  //   initialProperties:nil];
 
-  rootView.backgroundColor = [UIColor systemBackgroundColor];
+  // rootView.backgroundColor = [UIColor systemBackgroundColor];
 
-  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
-  [self.window makeKeyAndVisible];
+  // self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  // UIViewController *rootViewController = [UIViewController new];
+  // rootViewController.view = rootView;
+  // self.window.rootViewController = rootViewController;
+  // [self.window makeKeyAndVisible];
 
-  // TODO We don't need full release debugging forever, but for now it helps
-  RCTSetLogThreshold(RCTLogLevelInfo - 1);
+  // // TODO We don't need full release debugging forever, but for now it helps
+  // RCTSetLogThreshold(RCTLogLevelInfo - 1);
 
-  // define UNUserNotificationCenter
-  // see https://github.com/zo0r/react-native-push-notification/issues/275
-  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-  center.delegate = self;
+  // // define UNUserNotificationCenter
+  // // see https://github.com/zo0r/react-native-push-notification/issues/275
+  // UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  // center.delegate = self;
 
-  // show statusbar when returning from a fullscreen video
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoExitFullScreen:) name:@"UIWindowDidBecomeHiddenNotification" object:nil];
+  // // show statusbar when returning from a fullscreen video
+  // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoExitFullScreen:) name:@"UIWindowDidBecomeHiddenNotification" object:nil];
 
-  return YES;
+  return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
 // This method checks for shortcuts issued to the app
@@ -53,6 +60,11 @@ continueUserActivity:(NSUserActivity *)userActivity
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
+{
+  return [self bundleURL];
+}
+
+- (NSURL *)bundleURL
 {
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
@@ -163,16 +175,6 @@ continueUserActivity:(NSUserActivity *)userActivity
     NSArray *keyCommands = [self keyCommands];
     [builder replaceChildrenOfMenuForIdentifier:UIMenuFile fromChildrenBlock:^NSArray* (NSArray* children) {return keyCommands;}];
 
-}
-
-/// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.
-///
-/// @see: https://reactjs.org/blog/2022/03/29/react-v18.html
-/// @note: This requires to be rendering on Fabric (i.e. on the New Architecture).
-/// @return: `true` if the `concurrentRoot` feature is enabled. Otherwise, it returns `false`.
-- (BOOL)concurrentRootEnabled
-{
-  return true;
 }
 
 // Required for the register event.

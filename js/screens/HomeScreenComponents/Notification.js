@@ -1,9 +1,9 @@
 /* @flow */
 'use strict';
 
-import React, {useContext} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {ThemeContext} from '../../ThemeContext';
+import React, { useContext } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { ThemeContext } from '../../ThemeContext';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Notification = props => {
@@ -15,9 +15,9 @@ const Notification = props => {
 
   return (
     <View style={styles.container}>
-      <View style={{...styles.number, backgroundColor: props.color}}>
-        <Text style={{...styles.numberText, color: theme.buttonTextColor}}>
-          <View style={{paddingRight: 6}}>
+      <View style={{ ...styles.number, backgroundColor: props.color }}>
+        <Text style={{ ...styles.numberText, color: theme.buttonTextColor }}>
+          <View style={{ paddingRight: 6 }}>
             <FontAwesome5
               name={props.icon}
               solid
@@ -38,15 +38,14 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     backgroundColor: 'transparent',
     justifyContent: 'center',
-    marginBottom: 6,
-    marginLeft: 6,
+    marginLeft: 5,
   },
   number: {
     alignItems: 'center',
     borderRadius: 6,
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 6,
+    padding: 5,
   },
   numberText: {
     color: 'white',
