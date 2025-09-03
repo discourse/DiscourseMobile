@@ -20,7 +20,7 @@ jobs:
           cache: yarn
 
       - name: Install Yarn dependencies
-        run: yarn --cached
+        run: yarn
 
       - name: Install macOS dependencies
         run: |

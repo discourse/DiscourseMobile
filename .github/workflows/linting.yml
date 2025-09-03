@@ -24,7 +24,7 @@ jobs:
           cache: yarn
 
       - name: Yarn install
-        run: yarn install
+        run: yarn
 
       - name: ESLint
         if: ${{ !cancelled() }}
