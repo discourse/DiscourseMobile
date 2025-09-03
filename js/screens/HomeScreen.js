@@ -43,9 +43,14 @@ class HomeScreen extends React.Component {
     this._renderItem = this._renderItem.bind(this);
   }
 
-  async visitSite(site, connect = false, endpoint = '') {
+  async visitSite(site, connect = false, endpoint = '', options = {}) {
     this._siteManager.setActiveSite(site);
     this.donateShortcut(site);
+
+    if (options.hotTopic) {
+      this.props.screenProps.openUrl(`${site.url}${endpoint}`);
+      return;
+    }
 
     if (site.authToken) {
       if (site.oneTimePassword) {
@@ -201,7 +206,9 @@ class HomeScreen extends React.Component {
         onSwipe={scrollEnabled =>
           this.setState({ scrollEnabled: scrollEnabled })
         }
-        onClick={(endpoint = '') => this.visitSite(item, false, endpoint)}
+        onClick={(endpoint = '', options = {}) =>
+          this.visitSite(item, false, endpoint, options)
+        }
         onClickConnect={() => this.visitSite(item, true)}
         onDelete={() => this._siteManager.remove(item)}
         onLongPress={onDragStart}
@@ -235,12 +242,13 @@ class HomeScreen extends React.Component {
       return (
         <BottomTabBarHeightContext.Consumer>
           {tabBarHeight => (
-            <View style={{ flex: 1, paddingBottom: tabBarHeight + 30 }}>
+            <View style={{ flex: 1 }}>
               {this._renderTopicListToggle()}
               <DragList
                 ref={ref => {
                   this.dragListRef = ref;
                 }}
+                contentContainerStyle={{ paddingBottom: tabBarHeight + 10 }}
                 activationDistance={20}
                 data={this.state.data}
                 renderItem={item => this._renderItem(item)}

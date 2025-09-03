@@ -37,7 +37,7 @@ import i18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
 import { addShortcutListener } from 'react-native-siri-shortcut';
 import { enableScreens } from 'react-native-screens';
-import FontAwesome5 from "@react-native-vector-icons/fontawesome5";
+import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 import { BlurView } from '@react-native-community/blur';
 
 import BackgroundFetch from './platforms/background-fetch';
@@ -247,6 +247,10 @@ class Discourse extends React.Component {
           const url = await this._siteManager.generateAuthURL(site);
           const authURL = await this._siteManager.requestAuth(url);
 
+          if (!authURL) {
+            this._navigation.navigate('Home');
+            return;
+          }
           this.openUrl(authURL);
         } catch (error) {
           console.log('Error handling OTP: ', error);

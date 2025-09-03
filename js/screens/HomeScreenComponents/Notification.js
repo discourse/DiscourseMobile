@@ -4,7 +4,7 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ThemeContext } from '../../ThemeContext';
-import FontAwesome5 from "@react-native-vector-icons/fontawesome5";
+import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 
 const Notification = props => {
   const theme = useContext(ThemeContext);
@@ -16,16 +16,16 @@ const Notification = props => {
   return (
     <View style={styles.container}>
       <View style={{ ...styles.number, backgroundColor: props.color }}>
+        <View style={{ paddingRight: 6 }}>
+          <FontAwesome5
+            name={props.icon}
+            iconStyle="solid"
+            size={12}
+            color={theme.buttonTextColor}
+          />
+        </View>
         <Text style={{ ...styles.numberText, color: theme.buttonTextColor }}>
-          <View style={{ paddingRight: 6 }}>
-            <FontAwesome5
-              name={props.icon}
-              iconStyle="solid"
-              size={11}
-              color={theme.buttonTextColor}
-            />
-          </View>
-          <Text>{props.count}</Text>
+          {props.count}
         </Text>
       </View>
     </View>
@@ -41,11 +41,12 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   number: {
-    alignItems: 'center',
     borderRadius: 6,
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 5,
+    alignItems: 'center',
+    paddingVertical: 5,
+    paddingHorizontal: 6,
   },
   numberText: {
     color: 'white',

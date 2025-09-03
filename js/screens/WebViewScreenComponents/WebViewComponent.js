@@ -157,7 +157,7 @@ class WebViewComponent extends React.Component {
               backgroundColor: this.state.headerBg,
             }}
             ref={ref => (this.webview = ref)}
-            source={{ uri: 'this.state.webviewUrl' }}
+            source={{ uri: this.state.webviewUrl }}
             applicationNameForUserAgent={this.state.userAgentSuffix}
             allowsBackForwardNavigationGestures={true}
             allowsInlineMediaPlayback={true}

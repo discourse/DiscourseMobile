@@ -167,9 +167,9 @@ export default function SiteRow(props) {
     }
   };
 
-  const _click = url => {
+  const _click = (url, options = {}) => {
     swipeRowRef.current && swipeRowRef.current.close();
-    props.onClick(url);
+    props.onClick(url, options);
   };
 
   const chatEnabled = props.site.hasChatEnabled;
@@ -178,14 +178,6 @@ export default function SiteRow(props) {
   const hasLastVisitedAction =
     props.site.lastVisitedPath &&
     props.site.lastVisitedPathAt > now - lastVisitedThreshold;
-
-  let leftOpenValue = 0;
-  if (chatEnabled) {
-    leftOpenValue += SWIPE_BUTTON_WIDTH;
-  }
-  if (hasLastVisitedAction) {
-    leftOpenValue += SWIPE_BUTTON_WIDTH;
-  }
 
   // only show the primary "Connect" button for 3 days
   // after that time use a hidden button in swipe right area
@@ -196,11 +188,6 @@ export default function SiteRow(props) {
     !alreadyAuthed &&
     props.site.createdAt &&
     props.site.createdAt > now - createdAtThreshold;
-
-  const rightOpenValue =
-    hasPrimaryConnectButton || alreadyAuthed
-      ? SWIPE_BUTTON_WIDTH
-      : SWIPE_BUTTON_WIDTH * 2;
 
   const showTopicList = !props.site.loginRequired && props.showTopicList;
 
@@ -298,10 +285,12 @@ export default function SiteRow(props) {
   return (
     <Swipeable
       ref={swipeRowRef}
-      rightThreshold={showTopicList ? 0 : rightOpenValue}
-      leftThreshold={showTopicList ? 0 : leftOpenValue}
       renderLeftActions={() => (showTopicList ? null : swipeLeft)}
       renderRightActions={() => (showTopicList ? null : swipeRight)}
+      overshootFriction={8}
+      friction={0.75}
+      leftThreshold={20}
+      rightThreshold={20}
     >
       <View
         style={{
@@ -367,7 +356,7 @@ export default function SiteRow(props) {
           >
             <TopicList
               site={props.site}
-              onClickTopic={url => _click(url)}
+              onClickTopic={url => _click(url, { hotTopic: true })}
               largeLayout={largeLayout}
             />
           </View>
@@ -449,7 +438,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
   description: {
     flex: 10,
