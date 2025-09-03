@@ -3,16 +3,10 @@
 
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  Switch,
-  Text,
-  View,
-} from 'react-native';
+import { Platform, StyleSheet, Switch, Text, View } from 'react-native';
 
-import {ThemeContext} from '../ThemeContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ThemeContext } from '../ThemeContext';
 import i18n from 'i18n-js';
 
 const SettingsScreen = props => {
@@ -49,12 +43,13 @@ const SettingsScreen = props => {
   const isDark = !!(theme.background !== '#FFFFFF');
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
       <View
-        style={{...styles.container, backgroundColor: theme.grayBackground}}>
+        style={{ ...styles.container, backgroundColor: theme.grayBackground }}
+      >
         {Platform.OS === 'android' && (
           <View style={styles.settingItem}>
-            <Text style={{...styles.text, color: theme.grayTitle}}>
+            <Text style={{ ...styles.text, color: theme.grayTitle }}>
               {i18n.t('browser_toggle_label')}
             </Text>
             <Switch
@@ -65,7 +60,7 @@ const SettingsScreen = props => {
         )}
         {Platform.OS === 'android' && Platform.Version < 29 && (
           <View style={styles.settingItem}>
-            <Text style={{...styles.text, color: theme.grayTitle}}>
+            <Text style={{ ...styles.text, color: theme.grayTitle }}>
               {i18n.t('switch_dark')}
             </Text>
             <Switch onValueChange={toggleDarkMode} value={isDark} />

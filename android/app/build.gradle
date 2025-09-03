@@ -84,7 +84,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 229
+        versionCode 234
         versionName MYAPP_VERSION
     }
 
@@ -131,12 +131,6 @@ dependencies {
 
     implementation 'org.jetbrains:annotations:16.0.2'
 }
-
-project.ext.vectoricons = [
-    iconFontNames: [ 'FontAwesome5_Brands.ttf', 'FontAwesome5_Regular.ttf', 'FontAwesome5_Solid.ttf', 'Ionicons.ttf' ]
-]
-
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 apply plugin: 'com.google.gms.google-services'
 

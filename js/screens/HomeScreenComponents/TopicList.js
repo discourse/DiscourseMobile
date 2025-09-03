@@ -9,7 +9,7 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5 from "@react-native-vector-icons/fontawesome5";
 import {ThemeContext} from '../../ThemeContext';
 import fetch from './../../../lib/fetch';
 import i18n from 'i18n-js';
@@ -244,7 +244,7 @@ const TopicList = props => {
                 size={13}
                 color={theme.grayUI}
                 style={{opacity: 0.75}}
-                solid
+                iconStyle="solid"
               />
               <Text
                 style={{

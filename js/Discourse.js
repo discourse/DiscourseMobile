@@ -37,7 +37,7 @@ import i18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
 import { addShortcutListener } from 'react-native-siri-shortcut';
 import { enableScreens } from 'react-native-screens';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5 from "@react-native-vector-icons/fontawesome5";
 import { BlurView } from '@react-native-community/blur';
 
 import BackgroundFetch from './platforms/background-fetch';
@@ -545,7 +545,7 @@ class Discourse extends React.Component {
                           name={'home'}
                           size={18}
                           color={color}
-                          solid
+                          iconStyle="solid"
                         />
                       ),
                     }}
@@ -567,7 +567,7 @@ class Discourse extends React.Component {
                           name={'compass'}
                           size={18}
                           color={color}
-                          solid
+                          iconStyle="solid"
                         />
                       ),
                     }}
@@ -589,7 +589,7 @@ class Discourse extends React.Component {
                           name={'bell'}
                           size={18}
                           color={color}
-                          solid
+                          iconStyle="solid"
                         />
                       ),
                     }}

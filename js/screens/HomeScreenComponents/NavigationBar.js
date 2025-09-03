@@ -9,7 +9,7 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5 from "@react-native-vector-icons/fontawesome5";
 import {ThemeContext} from '../../ThemeContext';
 
 const NavigationBar = props => {
@@ -30,7 +30,7 @@ const NavigationBar = props => {
           name={'cog'}
           size={20}
           style={{color: theme.grayUI}}
-          solid
+          iconStyle="solid"
         />
       </TouchableHighlight>
     );
@@ -47,7 +47,7 @@ const NavigationBar = props => {
           name={'plus'}
           size={20}
           style={{color: theme.grayUI}}
-          solid
+          iconStyle="solid"
         />
       </TouchableHighlight>
     );
@@ -62,7 +62,7 @@ const NavigationBar = props => {
           <FontAwesome5
             name={'discourse'}
             size={26}
-            brand
+            iconStyle="brand"
             style={{color: theme.grayTitle}}
           />
         </TouchableHighlight>
