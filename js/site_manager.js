@@ -102,8 +102,8 @@ class SiteManager {
     this.activeSite = null;
   }
 
-  updateOrder(from, to) {
-    this.sites.splice(to, 0, this.sites.splice(from, 1)[0]);
+  updateOrder(data) {
+    this.sites = data;
     this.save();
     this.updateNativeMenu();
   }
