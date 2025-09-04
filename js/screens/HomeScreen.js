@@ -16,7 +16,9 @@ import i18n from 'i18n-js';
 import { donateShortcut } from 'react-native-siri-shortcut';
 import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import DragList from 'react-native-draglist';
+import DraggableFlatList, {
+  ScaleDecorator,
+} from 'react-native-draggable-flatlist';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -28,7 +30,6 @@ class HomeScreen extends React.Component {
       data: [],
       isRefreshing: false,
       lastRefreshTime: null,
-      scrollEnabled: true,
       refreshingEnabled: true,
       loadingSites: this._siteManager.isLoading(),
       authProcessActive: false,
@@ -196,32 +197,32 @@ class HomeScreen extends React.Component {
     }
   }
 
-  _renderItem(info) {
-    const { item, onDragStart, onDragEnd } = info;
+  _renderItem(row) {
+    const { item, drag, isActive } = row;
 
     return (
-      <Components.SiteRow
-        site={item}
-        siteManager={this._siteManager}
-        onSwipe={scrollEnabled =>
-          this.setState({ scrollEnabled: scrollEnabled })
-        }
-        onClick={(endpoint = '', options = {}) =>
-          this.visitSite(item, false, endpoint, options)
-        }
-        onClickConnect={() => this.visitSite(item, true)}
-        onDelete={() => this._siteManager.remove(item)}
-        onLongPress={onDragStart}
-        onPressOut={onDragEnd}
-        keyExtractor={() => `site-row-${item.url}`}
-        showTopicList={this.state.showTopicList}
-        showSiteAddress={!this.state.siteURLsHidden}
-      />
+      <ScaleDecorator>
+        <Components.SiteRow
+          site={item}
+          siteManager={this._siteManager}
+          onClick={(endpoint = '', options = {}) =>
+            this.visitSite(item, false, endpoint, options)
+          }
+          onClickConnect={() => this.visitSite(item, true)}
+          onDelete={() => this._siteManager.remove(item)}
+          onLongPress={drag}
+          disabled={isActive}
+          keyExtractor={() => `site-row-${item.url}`}
+          showTopicList={this.state.showTopicList}
+          showSiteAddress={!this.state.siteURLsHidden}
+        />
+      </ScaleDecorator>
     );
   }
 
-  onReordered(from, to) {
-    this._siteManager.updateOrder(from, to);
+  onReordered(data) {
+    this._siteManager.updateOrder(data);
+    this.setState({ data: data, refreshingEnabled: true });
   }
 
   _renderSites() {
@@ -244,7 +245,7 @@ class HomeScreen extends React.Component {
           {tabBarHeight => (
             <View style={{ flex: 1 }}>
               {this._renderTopicListToggle()}
-              <DragList
+              <DraggableFlatList
                 ref={ref => {
                   this.dragListRef = ref;
                 }}
@@ -252,10 +253,9 @@ class HomeScreen extends React.Component {
                 activationDistance={20}
                 data={this.state.data}
                 renderItem={item => this._renderItem(item)}
-                keyExtractor={item => `draggable-item-${item.url}`}
-                onReordered={this.onReordered}
-                scaleSelectionFactor={1.05}
-                estimatedItemSize={130}
+                keyExtractor={item => `d-item-${item.url}`}
+                onDragBegin={() => this.setState({ refreshingEnabled: false })}
+                onDragEnd={({ data }) => this.onReordered(data)}
                 refreshControl={
                   <RefreshControl
                     enabled={this.state.refreshingEnabled}

@@ -1402,7 +1402,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-typescript@npm:^7.16.7":
+"@babel/preset-typescript@npm:^7.16.7, @babel/preset-typescript@npm:^7.17.12":
   version: 7.27.1
   resolution: "@babel/preset-typescript@npm:7.27.1"
   dependencies:
@@ -6158,7 +6158,7 @@ __metadata:
     react-native-background-fetch: "npm:^4.2.3"
     react-native-custom-tabs: "https://github.com/adminphoeniixx/react-native-custom-tabs"
     react-native-device-info: "npm:^13.1.0"
-    react-native-draglist: "npm:^3.9.9"
+    react-native-draggable-flatlist: "npm:^4.0.3"
     react-native-gesture-handler: "npm:^2.15.0"
     react-native-immutable-list-view: "npm:^2.0.0"
     react-native-key-pair: "git+https://github.com/samsaffron/react-native-key-pair"
@@ -11860,13 +11860,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-draglist@npm:^3.9.9":
-  version: 3.9.9
-  resolution: "react-native-draglist@npm:3.9.9"
+"react-native-draggable-flatlist@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "react-native-draggable-flatlist@npm:4.0.3"
+  dependencies:
+    "@babel/preset-typescript": "npm:^7.17.12"
   peerDependencies:
-    react: ">=17.0.1"
     react-native: ">=0.64.0"
-  checksum: 10/de081787530db7d8d9f7e9bd52bd8ad92a3f6c0e670d44f2644e5f93d0a13316265b36a85d3265952def0a2c4df21912fbfe131060367a7e594221b66974ef97
+    react-native-gesture-handler: ">=2.0.0"
+    react-native-reanimated: ">=2.8.0"
+  checksum: 10/012be40527dc84b690ac590f54062a297bb2d494e578c4b215446e42f0a4f4e26d276aa8c4d010b9fb5677df3d7bf6843d6bc2af95c835465853511c3bf12aab
   languageName: node
   linkType: hard
 

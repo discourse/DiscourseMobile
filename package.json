@@ -40,7 +40,7 @@
     "react-native-background-fetch": "^4.2.3",
     "react-native-custom-tabs": "https://github.com/adminphoeniixx/react-native-custom-tabs",
     "react-native-device-info": "^13.1.0",
-    "react-native-draglist": "^3.9.9",
+    "react-native-draggable-flatlist": "^4.0.3",
     "react-native-gesture-handler": "^2.15.0",
     "react-native-immutable-list-view": "^2.0.0",
     "react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair",

@@ -303,7 +303,7 @@ export default function SiteRow(props) {
           activeOpacity={0.8}
           onPress={() => _click()}
           onLongPress={() => !showTopicList && props.onLongPress()}
-          onPressOut={() => !showTopicList && props.onPressOut()}
+          disabled={props.disabled}
           style={{
             ...styles.touchableWrapper,
             borderBottomWidth: StyleSheet.hairlineWidth,
