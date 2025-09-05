@@ -59,15 +59,10 @@ const TopicList = props => {
       paddingBottom: 6,
     },
     topicRow: {
-      borderBottomWidth: StyleSheet.hairlineWidth,
       paddingTop: 0,
-      paddingBottom: 15,
       marginBottom: 15,
       paddingRight: props.largeLayout ? 20 : 0,
       marginLeft: props.largeLayout ? 30 : 0,
-    },
-    topicRowLast: {
-      paddingTop: 0,
     },
     emmptyItemsText: {
       marginLeft: props.largeLayout ? 30 : 0,
@@ -207,13 +202,20 @@ const TopicList = props => {
   }
 
   function _renderTopic(item, index) {
-    const styleKey = index === numberOfTopics - 1 ? 'topicRowLast' : 'topicRow';
     return (
       <TouchableHighlight
         onPress={() => _openTopic(item)}
         underlayColor={theme.background}
         activeOpacity={0.6}
-        style={{ ...styles[styleKey], borderBottomColor: theme.grayBorder }}
+        style={{
+          ...styles.topicRow,
+          borderBottomWidth:
+            index === numberOfTopics - 1
+              ? 'transparent'
+              : StyleSheet.hairlineWidth,
+          borderBottomColor: theme.grayBorder,
+          paddingBottom: index === numberOfTopics - 1 ? 0 : 15,
+        }}
       >
         <View>
           <View>
