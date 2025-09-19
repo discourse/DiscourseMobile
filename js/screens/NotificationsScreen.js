@@ -3,14 +3,15 @@
 
 import React from 'react';
 import Immutable from 'immutable';
-import {InteractionManager, SafeAreaView, View} from 'react-native';
-import {ImmutableVirtualizedList} from 'react-native-immutable-list-view';
+import { InteractionManager, View } from 'react-native';
+import { ImmutableVirtualizedList } from 'react-native-immutable-list-view';
 import Components from './NotificationsScreenComponents';
 import Common from './CommonComponents';
 import DiscourseUtils from '../DiscourseUtils';
-import {ThemeContext} from '../ThemeContext';
+import { ThemeContext } from '../ThemeContext';
 import i18n from 'i18n-js';
-import {BottomTabBarHeightContext} from '@react-navigation/bottom-tabs';
+import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 class NotificationsScreen extends React.Component {
   static replyTypes = [1, 2, 3, 6, 9, 11, 15, 16, 17];
@@ -40,7 +41,7 @@ class NotificationsScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({connectedSites: this._siteManager.connectedSitesCount()});
+    this.setState({ connectedSites: this._siteManager.connectedSitesCount() });
     this._mounted = true;
 
     if (this._refreshed) {
@@ -61,7 +62,7 @@ class NotificationsScreen extends React.Component {
   removePlaceholder() {
     InteractionManager.runAfterInteractions(() => {
       this.setTimeout(() => {
-        this.setState({renderPlaceholderOnly: false});
+        this.setState({ renderPlaceholderOnly: false });
       }, 0);
     });
   }
@@ -75,9 +76,9 @@ class NotificationsScreen extends React.Component {
 
     if (this.state.renderPlaceholderOnly) {
       return (
-        <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
           <Components.NavigationBar onDidPressRightButton={() => {}} />
-          <View style={{height: 50, marginTop: 0, paddingTop: 0}}>
+          <View style={{ height: 50, marginTop: 0, paddingTop: 0 }}>
             {this._renderListHeader()}
           </View>
         </SafeAreaView>
@@ -85,7 +86,7 @@ class NotificationsScreen extends React.Component {
     }
 
     return (
-      <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
         <Components.NavigationBar progress={this.state.progress} />
 
         {this._renderListHeader()}
@@ -125,7 +126,7 @@ class NotificationsScreen extends React.Component {
       <BottomTabBarHeightContext.Consumer>
         {tabBarHeight => (
           <ImmutableVirtualizedList
-            contentContainerStyle={{paddingBottom: tabBarHeight}}
+            contentContainerStyle={{ paddingBottom: tabBarHeight }}
             enableEmptySections={true}
             immutableData={this.state.dataSource}
             renderItem={rowData => this._renderListRow(rowData)}
@@ -184,7 +185,7 @@ class NotificationsScreen extends React.Component {
         selectedIndex={this.state.selectedIndex}
         tabs={[i18n.t('new'), i18n.t('replies'), i18n.t('all')]}
         onChange={index => {
-          this.setState({selectedIndex: index}, () => {
+          this.setState({ selectedIndex: index }, () => {
             this.refresh();
           });
         }}
@@ -224,7 +225,7 @@ class NotificationsScreen extends React.Component {
 
             setTimeout(() => {
               if (this._mounted) {
-                this.setState({progress: 0});
+                this.setState({ progress: 0 });
               }
             }, 400);
           }

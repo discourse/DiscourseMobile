@@ -26,7 +26,8 @@
       android:launchMode="singleTask"
       android:exported="true"
       android:icon="@mipmap/ic_launcher"
-      android:theme="@style/AppTheme">
+      android:theme="@style/AppTheme"
+      android:supportsRtl="true">
 
       <meta-data
         android:name="com.google.firebase.messaging.default_notification_icon"

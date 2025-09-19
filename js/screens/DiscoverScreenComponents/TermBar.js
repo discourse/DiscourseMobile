@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 
 import {
   Dimensions,
@@ -14,8 +14,8 @@ import {
 } from 'react-native';
 import i18n from 'i18n-js';
 import Site from '../../site';
-import {ThemeContext} from '../../ThemeContext';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { ThemeContext } from '../../ThemeContext';
+import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 
 const TermBar = props => {
   const theme = useContext(ThemeContext);
@@ -27,11 +27,13 @@ const TermBar = props => {
     <TouchableHighlight
       style={styles.question}
       underlayColor={theme.background}
-      onPress={() => Linking.openURL(discoverHelpUrl)}>
+      onPress={() => Linking.openURL(discoverHelpUrl)}
+    >
       <FontAwesome5
         name={'info-circle'}
         size={16}
-        style={{color: theme.graySubtitle}}
+        style={{ color: theme.graySubtitle }}
+        iconStyle="solid"
       />
     </TouchableHighlight>
   );
@@ -41,8 +43,9 @@ const TermBar = props => {
       underlayColor={theme.background}
       onPress={() => {
         props.handleChangeText('');
-      }}>
-      <Text style={{color: theme.blueUnread}}>{i18n.t('clear')}</Text>
+      }}
+    >
+      <Text style={{ color: theme.blueUnread }}>{i18n.t('clear')}</Text>
     </TouchableHighlight>
   );
 
@@ -52,7 +55,8 @@ const TermBar = props => {
         ...styles.container,
         paddingTop: largeLayout ? 20 : 6,
         paddingBottom: largeLayout ? 10 : 0,
-      }}>
+      }}
+    >
       <View style={styles.leftContainer}>
         <View
           style={{
@@ -63,12 +67,19 @@ const TermBar = props => {
             backgroundColor: theme.grayBackground,
             borderRadius: 10,
             marginHorizontal: 8,
-          }}>
+          }}
+        >
           <View
             style={{
               paddingHorizontal: 12,
-            }}>
-            <FontAwesome5 name={'search'} size={14} color={theme.grayUI} />
+            }}
+          >
+            <FontAwesome5
+              name={'search'}
+              size={14}
+              color={theme.grayUI}
+              iconStyle="solid"
+            />
           </View>
           <TextInput
             enterKeyHint="search"
@@ -86,7 +97,7 @@ const TermBar = props => {
             placeholderTextColor={theme.graySubtitle}
             style={[
               styles.term,
-              {color: theme.grayTitle, fontSize: largeLayout ? 18 : 16},
+              { color: theme.grayTitle, fontSize: largeLayout ? 18 : 16 },
             ]}
             onChangeText={newText => props.handleChangeText(newText)}
             underlineColorAndroid={'transparent'}

@@ -33,7 +33,7 @@ google-services.json
 .cxx/
 *.keystore
 !debug.keystore
-
+.kotlin/
 
 # node.js
 #
@@ -73,7 +73,7 @@ fastlane/google-play-api-secret.json
 fastlane/report.xml
 
 # Ruby / CocoaPods
-/ios/Pods/
+**/Pods/
 /vendor/bundle
 
 # Temporary files created by Metro to check the health of the file watcher

@@ -1,12 +1,12 @@
 /* @flow */
 'use strict';
 
-import React, {useRef, useContext} from 'react';
+import React, { useRef, useContext } from 'react';
 import i18n from 'i18n-js';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {ThemeContext} from '../../ThemeContext';
-import Popover, {PopoverMode} from 'react-native-popover-view';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { ThemeContext } from '../../ThemeContext';
+import Popover, { PopoverMode } from 'react-native-popover-view';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const OnBoardingView = _props => {
   const theme = useContext(ThemeContext);
@@ -25,20 +25,21 @@ const OnBoardingView = _props => {
         ...styles.container,
         marginBottom: _props.tabBarHeight - insets.bottom,
         marginLeft: -2,
-      }}>
+      }}
+    >
       <View style={styles.illustrationContainer}>
         <Image
-          style={{width: '100%', height: '100%'}}
+          style={{ width: '100%', height: '100%' }}
           source={img}
           resizeMode="contain"
         />
       </View>
       <View style={styles.addSiteContainer}>
         <View style={styles.text}>
-          <Text style={{...styles.title, color: theme.grayTitle}}>
+          <Text style={{ ...styles.title, color: theme.grayTitle }}>
             {i18n.t('no_sites_yet')}
           </Text>
-          <Text style={{...styles.subtitle, color: theme.graySubtitle}}>
+          <Text style={{ ...styles.subtitle, color: theme.graySubtitle }}>
             {i18n.t('add_sites')}
           </Text>
         </View>
@@ -51,8 +52,9 @@ const OnBoardingView = _props => {
         popoverStyle={{
           ...styles.popoverDiscover,
           backgroundColor: theme.blueCallToAction,
-        }}>
-        <Text style={{color: theme.buttonTextColor}}>
+        }}
+      >
+        <Text style={{ color: theme.buttonTextColor }}>
           {i18n.t('find_new_communities')}
         </Text>
       </Popover>
