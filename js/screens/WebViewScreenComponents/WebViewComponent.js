@@ -23,6 +23,7 @@ import i18n from 'i18n-js';
 import Site from '../../site';
 import { ThemeContext } from '../../ThemeContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BlurView } from '@react-native-community/blur';
 
 export const withInsets = Component => {
   return props => {
@@ -55,6 +56,7 @@ class WebViewComponent extends React.Component {
 
     this._handleAppStateChange = nextAppState => {
       this._sendAppStateChange(nextAppState);
+      this._resetScrollOverflow();
     };
 
     this.state = {
@@ -71,6 +73,7 @@ class WebViewComponent extends React.Component {
       isLandscape: false,
       webviewUrl: this.props.url,
       authProcessActive: false,
+      scrollOverflow: 0,
     };
   }
 
@@ -94,6 +97,12 @@ class WebViewComponent extends React.Component {
       this.setState({
         webviewUrl: url,
       });
+    }
+  }
+
+  _resetScrollOverflow() {
+    if (this.state.scrollOverflow > 0) {
+      this.setState({ scrollOverflow: 0 });
     }
   }
 
@@ -168,6 +177,21 @@ class WebViewComponent extends React.Component {
             webviewDebuggingEnabled={true}
             onLoadEnd={() => {
               this.webview.requestFocus();
+            }}
+            onScroll={syntheticEvent => {
+              // Track scroll position
+              const { contentOffset } = syntheticEvent.nativeEvent;
+              if (contentOffset.y < 0) {
+                this.setState({ scrollOverflow: -contentOffset.y });
+              }
+
+              const threshold = Platform.isPad ? -240 : -180;
+
+              if (contentOffset.y < threshold) {
+                // Dismiss webview on swipe down beyond this threshold
+                // A bit naive, might want to take speed into account as well
+                this._onClose();
+              }
             }}
             onError={syntheticEvent => {
               const { nativeEvent } = syntheticEvent;
@@ -263,6 +287,7 @@ class WebViewComponent extends React.Component {
                 this.state.webviewReloadAttempts < MAX_RELOAD_ATTEMPTS &&
                 event.nativeEvent.url
               ) {
+                this._resetScrollOverflow();
                 this.props.navigation.navigate('WebView', {
                   url: event.nativeEvent.url,
                 });
@@ -279,11 +304,12 @@ class WebViewComponent extends React.Component {
         <View
           style={{
             ...styles.nudge,
-            marginTop: this.props.insets.top,
-            height: Platform.isPad ? 60 : 40,
-            // nudge element used to dismiss webview via swipe-down gesture
-            // uncomment background color to see the element
-            // backgroundColor: 'red',
+            marginTop: Math.max(
+              this.props.insets.top,
+              this.props.insets.top + this.state.scrollOverflow,
+            ),
+            height: 30,
+            zIndex: 2,
           }}
         >
           <View
@@ -294,6 +320,19 @@ class WebViewComponent extends React.Component {
             }}
           />
         </View>
+        <BlurView
+          blurAmount={this.state.scrollOverflow * 0.1}
+          blurType={theme.name}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            height: this.state.scrollOverflow > 10 ? '120%' : 0,
+            opacity: Math.max(30, this.state.scrollOverflow) / 100,
+            width: '100%',
+            zIndex: 1,
+          }}
+        />
       </View>
     );
   }
@@ -328,7 +367,9 @@ class WebViewComponent extends React.Component {
   }
 
   _onClose() {
-    this.props.navigation.goBack();
+    if (this.props.navigation.canGoBack()) {
+      this.props.navigation.goBack();
+    }
   }
 
   async addSite() {
@@ -423,8 +464,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'transparent',
     top: -10,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
   },
   nudgeElement: {
     borderRadius: 5,
