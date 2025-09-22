@@ -210,9 +210,7 @@ const TopicList = props => {
         style={{
           ...styles.topicRow,
           borderBottomWidth:
-            index === numberOfTopics - 1
-              ? 'transparent'
-              : StyleSheet.hairlineWidth,
+            index === numberOfTopics - 1 ? 0 : StyleSheet.hairlineWidth,
           borderBottomColor: theme.grayBorder,
           paddingBottom: index === numberOfTopics - 1 ? 0 : 15,
         }}

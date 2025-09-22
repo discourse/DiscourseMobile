@@ -6,8 +6,12 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:api.discourse.org</string>
-		<string>activitycontinuation:api.discourse.org</string>
+		<string>applinks:*.discourse.org</string>
+		<string>applinks:*.discourse.com</string>
+		<string>applinks:*.discourse.group</string>
+		<string>webcredentials:*.discourse.org</string>
+		<string>webcredentials:*.discourse.com</string>
+		<string>webcredentials:*.discourse.group</string>
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array/>
