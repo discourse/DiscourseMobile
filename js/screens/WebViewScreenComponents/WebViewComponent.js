@@ -176,13 +176,19 @@ class WebViewComponent extends React.Component {
               this.webview.requestFocus();
             }}
             onScroll={syntheticEvent => {
-              // Track scroll position
               const { contentOffset } = syntheticEvent.nativeEvent;
+
               if (contentOffset.y < 0) {
                 this.setState({ scrollOverflow: -contentOffset.y });
               }
 
-              const threshold = Platform.isPad ? -240 : -180;
+              const threshold = Platform.isPad
+                ? this.state.isLandscape
+                  ? -140
+                  : -220
+                : this.state.isLandscape
+                ? -100
+                : -160;
 
               if (contentOffset.y < threshold) {
                 // Dismiss webview on swipe down beyond this threshold
