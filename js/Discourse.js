@@ -187,7 +187,6 @@ class Discourse extends React.Component {
       DeviceInfo.getDeviceType() === 'Desktop';
 
     this.state = {
-      hasNotch: DeviceInfo.hasNotch(),
       deviceId: DeviceInfo.getDeviceId(),
       largerUI: largerUI,
       theme: colorScheme === 'dark' ? themes.dark : themes.light,
@@ -494,7 +493,6 @@ class Discourse extends React.Component {
         this._seenNotificationMap = map;
       },
       siteManager: this._siteManager,
-      hasNotch: this.state.hasNotch,
       deviceId: this.state.deviceId,
       largerUI: this.state.largerUI,
       toggleTheme: this._toggleTheme.bind(this),

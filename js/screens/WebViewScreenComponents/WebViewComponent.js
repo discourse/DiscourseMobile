@@ -69,7 +69,6 @@ class WebViewComponent extends React.Component {
       errorData: null,
       userAgentSuffix: 'DiscourseHub',
       layoutCalculated: false,
-      hasNotch: this.props.screenProps.hasNotch,
       isLandscape: false,
       webviewUrl: this.props.url,
       authProcessActive: false,
@@ -124,12 +123,10 @@ class WebViewComponent extends React.Component {
   }
 
   get viewTopPadding() {
-    if (Platform.isPad) {
-      return 15;
+    if (this.props.insets.top) {
+      return this.props.insets.top;
     } else if (this.state.isLandscape) {
       return 10;
-    } else if (this.state.hasNotch) {
-      return this.props.insets.top;
     } else {
       return 20;
     }
