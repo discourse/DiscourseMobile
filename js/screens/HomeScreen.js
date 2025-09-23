@@ -173,8 +173,8 @@ class HomeScreen extends React.Component {
           style={{
             flex: 0,
             backgroundColor: theme.background,
-            borderColor: theme.grayBorder,
-            borderWidth: StyleSheet.hairlineWidth,
+            borderBottomColor: theme.grayBorder,
+            borderBottomWidth: StyleSheet.hairlineWidth,
             width: '100%',
           }}
         >
@@ -340,15 +340,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 1,
     opacity: 0.75,
-  },
-  topicListToggleWrapper: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  topicListToggle: {
-    padding: 10,
-    borderRadius: 6,
-    borderWidth: 1,
   },
 });
 

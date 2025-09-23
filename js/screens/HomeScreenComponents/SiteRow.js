@@ -117,7 +117,11 @@ export default function SiteRow(props) {
     );
   };
 
-  const _renderShortcuts = () => {
+  const _renderShortcuts = showSiteAddress => {
+    if (showSiteAddress) {
+      return;
+    }
+
     const shortcuts = {};
 
     if (props.site.authToken) {
@@ -164,6 +168,8 @@ export default function SiteRow(props) {
       return (
         <View style={styles.shortcuts}>{buttons.map(_renderCountItem)}</View>
       );
+    } else {
+      return <Text>&nbsp;</Text>;
     }
   };
 
@@ -340,7 +346,7 @@ export default function SiteRow(props) {
                 {!showTopicList && _renderNotifications()}
                 {hasPrimaryConnectButton && !showTopicList && _renderConnect()}
               </View>
-              {!showTopicList && _renderShortcuts()}
+              {_renderShortcuts(showSiteAddress)}
             </View>
           </View>
         </TouchableHighlight>
@@ -381,7 +387,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    paddingVertical: 16,
+    paddingVertical: 15,
   },
   hiddenButton: {
     justifyContent: 'center',
@@ -429,12 +435,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'normal',
     paddingLeft: 6,
-    marginTop: 4,
+    // ensures better alignment across rows
+    marginBottom: -1,
     flexBasis: 'auto',
     flexGrow: 0,
   },
   shortcuts: {
-    marginTop: 4,
+    marginTop: 2,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
