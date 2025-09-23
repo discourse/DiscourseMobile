@@ -1,21 +1,21 @@
 /* @flow */
 'use strict';
 
-import React, {useContext, useRef} from 'react';
+import { useContext, useRef } from 'react';
 import {
   Dimensions,
-  Image,
   StyleSheet,
   Text,
   TouchableHighlight,
   View,
 } from 'react-native';
-import {SwipeRow} from 'react-native-swipe-list-view';
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Notification from './Notification';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {ThemeContext} from '../../ThemeContext';
+import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
+import { ThemeContext } from '../../ThemeContext';
 import i18n from 'i18n-js';
 import TopicList from './TopicList';
+import SiteLogo from '../CommonComponents/SiteLogo';
 
 const SWIPE_BUTTON_WIDTH = 70;
 
@@ -29,10 +29,10 @@ export default function SiteRow(props) {
   const lastVisitedThreshold = milliseconds(24, 0, 0);
   let swipeRowRef = useRef(0);
 
-  let iconPath =
+  let logoImage =
     iconUrl && !iconUrl.endsWith('.webp') && !iconUrl.endsWith('.svg')
-      ? {uri: iconUrl}
-      : require('../../../img/nav-icon-gray.png');
+      ? { uri: iconUrl }
+      : false;
 
   const _renderNotifications = () => {
     if (!props.site.authToken) {
@@ -70,19 +70,21 @@ export default function SiteRow(props) {
       <TouchableHighlight
         style={styles.notifications}
         underlayColor={theme.background}
-        onPress={() => props.onClickConnect()}>
+        onPress={() => props.onClickConnect()}
+      >
         <View
           style={{
             ...styles.connect,
             backgroundColor: theme.blueCallToAction,
             color: theme.buttonTextColor,
-          }}>
+          }}
+        >
           <FontAwesome5
             name={'user'}
             size={15}
             color={theme.buttonTextColor}
-            style={{padding: 3}}
-            solid
+            style={{ padding: 3 }}
+            iconStyle="solid"
           />
           {largeLayout && (
             <Text
@@ -90,7 +92,8 @@ export default function SiteRow(props) {
                 color: theme.buttonTextColor,
                 paddingHorizontal: 3,
                 fontSize: 16,
-              }}>
+              }}
+            >
               {i18n.t('connect')}
             </Text>
           )}
@@ -105,26 +108,33 @@ export default function SiteRow(props) {
         key={index}
         style={styles.countItem}
         underlayColor={theme.yellowUIFeedback}
-        onPress={() => _click(item.link)}>
-        <Text style={{color: theme.blueUnread, fontSize: 15}}>{item.text}</Text>
+        onPress={() => _click(item.link)}
+      >
+        <Text style={{ color: theme.blueUnread, fontSize: 15 }}>
+          {item.text}
+        </Text>
       </TouchableHighlight>
     );
   };
 
-  const _renderShortcuts = () => {
+  const _renderShortcuts = showSiteAddress => {
+    if (showSiteAddress) {
+      return;
+    }
+
     const shortcuts = {};
 
     if (props.site.authToken) {
       if (props.site.totalNew > 0) {
         shortcuts.new = {
           link: '/new',
-          text: i18n.t('new_with_count', {count: props.site.totalNew}),
+          text: i18n.t('new_with_count', { count: props.site.totalNew }),
         };
       }
       if (props.site.totalUnread > 0) {
         shortcuts.unread = {
           link: '/unread',
-          text: i18n.t('unread_with_count', {count: props.site.totalUnread}),
+          text: i18n.t('unread_with_count', { count: props.site.totalUnread }),
         };
       }
     }
@@ -158,12 +168,14 @@ export default function SiteRow(props) {
       return (
         <View style={styles.shortcuts}>{buttons.map(_renderCountItem)}</View>
       );
+    } else {
+      return <Text>&nbsp;</Text>;
     }
   };
 
-  const _click = url => {
-    swipeRowRef.current && swipeRowRef.current.closeRow();
-    props.onClick(url);
+  const _click = (url, options = {}) => {
+    swipeRowRef.current && swipeRowRef.current.close();
+    props.onClick(url, options);
   };
 
   const chatEnabled = props.site.hasChatEnabled;
@@ -172,14 +184,6 @@ export default function SiteRow(props) {
   const hasLastVisitedAction =
     props.site.lastVisitedPath &&
     props.site.lastVisitedPathAt > now - lastVisitedThreshold;
-
-  let leftOpenValue = 0;
-  if (chatEnabled) {
-    leftOpenValue += SWIPE_BUTTON_WIDTH;
-  }
-  if (hasLastVisitedAction) {
-    leftOpenValue += SWIPE_BUTTON_WIDTH;
-  }
 
   // only show the primary "Connect" button for 3 days
   // after that time use a hidden button in swipe right area
@@ -191,111 +195,121 @@ export default function SiteRow(props) {
     props.site.createdAt &&
     props.site.createdAt > now - createdAtThreshold;
 
-  const rightOpenValue =
-    hasPrimaryConnectButton || alreadyAuthed
-      ? -SWIPE_BUTTON_WIDTH
-      : -SWIPE_BUTTON_WIDTH * 2;
-
   const showTopicList = !props.site.loginRequired && props.showTopicList;
 
   if (props.site.loginRequired && props.showTopicList) {
     return;
   }
 
+  const showSiteAddress =
+    showTopicList ||
+    !alreadyAuthed ||
+    (props.site.totalNew === 0 &&
+      props.site.totalUnread === 0 &&
+      (props.site.groupInboxes || props.site.groupInboxes?.length === 0));
+
+  const swipeLeft = (
+    <View style={{ ...styles.leftButtons }}>
+      {chatEnabled && (
+        <TouchableHighlight
+          style={{
+            ...styles.hiddenButton,
+            backgroundColor: theme.purpleChat,
+          }}
+          underlayColor={theme.purpleChat}
+          onPress={() => _click('/chat')}
+          {...props.sortHandlers}
+        >
+          <FontAwesome5
+            name={'comment'}
+            size={24}
+            color={theme.buttonTextColor}
+            iconStyle="solid"
+          />
+        </TouchableHighlight>
+      )}
+      {hasLastVisitedAction && (
+        <TouchableHighlight
+          style={{
+            ...styles.hiddenButton,
+            backgroundColor: theme.grayUI,
+          }}
+          underlayColor={theme.grayUI}
+          onPress={() => _click(props.site.lastVisitedPath)}
+          {...props.sortHandlers}
+        >
+          <FontAwesome5
+            name={'history'}
+            size={24}
+            color={theme.buttonTextColor}
+            iconStyle="solid"
+          />
+        </TouchableHighlight>
+      )}
+    </View>
+  );
+
+  const swipeRight = (
+    <View style={{ ...styles.rightButtons }}>
+      {!(hasPrimaryConnectButton || alreadyAuthed) && (
+        <TouchableHighlight
+          style={{
+            ...styles.hiddenButton,
+            backgroundColor: theme.blueCallToAction,
+          }}
+          underlayColor={theme.blueCallToAction}
+          onPress={() => props.onClickConnect()}
+          {...props.sortHandlers}
+        >
+          <FontAwesome5
+            name={'user'}
+            size={24}
+            color={theme.buttonTextColor}
+            iconStyle="solid"
+          />
+        </TouchableHighlight>
+      )}
+      <TouchableHighlight
+        testID="site-row-delete"
+        style={{
+          ...styles.hiddenButton,
+          backgroundColor: theme.redDanger,
+        }}
+        underlayColor={theme.redDanger}
+        onPress={props.onDelete}
+        {...props.sortHandlers}
+      >
+        <FontAwesome5
+          name={'trash-alt'}
+          size={24}
+          color={theme.buttonTextColor}
+        />
+      </TouchableHighlight>
+    </View>
+  );
+
   return (
-    <SwipeRow
+    <Swipeable
       ref={swipeRowRef}
-      rightOpenValue={showTopicList ? 0 : rightOpenValue}
-      leftOpenValue={showTopicList || !chatEnabled ? 0 : leftOpenValue}
-      recalculateHiddenLayout={true}
-      swipeToOpenPercent={20}
-      swipeToClosePercent={10}>
-      <View style={{...styles.hiddenRow}}>
-        {!showTopicList && (
-          <View style={{...styles.leftButtons}}>
-            {chatEnabled && (
-              <TouchableHighlight
-                style={{
-                  ...styles.hiddenButton,
-                  backgroundColor: theme.purpleChat,
-                }}
-                underlayColor={theme.purpleChat}
-                onPress={() => _click('/chat')}
-                {...props.sortHandlers}>
-                <FontAwesome5
-                  name={'comment'}
-                  size={24}
-                  color={theme.buttonTextColor}
-                  solid
-                />
-              </TouchableHighlight>
-            )}
-            {hasLastVisitedAction && (
-              <TouchableHighlight
-                style={{
-                  ...styles.hiddenButton,
-                  backgroundColor: theme.grayUI,
-                }}
-                underlayColor={theme.grayUI}
-                onPress={() => _click(props.site.lastVisitedPath)}
-                {...props.sortHandlers}>
-                <FontAwesome5
-                  name={'history'}
-                  size={24}
-                  color={theme.buttonTextColor}
-                />
-              </TouchableHighlight>
-            )}
-          </View>
-        )}
-        {!showTopicList && (
-          <View style={{...styles.rightButtons}}>
-            {!(hasPrimaryConnectButton || alreadyAuthed) && (
-              <TouchableHighlight
-                style={{
-                  ...styles.hiddenButton,
-                  backgroundColor: theme.blueCallToAction,
-                }}
-                underlayColor={theme.blueCallToAction}
-                onPress={() => props.onClickConnect()}
-                {...props.sortHandlers}>
-                <FontAwesome5
-                  name={'user'}
-                  size={24}
-                  color={theme.buttonTextColor}
-                  solid
-                />
-              </TouchableHighlight>
-            )}
-            <TouchableHighlight
-              testID="site-row-delete"
-              style={{
-                ...styles.hiddenButton,
-                backgroundColor: theme.redDanger,
-              }}
-              underlayColor={theme.redDanger}
-              onPress={props.onDelete}
-              {...props.sortHandlers}>
-              <FontAwesome5
-                name={'trash-alt'}
-                size={24}
-                color={theme.buttonTextColor}
-              />
-            </TouchableHighlight>
-          </View>
-        )}
-      </View>
+      renderLeftActions={() => (showTopicList ? null : swipeLeft)}
+      renderRightActions={() => (showTopicList ? null : swipeRight)}
+      overshootFriction={8}
+      friction={0.75}
+      leftThreshold={20}
+      rightThreshold={20}
+    >
       <View
         style={{
           ...styles.siteRowWrapper,
           backgroundColor: theme.background,
-        }}>
+        }}
+      >
         <TouchableHighlight
           underlayColor={'theme.background'}
-          activeOpacity={0.6}
+          activeOpacity={0.8}
           onPress={() => _click()}
           onLongPress={() => !showTopicList && props.onLongPress()}
-          onPressOut={() => !showTopicList && props.onPressOut()}
+          disabled={props.disabled}
           style={{
             ...styles.touchableWrapper,
             borderBottomWidth: StyleSheet.hairlineWidth,
@@ -305,29 +319,34 @@ export default function SiteRow(props) {
               ? theme.grayBackground
               : theme.background,
           }}
-          {...props.sortHandlers}>
-          <View accessibilityTraits="link" style={{...styles.row}}>
-            <Image style={styles.icon} source={iconPath} resizeMode="contain" />
+          {...props.sortHandlers}
+        >
+          <View accessibilityTraits="link" style={{ ...styles.row }}>
+            <SiteLogo logoImage={logoImage} title={props.site.title} />
             <View style={styles.info}>
               <View style={styles.titleAndBadges}>
                 <View style={styles.titleParent}>
                   <Text
                     ellipsizeMode="tail"
                     numberOfLines={1}
-                    style={{...styles.title, color: theme.grayTitle}}>
+                    style={{ ...styles.title, color: theme.grayTitle }}
+                  >
                     {props.site.title}
                   </Text>
-                  <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                    style={{...styles.url, color: theme.graySubtitle}}>
-                    {props.site.url.replace(/^https?:\/\//, '')}
-                  </Text>
+                  {showSiteAddress && (
+                    <Text
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      style={{ ...styles.url, color: theme.graySubtitle }}
+                    >
+                      {props.site.url.replace(/^https?:\/\//, '')}
+                    </Text>
+                  )}
                 </View>
                 {!showTopicList && _renderNotifications()}
                 {hasPrimaryConnectButton && !showTopicList && _renderConnect()}
               </View>
-              {!showTopicList && _renderShortcuts()}
+              {_renderShortcuts(showSiteAddress)}
             </View>
           </View>
         </TouchableHighlight>
@@ -339,16 +358,17 @@ export default function SiteRow(props) {
               borderColor: theme.grayBorder,
               borderLeftWidth: largeLayout ? StyleSheet.hairlineWidth : 0,
               marginLeft: largeLayout ? 36 : 18,
-            }}>
+            }}
+          >
             <TopicList
               site={props.site}
-              onClickTopic={url => _click(url)}
+              onClickTopic={url => _click(url, { hotTopic: true })}
               largeLayout={largeLayout}
             />
           </View>
         )}
       </View>
-    </SwipeRow>
+    </Swipeable>
   );
 }
 
@@ -367,15 +387,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    paddingVertical: 16,
-  },
-  hiddenRow: {
-    height: '100%',
-    width: '100%',
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    justifyContent: 'space-between',
+    paddingVertical: 15,
   },
   hiddenButton: {
     justifyContent: 'center',
@@ -390,24 +402,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
   },
-  icon: {
-    alignSelf: 'flex-start',
-    height: 40,
-    width: 40,
-    marginTop: 2,
-    borderRadius: 10,
-    marginHorizontal: 4,
-  },
   info: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'flex-start',
+    justifyContent: 'center',
     paddingLeft: 8,
   },
   titleAndBadges: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'space-between',
     flexBasis: 'auto',
     flexGrow: 0,
@@ -421,16 +426,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'normal',
     paddingLeft: 6,
+    paddingTop: 4,
+    paddingBottom: 4,
     flexBasis: 'auto',
     flexGrow: 0,
   },
   url: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: 'normal',
     paddingLeft: 6,
-    paddingTop: 6,
+    // ensures better alignment across rows
+    marginBottom: -1,
     flexBasis: 'auto',
     flexGrow: 0,
+  },
+  shortcuts: {
+    marginTop: 2,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
   },
   description: {
     flex: 10,
@@ -442,8 +457,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-end',
-    paddingLeft: 12,
-    maxWidth: '50%',
+    alignSelf: 'center',
+    paddingLeft: 6,
+    maxWidth: '60%',
   },
   connect: {
     flexDirection: 'row',
@@ -453,19 +469,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     marginLeft: 6,
-    marginBottom: 6,
     overflow: 'hidden',
     padding: 6,
     borderRadius: 6,
   },
-  shortcuts: {
-    marginTop: 6,
-    flexDirection: 'row',
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
   countItem: {
-    paddingVertical: 3,
     paddingHorizontal: 6,
   },
   hotBox: {

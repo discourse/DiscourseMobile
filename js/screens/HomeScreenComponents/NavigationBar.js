@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import {
   Linking,
   Platform,
@@ -9,8 +9,8 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {ThemeContext} from '../../ThemeContext';
+import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
+import { ThemeContext } from '../../ThemeContext';
 
 const NavigationBar = props => {
   const theme = useContext(ThemeContext);
@@ -18,19 +18,20 @@ const NavigationBar = props => {
 
   const renderCogButton = () => {
     if (Platform.OS !== 'android') {
-      return null;
+      return;
     }
 
     return (
       <TouchableHighlight
-        style={{...styles.androidSettingsButton}}
+        style={{ ...styles.androidSettingsButton }}
         underlayColor={'transparent'}
-        onPress={props.onDidPressAndroidSettingsIcon}>
+        onPress={props.onDidPressAndroidSettingsIcon}
+      >
         <FontAwesome5
           name={'cog'}
           size={20}
-          style={{color: theme.grayUI}}
-          solid
+          style={{ color: theme.grayUI }}
+          iconStyle="solid"
         />
       </TouchableHighlight>
     );
@@ -39,38 +40,40 @@ const NavigationBar = props => {
   const renderPlusButton = () => {
     return (
       <TouchableHighlight
-        style={{...styles.plusButton}}
+        style={{ ...styles.plusButton }}
         underlayColor={'transparent'}
         testID="nav-plus-icon"
-        onPress={props.onDidPressPlusIcon}>
+        onPress={props.onDidPressPlusIcon}
+      >
         <FontAwesome5
           name={'plus'}
           size={20}
-          style={{color: theme.grayUI}}
-          solid
+          style={{ color: theme.grayUI }}
+          iconStyle="solid"
         />
       </TouchableHighlight>
     );
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.background}]}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.titleContainer}>
         <TouchableHighlight
           underlayColor={'transparent'}
-          onPress={() => Linking.openURL(discourseUrl)}>
+          onPress={() => Linking.openURL(discourseUrl)}
+        >
           <FontAwesome5
             name={'discourse'}
             size={26}
-            brand
-            style={{color: theme.grayTitle}}
+            iconStyle="brand"
+            style={{ color: theme.grayTitle }}
           />
         </TouchableHighlight>
       </View>
       {renderCogButton()}
       {renderPlusButton()}
       <View
-        style={[styles.separator, {backgroundColor: theme.grayBackground}]}
+        style={[styles.separator, { backgroundColor: theme.grayBackground }]}
       />
     </View>
   );

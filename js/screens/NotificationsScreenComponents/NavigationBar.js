@@ -2,19 +2,19 @@
 'use strict';
 
 import React from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import ProgressBar from '../../ProgressBar';
-import {ThemeContext} from '../../ThemeContext';
+import { ThemeContext } from '../../ThemeContext';
 import i18n from 'i18n-js';
 
 class NavigationBar extends React.Component {
   render() {
     const theme = this.context;
     return (
-      <View style={{...styles.container, backgroundColor: theme.background}}>
+      <View style={{ ...styles.container, backgroundColor: theme.background }}>
         <ProgressBar progress={this.props.progress} />
         <View style={styles.titleContainer}>
-          <Text style={{...styles.title, color: theme.grayUI}}>
+          <Text style={{ ...styles.title, color: theme.grayUI }}>
             {this.props.title || i18n.t('notifications')}
           </Text>
         </View>

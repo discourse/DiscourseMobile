@@ -1,4 +1,9 @@
-import {by, device, element, expect} from 'detox';
+/*global describe*/
+/*global beforeAll*/
+/*global beforeEach*/
+/*global it*/
+
+import { by, device, element, expect } from 'detox';
 import i18n from 'i18n-js';
 
 describe.each([['en'], ['fr']])(`Onboarding (locale: %s)`, locale => {
@@ -17,7 +22,7 @@ describe.each([['en'], ['fr']])(`Onboarding (locale: %s)`, locale => {
         language: locale,
         locale,
       },
-      permissions: {notifications: 'YES'},
+      permissions: { notifications: 'YES' },
     });
   });
 

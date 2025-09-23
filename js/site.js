@@ -1,8 +1,7 @@
 /* @flow */
-/* global Request */
 'use strict';
 
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 import _ from 'lodash';
 import fetch from './../lib/fetch';
 
@@ -292,7 +291,8 @@ class Site {
           url: this.url,
         };
       }
-    } catch (error) {
+    } catch (e) {
+      console.log(e);
       console.log(
         `${this.url}/notifications/totals.json endpoint not available, exiting.`,
       );
@@ -301,7 +301,7 @@ class Site {
 
   readNotification(notification) {
     return new Promise((resolve, reject) => {
-      this.jsonApi('/notifications/read', 'PUT', {id: notification.id})
+      this.jsonApi('/notifications/read', 'PUT', { id: notification.id })
         .catch(e => {
           reject(e);
         })
@@ -390,8 +390,8 @@ class Site {
           this._loadingNotifications = false;
           this._notifications = (results && results.notifications) || [];
           this._seenNotificationId = results && results.seen_notification_id;
-          this.notifications(types, _.merge(options, {silent: true})).then(n =>
-            resolve(n),
+          this.notifications(types, _.merge(options, { silent: true })).then(
+            n => resolve(n),
           );
         })
         .catch(e => {
