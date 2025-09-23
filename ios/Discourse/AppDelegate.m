@@ -8,8 +8,10 @@
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
 #import <React/RCTLog.h>
+
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
+
 #import <RNSiriShortcuts/RNSiriShortcuts.h>
 
 #import "DiscourseKeyboardShortcuts.h"
@@ -40,10 +42,9 @@
   // // TODO We don't need full release debugging forever, but for now it helps
   // RCTSetLogThreshold(RCTLogLevelInfo - 1);
 
-  // // define UNUserNotificationCenter
-  // // see https://github.com/zo0r/react-native-push-notification/issues/275
-  // UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-  // center.delegate = self;
+  // Define UNUserNotificationCenter
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  center.delegate = self;
 
   // // show statusbar when returning from a fullscreen video
   // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoExitFullScreen:) name:@"UIWindowDidBecomeHiddenNotification" object:nil];
@@ -197,7 +198,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 //Called when a notification is delivered to a foreground app.
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
 {
-  completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge);
+  completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner | UNNotificationPresentationOptionBadge);
 }
 
 // Called when a user taps on a notification in the foreground
