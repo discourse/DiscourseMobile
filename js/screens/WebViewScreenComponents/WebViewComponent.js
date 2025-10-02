@@ -178,18 +178,16 @@ class WebViewComponent extends React.Component {
             onScroll={syntheticEvent => {
               const { contentOffset } = syntheticEvent.nativeEvent;
 
-              if (contentOffset.y < 0) {
+              if (contentOffset.y < 1) {
                 this.setState({ scrollOverflow: -contentOffset.y });
               }
-
               const threshold = Platform.isPad
                 ? this.state.isLandscape
-                  ? -140
-                  : -220
+                  ? -200
+                  : -260
                 : this.state.isLandscape
-                ? -100
-                : -160;
-
+                ? -120
+                : -180;
               if (contentOffset.y < threshold) {
                 // Dismiss webview on swipe down beyond this threshold
                 // A bit naive, might want to take speed into account as well
