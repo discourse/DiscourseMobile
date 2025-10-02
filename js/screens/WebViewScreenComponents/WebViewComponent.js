@@ -46,6 +46,12 @@ class WebViewComponent extends React.Component {
     this.currentIndex = 0;
     this.safariViewVisible = false;
 
+    // used in _overscrollVelocity
+    this.lastScrollTime = Date.now();
+    this.lastInPageScrollTime = Date.now();
+    this.lastScrollY = 0;
+    this.velocity = 0;
+
     SafariView.addEventListener('onShow', () => {
       this.safariViewVisible = true;
     });
@@ -132,6 +138,27 @@ class WebViewComponent extends React.Component {
     }
   }
 
+  _overscrollVelocity(currentScrollY) {
+    const currentTimestamp = Date.now();
+
+    // Avoid accidental overscroll if page had large enough scroll position in last 2 seconds
+    if (currentTimestamp - this.lastInPageScrollTime < 2000) {
+      return 0;
+    }
+
+    const timeDiff = (currentTimestamp - this.lastScrollTime) / 1000;
+    const scrollDiff = currentScrollY - this.lastScrollY;
+
+    if (timeDiff > 0) {
+      this.velocity = scrollDiff / timeDiff;
+    }
+
+    this.lastScrollY = currentScrollY;
+    this.lastScrollTime = currentTimestamp;
+
+    return Math.round(this.velocity);
+  }
+
   render() {
     const theme = this.context;
 
@@ -176,21 +203,32 @@ class WebViewComponent extends React.Component {
               this.webview.requestFocus();
             }}
             onScroll={syntheticEvent => {
-              const { contentOffset } = syntheticEvent.nativeEvent;
+              const { contentOffset, layoutMeasurement } =
+                syntheticEvent.nativeEvent;
 
-              if (contentOffset.y < 1) {
+              if (contentOffset.y < 5) {
                 this.setState({ scrollOverflow: -contentOffset.y });
+              } else {
+                if (contentOffset.y > 500) {
+                  this.lastInPageScrollTime = Date.now();
+                }
+                return;
               }
-              const threshold = Platform.isPad
-                ? this.state.isLandscape
-                  ? -200
-                  : -260
-                : this.state.isLandscape
-                ? -120
-                : -180;
-              if (contentOffset.y < threshold) {
-                // Dismiss webview on swipe down beyond this threshold
-                // A bit naive, might want to take speed into account as well
+
+              const distanceThreshold = -Math.round(
+                layoutMeasurement.height / 4,
+              );
+              const velocityThreshold = -Math.round(
+                layoutMeasurement.height / 2,
+              );
+
+              const velocity = this._overscrollVelocity(contentOffset.y);
+
+              if (
+                contentOffset.y < distanceThreshold &&
+                velocity < velocityThreshold
+              ) {
+                // Dismiss webview on quick swipe down
                 this._onClose();
               }
             }}
@@ -305,10 +343,7 @@ class WebViewComponent extends React.Component {
         <View
           style={{
             ...styles.nudge,
-            marginTop: Math.max(
-              this.props.insets.top,
-              this.props.insets.top + this.state.scrollOverflow,
-            ),
+            marginTop: Math.max(this.props.insets.top, this.props.insets.top),
             height: 30,
             zIndex: 2,
           }}
@@ -324,6 +359,7 @@ class WebViewComponent extends React.Component {
         <BlurView
           blurAmount={this.state.scrollOverflow * 0.1}
           blurType={theme.name}
+          pointerEvents={'none'}
           style={{
             position: 'absolute',
             top: 0,

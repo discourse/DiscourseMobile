@@ -249,7 +249,7 @@ class HomeScreen extends React.Component {
                 ref={ref => {
                   this.dragListRef = ref;
                 }}
-                contentContainerStyle={{ paddingBottom: tabBarHeight + 10 }}
+                contentContainerStyle={{ paddingBottom: tabBarHeight + 20 }}
                 activationDistance={20}
                 data={this.state.data}
                 renderItem={item => this._renderItem(item)}
