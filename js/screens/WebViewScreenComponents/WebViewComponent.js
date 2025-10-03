@@ -193,8 +193,10 @@ class WebViewComponent extends React.Component {
             source={{ uri: this.state.webviewUrl }}
             applicationNameForUserAgent={this.state.userAgentSuffix}
             allowsBackForwardNavigationGestures={true}
+            // mediaPlaybackRequiresUserAction needed in order for video to autoplay
+            // we use autoplay to run video thumbnail generation
+            mediaPlaybackRequiresUserAction={false}
             allowsInlineMediaPlayback={true}
-            allowsFullscreenVideo={true}
             allowsLinkPreview={true}
             hideKeyboardAccessoryView={false}
             keyboardDisplayRequiresUserAction={false}
