@@ -26,38 +26,14 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
-  // RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-  // RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-  //   moduleName:@"Discourse"
-  //   initialProperties:nil];
-
-  // rootView.backgroundColor = [UIColor systemBackgroundColor];
-
-  // self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  // UIViewController *rootViewController = [UIViewController new];
-  // rootViewController.view = rootView;
-  // self.window.rootViewController = rootViewController;
-  // [self.window makeKeyAndVisible];
-
-  // // TODO We don't need full release debugging forever, but for now it helps
-  // RCTSetLogThreshold(RCTLogLevelInfo - 1);
-
   // Define UNUserNotificationCenter
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
 
-  // // show statusbar when returning from a fullscreen video
+  // show statusbar when returning from a fullscreen video
   // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoExitFullScreen:) name:@"UIWindowDidBecomeHiddenNotification" object:nil];
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
-}
-
-// This method checks for shortcuts issued to the app
-- (BOOL)application:(UIApplication *)application
-continueUserActivity:(NSUserActivity *)userActivity
- restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> *restorableObjects))restorationHandler
-{
-  return [RNSSSiriShortcuts application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
@@ -82,13 +58,13 @@ continueUserActivity:(NSUserActivity *)userActivity
 }
 
 // Only if your app is using [Universal Links](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html).
-// - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
-//  restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
-// {
-//   return [RCTLinkingManager application:application
-//                    continueUserActivity:userActivity
-//                      restorationHandler:restorationHandler];
-// }
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
+ restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+{
+  return [RCTLinkingManager application:application
+                   continueUserActivity:userActivity
+                     restorationHandler:restorationHandler];
+}
 
 - (void)videoExitFullScreen:(id)sender
 {
@@ -96,7 +72,6 @@ continueUserActivity:(NSUserActivity *)userActivity
 }
 
 // Custom handler for keyboard events
-
 - (NSArray *)keyCommands {
   // store ⌘+(1,2,3...) shortcuts as site mappings
   // used for keyboard but also File menu items

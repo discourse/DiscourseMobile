@@ -46,6 +46,11 @@ class SiteManager {
   }
 
   add(site) {
+    if (this.exists(site)) {
+      console.log(`Site ${site.url} already exists.`);
+      return;
+    }
+
     site.createdAt = Date.now();
     this.sites.push(site);
     this.save();
@@ -625,9 +630,14 @@ class SiteManager {
     this.activeSite = null;
   }
 
-  urlInSites(url) {
+  async urlInSites(url) {
+    const forcedHttpsUrl = url.replace('http://', 'https://');
+
     let siteUrls = this.sites.map(s => s.url);
-    return siteUrls.find(siteUrl => url.startsWith(siteUrl) === true);
+
+    return siteUrls.find(siteUrl => {
+      return url.startsWith(siteUrl) || forcedHttpsUrl.startsWith(siteUrl);
+    });
   }
 }
 

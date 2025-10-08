@@ -286,10 +286,8 @@ class Discourse extends React.Component {
     } else if (event.url !== null) {
       // Handle URLs from Universal Links
       if (this._siteManager.urlInSites(event.url)) {
-        console.log(`${event.url} exists!`);
         this.openUrl(event.url);
       } else {
-        console.log(`${event.url} does not exist, attempt adding`);
         this._addSite(event.url);
       }
     }
