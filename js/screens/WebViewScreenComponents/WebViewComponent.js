@@ -197,7 +197,6 @@ class WebViewComponent extends React.Component {
             allowsFullscreenVideo={true}
             allowsLinkPreview={true}
             hideKeyboardAccessoryView={false}
-            keyboardDisplayRequiresUserAction={false}
             webviewDebuggingEnabled={true}
             onLoadEnd={() => {
               this.webview.requestFocus();
