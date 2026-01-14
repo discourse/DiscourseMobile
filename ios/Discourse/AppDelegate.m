@@ -3,11 +3,15 @@
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
+#import <ReactAppDependencyProvider/RCTAppDependencyProvider.h>
+
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
 #import <React/RCTLog.h>
+
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
+
 #import <RNSiriShortcuts/RNSiriShortcuts.h>
 
 #import "DiscourseKeyboardShortcuts.h"
@@ -16,43 +20,28 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  self.moduleName = @"Discourse";
+  self.dependencyProvider = [RCTAppDependencyProvider new];
+  // You can add your custom initial props in the dictionary below.
+  // They will be passed down to the ViewController used by React Native.
+  self.initialProps = @{};
 
-  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-    moduleName:@"Discourse"
-    initialProperties:nil];
-
-  rootView.backgroundColor = [UIColor systemBackgroundColor];
-
-  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
-  [self.window makeKeyAndVisible];
-
-  // TODO We don't need full release debugging forever, but for now it helps
-  RCTSetLogThreshold(RCTLogLevelInfo - 1);
-
-  // define UNUserNotificationCenter
-  // see https://github.com/zo0r/react-native-push-notification/issues/275
+  // Define UNUserNotificationCenter
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
 
   // show statusbar when returning from a fullscreen video
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoExitFullScreen:) name:@"UIWindowDidBecomeHiddenNotification" object:nil];
+  // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoExitFullScreen:) name:@"UIWindowDidBecomeHiddenNotification" object:nil];
 
-  return YES;
-}
-
-// This method checks for shortcuts issued to the app
-- (BOOL)application:(UIApplication *)application
-continueUserActivity:(NSUserActivity *)userActivity
- restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> *restorableObjects))restorationHandler
-{
-  return [RNSSSiriShortcuts application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
+  return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
+{
+  return [self bundleURL];
+}
+
+- (NSURL *)bundleURL
 {
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
@@ -69,13 +58,13 @@ continueUserActivity:(NSUserActivity *)userActivity
 }
 
 // Only if your app is using [Universal Links](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html).
-// - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
-//  restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
-// {
-//   return [RCTLinkingManager application:application
-//                    continueUserActivity:userActivity
-//                      restorationHandler:restorationHandler];
-// }
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
+ restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+{
+  return [RCTLinkingManager application:application
+                   continueUserActivity:userActivity
+                     restorationHandler:restorationHandler];
+}
 
 - (void)videoExitFullScreen:(id)sender
 {
@@ -83,7 +72,6 @@ continueUserActivity:(NSUserActivity *)userActivity
 }
 
 // Custom handler for keyboard events
-
 - (NSArray *)keyCommands {
   // store ⌘+(1,2,3...) shortcuts as site mappings
   // used for keyboard but also File menu items
@@ -165,16 +153,6 @@ continueUserActivity:(NSUserActivity *)userActivity
 
 }
 
-/// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.
-///
-/// @see: https://reactjs.org/blog/2022/03/29/react-v18.html
-/// @note: This requires to be rendering on Fabric (i.e. on the New Architecture).
-/// @return: `true` if the `concurrentRoot` feature is enabled. Otherwise, it returns `false`.
-- (BOOL)concurrentRootEnabled
-{
-  return true;
-}
-
 // Required for the register event.
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
@@ -195,7 +173,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 //Called when a notification is delivered to a foreground app.
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
 {
-  completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge);
+  completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner | UNNotificationPresentationOptionBadge);
 }
 
 // Called when a user taps on a notification in the foreground

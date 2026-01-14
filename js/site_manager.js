@@ -2,7 +2,7 @@
 'use strict';
 
 import _ from 'lodash';
-import {Alert, NativeModules, Platform} from 'react-native';
+import { Alert, NativeModules, Platform } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SafariWebAuth from 'react-native-safari-web-auth';
@@ -13,7 +13,7 @@ import JSEncrypt from './../lib/jsencrypt';
 import randomBytes from './../lib/random-bytes';
 import i18n from 'i18n-js';
 
-const {DiscourseKeyboardShortcuts} = NativeModules;
+const { DiscourseKeyboardShortcuts } = NativeModules;
 const REFRESH_THROTTLE_MS = 5000;
 
 class SiteManager {
@@ -24,6 +24,8 @@ class SiteManager {
   customScheme = 'discourse';
   urlScheme = 'discourse://auth_redirect';
   deviceName = 'Discourse - Unknown Mobile Device';
+  hotTopicsHidden = false;
+  siteURLsHidden = false;
 
   constructor() {
     this.load();
@@ -40,10 +42,15 @@ class SiteManager {
   }
 
   exists(site) {
-    return !!_.find(this.sites, {url: site.url});
+    return !!_.find(this.sites, { url: site.url });
   }
 
   add(site) {
+    if (this.exists(site)) {
+      console.log(`Site ${site.url} already exists.`);
+      return;
+    }
+
     site.createdAt = Date.now();
     this.sites.push(site);
     this.save();
@@ -72,7 +79,7 @@ class SiteManager {
   }
 
   setActiveSite(site) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (typeof site === 'string' || site instanceof String) {
         let url = site;
         AsyncStorage.getItem('@Discourse.sites').then(json => {
@@ -86,11 +93,11 @@ class SiteManager {
             this.activeSite = activeSite;
           }
 
-          resolve({activeSite: activeSite});
+          resolve({ activeSite: activeSite });
         });
       } else {
         this.activeSite = site;
-        resolve({activeSite: site});
+        resolve({ activeSite: site });
         return;
       }
     });
@@ -100,8 +107,8 @@ class SiteManager {
     this.activeSite = null;
   }
 
-  updateOrder(from, to) {
-    this.sites.splice(to, 0, this.sites.splice(from, 1)[0]);
+  updateOrder(data) {
+    this.sites = data;
     this.save();
     this.updateNativeMenu();
   }
@@ -139,7 +146,7 @@ class SiteManager {
   }
 
   ensureRSAKeys() {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.rsaKeys) {
         resolve();
         return;
@@ -168,9 +175,9 @@ class SiteManager {
   }
 
   load() {
+    this._loading = true;
     // generate RSA Keys on load, they'll be needed
     this.ensureRSAKeys();
-    this._loading = true;
 
     AsyncStorage.getItem('@Discourse.sites')
       .then(json => {
@@ -251,17 +258,17 @@ class SiteManager {
     const previousRefresh = this.lastRefresh;
 
     if (!previousRefresh) {
-      this._throttledRefreshSites();
-      return;
+      return this._throttledRefreshSites();
     }
 
     const lastRun = new Date(previousRefresh).getTime();
     const now = new Date().getTime();
 
     if (now - lastRun >= REFRESH_THROTTLE_MS) {
-      this._throttledRefreshSites();
+      return this._throttledRefreshSites();
     } else {
       console.log('no refresh, it was last refreshed too recently');
+      return;
     }
   }
 
@@ -306,7 +313,7 @@ class SiteManager {
 
   async iOSbackgroundRefresh() {
     const results = await Promise.all(
-      this.sites.map(site => site.refresh({bgTask: true})),
+      this.sites.map(site => site.refresh({ bgTask: true })),
     );
 
     let badgeCount = 0;
@@ -325,7 +332,7 @@ class SiteManager {
             alertBody: i18n.t('generic_notification_body', {
               url: result.url.replace(/^https?:\/\//, ''),
             }),
-            userInfo: {discourse_url: result.url},
+            userInfo: { discourse_url: result.url },
           });
         }
       }
@@ -494,9 +501,8 @@ class SiteManager {
           return this.activeSite.url;
         }
       }
-    } catch (error) {
-      // TODO: display error message?
-      console.error('auth process error: ', error);
+    } catch (e) {
+      console.log('auth process cancelled: ', e);
       return;
     }
   }
@@ -540,12 +546,12 @@ class SiteManager {
         let opts = options;
 
         if (opts.onlyNew) {
-          opts = _.merge(_.clone(opts), {minId: opts.newMap[site.url]});
+          opts = _.merge(_.clone(opts), { minId: opts.newMap[site.url] });
         }
 
         let promise = site.notifications(types, opts).then(notifications => {
           return notifications.map(n => {
-            return {notification: n, site: site};
+            return { notification: n, site: site };
           });
         });
 
@@ -583,7 +589,7 @@ class SiteManager {
   }
 
   _onChange() {
-    this._subscribers.forEach(sub => sub({event: 'change'}));
+    this._subscribers.forEach(sub => sub({ event: 'change' }));
   }
 
   storeLastPath(navState) {
@@ -624,9 +630,14 @@ class SiteManager {
     this.activeSite = null;
   }
 
-  urlInSites(url) {
+  async urlInSites(url) {
+    const forcedHttpsUrl = url.replace('http://', 'https://');
+
     let siteUrls = this.sites.map(s => s.url);
-    return siteUrls.find(siteUrl => url.startsWith(siteUrl) === true);
+
+    return siteUrls.find(siteUrl => {
+      return url.startsWith(siteUrl) || forcedHttpsUrl.startsWith(siteUrl);
+    });
   }
 }
 

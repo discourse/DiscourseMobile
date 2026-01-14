@@ -3,126 +3,106 @@
 
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  Switch,
-  Text,
-  View,
-} from 'react-native';
+import { Platform, StyleSheet, Switch, Text, View } from 'react-native';
 
-import {ThemeContext} from '../ThemeContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ThemeContext } from '../ThemeContext';
 import i18n from 'i18n-js';
 
-class SettingsScreen extends React.Component {
-  constructor(props) {
-    super(props);
+const SettingsScreen = props => {
+  const [androidCustomTabs, setAndroidCustomTabs] = React.useState(false);
+  const theme = React.useContext(ThemeContext);
 
-    this.state = {
-      progress: 0,
-      androidCustomTabs: false,
-    };
-
+  React.useEffect(() => {
     AsyncStorage.getItem('@Discourse.androidCustomTabs').then(val => {
-      this.setState({
-        androidCustomTabs: val ? true : false,
-      });
+      setAndroidCustomTabs(val ? true : false);
     });
+  }, []);
 
-    this.toggleAndroidCustomTabs = this.toggleAndroidCustomTabs.bind(this);
-    this.toggleDarkMode = this.toggleDarkMode.bind(this);
-  }
-
-  render() {
-    const theme = this.context;
-    return (
-      <SafeAreaView style={{flex: 1, backgroundColor: theme.background}}>
-        {this._renderSettings()}
-      </SafeAreaView>
-    );
-  }
-
-  toggleAndroidCustomTabs() {
+  const toggleAndroidCustomTabs = () => {
     AsyncStorage.getItem('@Discourse.androidCustomTabs').then(val => {
       if (!val) {
         AsyncStorage.setItem('@Discourse.androidCustomTabs', 'true');
-        this.setState({androidCustomTabs: true});
+        setAndroidCustomTabs(true);
       } else {
         AsyncStorage.removeItem('@Discourse.androidCustomTabs');
-        this.setState({androidCustomTabs: false});
+        setAndroidCustomTabs(false);
       }
     });
-  }
+  };
 
-  toggleDarkMode() {
-    const theme = this.context;
+  // TODO: Remove this, it is a feature for Android version < 29
+  const toggleDarkMode = () => {
     const newTheme = theme.background === '#FFFFFF' ? 'dark' : 'light';
 
     AsyncStorage.setItem('@Discourse.androidLegacyTheme', newTheme).then(() => {
-      this.props.screenProps.toggleTheme(newTheme);
+      props.screenProps.toggleTheme(newTheme);
     });
-  }
+  };
 
-  _renderSettings() {
-    const theme = this.context;
-    const isDark = !!(theme.background !== '#FFFFFF');
-    return (
-      <View style={styles.container}>
-        <View style={styles.settingItem}>
-          <Text style={{...styles.text, color: theme.grayTitle}}>
-            {i18n.t('browser_toggle_label')}
-          </Text>
-          <Switch
-            onValueChange={this.toggleAndroidCustomTabs}
-            value={this.state.androidCustomTabs}
-          />
-          <Text style={{...styles.desc, color: theme.grayTitle}}>
-            {i18n.t('browser_toggle_description')}
-          </Text>
-        </View>
+  const isDark = !!(theme.background !== '#FFFFFF');
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
+      <View
+        style={{ ...styles.container, backgroundColor: theme.grayBackground }}
+      >
+        {Platform.OS === 'android' && (
+          <View style={styles.settingItem}>
+            <Text style={{ ...styles.text, color: theme.grayTitle }}>
+              {i18n.t('browser_toggle_label')}
+            </Text>
+            <Switch
+              onValueChange={toggleAndroidCustomTabs}
+              value={androidCustomTabs}
+            />
+          </View>
+        )}
         {Platform.OS === 'android' && Platform.Version < 29 && (
           <View style={styles.settingItem}>
-            <Text style={{...styles.text, color: theme.grayTitle}}>
+            <Text style={{ ...styles.text, color: theme.grayTitle }}>
               {i18n.t('switch_dark')}
             </Text>
-            <Switch onValueChange={this.toggleDarkMode} value={isDark} />
-            <Text style={{...styles.desc, color: theme.grayTitle}}>
-              {i18n.t('browser_toggle_description')}
-            </Text>
+            <Switch onValueChange={toggleDarkMode} value={isDark} />
           </View>
         )}
       </View>
-    );
-  }
-}
-
-SettingsScreen.contextType = ThemeContext;
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: 'transparent',
     justifyContent: 'center',
-    flex: 5,
+    flex: 1,
   },
   settingItem: {
     alignItems: 'center',
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
-    marginBottom: 20,
+    backgroundColor: 'white',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    margin: 10,
+    padding: 10,
+    borderRadius: 10,
+    width: '95%',
   },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     padding: 12,
-    paddingBottom: 24,
     textAlign: 'center',
   },
-  desc: {
+  settingHeading: {
     fontSize: 16,
+    fontWeight: 'bold',
     padding: 12,
     paddingTop: 24,
     textAlign: 'center',
+  },
+  desc: {
+    fontSize: 15,
+    padding: 10,
+    paddingTop: 4,
   },
 });
 

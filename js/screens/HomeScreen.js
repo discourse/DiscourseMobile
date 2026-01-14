@@ -11,12 +11,14 @@ import {
 } from 'react-native';
 import Components from './HomeScreenComponents';
 import Common from './CommonComponents';
-import {ThemeContext} from '../ThemeContext';
+import { ThemeContext } from '../ThemeContext';
 import i18n from 'i18n-js';
-import {donateShortcut} from 'react-native-siri-shortcut';
-import {BottomTabBarHeightContext} from '@react-navigation/bottom-tabs';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import DragList from 'react-native-draglist';
+import { donateShortcut } from 'react-native-siri-shortcut';
+import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import DraggableFlatList, {
+  ScaleDecorator,
+} from 'react-native-draggable-flatlist';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -28,12 +30,13 @@ class HomeScreen extends React.Component {
       data: [],
       isRefreshing: false,
       lastRefreshTime: null,
-      scrollEnabled: true,
       refreshingEnabled: true,
       loadingSites: this._siteManager.isLoading(),
       authProcessActive: false,
       showTopicList: false,
       selectedTabIndex: 0,
+      hotTopicsHidden: false,
+      siteURLsHidden: false,
     };
 
     this._onChangeSites = e => this.onChangeSites(e);
@@ -41,9 +44,14 @@ class HomeScreen extends React.Component {
     this._renderItem = this._renderItem.bind(this);
   }
 
-  async visitSite(site, connect = false, endpoint = '') {
+  async visitSite(site, connect = false, endpoint = '', options = {}) {
     this._siteManager.setActiveSite(site);
     this.donateShortcut(site);
+
+    if (options.hotTopic) {
+      this.props.screenProps.openUrl(`${site.url}${endpoint}`);
+      return;
+    }
 
     if (site.authToken) {
       if (site.oneTimePassword) {
@@ -66,7 +74,7 @@ class HomeScreen extends React.Component {
     if (connect || site.loginRequired) {
       const authUrl = await this._siteManager.generateAuthURL(site);
       if (Platform.OS === 'ios') {
-        this.setState({authProcessActive: true});
+        this.setState({ authProcessActive: true });
         const requestAuthURL = await this._siteManager.requestAuth(authUrl);
 
         if (requestAuthURL) {
@@ -74,7 +82,7 @@ class HomeScreen extends React.Component {
         } else {
           // TODO: auth got cancelled or error, show a message?
         }
-        this.setState({authProcessActive: false});
+        this.setState({ authProcessActive: false });
       } else {
         this.props.screenProps.openUrl(authUrl);
       }
@@ -118,22 +126,26 @@ class HomeScreen extends React.Component {
 
   onChangeSites(e) {
     if (this._siteManager.isLoading() !== this.state.loadingSites) {
-      this.setState({loadingSites: this._siteManager.isLoading()});
+      this.setState({ loadingSites: this._siteManager.isLoading() });
     }
     if (e && e.event) {
-      this.setState({data: this._siteManager.listSites()});
+      this.setState({
+        data: this._siteManager.listSites(),
+        hotTopicsHidden: this._siteManager.hotTopicsHidden,
+        siteURLsHidden: this._siteManager.siteURLsHidden,
+      });
     }
   }
 
-  pullDownToRefresh() {
-    this._siteManager
-      .refreshSites()
-      .catch(e => {
-        console.log(e);
-      })
-      .then(() => {
-        this.setState({isRefreshing: false});
-      });
+  async pullDownToRefresh() {
+    this.setState({ isRefreshing: true });
+    try {
+      await this._siteManager.refreshSites();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.setState({ isRefreshing: false });
+    }
   }
 
   shouldDisplayOnBoarding() {
@@ -144,20 +156,11 @@ class HomeScreen extends React.Component {
     );
   }
 
-  _renderDebugRow() {
-    if (this._siteManager.sites.length !== 0) {
-      return (
-        <Components.DebugRow
-          siteManager={this._siteManager}
-          onDidPressAndroidSettingsIcon={() =>
-            this.onDidPressAndroidSettingsIcon()
-          }
-        />
-      );
-    }
-  }
-
   _renderTopicListToggle() {
+    if (this.state.hotTopicsHidden) {
+      return;
+    }
+
     const theme = this.context;
 
     const publicSiteCount = this._siteManager.sites.filter(
@@ -170,10 +173,11 @@ class HomeScreen extends React.Component {
           style={{
             flex: 0,
             backgroundColor: theme.background,
-            borderColor: theme.grayBorder,
-            borderWidth: StyleSheet.hairlineWidth,
+            borderBottomColor: theme.grayBorder,
+            borderBottomWidth: StyleSheet.hairlineWidth,
             width: '100%',
-          }}>
+          }}
+        >
           <Common.Filter
             selectedIndex={this.state.selectedTabIndex}
             tabs={[i18n.t('sites'), i18n.t('hot_topics')]}
@@ -183,39 +187,48 @@ class HomeScreen extends React.Component {
                 showTopicList: Boolean(index),
                 selectedTabIndex: index,
               });
+              if (this.dragListRef) {
+                this.dragListRef.scrollToOffset({ offset: 0, animated: true });
+              }
             }}
           />
         </View>
       );
     }
   }
-  _renderItem(info) {
-    const {item, onDragStart, onDragEnd} = info;
+
+  _renderItem(row) {
+    const { item, drag, isActive } = row;
 
     return (
-      <Components.SiteRow
-        site={item}
-        siteManager={this._siteManager}
-        onSwipe={scrollEnabled => this.setState({scrollEnabled: scrollEnabled})}
-        onClick={(endpoint = '') => this.visitSite(item, false, endpoint)}
-        onClickConnect={() => this.visitSite(item, true)}
-        onDelete={() => this._siteManager.remove(item)}
-        onLongPress={onDragStart}
-        onPressOut={onDragEnd}
-        keyExtractor={() => `site-row-${item.url}`}
-        showTopicList={this.state.showTopicList}
-      />
+      <ScaleDecorator>
+        <Components.SiteRow
+          site={item}
+          siteManager={this._siteManager}
+          onClick={(endpoint = '', options = {}) =>
+            this.visitSite(item, false, endpoint, options)
+          }
+          onClickConnect={() => this.visitSite(item, true)}
+          onDelete={() => this._siteManager.remove(item)}
+          onLongPress={drag}
+          disabled={isActive}
+          keyExtractor={() => `site-row-${item.url}`}
+          showTopicList={this.state.showTopicList}
+          showSiteAddress={!this.state.siteURLsHidden}
+        />
+      </ScaleDecorator>
     );
   }
 
-  onReordered(from, to) {
-    this._siteManager.updateOrder(from, to);
+  onReordered(data) {
+    this._siteManager.updateOrder(data);
+    this.setState({ data: data, refreshingEnabled: true });
   }
 
   _renderSites() {
     const theme = this.context;
     if (this.state.loadingSites) {
-      return <View style={{flex: 1}} />;
+      return <View style={{ flex: 1 }} />;
     }
 
     if (this.shouldDisplayOnBoarding()) {
@@ -230,23 +243,21 @@ class HomeScreen extends React.Component {
       return (
         <BottomTabBarHeightContext.Consumer>
           {tabBarHeight => (
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               {this._renderTopicListToggle()}
-              <DragList
+              <DraggableFlatList
                 ref={ref => {
                   this.dragListRef = ref;
                 }}
-                contentContainerStyle={{paddingBottom: tabBarHeight + 25}}
+                contentContainerStyle={{ paddingBottom: tabBarHeight + 20 }}
                 activationDistance={20}
                 data={this.state.data}
                 renderItem={item => this._renderItem(item)}
-                keyExtractor={item => `draggable-item-${item.url}`}
-                onReordered={this.onReordered}
-                scaleSelectionFactor={1.05}
-                estimatedItemSize={130}
+                keyExtractor={item => `d-item-${item.url}`}
+                onDragBegin={() => this.setState({ refreshingEnabled: false })}
+                onDragEnd={({ data }) => this.onReordered(data)}
                 refreshControl={
                   <RefreshControl
-                    style={{left: 500}}
                     enabled={this.state.refreshingEnabled}
                     refreshing={this.state.isRefreshing}
                     onRefresh={() => this.pullDownToRefresh()}
@@ -276,7 +287,8 @@ class HomeScreen extends React.Component {
     return (
       <>
         <SafeAreaView
-          style={[styles.container, {backgroundColor: theme.background}]}>
+          style={[styles.container, { backgroundColor: theme.background }]}
+        >
           <Components.NavigationBar
             onDidPressAndroidSettingsIcon={() =>
               this.onDidPressAndroidSettingsIcon()
@@ -289,16 +301,17 @@ class HomeScreen extends React.Component {
               {
                 backgroundColor: theme.grayBackground,
               },
-            ]}>
+            ]}
+          >
             {this._renderSites()}
-            {/* {this._renderDebugRow()} */}
           </View>
           {this.state.authProcessActive && (
             <View
               style={{
                 ...styles.authenticatingOverlay,
                 backgroundColor: theme.background,
-              }}>
+              }}
+            >
               <ActivityIndicator size="large" color={theme.grayUI} />
             </View>
           )}
@@ -311,9 +324,6 @@ class HomeScreen extends React.Component {
 HomeScreen.contextType = ThemeContext;
 
 const styles = StyleSheet.create({
-  list: {
-    flex: 1,
-  },
   container: {
     flex: 1,
   },
@@ -330,15 +340,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 1,
     opacity: 0.75,
-  },
-  topicListToggleWrapper: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  topicListToggle: {
-    padding: 10,
-    borderRadius: 6,
-    borderWidth: 1,
   },
 });
 

@@ -14,15 +14,16 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {WebView} from 'react-native-webview';
+import { WebView } from 'react-native-webview';
 import ErrorScreen from '../WebViewScreenComponents/ErrorScreen';
 import ProgressBar from '../../ProgressBar';
 import chroma from 'chroma-js';
 import SafariView from 'react-native-safari-view';
 import i18n from 'i18n-js';
 import Site from '../../site';
-import {ThemeContext} from '../../ThemeContext';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { ThemeContext } from '../../ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BlurView } from '@react-native-community/blur';
 
 export const withInsets = Component => {
   return props => {
@@ -45,6 +46,12 @@ class WebViewComponent extends React.Component {
     this.currentIndex = 0;
     this.safariViewVisible = false;
 
+    // used in _overscrollVelocity
+    this.lastScrollTime = Date.now();
+    this.lastInPageScrollTime = Date.now();
+    this.lastScrollY = 0;
+    this.velocity = 0;
+
     SafariView.addEventListener('onShow', () => {
       this.safariViewVisible = true;
     });
@@ -55,6 +62,7 @@ class WebViewComponent extends React.Component {
 
     this._handleAppStateChange = nextAppState => {
       this._sendAppStateChange(nextAppState);
+      this._resetScrollOverflow();
     };
 
     this.state = {
@@ -67,10 +75,10 @@ class WebViewComponent extends React.Component {
       errorData: null,
       userAgentSuffix: 'DiscourseHub',
       layoutCalculated: false,
-      hasNotch: this.props.screenProps.hasNotch,
       isLandscape: false,
       webviewUrl: this.props.url,
       authProcessActive: false,
+      scrollOverflow: 0,
     };
   }
 
@@ -97,12 +105,18 @@ class WebViewComponent extends React.Component {
     }
   }
 
+  _resetScrollOverflow() {
+    if (this.state.scrollOverflow > 0) {
+      this.setState({ scrollOverflow: 0 });
+    }
+  }
+
   _onLayout(event) {
     // The iPad user agent string no longer includes "iPad".
     // We want to serve desktop version on fullscreen iPad app
     // and mobile version on split view.
     // That's why we append the device ID (which includes "iPad" on large window sizes only)
-    const {width, height} = event.nativeEvent.layout;
+    const { width, height } = event.nativeEvent.layout;
 
     this.setState({
       userAgentSuffix:
@@ -115,15 +129,34 @@ class WebViewComponent extends React.Component {
   }
 
   get viewTopPadding() {
-    if (Platform.isPad) {
-      return 15;
+    if (this.props.insets.top) {
+      return this.props.insets.top;
     } else if (this.state.isLandscape) {
       return 10;
-    } else if (this.state.hasNotch) {
-      return this.props.insets.top;
     } else {
       return 20;
     }
+  }
+
+  _overscrollVelocity(currentScrollY) {
+    const currentTimestamp = Date.now();
+
+    // Avoid accidental overscroll if page had large enough scroll position in last 2 seconds
+    if (currentTimestamp - this.lastInPageScrollTime < 2000) {
+      return 0;
+    }
+
+    const timeDiff = (currentTimestamp - this.lastScrollTime) / 1000;
+    const scrollDiff = currentScrollY - this.lastScrollY;
+
+    if (timeDiff > 0) {
+      this.velocity = scrollDiff / timeDiff;
+    }
+
+    this.lastScrollY = currentScrollY;
+    this.lastScrollTime = currentTimestamp;
+
+    return Math.round(this.velocity);
   }
 
   render() {
@@ -136,14 +169,16 @@ class WebViewComponent extends React.Component {
           flex: 1,
           paddingTop: this.viewTopPadding,
           backgroundColor: this.state.headerBg || theme.grayBackground,
-        }}>
+        }}
+      >
         <StatusBar barStyle={this.state.barStyle} />
         {this.state.layoutCalculated && this.state.authProcessActive && (
           <View
             style={{
               ...styles.authenticatingOverlay,
               backgroundColor: theme.background,
-            }}>
+            }}
+          >
             <ActivityIndicator size="large" color={theme.grayUI} />
           </View>
         )}
@@ -155,21 +190,50 @@ class WebViewComponent extends React.Component {
               backgroundColor: this.state.headerBg,
             }}
             ref={ref => (this.webview = ref)}
-            source={{uri: this.state.webviewUrl}}
+            source={{ uri: this.state.webviewUrl }}
             applicationNameForUserAgent={this.state.userAgentSuffix}
             allowsBackForwardNavigationGestures={true}
             allowsInlineMediaPlayback={true}
             allowsFullscreenVideo={true}
             allowsLinkPreview={true}
             hideKeyboardAccessoryView={false}
-            keyboardDisplayRequiresUserAction={false}
             webviewDebuggingEnabled={true}
             onLoadEnd={() => {
               this.webview.requestFocus();
             }}
+            onScroll={syntheticEvent => {
+              const { contentOffset, layoutMeasurement } =
+                syntheticEvent.nativeEvent;
+
+              if (contentOffset.y < 5) {
+                this.setState({ scrollOverflow: -contentOffset.y });
+              } else {
+                if (contentOffset.y > 500) {
+                  this.lastInPageScrollTime = Date.now();
+                }
+                return;
+              }
+
+              const distanceThreshold = -Math.round(
+                layoutMeasurement.height / 4,
+              );
+              const velocityThreshold = -Math.round(
+                layoutMeasurement.height / 2,
+              );
+
+              const velocity = this._overscrollVelocity(contentOffset.y);
+
+              if (
+                contentOffset.y < distanceThreshold &&
+                velocity < velocityThreshold
+              ) {
+                // Dismiss webview on quick swipe down
+                this._onClose();
+              }
+            }}
             onError={syntheticEvent => {
-              const {nativeEvent} = syntheticEvent;
-              this.setState({errorData: nativeEvent});
+              const { nativeEvent } = syntheticEvent;
+              this.setState({ errorData: nativeEvent });
             }}
             renderError={errorName => (
               <ErrorScreen
@@ -224,7 +288,7 @@ class WebViewComponent extends React.Component {
                     const useSVC = Settings.get('external_links_svc');
                     if (useSVC) {
                       if (!this.safariViewVisible) {
-                        SafariView.show({url: request.url});
+                        SafariView.show({ url: request.url });
                       }
                     } else {
                       Linking.openURL(request.url);
@@ -241,7 +305,7 @@ class WebViewComponent extends React.Component {
               this._storeLastPath(navState);
             }}
             decelerationRate={'normal'}
-            onLoadProgress={({nativeEvent}) => {
+            onLoadProgress={({ nativeEvent }) => {
               const progress = nativeEvent.progress;
               this.setState({
                 progress: progress === 1 ? 0 : progress,
@@ -261,6 +325,7 @@ class WebViewComponent extends React.Component {
                 this.state.webviewReloadAttempts < MAX_RELOAD_ATTEMPTS &&
                 event.nativeEvent.url
               ) {
+                this._resetScrollOverflow();
                 this.props.navigation.navigate('WebView', {
                   url: event.nativeEvent.url,
                 });
@@ -277,12 +342,11 @@ class WebViewComponent extends React.Component {
         <View
           style={{
             ...styles.nudge,
-            marginTop: this.props.insets.top,
-            height: Platform.isPad ? 60 : 40,
-            // nudge element used to dismiss webview via swipe-down gesture
-            // uncomment background color to see the element
-            // backgroundColor: 'red',
-          }}>
+            marginTop: Math.max(this.props.insets.top, this.props.insets.top),
+            height: 30,
+            zIndex: 2,
+          }}
+        >
           <View
             style={{
               ...styles.nudgeElement,
@@ -291,6 +355,20 @@ class WebViewComponent extends React.Component {
             }}
           />
         </View>
+        <BlurView
+          blurAmount={this.state.scrollOverflow * 0.1}
+          blurType={theme.name}
+          pointerEvents={'none'}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            height: this.state.scrollOverflow > 10 ? '120%' : 0,
+            opacity: Math.max(30, this.state.scrollOverflow) / 100,
+            width: '100%',
+            zIndex: 1,
+          }}
+        />
       </View>
     );
   }
@@ -325,7 +403,9 @@ class WebViewComponent extends React.Component {
   }
 
   _onClose() {
-    this.props.navigation.goBack();
+    if (this.props.navigation.canGoBack()) {
+      this.props.navigation.goBack();
+    }
   }
 
   async addSite() {
@@ -349,32 +429,32 @@ class WebViewComponent extends React.Component {
         i18n.t('add_site_home_screen'),
         i18n.t('add_site_home_screen_description'),
         [
-          {text: i18n.t('cancel')},
-          {text: i18n.t('ok'), onPress: () => this.addSite()},
+          { text: i18n.t('cancel') },
+          { text: i18n.t('ok'), onPress: () => this.addSite() },
         ],
       );
       return;
     }
 
-    this.setState({authProcessActive: true});
+    this.setState({ authProcessActive: true });
 
     const url = await this.siteManager.generateAuthURL(site);
     const authURL = await this.siteManager.requestAuth(url);
 
-    this.setState({authProcessActive: false});
+    this.setState({ authProcessActive: false });
 
     if (authURL) {
       // this may seem odd to navigate to the same screen
       // but we want to use the same path as notifications and reset the local state
       // via componentDidUpdate
-      this.props.navigation.navigate('WebView', {url: authURL});
+      this.props.navigation.navigate('WebView', { url: authURL });
     }
   }
 
   _onMessage(event) {
     let data = JSON.parse(event.nativeEvent.data);
 
-    let {headerBg, shareUrl, dismiss, markRead, showLogin} = data;
+    let { headerBg, shareUrl, dismiss, markRead, showLogin } = data;
 
     if (headerBg && chroma.valid(headerBg)) {
       const headerBgChroma = chroma(headerBg);
@@ -420,8 +500,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'transparent',
     top: -10,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
   },
   nudgeElement: {
     borderRadius: 5,

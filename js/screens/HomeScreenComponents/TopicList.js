@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -9,8 +9,8 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {ThemeContext} from '../../ThemeContext';
+import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
+import { ThemeContext } from '../../ThemeContext';
 import fetch from './../../../lib/fetch';
 import i18n from 'i18n-js';
 
@@ -23,6 +23,7 @@ const TopicList = props => {
   const endpoint = '/hot';
   const siteQuery = `${props.site.url}/site.json`;
   const listQuery = `${props.site.url}${endpoint}.json`;
+
   const numberOfTopics = 10;
 
   const styles = StyleSheet.create({
@@ -58,15 +59,10 @@ const TopicList = props => {
       paddingBottom: 6,
     },
     topicRow: {
-      borderBottomWidth: StyleSheet.hairlineWidth,
       paddingTop: 0,
-      paddingBottom: 15,
       marginBottom: 15,
       paddingRight: props.largeLayout ? 20 : 0,
       marginLeft: props.largeLayout ? 30 : 0,
-    },
-    topicRowLast: {
-      paddingTop: 0,
     },
     emmptyItemsText: {
       marginLeft: props.largeLayout ? 30 : 0,
@@ -111,29 +107,30 @@ const TopicList = props => {
           .then(json => {
             const jsonTopics = json.topic_list.topics;
             if (jsonTopics) {
+              setLoadCompleted(true);
               setTopics(
                 jsonTopics
                   .filter(o => o.pinned === false)
                   .slice(0, numberOfTopics),
               );
             }
-            setLoadCompleted(true);
           })
           .catch(e => {
-            console.log(e);
             setLoadCompleted(true);
+            console.log('Error fetching listQuery:', e);
           });
       })
       .catch(e => {
-        console.log(e);
+        setLoadCompleted(true);
+        console.log('Error fetching siteQuery:', e);
       });
   }
 
   function _renderItems() {
-    if (topics.length === 0) {
+    if (topics && topics.length === 0) {
       return (
         <View style={styles.itemsContainer}>
-          <Text style={{...styles.emmptyItemsText, color: theme.grayTitle}}>
+          <Text style={{ ...styles.emmptyItemsText, color: theme.grayTitle }}>
             {i18n.t('no_hot_topics')}
           </Text>
         </View>
@@ -143,7 +140,7 @@ const TopicList = props => {
       <View style={styles.itemsContainer}>
         <FlatList
           data={topics}
-          renderItem={({item, index}) => _renderTopic(item, index)}
+          renderItem={({ item, index }) => _renderTopic(item, index)}
         />
       </View>
     );
@@ -205,49 +202,58 @@ const TopicList = props => {
   }
 
   function _renderTopic(item, index) {
-    const styleKey = index === numberOfTopics - 1 ? 'topicRowLast' : 'topicRow';
     return (
       <TouchableHighlight
         onPress={() => _openTopic(item)}
-        underlayColor={theme.grayBackground}>
-        <View
-          style={{...styles[styleKey], borderBottomColor: theme.grayBorder}}>
+        underlayColor={theme.background}
+        activeOpacity={0.6}
+        style={{
+          ...styles.topicRow,
+          borderBottomWidth:
+            index === numberOfTopics - 1 ? 0 : StyleSheet.hairlineWidth,
+          borderBottomColor: theme.grayBorder,
+          paddingBottom: index === numberOfTopics - 1 ? 0 : 15,
+        }}
+      >
+        <View>
           <View>
-            <Text style={{...styles.topicTitle, color: theme.grayTitle}}>
+            <Text style={{ ...styles.topicTitle, color: theme.grayTitle }}>
               {item.unicode_title || item.title}
             </Text>
           </View>
           {item.ai_topic_gist && (
             <View>
-              <Text style={{...styles.topicGist, color: theme.grayTitle}}>
+              <Text style={{ ...styles.topicGist, color: theme.grayTitle }}>
                 {item.ai_topic_gist}
               </Text>
             </View>
           )}
           <View style={styles.metadataFirstRow}>
             {_renderCategory(item.category_id)}
-            <View style={{...styles.topicCounts}}>
+            <View style={{ ...styles.topicCounts }}>
               <FontAwesome5
                 name={'reply'}
                 size={13}
                 color={theme.grayUI}
-                style={{opacity: 0.75}}
+                style={{ opacity: 0.75 }}
+                iconStyle="solid"
               />
-              <Text style={{...styles.topicCountsNum, color: theme.grayUI}}>
+              <Text style={{ ...styles.topicCountsNum, color: theme.grayUI }}>
                 {item.posts_count - 1}
               </Text>
               <FontAwesome5
                 name={'heart'}
                 size={13}
                 color={theme.grayUI}
-                style={{opacity: 0.75}}
-                solid
+                style={{ opacity: 0.75 }}
+                iconStyle="solid"
               />
               <Text
                 style={{
                   ...styles.topicCountsNum,
                   color: theme.grayUI,
-                }}>
+                }}
+              >
                 {item.like_count}
               </Text>
             </View>
@@ -261,14 +267,14 @@ const TopicList = props => {
     const category = categories.find(o => o.id === categoryId);
     if (category) {
       return (
-        <View style={{...styles.categoryBadge}}>
+        <View style={{ ...styles.categoryBadge }}>
           <View
             style={{
               ...styles.categoryPill,
               backgroundColor: '#' + category.color,
             }}
           />
-          <Text style={{color: theme.grayTitle}}>{category.name}</Text>
+          <Text style={{ color: theme.grayTitle }}>{category.name}</Text>
         </View>
       );
     }
@@ -281,7 +287,7 @@ const TopicList = props => {
   }
 
   return (
-    <View style={{...styles.container, borderBottomColor: theme.grayBorder}}>
+    <View style={{ ...styles.container, borderBottomColor: theme.grayBorder }}>
       {loadCompleted ? _renderItems() : _renderPlaceholder()}
     </View>
   );

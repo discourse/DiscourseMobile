@@ -2,10 +2,16 @@
 'use strict';
 
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
+import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 import DiscourseUtils from '../../DiscourseUtils';
-import {ThemeContext} from '../../ThemeContext';
+import { ThemeContext } from '../../ThemeContext';
 import i18n from 'i18n-js';
 
 class NotificationRow extends React.Component {
@@ -21,11 +27,15 @@ class NotificationRow extends React.Component {
       <TouchableHighlight
         style={[contentView, this._backgroundColor()]}
         underlayColor={theme.yellowUIFeedback}
-        onPress={() => this.props.onClick()}>
+        onPress={() => this.props.onClick()}
+      >
         <View style={styles.container}>
           {this._iconForNotification(this.props.notification)}
           {this._textForNotification(this.props.notification)}
-          <Image style={styles.siteIcon} source={{uri: this.props.site.icon}} />
+          <Image
+            style={styles.siteIcon}
+            source={{ uri: this.props.site.icon }}
+          />
         </View>
       </TouchableHighlight>
     );
@@ -33,11 +43,6 @@ class NotificationRow extends React.Component {
 
   _iconForNotification(notification) {
     let name = DiscourseUtils.iconNameForNotification(notification);
-    let FA5types = {};
-
-    if (name === 'heart' || name === 'dot-circle' || name === 'bookmark') {
-      FA5types.solid = true;
-    }
 
     return (
       <FontAwesome5
@@ -45,7 +50,7 @@ class NotificationRow extends React.Component {
         name={name}
         size={14}
         color="#919191"
-        {...FA5types}
+        iconStyle="solid"
       />
     );
   }
@@ -101,7 +106,7 @@ class NotificationRow extends React.Component {
         innerText = (
           <Text style={textStyle}>
             {displayName}
-            <Text style={{color: theme.blueUnread}}>
+            <Text style={{ color: theme.blueUnread }}>
               {' '}
               {this.props.notification.data.topic_title}
             </Text>
@@ -132,7 +137,7 @@ class NotificationRow extends React.Component {
             {displayName}
             <Text style={textStyle}>
               {' '}
-              {i18n.t('liked', {count: data.count})}
+              {i18n.t('liked', { count: data.count })}
             </Text>
           </Text>
         );
@@ -140,7 +145,7 @@ class NotificationRow extends React.Component {
       case 20:
         innerText = (
           <Text style={textStyle}>
-            {i18n.t('approved', {title: notification.fancy_title})}
+            {i18n.t('approved', { title: notification.fancy_title })}
           </Text>
         );
         break;
@@ -148,7 +153,7 @@ class NotificationRow extends React.Component {
         if (notification.fancy_title !== undefined) {
           innerText = (
             <Text style={textStyle}>
-              {i18n.t('approved', {title: notification.fancy_title})}
+              {i18n.t('approved', { title: notification.fancy_title })}
             </Text>
           );
         } else {
@@ -185,7 +190,7 @@ class NotificationRow extends React.Component {
         innerText = (
           <Text style={textStyle}>
             {displayName}
-            <Text style={{color: theme.blueUnread}}>
+            <Text style={{ color: theme.blueUnread }}>
               {' '}
               {notification.data.topic_title || notification.fancy_title}
             </Text>
@@ -242,7 +247,7 @@ class NotificationRow extends React.Component {
         innerText = (
           <Text style={textStyle}>
             {notification.data.display_username}
-            <Text style={{color: theme.blueUnread}}>
+            <Text style={{ color: theme.blueUnread }}>
               {' '}
               {notification.data.topic_title || notification.fancy_title}
             </Text>
@@ -275,9 +280,9 @@ class NotificationRow extends React.Component {
     const theme = this.context;
     let read = this.props.notification.read;
     if (read) {
-      return {backgroundColor: theme.background};
+      return { backgroundColor: theme.background };
     } else {
-      return {backgroundColor: theme.grayBackground};
+      return { backgroundColor: theme.grayBackground };
     }
   }
 }

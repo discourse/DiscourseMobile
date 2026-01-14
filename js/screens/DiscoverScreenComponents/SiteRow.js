@@ -1,35 +1,24 @@
 /* @flow */
 'use strict';
 
-import React, {useContext} from 'react';
-import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import { useContext } from 'react';
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {ThemeContext} from '../../ThemeContext';
-import {decode} from 'html-entities';
+import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
+import { ThemeContext } from '../../ThemeContext';
+import { decode } from 'html-entities';
 import i18n from 'i18n-js';
+import SiteLogo from '../CommonComponents/SiteLogo';
 
 const SiteRow = props => {
   const theme = useContext(ThemeContext);
 
   const iconUrl = props.site.discover_entry_logo_url;
 
-  // When dominant color is white on light or black on dark
-  // add a background color to the icon
-  const dominantColor = props.site.discover_entry_logo_dominant_color;
-  let iconBgColor = 'transparent';
-  if (theme.name === 'dark' && dominantColor === '000000') {
-    iconBgColor = '#FFFFFF';
-  }
-
-  if (theme.name === 'light' && dominantColor === 'FFFFFF') {
-    iconBgColor = '#333333';
-  }
-
-  const iconPath =
+  let logoImage =
     iconUrl && !iconUrl.endsWith('.webp') && !iconUrl.endsWith('.svg')
-      ? {uri: iconUrl}
-      : require('../../../img/nav-icon-gray.png');
+      ? { uri: iconUrl }
+      : false;
 
   const siteAddIcon = props.inLocalList ? 'check' : 'plus';
   const siteAddColor = props.inLocalList
@@ -47,7 +36,7 @@ const SiteRow = props => {
     });
 
     activeUserCount = (
-      <Text style={{...styles.description, color: theme.graySubtitle}}>
+      <Text style={{ ...styles.description, color: theme.graySubtitle }}>
         {i18n.t('active_counts', {
           active_users: roundedCount,
         })}
@@ -58,25 +47,23 @@ const SiteRow = props => {
   const link = props.site.featured_link || props.site.url;
 
   return (
-    <View style={{...styles.container, backgroundColor: theme.background}}>
-      <View style={{...styles.row, borderBottomColor: theme.grayBorder}}>
+    <View style={{ ...styles.container, backgroundColor: theme.background }}>
+      <View style={{ ...styles.row, borderBottomColor: theme.grayBorder }}>
         <TouchableHighlight
-          style={{flex: 1, backgroundColor: theme.background}}
+          style={{ flex: 1, backgroundColor: theme.background }}
           underlayColor={'transparent'}
-          onPress={() => props.loadSite(props.site.featured_link)}>
-          <View style={{flexDirection: 'row'}}>
+          onPress={() => props.loadSite(props.site.featured_link)}
+        >
+          <View style={{ flexDirection: 'row' }}>
             <View style={styles.iconWrapper}>
-              <Image
-                style={{...styles.icon, backgroundColor: iconBgColor}}
-                source={iconPath}
-                resizeMode="contain"
-              />
+              <SiteLogo logoImage={logoImage} title={props.site.title} />
             </View>
             <View style={styles.info}>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
-                style={{...styles.url, color: theme.grayTitle}}>
+                style={{ ...styles.url, color: theme.grayTitle }}
+              >
                 {props.site.title}
               </Text>
               {activeUserCount}
@@ -84,7 +71,8 @@ const SiteRow = props => {
                 <Text
                   ellipsizeMode="tail"
                   numberOfLines={5}
-                  style={{...styles.description, color: theme.graySubtitle}}>
+                  style={{ ...styles.description, color: theme.graySubtitle }}
+                >
                   {decode(props.site.excerpt)}
                 </Text>
               )}
@@ -92,7 +80,8 @@ const SiteRow = props => {
                 <Text
                   ellipsizeMode="tail"
                   numberOfLines={1}
-                  style={{...styles.secondaryUrl, color: theme.graySubtitle}}>
+                  style={{ ...styles.secondaryUrl, color: theme.graySubtitle }}
+                >
                   {link.replace(/^https?:\/\//, '')}
                 </Text>
               )}
@@ -100,8 +89,9 @@ const SiteRow = props => {
           </View>
         </TouchableHighlight>
         <View
-          style={{paddingHorizontal: 8, justifyContent: 'center'}}
-          importantForAccessibility="yes">
+          style={{ paddingHorizontal: 8, justifyContent: 'center' }}
+          importantForAccessibility="yes"
+        >
           <TouchableHighlight
             accessible={true}
             accessibilityLabel={siteAddIconA11YLabel}
@@ -112,16 +102,19 @@ const SiteRow = props => {
               !props.inLocalList &&
               props.handleSiteAdd(props.site.featured_link)
             }
-            {...props.sortHandlers}>
+            {...props.sortHandlers}
+          >
             <View
               style={{
                 ...styles.button,
                 backgroundColor: siteAddColor,
-              }}>
+              }}
+            >
               <FontAwesome5
                 name={siteAddIcon}
                 size={16}
                 color={theme.buttonTextColor}
+                iconStyle="solid"
               />
             </View>
           </TouchableHighlight>
