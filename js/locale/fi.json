@@ -62,7 +62,6 @@
   "site_added": "🎉 Sivusto lisätty aloitusnäyttöön!",
   "enable_notifications": "Ota ilmoitukset käyttöön napauttamalla tätä",
   "browser_toggle_label": "Avaa sivustot sovelluksen sisäisellä selaimella",
-  "browser_toggle_description": "Kun tämä asetus on poistettu käytöstä, sivustot käynnistetään valitsemasi selaimen kautta, mukaan lukien PWA:t",
   "discover_no_results": "Sivustoja ei löytynyt. Voit myös syöttää Discourse-yhteisön koko verkkotunnuksen ja lisätä sen!",
   "discover_no_results_one_character": "Lisää muutama merkki etsiäksesi yhteisöä.",
   "discover_reset": "Näytä kaikki",

@@ -57,7 +57,6 @@
   "site_added": "\\U0001Trang F389 đã được thêm vào màn hình chính!",
   "enable_notifications": "Nhấn vào đây để bật thông báo",
   "browser_toggle_label": "Mở trang web với trình duyệt trong ứng dụng",
-  "browser_toggle_description": "Khi cài đặt này bị tắt, các trang web sẽ được khởi chạy thông qua trình duyệt bạn chọn, bao gồm cả PWA",
   "discover_no_results": "Không tìm thấy trang web nào. Bạn cũng có thể nhập tên miền đầy đủ của cộng đồng Discourse và thêm vào!",
   "discover_no_results_one_character": "Thêm một vài ký tự nữa để tìm kiếm cộng đồng.",
   "discover_reset": "Hiển thị tất cả",

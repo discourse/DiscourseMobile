@@ -55,7 +55,6 @@
   "home": "Strona główna",
   "back": "Poprzednia",
   "browser_toggle_label": "Otwórz strony w przeglądarce aplikacji",
-  "browser_toggle_description": "Gdy to ustawienie jest wyłączone, witryny będą uruchamiane za pośrednictwem wybranej przeglądarki, w tym PWA",
   "discover_reset": "Pokaż wszystkie",
   "discover_all": "wszystkie",
   "discover_recent": "ostatnie",

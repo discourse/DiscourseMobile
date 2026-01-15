@@ -62,7 +62,6 @@
   "site_added": "🎉 Website zum Startbildschirm hinzugefügt!",
   "enable_notifications": "Tippe hier, um Benachrichtigungen zu aktivieren",
   "browser_toggle_label": "Websites mit In-App-Browser öffnen",
-  "browser_toggle_description": "Wenn diese Einstellung deaktiviert ist, werden Websites über den Browser deiner Wahl aufgerufen, einschließlich PWAs",
   "discover_no_results": "Keine Websites gefunden. Du kannst auch die vollständige Domain einer Discourse-Community eingeben und sie hinzufügen!",
   "discover_no_results_one_character": "Füge ein paar weitere Zeichen hinzu, um nach einer Community zu suchen.",
   "discover_reset": "Alle anzeigen",
