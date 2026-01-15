@@ -62,7 +62,6 @@
   "site_added": "🎉 ¡Sitio añadido a la pantalla de inicio!",
   "enable_notifications": "Pulsa aquí para activar las notificaciones",
   "browser_toggle_label": "Abrir sitios con el navegador integrado en la aplicación",
-  "browser_toggle_description": "Cuando esta configuración está desactivada, los sitios se lanzarán a través del navegador que elijas, incluyendo los PWAs",
   "discover_no_results": "No se ha encontrado ningún sitio. ¡También puedes introducir el dominio completo de una comunidad de Discourse y añadirlo!",
   "discover_no_results_one_character": "Añade algunos caracteres más para buscar una comunidad.",
   "discover_reset": "Mostrar todas",

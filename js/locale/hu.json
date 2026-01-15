@@ -49,7 +49,6 @@
   "home": "Kezdőlap",
   "back": "Vissza",
   "browser_toggle_label": "Webhelyek megnyitása az alkalmazáson belüli böngészőben",
-  "browser_toggle_description": "Ha ez a beállítás ki van kapcsolva, a webhelyek a választott böngészőn keresztül indulnak el, beleértve a PWA-kat is",
   "discover_reset": "Mutasd mindet",
   "discover_all": "Összes",
   "discover_recent": "friss",

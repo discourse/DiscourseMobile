@@ -62,7 +62,6 @@
   "site_added": "🎉 Site Ana ekrana eklendi!",
   "enable_notifications": "Bildirimleri etkinleştirmek için buraya dokunun",
   "browser_toggle_label": "Siteleri uygulama içi tarayıcıyla açın",
-  "browser_toggle_description": "Bu ayar devre dışı bırakıldığında, siteler PWA'lar da dâhil olmak üzere tercih ettiğiniz tarayıcı üzerinden başlatılır",
   "discover_no_results": "Site bulunamadı. Ayrıca bir Discourse topluluğunun tam alan alanına girip ekleyebilirsiniz!",
   "discover_no_results_one_character": "Bir topluluğu aramak için birkaç karakter daha ekleyin.",
   "discover_reset": "Tümünü göster",

@@ -62,7 +62,6 @@
   "site_added": "🎉 Site toegevoegd aan het startscherm!",
   "enable_notifications": "Tik hier om meldingen in te schakelen",
   "browser_toggle_label": "Sites openen met in-app browser",
-  "browser_toggle_description": "Als deze instelling is uitgeschakeld, worden sites geopend in de browser van je keuze, inclusief PWA's",
   "discover_no_results": "Geen sites gevonden. Je kunt ook het volledige domein van een Discourse-community invoeren en toevoegen!",
   "discover_no_results_one_character": "Voeg nog een paar tekens toe om naar een community te zoeken.",
   "discover_reset": "Alles weergeven",

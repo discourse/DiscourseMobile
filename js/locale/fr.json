@@ -62,7 +62,6 @@
   "site_added": "🎉 Site ajouté à l'écran d'accueil !",
   "enable_notifications": "Appuyez ici pour activer les notifications",
   "browser_toggle_label": "Ouvrir les sites avec un navigateur intégré à l'application",
-  "browser_toggle_description": "Lorsque ce paramètre est désactivé, les sites seront lancés via le navigateur de votre choix, y compris les PWA",
   "discover_no_results": "Aucun site n'a été trouvé. Vous pouvez également saisir le domaine complet d'une communauté Discourse et l'ajouter !",
   "discover_no_results_one_character": "Ajoutez quelques caractères supplémentaires pour rechercher une communauté.",
   "discover_reset": "Tout afficher",

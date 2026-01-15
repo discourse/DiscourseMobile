@@ -44,7 +44,6 @@
   "home": "主頁",
   "back": "上一步",
   "browser_toggle_label": "使用app內建瀏覽器開啟網站",
-  "browser_toggle_description": "禁用此設置後，將通過您選擇的瀏覽器啟動網站，包括 PWA",
   "discover_reset": "顯示全部",
   "discover_all": "所有",
   "discover_recent": "最近",

@@ -58,7 +58,6 @@
   "site_added": "🎉 サイトがホーム画面に追加されました！",
   "enable_notifications": "通知を有効にするにはここをタップ",
   "browser_toggle_label": "アプリ内ブラウザでサイトを開く",
-  "browser_toggle_description": "この設定を無効にすると、サイトは PWA を含む任意のブラウザで起動します。",
   "discover_no_results": "サイトが見つかりません。Discourse コミュニティーの完全なドメインを入力して追加することもできます！",
   "discover_no_results_one_character": "さらに数文字追加してコミュニティーを検索してください。",
   "discover_reset": "すべて表示",
