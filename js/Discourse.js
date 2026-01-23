@@ -52,7 +52,7 @@ i18n.translations = {
   de: require('./locale/de.json'),
   en: require('./locale/en.json'),
   es: require('./locale/es.json'),
-  fa: require('./locale/fa.json'),
+  fa: require('./locale/fa_IR.json'),
   fi: require('./locale/fi.json'),
   fr: require('./locale/fr.json'),
   he: require('./locale/he.json'),
