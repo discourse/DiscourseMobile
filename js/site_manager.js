@@ -630,7 +630,7 @@ class SiteManager {
     this.activeSite = null;
   }
 
-  async urlInSites(url) {
+  urlInSites(url) {
     const forcedHttpsUrl = url.replace('http://', 'https://');
 
     let siteUrls = this.sites.map(s => s.url);
