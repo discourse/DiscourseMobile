@@ -74,6 +74,7 @@
   "discover_open_source": "open-source",
   "discover_international": "international",
   "discover_recent": "recent",
+  "discover_ai": "ai",
   "active_counts": "%{active_users} active users",
   "ok": "OK",
   "cancel": "Cancel",
