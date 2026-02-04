@@ -39,7 +39,7 @@ jobs:
         run: cd ios ; pod install ; cd -
 
       - name: Detox build
-        run: yarn detox build --configuration ios.sim.release
+        run: set -o pipefail && yarn detox build --configuration ios.sim.release 2>&1 | xcpretty
 
       - name: Detox iPhone tests
         run: yarn detox test --configuration ios.sim.release --cleanup --record-logs all
@@ -83,7 +83,7 @@ jobs:
         run: cd ios ; pod install ; cd -
 
       - name: Detox build
-        run: yarn detox build --configuration ios.sim.release
+        run: set -o pipefail && yarn detox build --configuration ios.sim.release 2>&1 | xcpretty
 
       - name: Boot iPad simulator
         run: |
