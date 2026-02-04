@@ -39,10 +39,10 @@ jobs:
         run: cd ios ; pod install ; cd -
 
       - name: Detox build
-        run: yarn detox build --configuration ios.sim.release
+        run: yarn detox build --configuration ios.sim.debug
 
       - name: Detox iPhone tests
-        run: yarn detox test --configuration ios.sim.release --cleanup --record-logs all
+        run: yarn detox test --configuration ios.sim.debug --cleanup --record-logs all
 
       - name: Upload artifacts
         if: failure()
@@ -83,7 +83,7 @@ jobs:
         run: cd ios ; pod install ; cd -
 
       - name: Detox build
-        run: yarn detox build --configuration ios.sim.release
+        run: yarn detox build --configuration ios.sim.debug
 
       - name: Boot iPad simulator
         run: |
@@ -91,7 +91,7 @@ jobs:
           xcrun simctl bootstatus 'iPad (10th generation)' -b
 
       - name: Detox iPad tests
-        run: yarn detox test --configuration ios.sim.release --cleanup --record-logs all -n 'iPad (10th generation)' --retries 2
+        run: yarn detox test --configuration ios.sim.debug --cleanup --record-logs all -n 'iPad (10th generation)' --retries 2
 
       - name: Upload artifacts
         if: failure()
