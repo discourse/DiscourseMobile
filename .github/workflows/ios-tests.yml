@@ -39,7 +39,15 @@ jobs:
         run: cd ios ; pod install ; cd -
 
       - name: Detox build
-        run: yarn detox build --configuration ios.sim.release
+        run: |
+          xcodebuild -workspace ios/Discourse.xcworkspace \
+            -scheme Discourse \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath ios/build \
+            -quiet \
+            build
 
       - name: Detox iPhone tests
         run: yarn detox test --configuration ios.sim.release --cleanup --record-logs all
@@ -83,7 +91,15 @@ jobs:
         run: cd ios ; pod install ; cd -
 
       - name: Detox build
-        run: yarn detox build --configuration ios.sim.release
+        run: |
+          xcodebuild -workspace ios/Discourse.xcworkspace \
+            -scheme Discourse \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath ios/build \
+            -quiet \
+            build
 
       - name: Boot iPad simulator
         run: |
