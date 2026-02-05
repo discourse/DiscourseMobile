@@ -319,6 +319,7 @@ class DiscoverScreen extends React.Component {
       '#media',
       '#gaming',
       '#open-source',
+      '#ai',
       '#locale-intl',
       'order:latest_topic',
     ];
@@ -340,6 +341,7 @@ class DiscoverScreen extends React.Component {
         {this._renderTag(i18n.t('discover_media'), '#media')}
         {this._renderTag(i18n.t('discover_gaming'), '#gaming')}
         {this._renderTag(i18n.t('discover_open_source'), '#open-source')}
+        {this._renderTag(i18n.t('discover_ai'), '#ai')}
         {this._renderTag(i18n.t('discover_international'), '#locale-intl')}
         {this._renderTag(i18n.t('discover_recent'), 'order:latest_topic')}
         <View style={{ width: 24 }} />

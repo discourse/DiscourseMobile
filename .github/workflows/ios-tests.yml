@@ -7,8 +7,8 @@ on:
   pull_request:
 
 jobs:
-  ios-tests:
-    runs-on: macos-latest
+  ios-iphone-tests:
+    runs-on: macos-15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -39,17 +39,79 @@ jobs:
         run: cd ios ; pod install ; cd -
 
       - name: Detox build
-        run: yarn detox build --configuration ios.sim.release
+        run: |
+          xcodebuild -workspace ios/Discourse.xcworkspace \
+            -scheme Discourse \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath ios/build \
+            -quiet \
+            build
 
       - name: Detox iPhone tests
         run: yarn detox test --configuration ios.sim.release --cleanup --record-logs all
-
-      - name: Detox iPad tests
-        run: yarn detox test --configuration ios.sim.release --cleanup --record-logs all -n 'iPad (10th generation)'
 
       - name: Upload artifacts
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: detox-artifacts
+          name: detox-artifacts-iphone
+          path: artifacts
+
+  ios-ipad-tests:
+    runs-on: macos-15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 24
+          cache: yarn
+
+      - name: Install Yarn dependencies
+        run: yarn
+
+      - name: Install macOS dependencies
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
+          HOMEBREW_NO_INSTALL_CLEANUP: 1
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install CocoaPods
+        run: cd ios ; pod install ; cd -
+
+      - name: Detox build
+        run: |
+          xcodebuild -workspace ios/Discourse.xcworkspace \
+            -scheme Discourse \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath ios/build \
+            -quiet \
+            build
+
+      - name: Boot iPad simulator
+        run: |
+          xcrun simctl boot 'iPad (10th generation)' || true
+          xcrun simctl bootstatus 'iPad (10th generation)' -b
+
+      - name: Detox iPad tests
+        run: yarn detox test --configuration ios.sim.release --cleanup --record-logs all -n 'iPad (10th generation)' --retries 2
+
+      - name: Upload artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: detox-artifacts-ipad
           path: artifacts
