@@ -90,6 +90,7 @@
   "discover_open_source": "مفتوح المصدر",
   "discover_international": "دولي",
   "discover_recent": "الحديثة",
+  "discover_ai": "الذكاء الاصطناعي",
   "active_counts": "%{active_users} من المستخدمين النشطين",
   "ok": "موافق",
   "cancel": "إلغاء",
@@ -106,5 +107,7 @@
   "hot_topics": "الموضوعات الرائجة",
   "sites": "المواقع",
   "find_new_communities": "العثور على مجتمعات جديدة للانضمام إليها",
-  "no_hot_topics": "لم يتم العثور على موضوعات رائجة لهذا الموقع."
+  "no_hot_topics": "لم يتم العثور على موضوعات رائجة لهذا الموقع.",
+  "oops": "عذرًا، حدث خطأ ما.",
+  "still_loading": "لا يزال التحميل مستمرًا..."
 }

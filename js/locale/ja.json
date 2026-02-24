@@ -70,6 +70,7 @@
   "discover_open_source": "オープンソース",
   "discover_international": "海外",
   "discover_recent": "最近",
+  "discover_ai": "AI",
   "active_counts": "%{active_users} アクティブユーザー",
   "ok": "OK",
   "cancel": "キャンセル",
@@ -86,5 +87,7 @@
   "hot_topics": "ホットなトピック",
   "sites": "サイト",
   "find_new_communities": "参加できる新しいコミュニティーを探す",
-  "no_hot_topics": "このサイトにはホットなトピックがありません。"
+  "no_hot_topics": "このサイトにはホットなトピックがありません。",
+  "oops": "エラーが発生しました。",
+  "still_loading": "まだ読み込み中..."
 }

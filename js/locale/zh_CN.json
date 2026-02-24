@@ -70,6 +70,7 @@
   "discover_open_source": "开源",
   "discover_international": "国际",
   "discover_recent": "最近",
+  "discover_ai": "ai",
   "active_counts": "%{active_users} 个活跃用户",
   "ok": "确定",
   "cancel": "取消",
@@ -86,5 +87,7 @@
   "hot_topics": "热门话题",
   "sites": "站点",
   "find_new_communities": "查找可以加入的新社区",
-  "no_hot_topics": "未在此站点上找到热门话题。"
+  "no_hot_topics": "未在此站点上找到热门话题。",
+  "oops": "糟糕，出错了。",
+  "still_loading": "仍在加载…"
 }
