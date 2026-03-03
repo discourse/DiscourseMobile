@@ -74,6 +74,7 @@
   "discover_open_source": "açık-kaynak",
   "discover_international": "uluslararası",
   "discover_recent": "yakın zaman",
+  "discover_ai": "yapay zeka",
   "active_counts": "%{active_users} aktif kullanıcı",
   "ok": "Tamam",
   "cancel": "İptal et",
@@ -90,5 +91,7 @@
   "hot_topics": "Gündem konuları",
   "sites": "Siteler",
   "find_new_communities": "Katılmak için yeni topluluklar bulun",
-  "no_hot_topics": "Bu site için gündem konusu bulunamadı."
+  "no_hot_topics": "Bu site için gündem konusu bulunamadı.",
+  "oops": "Oops, bir sorun oluştu.",
+  "still_loading": "Hala yükleniyor..."
 }
