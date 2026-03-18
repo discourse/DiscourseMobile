@@ -82,6 +82,7 @@
   "discover_open_source": "с открытым исходным кодом",
   "discover_international": "международные",
   "discover_recent": "недавние",
+  "discover_ai": "ИИ",
   "active_counts": "Активных пользователей: %{active_users}",
   "ok": "OK",
   "cancel": "Отменить",
@@ -98,5 +99,7 @@
   "hot_topics": "Горячие темы",
   "sites": "Сайты",
   "find_new_communities": "Найдите новые сообщества, к которым можно присоединиться",
-  "no_hot_topics": "Для этого сайта не найдено горячих тем."
+  "no_hot_topics": "Для этого сайта не найдено горячих тем.",
+  "oops": "Ой, что-то пошло не так.",
+  "still_loading": "Загрузка продолжается..."
 }
