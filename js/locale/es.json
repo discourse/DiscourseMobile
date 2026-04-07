@@ -74,6 +74,7 @@
   "discover_open_source": "código abierto",
   "discover_international": "internacional",
   "discover_recent": "recientes",
+  "discover_ai": "IA",
   "active_counts": "%{active_users} usuarios activos",
   "ok": "Aceptar",
   "cancel": "Cancelar",
@@ -90,5 +91,7 @@
   "hot_topics": "Temas candentes",
   "sites": "Sitios",
   "find_new_communities": "Encuentra nuevas comunidades a las que unirte",
-  "no_hot_topics": "No se encontraron temas candentes para este sitio."
+  "no_hot_topics": "No se encontraron temas candentes para este sitio.",
+  "oops": "Vaya, algo salió mal.",
+  "still_loading": "Todavía cargando..."
 }
