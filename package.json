@@ -33,7 +33,7 @@
     "i18n-js": "^3.8.0",
     "immutable": "^4.1.0",
     "invariant": "^2.2",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "prop-types": "^15.8.1",
     "react": "19.1.0",
     "react-native": "^0.80.2",
