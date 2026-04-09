@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -9,7 +9,7 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import {ThemeContext} from '../../ThemeContext';
+import { ThemeContext } from '../../ThemeContext';
 import i18n from 'i18n-js';
 
 const TagSplash = props => {
@@ -17,10 +17,11 @@ const TagSplash = props => {
 
   return (
     <ScrollView
-      style={{flex: 1, backgroundColor: theme.background}}
-      contentContainerStyle={styles.container}>
+      style={{ flex: 1, backgroundColor: theme.background }}
+      contentContainerStyle={styles.container}
+    >
       <View style={styles.header}>
-        <Text style={{...styles.prompt, color: theme.grayTitle}}>
+        <Text style={{ ...styles.prompt, color: theme.grayTitle }}>
           {i18n.t('discover_pick_tag')}
         </Text>
       </View>
@@ -34,8 +35,9 @@ const TagSplash = props => {
               backgroundColor: theme.background,
             }}
             underlayColor={theme.grayBackground}
-            onPress={() => props.onSelectTag(tag.value)}>
-            <Text style={{...styles.tagLabel, color: theme.grayTitle}}>
+            onPress={() => props.onSelectTag(tag.value)}
+          >
+            <Text style={{ ...styles.tagLabel, color: theme.grayTitle }}>
               {tag.label}
             </Text>
           </TouchableHighlight>
