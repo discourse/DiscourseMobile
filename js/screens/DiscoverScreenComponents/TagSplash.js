@@ -29,6 +29,8 @@ const TagSplash = props => {
         {props.tags.map(tag => (
           <TouchableHighlight
             key={tag.value}
+            accessibilityRole="button"
+            accessibilityLabel={tag.label}
             style={{
               ...styles.tagButton,
               borderColor: theme.grayUILight,

@@ -3,10 +3,8 @@
 
 import React, { useContext } from 'react';
 import {
-  Linking,
   Platform,
   StyleSheet,
-  TouchableHighlight,
   View,
 } from 'react-native';
 import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
@@ -14,22 +12,16 @@ import { ThemeContext } from '../../ThemeContext';
 
 const NavigationBar = () => {
   const theme = useContext(ThemeContext);
-  const discourseUrl = 'https://www.discourse.org';
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.titleContainer}>
-        <TouchableHighlight
-          underlayColor={'transparent'}
-          onPress={() => Linking.openURL(discourseUrl)}
-        >
-          <FontAwesome5
-            name={'discourse'}
-            size={26}
-            iconStyle="brand"
-            style={{ color: theme.grayTitle }}
-          />
-        </TouchableHighlight>
+        <FontAwesome5
+          name={'discourse'}
+          size={26}
+          iconStyle="brand"
+          style={{ color: theme.grayTitle }}
+        />
       </View>
       <View
         style={[styles.separator, { backgroundColor: theme.grayBackground }]}

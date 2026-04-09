@@ -83,7 +83,7 @@ class DiscoverScreen extends React.Component {
     };
 
     this._siteManager = this.props.screenProps.siteManager;
-    this.baseUrl = `${Site.discoverUrl()}/search.json?q=`;
+    this.baseUrl = `${Site.discoverUrl()}search.json?q=`;
     this.maxPageNumber = 10;
 
     this.debouncedSearch = debounce(this.doSearch, 750);
@@ -177,7 +177,7 @@ class DiscoverScreen extends React.Component {
       'tabPress',
       () => {
         if (this.state.showHotTopics && this.state.hotTopicsTagChosen) {
-          this.setState({ hotTopicsTagChosen: false });
+          this.setState({ hotTopicsTagChosen: false, hotTopics: [] });
         }
       },
     );
@@ -201,7 +201,7 @@ class DiscoverScreen extends React.Component {
 
   fetchHotTopics(tag, opts = {}) {
     const page = opts.pageNumber || 1;
-    const url = `${Site.discoverUrl()}/discover/hot-topics.json?tag=${encodeURIComponent(
+    const url = `${Site.discoverUrl()}discover/hot-topics.json?tag=${encodeURIComponent(
       tag,
     )}&page=${page}`;
 
@@ -209,19 +209,19 @@ class DiscoverScreen extends React.Component {
       .then(res => res.json())
       .then(json => {
         if (json.hot_topics) {
-          this.setState({
+          this.setState(prevState => ({
             hotTopics: opts.append
-              ? this.state.hotTopics.concat(json.hot_topics)
+              ? prevState.hotTopics.concat(json.hot_topics)
               : json.hot_topics,
             hotTopicsLoading: false,
             hotTopicsHasMore: Boolean(json.more_topics_url),
-          });
+          }));
         } else {
-          this.setState({
-            hotTopics: opts.append ? this.state.hotTopics : [],
+          this.setState(prevState => ({
+            hotTopics: opts.append ? prevState.hotTopics : [],
             hotTopicsLoading: false,
             hotTopicsHasMore: false,
-          });
+          }));
         }
       })
       .catch(e => {
@@ -405,34 +405,23 @@ class DiscoverScreen extends React.Component {
     );
   }
 
-  _renderTag(label, searchString) {
+  _renderTagPill(key, label, isActive, onPress) {
     const theme = this.context;
-    const isCurrentTerm = searchString === this.state.selectedTag;
 
     return (
       <TouchableHighlight
+        key={key}
+        accessibilityRole="button"
+        accessibilityLabel={label}
         style={{
           ...styles.tag,
           borderColor: theme.grayUILight,
-          backgroundColor: isCurrentTerm
+          backgroundColor: isActive
             ? theme.grayBackground
             : theme.background,
         }}
         underlayColor={theme.grayBackground}
-        onPress={() => {
-          this.setState({
-            selectedTag: searchString,
-            loading: true,
-            page: 1,
-          });
-          if (this.discoverList) {
-            this.discoverList.scrollToIndex({
-              index: 0,
-              animated: true,
-            });
-          }
-          this.doSearch(searchString);
-        }}
+        onPress={onPress}
       >
         <Text
           style={{
@@ -444,6 +433,25 @@ class DiscoverScreen extends React.Component {
         </Text>
       </TouchableHighlight>
     );
+  }
+
+  _renderTag(label, searchString) {
+    const isCurrentTerm = searchString === this.state.selectedTag;
+
+    return this._renderTagPill(searchString, label, isCurrentTerm, () => {
+      this.setState({
+        selectedTag: searchString,
+        loading: true,
+        page: 1,
+      });
+      if (this.discoverList) {
+        this.discoverList.scrollToIndex({
+          index: 0,
+          animated: true,
+        });
+      }
+      this.doSearch(searchString);
+    });
   }
 
   _renderContent(tabBarHeight) {
@@ -491,7 +499,8 @@ class DiscoverScreen extends React.Component {
       <View style={styles.container}>
         <FlatList
           keyboardDismissMode="on-drag"
-          ListEmptyComponent={this._renderEmptyResult()}
+          keyExtractor={item => String(item.id || item.featured_link)}
+          ListEmptyComponent={() => this._renderEmptyResult()}
           ref={ref => (this.discoverList = ref)}
           contentContainerStyle={{ paddingBottom: tabBarHeight }}
           data={this.state.results}
@@ -534,9 +543,9 @@ class DiscoverScreen extends React.Component {
 
     if (this.state.term === '') {
       return (
-        <ScrollView keyboardShouldPersistTaps="handled">
+        <View style={styles.emptyResult}>
           <ActivityIndicator size="large" color={theme.grayUI} />
-        </ScrollView>
+        </View>
       );
     }
 
@@ -601,8 +610,6 @@ class DiscoverScreen extends React.Component {
   }
 
   _renderHotTopicsHeader() {
-    const theme = this.context;
-
     return (
       <ScrollView
         horizontal={true}
@@ -612,35 +619,13 @@ class DiscoverScreen extends React.Component {
         {this.hotTopicTags.map(tag => {
           const isCurrentTag = tag.value === this.state.hotTopicsSelectedTag;
 
-          return (
-            <TouchableHighlight
-              key={tag.value}
-              style={{
-                ...styles.tag,
-                borderColor: theme.grayUILight,
-                backgroundColor: isCurrentTag
-                  ? theme.grayBackground
-                  : theme.background,
-              }}
-              underlayColor={theme.grayBackground}
-              onPress={() => {
-                if (tag.value === this.state.hotTopicsSelectedTag) {
-                  this.setState({ hotTopicsTagChosen: false });
-                } else {
-                  this._onSelectTag(tag.value);
-                }
-              }}
-            >
-              <Text
-                style={{
-                  color: theme.tagButtonTextColor,
-                  fontSize: this.state.largerUI ? 15 : 13,
-                }}
-              >
-                {tag.label}
-              </Text>
-            </TouchableHighlight>
-          );
+          return this._renderTagPill(tag.value, tag.label, isCurrentTag, () => {
+            if (tag.value === this.state.hotTopicsSelectedTag) {
+              this.setState({ hotTopicsTagChosen: false });
+            } else {
+              this._onSelectTag(tag.value);
+            }
+          });
         })}
         <View style={{ width: 24 }} />
       </ScrollView>
