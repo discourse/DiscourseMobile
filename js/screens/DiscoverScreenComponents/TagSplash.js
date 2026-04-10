@@ -35,6 +35,7 @@ const TagSplash = props => {
           {i18n.t('discover_pick_tag')}
         </Text>
       </View>
+
       <View style={styles.tagGrid}>
         {props.tags.map(tag => (
           <TouchableHighlight
@@ -49,7 +50,9 @@ const TagSplash = props => {
             underlayColor={theme.grayBackground}
             onPress={() => props.onSelectTag(tag)}
           >
-            <Text style={{ ...styles.tagLabel, color: theme.tagButtonTextColor }}>
+            <Text
+              style={{ ...styles.tagLabel, color: theme.tagButtonTextColor }}
+            >
               {tag}
             </Text>
           </TouchableHighlight>

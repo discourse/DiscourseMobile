@@ -2,7 +2,13 @@
 'use strict';
 
 import React, { useContext } from 'react';
-import { Platform, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 import { ThemeContext } from '../../ThemeContext';
 
@@ -34,9 +40,7 @@ const TagDetailHeader = props => {
           {props.title}
         </Text>
       </View>
-      <View
-        style={[styles.separator, { backgroundColor: theme.grayBorder }]}
-      />
+      <View style={[styles.separator, { backgroundColor: theme.grayBorder }]} />
     </View>
   );
 };

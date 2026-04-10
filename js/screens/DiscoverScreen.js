@@ -167,7 +167,10 @@ class DiscoverScreen extends React.Component {
         if (json.tags && json.tags.length > 0) {
           this.setState({ splashTags: json.tags, splashTagsLoading: false });
         } else {
-          this.setState({ splashTags: FALLBACK_TAGS, splashTagsLoading: false });
+          this.setState({
+            splashTags: FALLBACK_TAGS,
+            splashTagsLoading: false,
+          });
         }
       })
       .catch(() => {
@@ -309,8 +312,7 @@ class DiscoverScreen extends React.Component {
           return;
         }
 
-        const rawTopics =
-          (json.topic_list && json.topic_list.topics) || [];
+        const rawTopics = (json.topic_list && json.topic_list.topics) || [];
         const topics = rawTopics.map(topic => ({
           ...topic,
           url: `${communityUrl}/t/${topic.slug}/${topic.id}`,
@@ -337,10 +339,10 @@ class DiscoverScreen extends React.Component {
         communityTopicsPage: newPage,
         communityTopicsLoading: true,
       });
-      this._fetchCommunityHotTopics(
-        this.state.activeCommunity.featured_link,
-        { append: true, page: newPage },
-      );
+      this._fetchCommunityHotTopics(this.state.activeCommunity.featured_link, {
+        append: true,
+        page: newPage,
+      });
     }
   }
 
@@ -660,7 +662,9 @@ class DiscoverScreen extends React.Component {
           underlayColor={theme.blueUnread}
           onPress={() => this._goToAllCommunities()}
         >
-          <Text style={[styles.seeAllButtonText, { color: theme.buttonTextColor }]}>
+          <Text
+            style={[styles.seeAllButtonText, { color: theme.buttonTextColor }]}
+          >
             {i18n.t('discover_see_all_communities')} ›
           </Text>
         </TouchableHighlight>
@@ -735,7 +739,6 @@ class DiscoverScreen extends React.Component {
       <DiscoverComponents.CommunityDetailView
         community={community}
         activeTag={this.state.activeTag}
-        topicsCount={this.state.communityTopics.length}
         inLocalList={this._siteManager.exists({
           url: community.featured_link,
         })}

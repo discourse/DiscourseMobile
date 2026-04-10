@@ -24,7 +24,7 @@ function hashCode(str) {
 const CommunityDetailView = props => {
   const theme = useContext(ThemeContext);
 
-  const { community, topicsCount, inLocalList } = props;
+  const { community, inLocalList } = props;
   const iconUrl = community.discover_entry_logo_url;
   const hasLogo =
     iconUrl && !iconUrl.endsWith('.webp') && !iconUrl.endsWith('.svg');
