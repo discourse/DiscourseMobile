@@ -53,6 +53,16 @@ const toastConfig = {
   ),
 };
 
+const VIEWS = {
+  SPLASH: 'splash',
+  SEARCH: 'search',
+  TAG_DETAIL: 'tagDetail',
+  ALL_COMMUNITIES: 'allCommunities',
+  COMMUNITY_DETAIL: 'communityDetail',
+};
+
+const defaultView = VIEWS.SPLASH;
+
 const FALLBACK_TAGS = [
   'ai',
   'finance',
@@ -79,8 +89,8 @@ class DiscoverScreen extends React.Component {
 
     this.state = {
       // View navigation
-      view: 'splash', // 'splash' | 'tagDetail' | 'allCommunities' | 'search'
-      previousView: 'splash',
+      view: defaultView,
+      previousView: defaultView,
 
       // Tag splash
       splashTags: [],
@@ -127,7 +137,10 @@ class DiscoverScreen extends React.Component {
     this._unsubscribeTabPress = this.props.navigation.addListener(
       'tabPress',
       () => {
-        if (this.props.navigation.isFocused() && this.state.view !== 'splash') {
+        if (
+          this.props.navigation.isFocused() &&
+          this.state.view !== VIEWS.SPLASH
+        ) {
           this._navigateToSplash();
         }
       },
@@ -137,7 +150,10 @@ class DiscoverScreen extends React.Component {
       this._backHandler = BackHandler.addEventListener(
         'hardwareBackPress',
         () => {
-          if (this.state.view !== 'splash' && this.state.view !== 'search') {
+          if (
+            this.state.view !== VIEWS.SPLASH &&
+            this.state.view !== VIEWS.SEARCH
+          ) {
             this._navigateBack();
             return true;
           }
@@ -187,7 +203,7 @@ class DiscoverScreen extends React.Component {
       hotTopicsHasMore: false,
       tagCommunities: [],
       tagCommunitiesLoading: true,
-      view: 'tagDetail',
+      view: VIEWS.TAG_DETAIL,
     });
 
     this._fetchTagCommunities(tag);
@@ -214,7 +230,10 @@ class DiscoverScreen extends React.Component {
         });
 
         if (topics.length === 0) {
-          this.setState({ view: 'allCommunities', previousView: 'splash' });
+          this.setState({
+            view: VIEWS.ALL_COMMUNITIES,
+            previousView: VIEWS.SPLASH,
+          });
         }
       })
       .catch(e => {
@@ -294,7 +313,7 @@ class DiscoverScreen extends React.Component {
       communityTopicsLoading: true,
       communityTopicsPage: 1,
       communityTopicsHasMore: false,
-      view: 'communityDetail',
+      view: VIEWS.COMMUNITY_DETAIL,
       previousView: this.state.view,
     });
 
@@ -472,38 +491,38 @@ class DiscoverScreen extends React.Component {
   // ── Navigation ──
 
   _navigateBack() {
-    if (this.state.view === 'communityDetail') {
-      if (this.state.previousView === 'tagDetail') {
+    if (this.state.view === VIEWS.COMMUNITY_DETAIL) {
+      if (this.state.previousView === VIEWS.TAG_DETAIL) {
         this.setState({
-          view: 'tagDetail',
+          view: VIEWS.TAG_DETAIL,
           activeCommunity: null,
           communityTopics: [],
         });
-      } else if (this.state.previousView === 'allCommunities') {
+      } else if (this.state.previousView === VIEWS.ALL_COMMUNITIES) {
         this.setState({
-          view: 'allCommunities',
+          view: VIEWS.ALL_COMMUNITIES,
           activeCommunity: null,
           communityTopics: [],
         });
       } else {
         this._navigateToSplash();
       }
-    } else if (this.state.view === 'allCommunities') {
-      if (this.state.previousView === 'tagDetail') {
-        this.setState({ view: 'tagDetail' });
+    } else if (this.state.view === VIEWS.ALL_COMMUNITIES) {
+      if (this.state.previousView === VIEWS.TAG_DETAIL) {
+        this.setState({ view: VIEWS.TAG_DETAIL });
       } else {
         this._navigateToSplash();
       }
-    } else if (this.state.view === 'tagDetail') {
+    } else if (this.state.view === VIEWS.TAG_DETAIL) {
       this._navigateToSplash();
-    } else if (this.state.view === 'search') {
-      this.setState({ view: 'splash', term: '', results: [] });
+    } else if (this.state.view === VIEWS.SEARCH) {
+      this.setState({ view: VIEWS.SPLASH, term: '', results: [] });
     }
   }
 
   _navigateToSplash() {
     this.setState({
-      view: 'splash',
+      view: VIEWS.SPLASH,
       activeTag: null,
       hotTopics: [],
       tagCommunities: [],
@@ -515,7 +534,10 @@ class DiscoverScreen extends React.Component {
   }
 
   _goToAllCommunities() {
-    this.setState({ view: 'allCommunities', previousView: 'tagDetail' });
+    this.setState({
+      view: VIEWS.ALL_COMMUNITIES,
+      previousView: VIEWS.TAG_DETAIL,
+    });
   }
 
   // ── Render ──
@@ -537,15 +559,15 @@ class DiscoverScreen extends React.Component {
 
   _renderContent(tabBarHeight) {
     switch (this.state.view) {
-      case 'splash':
+      case VIEWS.SPLASH:
         return this._renderSplashView(tabBarHeight);
-      case 'search':
+      case VIEWS.SEARCH:
         return this._renderSearchView(tabBarHeight);
-      case 'tagDetail':
+      case VIEWS.TAG_DETAIL:
         return this._renderTagDetailView(tabBarHeight);
-      case 'allCommunities':
+      case VIEWS.ALL_COMMUNITIES:
         return this._renderAllCommunitiesView(tabBarHeight);
-      case 'communityDetail':
+      case VIEWS.COMMUNITY_DETAIL:
         return this._renderCommunityDetailView(tabBarHeight);
       default:
         return this._renderSplashView(tabBarHeight);
@@ -588,7 +610,7 @@ class DiscoverScreen extends React.Component {
               underlayColor={theme.background}
               onPress={() => {
                 this.setState({
-                  view: 'splash',
+                  view: VIEWS.SPLASH,
                   term: '',
                   page: 1,
                   results: [],
@@ -783,12 +805,12 @@ class DiscoverScreen extends React.Component {
         text={this.state.term}
         handleChangeText={term => {
           if (term.length > 0) {
-            this.setState({ term, loading: true, view: 'search' });
+            this.setState({ term, loading: true, view: VIEWS.SEARCH });
             this.debouncedSearch(term);
           } else {
             this.setState({
               term: '',
-              view: 'splash',
+              view: VIEWS.SPLASH,
               results: [],
               loading: false,
               page: 1,

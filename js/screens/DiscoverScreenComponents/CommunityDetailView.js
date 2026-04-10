@@ -2,32 +2,18 @@
 'use strict';
 
 import React, { useContext } from 'react';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 import { ThemeContext } from '../../ThemeContext';
+import SiteLogo, { isValidLogoUrl } from '../CommonComponents/SiteLogo';
 import i18n from 'i18n-js';
-
-function hashCode(str) {
-  let hash = 0;
-  for (var i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return hash;
-}
 
 const CommunityDetailView = props => {
   const theme = useContext(ThemeContext);
 
   const { community, inLocalList } = props;
   const iconUrl = community.discover_entry_logo_url;
-  const hasLogo =
-    iconUrl && !iconUrl.endsWith('.webp') && !iconUrl.endsWith('.svg');
+  const logoImage = isValidLogoUrl(iconUrl) ? { uri: iconUrl } : false;
 
   const link = community.featured_link || '';
   const displayLink = link.replace(/^https?:\/\//, '');
@@ -38,48 +24,16 @@ const CommunityDetailView = props => {
     : i18n.t('add_to_home_screen');
   const addButtonIcon = inLocalList ? 'minus' : 'plus';
 
-  function pickColor(str, text = false) {
-    const darkMode = theme.name === 'dark';
-    let s = darkMode ? 30 : 50;
-    let l = darkMode ? 20 : 60;
-    if (text) {
-      s = s + 20;
-      l = l + 30;
-    }
-    return `hsl(${hashCode(str) % 360}, ${s}%, ${l}%)`;
-  }
-
-  function renderLogo() {
-    if (hasLogo) {
-      return (
-        <Image
-          style={styles.logo}
-          source={{ uri: iconUrl }}
-          resizeMode="contain"
-        />
-      );
-    }
-
-    return (
-      <View
-        style={[styles.logo, { backgroundColor: pickColor(community.title) }]}
-      >
-        <Text
-          style={[
-            styles.logoInitial,
-            { color: pickColor(community.title, true) },
-          ]}
-        >
-          {community.title[0]}
-        </Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <View style={styles.headerSection}>
-        {renderLogo()}
+        <SiteLogo
+          logoImage={logoImage}
+          title={community.title}
+          size={80}
+          borderRadius={18}
+          style={{ alignSelf: 'center', margin: 0 }}
+        />
         <Text
           style={[styles.communityLink, { color: theme.graySubtitle }]}
           numberOfLines={1}
@@ -183,17 +137,6 @@ const styles = StyleSheet.create({
     paddingTop: 24,
     paddingHorizontal: 16,
   },
-  logo: {
-    width: 80,
-    height: 80,
-    borderRadius: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logoInitial: {
-    fontSize: 48,
-    fontWeight: '700',
-  },
   communityLink: {
     fontSize: 14,
     marginTop: 8,
@@ -243,7 +186,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 4,
-    textTransform: 'uppercase',
   },
 });
 

@@ -77,7 +77,7 @@ const DiscoverTopicList = props => {
 
   function _renderCommunity(item) {
     if (!item.community_name) {
-      return <Text />;
+      return null;
     }
 
     return (

@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import { ThemeContext } from '../../ThemeContext';
-import SiteLogo from '../CommonComponents/SiteLogo';
+import SiteLogo, { isValidLogoUrl } from '../CommonComponents/SiteLogo';
 
 const CommunityCarousel = props => {
   const theme = useContext(ThemeContext);
@@ -54,10 +54,9 @@ const CommunityCarousel = props => {
     >
       {props.communities.map(community => {
         const iconUrl = community.discover_entry_logo_url;
-        const logoImage =
-          iconUrl && !iconUrl.endsWith('.webp') && !iconUrl.endsWith('.svg')
-            ? { uri: iconUrl }
-            : false;
+        const logoImage = isValidLogoUrl(iconUrl)
+          ? { uri: iconUrl }
+          : false;
 
         return (
           <TouchableHighlight
