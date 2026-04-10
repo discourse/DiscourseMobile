@@ -92,6 +92,15 @@
   "sites": "Sites",
   "find_new_communities": "Find new communities to join",
   "no_hot_topics": "No hot topics found for this site.",
+  "discover_communities": "Communities",
+  "discover_pick_tag": "What are you interested in?",
+  "discover_explore_more": "Explore another topic",
+  "discover_communities_section": "COMMUNITIES",
+  "discover_topics_section": "TOPICS",
+  "discover_see_all_communities": "See all communities",
+  "remove_from_home_screen": "Remove",
+  "preview": "Preview",
+  "community_recent_topics": "Hot Topics",
   "oops": "Oops, something went wrong.",
   "still_loading": "Still loading..."
 }
