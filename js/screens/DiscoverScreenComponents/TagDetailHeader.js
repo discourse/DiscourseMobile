@@ -26,7 +26,7 @@ const TagDetailHeader = props => {
           accessibilityLabel="Back"
         >
           <FontAwesome5
-            name={'arrow-left'}
+            name={'angle-left'}
             size={18}
             color={theme.grayTitle}
             iconStyle="solid"

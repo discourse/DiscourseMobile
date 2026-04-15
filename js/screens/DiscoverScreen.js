@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 
 import DiscoverComponents from './DiscoverScreenComponents';
+import { PRIMARY_TAGS } from './DiscoverScreenComponents/TagSplash';
 import { ThemeContext } from '../ThemeContext';
 import Site from '../site';
 import i18n from 'i18n-js';
@@ -113,6 +114,11 @@ class DiscoverScreen extends React.Component {
       hotTopicsLoading: true,
       hotTopicsPage: 1,
       hotTopicsHasMore: false,
+
+      // All communities
+      communitiesFilter: null, // null = all, 'recent' = order by latest, otherwise a tag
+      allCommunities: [],
+      allCommunitiesLoading: false,
 
       // Community detail
       activeCommunity: null,
@@ -233,7 +239,11 @@ class DiscoverScreen extends React.Component {
           this.setState({
             view: VIEWS.ALL_COMMUNITIES,
             previousView: VIEWS.SPLASH,
+            communitiesFilter: tag,
+            allCommunities: [],
+            allCommunitiesLoading: true,
           });
+          this._fetchAllCommunities(tag);
         }
       })
       .catch(e => {
@@ -534,10 +544,89 @@ class DiscoverScreen extends React.Component {
   }
 
   _goToAllCommunities() {
+    const filter = this.state.activeTag;
+    if (this.state.tagCommunitiesLoading) {
+      this.setState({
+        view: VIEWS.ALL_COMMUNITIES,
+        previousView: VIEWS.TAG_DETAIL,
+        communitiesFilter: filter,
+        allCommunities: [],
+        allCommunitiesLoading: true,
+      });
+      this._fetchAllCommunities(filter);
+    } else {
+      this.setState({
+        view: VIEWS.ALL_COMMUNITIES,
+        previousView: VIEWS.TAG_DETAIL,
+        communitiesFilter: filter,
+        allCommunities: this.state.tagCommunities,
+        allCommunitiesLoading: false,
+      });
+    }
+  }
+
+  _goToAllCommunitiesFromSplash(filter = null) {
     this.setState({
       view: VIEWS.ALL_COMMUNITIES,
-      previousView: VIEWS.TAG_DETAIL,
+      previousView: VIEWS.SPLASH,
+      communitiesFilter: filter,
+      allCommunities: [],
+      allCommunitiesLoading: true,
     });
+    this._fetchAllCommunities(filter);
+  }
+
+  _selectFromTagDetail(key) {
+    if (key === null) {
+      this._goToAllCommunitiesFromSplash(null);
+    } else if (key === 'recent') {
+      this._goToAllCommunitiesFromSplash('recent');
+    } else if (key !== this.state.activeTag) {
+      this.onSelectTag(key);
+    }
+  }
+
+  _selectCommunitiesFilter(filter) {
+    if (filter === this.state.communitiesFilter) {
+      return;
+    }
+    this.setState({
+      communitiesFilter: filter,
+      allCommunities: [],
+      allCommunitiesLoading: true,
+    });
+    this._fetchAllCommunities(filter);
+  }
+
+  _fetchAllCommunities(filter) {
+    let searchString;
+    if (filter === 'recent') {
+      searchString = '#discover order:latest_topic';
+    } else if (filter) {
+      searchString = `#discover #${filter} order:featured`;
+    } else {
+      searchString = '#discover order:featured';
+    }
+    const url = `${this.baseUrl}${encodeURIComponent(searchString)}&page=1`;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(json => {
+        if (filter !== this.state.communitiesFilter) {
+          return; // stale response
+        }
+        this.setState({
+          allCommunities: json.topics || [],
+          allCommunitiesLoading: false,
+        });
+      })
+      .catch(e => {
+        console.log(e);
+        if (filter !== this.state.communitiesFilter) {
+          return;
+        }
+        this.setState({ allCommunitiesLoading: false });
+      });
   }
 
   // ── Render ──
@@ -582,6 +671,8 @@ class DiscoverScreen extends React.Component {
           tags={this.state.splashTags}
           loading={this.state.splashTagsLoading}
           onSelectTag={tag => this.onSelectTag(tag)}
+          onSelectRecent={() => this._goToAllCommunitiesFromSplash('recent')}
+          onSeeAllCommunities={() => this._goToAllCommunitiesFromSplash()}
         />
       </View>
     );
@@ -664,12 +755,12 @@ class DiscoverScreen extends React.Component {
 
   _renderTagDetailView(tabBarHeight) {
     const theme = this.context;
-    const tagLabel = this._formatTagLabel(this.state.activeTag);
+    const activeTagLabel = this.state.activeTag;
 
     const headerComponent = (
       <View>
         <Text style={[styles.sectionLabel, { color: theme.graySubtitle }]}>
-          {i18n.t('discover_communities_section')}
+          {i18n.t('discover_communities_section', { tag: activeTagLabel })}
         </Text>
         <DiscoverComponents.CommunityCarousel
           communities={this.state.tagCommunities}
@@ -691,17 +782,17 @@ class DiscoverScreen extends React.Component {
           </Text>
         </TouchableHighlight>
         <Text style={[styles.sectionLabel, { color: theme.graySubtitle }]}>
-          {i18n.t('discover_topics_section')}
+          {i18n.t('discover_topics_section', { tag: activeTagLabel })}
         </Text>
       </View>
     );
 
     return (
       <View style={styles.container}>
-        <DiscoverComponents.TagDetailHeader
-          title={tagLabel}
-          onBack={() => this._navigateBack()}
-        />
+        {this._renderSearchBox()}
+        {this._renderCommunitiesTagBar(this.state.activeTag, key =>
+          this._selectFromTagDetail(key),
+        )}
         <DiscoverComponents.DiscoverTopicList
           topics={this.state.hotTopics}
           loading={this.state.hotTopicsLoading}
@@ -723,10 +814,8 @@ class DiscoverScreen extends React.Component {
 
   _renderAllCommunitiesView(tabBarHeight) {
     const theme = this.context;
-    const tagLabel = this._formatTagLabel(this.state.activeTag);
-    const title = `${tagLabel} ${i18n.t('discover_communities')}`;
 
-    const emptyComponent = this.state.tagCommunitiesLoading ? (
+    const emptyComponent = this.state.allCommunitiesLoading ? (
       <View style={styles.emptyResult}>
         <ActivityIndicator size="large" color={theme.grayUI} />
       </View>
@@ -734,20 +823,82 @@ class DiscoverScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        <DiscoverComponents.TagDetailHeader
-          title={title}
-          onBack={() => this._navigateBack()}
-        />
+        {this._renderSearchBox()}
+        {this._renderCommunitiesTagBar(this.state.communitiesFilter, key =>
+          this._selectCommunitiesFilter(key),
+        )}
         <FlatList
           keyExtractor={item => String(item.id || item.featured_link)}
           ListEmptyComponent={emptyComponent}
           contentContainerStyle={{ paddingBottom: tabBarHeight }}
-          data={this.state.tagCommunities}
+          data={this.state.allCommunities}
           renderItem={({ item }) => this._renderSiteItem({ item })}
           extraData={this.state.selectionCount}
           keyboardDismissMode="on-drag"
         />
       </View>
+    );
+  }
+
+  _renderCommunitiesTagBar(activeKey, onSelect) {
+    const theme = this.context;
+
+    const primaryTagSet = new Set(PRIMARY_TAGS.map(t => t.tag));
+    const secondaryTags = (this.state.splashTags || [])
+      .filter(tag => !primaryTagSet.has(tag))
+      .sort((a, b) => a.localeCompare(b));
+
+    const entries = [
+      { key: null, label: i18n.t('discover_all') },
+      ...PRIMARY_TAGS.map(({ tag, label }) => ({
+        key: tag,
+        label: label,
+      })),
+      { key: 'recent', label: i18n.t('discover_recent') },
+      ...secondaryTags.map(tag => ({
+        key: tag,
+        label: tag,
+      })),
+    ];
+
+    return (
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={styles.tagBar}
+        contentContainerStyle={styles.tagBarContent}
+        keyboardShouldPersistTaps="handled"
+      >
+        {entries.map(entry => {
+          const isSelected = entry.key === activeKey;
+          return (
+            <TouchableHighlight
+              key={entry.key === null ? '__all__' : entry.key}
+              accessibilityRole="button"
+              accessibilityLabel={entry.label}
+              style={{
+                ...styles.tagBarItem,
+                borderColor: theme.grayUILight,
+                backgroundColor: isSelected
+                  ? theme.grayBackground
+                  : theme.background,
+              }}
+              underlayColor={theme.grayBackground}
+              onPress={() => onSelect(entry.key)}
+            >
+              <Text
+                style={{
+                  ...styles.tagBarItemText,
+                  color: theme.tagButtonTextColor,
+                  fontSize: this.state.largerUI ? 15 : 13,
+                }}
+              >
+                {entry.label}
+              </Text>
+            </TouchableHighlight>
+          );
+        })}
+      </ScrollView>
     );
   }
 
@@ -772,6 +923,7 @@ class DiscoverScreen extends React.Component {
 
     return (
       <View style={styles.container}>
+        {this._renderSearchBox()}
         <DiscoverComponents.TagDetailHeader
           title={community.title}
           onBack={() => this._navigateBack()}
@@ -832,16 +984,6 @@ class DiscoverScreen extends React.Component {
     );
   }
 
-  _formatTagLabel(tag) {
-    if (!tag) {
-      return '';
-    }
-    return tag
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  }
-
   // ── Pagination ──
 
   _fetchNextSearchPage() {
@@ -899,6 +1041,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 4,
+    textTransform: 'uppercase',
+  },
+  tagBar: {
+    flexGrow: 0,
+    flexShrink: 0,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+  },
+  tagBarContent: {
+    alignItems: 'center',
+    paddingRight: 16,
+  },
+  tagBarItem: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 16,
+    borderWidth: StyleSheet.hairlineWidth,
+    marginHorizontal: 4,
+  },
+  tagBarItemText: {
+    fontWeight: '500',
   },
   seeAllButton: {
     marginHorizontal: 16,
