@@ -54,9 +54,7 @@ const CommunityCarousel = props => {
     >
       {props.communities.map(community => {
         const iconUrl = community.discover_entry_logo_url;
-        const logoImage = isValidLogoUrl(iconUrl)
-          ? { uri: iconUrl }
-          : false;
+        const logoImage = isValidLogoUrl(iconUrl) ? { uri: iconUrl } : false;
 
         return (
           <TouchableHighlight
