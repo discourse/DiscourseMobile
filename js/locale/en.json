@@ -104,5 +104,6 @@
   "preview": "Preview",
   "community_recent_topics": "Hot Topics",
   "oops": "Oops, something went wrong.",
-  "still_loading": "Still loading..."
+  "still_loading": "Still loading...",
+  "tag_label_programming_language": "programming"
 }

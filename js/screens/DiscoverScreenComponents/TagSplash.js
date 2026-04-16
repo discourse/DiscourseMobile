@@ -4,6 +4,7 @@
 import React, { useContext } from 'react';
 import {
   ActivityIndicator,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -12,6 +13,11 @@ import {
 } from 'react-native';
 import { ThemeContext } from '../../ThemeContext';
 import i18n from 'i18n-js';
+
+// Some tags are too long to fit on a button, so we can override their labels here. The keys are the actual tag values, and the values are what gets displayed on the button.
+const TAG_LABEL_OVERRIDES = {
+  'programming-language': i18n.t('tag_label_programming_language'),
+};
 
 // Primary tags always appear at the top of the splash in this order.
 // `tag` is the underlying tag filter; `label` is what the user sees.
@@ -110,7 +116,7 @@ const TagSplash = props => {
           {secondaryTags.map(tag =>
             renderTagButton({
               key: tag,
-              label: tag,
+              label: TAG_LABEL_OVERRIDES[tag] || tag,
               onPress: () => props.onSelectTag(tag),
               secondary: true,
             }),
@@ -143,7 +149,7 @@ const TagSplash = props => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingTop: 30,
+    paddingTop: Platform.OS === 'android' ? 10 : 30,
     paddingBottom: 30,
     paddingHorizontal: 20,
   },
@@ -154,18 +160,18 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: Platform.OS === 'android' ? 4 : 10,
   },
   prompt: {
     fontSize: 20,
     fontWeight: '600',
-    marginTop: 16,
+    marginTop: Platform.OS === 'android' ? 4 : 16,
   },
   promptDescription: {
     fontSize: 16,
-    marginTop: 10,
+    marginTop: Platform.OS === 'android' ? 4 : 10,
     textAlign: 'center',
-    padding: 10,
+    padding: Platform.OS === 'android' ? 4 : 10,
   },
   tagGrid: {
     flexDirection: 'row',
