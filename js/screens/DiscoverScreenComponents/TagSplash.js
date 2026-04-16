@@ -14,11 +14,6 @@ import {
 import { ThemeContext } from '../../ThemeContext';
 import i18n from 'i18n-js';
 
-// Some tags are too long to fit on a button, so we can override their labels here. The keys are the actual tag values, and the values are what gets displayed on the button.
-const TAG_LABEL_OVERRIDES = {
-  'programming-language': i18n.t('tag_label_programming_language'),
-};
-
 // Primary tags always appear at the top of the splash in this order.
 // `tag` is the underlying tag filter; `label` is what the user sees.
 export const PRIMARY_TAGS = [
@@ -116,7 +111,7 @@ const TagSplash = props => {
           {secondaryTags.map(tag =>
             renderTagButton({
               key: tag,
-              label: TAG_LABEL_OVERRIDES[tag] || tag,
+              label: tag,
               onPress: () => props.onSelectTag(tag),
               secondary: true,
             }),
