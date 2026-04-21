@@ -19,5 +19,13 @@ export default [
       'no-undef': 'warn',
     },
   },
+  {
+    files: ['**/__tests__/**/*.js', '**/*.test.js'],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
+    },
+  },
   { ignores: ['lib/*', 'react-native.config.js', '.*', '*.config.js'] },
 ];
