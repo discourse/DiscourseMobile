@@ -12,6 +12,8 @@
     "prettier:fix": "prettier --write \"js/**/*.{js,json}\"",
     "eslint": "eslint .",
     "eslint:fix": "eslint . --fix",
+    "unit-test": "jest",
+    "unit-test:watch": "jest --watch",
     "e2e-build": "detox build --configuration ios.sim.debug",
     "test": "detox test --configuration ios.sim.debug",
     "test-ipad": "detox test --configuration ios.sim.debug -n 'iPad (10th generation)'"
