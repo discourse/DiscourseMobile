@@ -1,8 +1,3 @@
-/*global describe*/
-/*global beforeAll*/
-/*global beforeEach*/
-/*global it*/
-
 import { by, device, element, expect } from 'detox';
 import i18n from 'i18n-js';
 
