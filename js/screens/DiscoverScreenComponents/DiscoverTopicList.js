@@ -3,6 +3,7 @@
 
 import React, { useContext } from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
@@ -132,8 +133,16 @@ const DiscoverTopicList = props => {
   }
 
   function _renderFooter() {
-    if (props.loading || props.topics.length === 0) {
+    if (props.topics.length === 0) {
       return null;
+    }
+
+    if (props.loading) {
+      return (
+        <View style={styles.footer}>
+          <ActivityIndicator size="small" color={theme.grayUI} />
+        </View>
+      );
     }
 
     return (
@@ -180,6 +189,7 @@ const DiscoverTopicList = props => {
         onScroll={props.onScroll}
         scrollEventThrottle={16}
         keyboardDismissMode="on-drag"
+        maintainVisibleContentPosition={{ minIndexForVisible: 0 }}
       />
     </View>
   );
