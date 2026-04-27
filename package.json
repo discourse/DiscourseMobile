@@ -14,6 +14,8 @@
     "eslint:fix": "eslint . --fix",
     "e2e-build": "detox build --configuration ios.sim.debug",
     "test": "detox test --configuration ios.sim.debug",
+    "test:unit": "jest",
+    "test:unit:watch": "jest --watch",
     "test-ipad": "detox test --configuration ios.sim.debug -n 'iPad (10th generation)'"
   },
   "dependencies": {

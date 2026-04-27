@@ -5,16 +5,27 @@ import { useContext } from 'react';
 import { Image, Text, View } from 'react-native';
 import { ThemeContext } from '../../ThemeContext';
 
-const SiteLogo = props => {
-  const theme = useContext(ThemeContext);
+export function isValidLogoUrl(url) {
+  return url && !url.endsWith('.webp') && !url.endsWith('.svg');
+}
 
-  function hashCode(str) {
-    let hash = 0;
-    for (var i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return hash;
+function hashCode(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
+  return hash;
+}
+
+const SiteLogo = ({
+  logoImage,
+  title,
+  size = 42,
+  borderRadius = 10,
+  style,
+}) => {
+  const theme = useContext(ThemeContext);
+  const fontSize = Math.round(size * 0.62);
 
   function pickColor(str, text = false) {
     const darkMode = theme.name === 'dark';
@@ -29,30 +40,32 @@ const SiteLogo = props => {
     return `hsl(${hashCode(str) % 360}, ${s}%, ${l}%)`;
   }
 
-  if (props.logoImage === false) {
-    // Generate a placeholder icon in lieu of a logo from the site's first initial character
+  if (logoImage === false) {
     return (
       <View
-        style={{
-          alignSelf: 'flex-start',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 42,
-          width: 42,
-          marginTop: 2,
-          borderRadius: 10,
-          marginHorizontal: 4,
-          backgroundColor: pickColor(props.title),
-        }}
+        style={[
+          {
+            alignSelf: 'flex-start',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: size,
+            width: size,
+            marginTop: 2,
+            borderRadius,
+            marginHorizontal: 4,
+            backgroundColor: pickColor(title),
+          },
+          style,
+        ]}
       >
         <Text
           style={{
-            color: pickColor(props.title, true),
-            fontSize: 26,
+            color: pickColor(title, true),
+            fontSize,
             fontWeight: '700',
           }}
         >
-          {props.title[0]}
+          {title[0]}
         </Text>
       </View>
     );
@@ -60,15 +73,18 @@ const SiteLogo = props => {
 
   return (
     <Image
-      style={{
-        alignSelf: 'flex-start',
-        height: 42,
-        width: 42,
-        marginTop: 2,
-        borderRadius: 10,
-        marginHorizontal: 4,
-      }}
-      source={props.logoImage}
+      style={[
+        {
+          alignSelf: 'flex-start',
+          height: size,
+          width: size,
+          marginTop: 2,
+          borderRadius,
+          marginHorizontal: 4,
+        },
+        style,
+      ]}
+      source={logoImage}
       resizeMode="contain"
     />
   );

@@ -90,5 +90,15 @@
   "hot_topics": "Sujets populaires",
   "sites": "Sites",
   "find_new_communities": "Cherchez de nouvelles communautés à rejoindre",
-  "no_hot_topics": "Aucun sujet populaire n'a été trouvé pour ce site."
+  "no_hot_topics": "Aucun sujet populaire n'a été trouvé pour ce site.",
+  "discover_communities": "Communautés",
+  "discover_pick_tag": "Qu'est-ce qui vous intéresse ?",
+  "discover_explore_more": "Explorer un autre sujet",
+  "discover_communities_section": "COMMUNAUTÉS",
+  "discover_topics_section": "SUJETS",
+  "discover_see_all_communities": "Voir toutes les communautés",
+  "remove_from_home_screen": "Supprimer",
+  "preview": "Aperçu",
+  "community_recent_topics": "Sujets populaires",
+  "tag_label_programming_language": "programmation"
 }

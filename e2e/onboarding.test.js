@@ -1,8 +1,3 @@
-/*global describe*/
-/*global beforeAll*/
-/*global beforeEach*/
-/*global it*/
-
 import { by, device, element, expect } from 'detox';
 import i18n from 'i18n-js';
 
@@ -42,7 +37,7 @@ describe.each([['en'], ['fr']])(`Onboarding (locale: %s)`, locale => {
 
   it('should show the Discover screen', async () => {
     await element(by.text(i18n.t('discover'))).tap();
-    await expect(element(by.text(i18n.t('discover_all')))).toBeVisible();
+    await expect(element(by.text(i18n.t('discover_pick_tag')))).toBeVisible();
   });
 
   it('should show the Notifications screen', async () => {

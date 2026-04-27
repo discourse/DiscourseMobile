@@ -92,6 +92,18 @@
   "sites": "Sites",
   "find_new_communities": "Find new communities to join",
   "no_hot_topics": "No hot topics found for this site.",
+  "discover_communities": "Communities",
+  "discover_pick_tag": "What are you interested in?",
+  "discover_pick_tag_description": "See what people have been discussing in Discourse communities recently and join the ones that most match your interests.",
+  "discover_explore_more": "Explore another topic",
+  "discover_communities_section": "%{tag} Communities",
+  "discover_topics_section": "Recent Discussions in %{tag}",
+  "discover_see_all_communities": "See all communities",
+  "discover_community_directory": "Community Directory",
+  "remove_from_home_screen": "Remove",
+  "preview": "Preview",
+  "community_recent_topics": "Hot Topics",
   "oops": "Oops, something went wrong.",
-  "still_loading": "Still loading..."
+  "still_loading": "Still loading...",
+  "tag_label_programming_language": "programming"
 }
