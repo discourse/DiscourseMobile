@@ -4,6 +4,7 @@
 import React, { useContext } from 'react';
 import {
   ActivityIndicator,
+  Dimensions,
   Platform,
   ScrollView,
   StyleSheet,
@@ -26,6 +27,8 @@ export const PRIMARY_TAGS = [
   { tag: 'finance', label: 'finance' },
   { tag: 'open-source', label: 'open-source' },
 ];
+
+const largeLayout = Dimensions.get('window').width > 600;
 
 const TagSplash = props => {
   const theme = useContext(ThemeContext);
@@ -88,7 +91,9 @@ const TagSplash = props => {
         </Text>
       </View>
 
-      <View style={styles.tagGrid}>
+      <View
+        style={{ ...styles.tagGrid, paddingVertical: largeLayout ? 20 : 0 }}
+      >
         {PRIMARY_TAGS.map(({ tag, label }) =>
           renderTagButton({
             key: tag,
@@ -106,7 +111,10 @@ const TagSplash = props => {
 
       {secondaryTags.length > 0 && (
         <View
-          style={[styles.secondaryGrid, { borderColor: theme.grayUILight }]}
+          style={{
+            ...styles.secondaryGrid,
+            borderColor: theme.grayUILight,
+          }}
         >
           {secondaryTags.map(tag =>
             renderTagButton({
@@ -146,7 +154,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: Platform.OS === 'android' ? 10 : 30,
     paddingBottom: 30,
-    paddingHorizontal: 20,
+    paddingHorizontal: largeLayout ? 80 : 20,
   },
   loadingContainer: {
     flex: 1,
@@ -177,10 +185,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: 15,
-    paddingTop: 15,
-    paddingBottom: 15,
-    marginBottom: 15,
+    paddingVertical: largeLayout ? 30 : 15,
+    marginVertical: largeLayout ? 30 : 15,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
@@ -199,20 +205,21 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   tagLabel: {
-    fontSize: 16,
+    fontSize: largeLayout ? 24 : 16,
     fontWeight: '500',
   },
   secondaryTagLabel: {
-    fontSize: 14,
+    fontSize: largeLayout ? 20 : 14,
     fontWeight: '500',
   },
   directoryButton: {
-    alignSelf: 'stretch',
+    alignSelf: 'center',
+    alignItems: 'center',
     marginHorizontal: 10,
     marginTop: 10,
     paddingVertical: 15,
+    paddingHorizontal: largeLayout ? 50 : 30,
     borderRadius: 10,
-    alignItems: 'center',
   },
   directoryButtonText: {
     fontSize: 16,
