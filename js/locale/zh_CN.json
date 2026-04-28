@@ -88,6 +88,8 @@
   "sites": "站点",
   "find_new_communities": "查找可以加入的新社区",
   "no_hot_topics": "未在此站点上找到热门话题。",
+  "remove_from_home_screen": "移除",
+  "preview": "预览",
   "oops": "糟糕，出错了。",
   "still_loading": "仍在加载…"
 }

@@ -88,6 +88,8 @@
   "sites": "サイト",
   "find_new_communities": "参加できる新しいコミュニティーを探す",
   "no_hot_topics": "このサイトにはホットなトピックがありません。",
+  "remove_from_home_screen": "削除",
+  "preview": "プレビュー",
   "oops": "エラーが発生しました。",
   "still_loading": "まだ読み込み中..."
 }

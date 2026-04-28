@@ -61,5 +61,7 @@
   "ok": "OK",
   "cancel": "Anuluj",
   "clear": "Wyczyść",
-  "hot_topics": "Gorące tematy"
+  "hot_topics": "Gorące tematy",
+  "remove_from_home_screen": "Usuń",
+  "preview": "Podgląd"
 }

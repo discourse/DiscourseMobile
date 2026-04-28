@@ -31,5 +31,7 @@
   "discover_all": "sve",
   "ok": "U redu",
   "cancel": "Odustani",
-  "clear": "Izbriši"
+  "clear": "Izbriši",
+  "remove_from_home_screen": "Ukloni",
+  "preview": "Pregled"
 }

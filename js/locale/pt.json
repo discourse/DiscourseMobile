@@ -70,5 +70,7 @@
   "add_single_site": "Adicionar uma comunidade",
   "add_to_home_screen": "Adicionar ao ecrã de Início",
   "added_to_home_screen": "Site já adicionado ao ecrã de Início",
-  "add_site_home_screen": "Adicionar ao ecrã de Início?"
+  "add_site_home_screen": "Adicionar ao ecrã de Início?",
+  "remove_from_home_screen": "Remover",
+  "preview": "Pré-visualização"
 }

@@ -30,5 +30,7 @@
   "discover_recent": "nedavno",
   "ok": "V redu",
   "cancel": "Prekliči",
-  "clear": "Počisti"
+  "clear": "Počisti",
+  "remove_from_home_screen": "Odstrani",
+  "preview": "Predogled"
 }
