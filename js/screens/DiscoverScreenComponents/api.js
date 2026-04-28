@@ -7,12 +7,12 @@ import fetch from '../../../lib/fetch';
 const SEARCH_BASE_URL = `${Site.discoverUrl()}search.json?q=`;
 
 export function fetchSplashTags() {
-  const url = `${Site.discoverUrl()}discover/hot-topics-tags.json`;
+  const url = `${Site.discoverUrl()}hot-topics-tags.json`;
   return fetch(url).then(res => res.json());
 }
 
 export function fetchHotTopics(tag, page = 1) {
-  const url = `${Site.discoverUrl()}discover/hot-topics.json?tag=${encodeURIComponent(
+  const url = `${Site.discoverUrl()}hot-topics.json?tag=${encodeURIComponent(
     tag,
   )}&page=${page}`;
   return fetch(url).then(res => res.json());
