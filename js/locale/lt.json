@@ -92,5 +92,7 @@
   "add_site_home_screen": "Pridėti prie pagrindinio ekrano?",
   "add_site_home_screen_description": "Prisijungimas palaikomas tik pridėjus šią bendruomenę prie pagrindinio ekrano. Pridėkite ją dabar, kad būtų lengviau pasiekti, gautumėte pranešimus ir dar daugiau.",
   "single_site_no_results": "Nerasta jokių svetainių su šiuo domenu. Patikrinkite URL ir bandykite dar kartą.",
-  "single_site_one_character": "Pridėkite dar kelis simbolius, kad galėtumėte ieškoti bendruomenės."
+  "single_site_one_character": "Pridėkite dar kelis simbolius, kad galėtumėte ieškoti bendruomenės.",
+  "remove_from_home_screen": "Pašalinti",
+  "preview": "Peržiūrėti"
 }

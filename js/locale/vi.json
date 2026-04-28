@@ -85,5 +85,7 @@
   "hot_topics": "Các chủ đề nóng",
   "sites": "Các trang web",
   "find_new_communities": "Tìm kiếm các cộng đồng mới để tham gia",
-  "no_hot_topics": "Không tìm thấy chủ đề nóng nào cho trang web này."
+  "no_hot_topics": "Không tìm thấy chủ đề nóng nào cho trang web này.",
+  "remove_from_home_screen": "Xóa",
+  "preview": "Xem trước"
 }

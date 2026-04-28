@@ -90,5 +90,7 @@
   "hot_topics": "Suositut ketjut",
   "sites": "Sivustot",
   "find_new_communities": "Löydä uusia yhteisöjä, joihin liittyä",
-  "no_hot_topics": "Tällä sivustolla ei löytynyt kuumia aiheita."
+  "no_hot_topics": "Tällä sivustolla ei löytynyt kuumia aiheita.",
+  "remove_from_home_screen": "Poista",
+  "preview": "Esikatselu"
 }

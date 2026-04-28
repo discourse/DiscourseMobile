@@ -90,5 +90,7 @@
   "hot_topics": "Populaire topics",
   "sites": "Sites",
   "find_new_communities": "Vind nieuwe community's om lid van te worden",
-  "no_hot_topics": "Er zijn geen populaire topics gevonden voor deze site."
+  "no_hot_topics": "Er zijn geen populaire topics gevonden voor deze site.",
+  "remove_from_home_screen": "Verwijderen",
+  "preview": "Voorbeeld"
 }

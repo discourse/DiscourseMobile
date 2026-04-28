@@ -47,5 +47,7 @@
   "discover_recent": "senaste",
   "ok": "OK",
   "cancel": "Avbryt",
-  "clear": "Rensa"
+  "clear": "Rensa",
+  "remove_from_home_screen": "Ta bort",
+  "preview": "Förhandsgranska"
 }

@@ -90,5 +90,7 @@
   "hot_topics": "Tópicos em alta",
   "sites": "Sites",
   "find_new_communities": "Encontre comunidades novas para participar",
-  "no_hot_topics": "Nenhum tópico em alta encontrado para este site."
+  "no_hot_topics": "Nenhum tópico em alta encontrado para este site.",
+  "remove_from_home_screen": "Remover",
+  "preview": "Pré-visualizar"
 }

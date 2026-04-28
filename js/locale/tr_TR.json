@@ -92,6 +92,8 @@
   "sites": "Siteler",
   "find_new_communities": "Katılmak için yeni topluluklar bulun",
   "no_hot_topics": "Bu site için gündem konusu bulunamadı.",
+  "remove_from_home_screen": "Kaldır",
+  "preview": "Ön izle",
   "oops": "Oops, bir sorun oluştu.",
   "still_loading": "Hala yükleniyor..."
 }

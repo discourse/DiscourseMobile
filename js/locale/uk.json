@@ -34,5 +34,7 @@
   "ok": "Гаразд",
   "cancel": "Скасувати",
   "clear": "Очистити",
-  "hot_topics": "Гарячі теми"
+  "hot_topics": "Гарячі теми",
+  "remove_from_home_screen": "Вилучити",
+  "preview": "Попередній перегляд"
 }

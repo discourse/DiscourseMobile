@@ -50,5 +50,7 @@
   "ok": "確定",
   "cancel": "取消",
   "clear": "清除",
-  "hot_topics": "熱門話題"
+  "hot_topics": "熱門話題",
+  "remove_from_home_screen": "移除",
+  "preview": "預覽"
 }
