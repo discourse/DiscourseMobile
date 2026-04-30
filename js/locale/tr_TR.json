@@ -92,8 +92,18 @@
   "sites": "Siteler",
   "find_new_communities": "Katılmak için yeni topluluklar bulun",
   "no_hot_topics": "Bu site için gündem konusu bulunamadı.",
+  "discover_communities": "Topluluklar",
+  "discover_pick_tag": "Nelerle ilgileniyorsun?",
+  "discover_pick_tag_description": "Discourse topluluklarında son zamanlarda neler tartışıldığını görün ve ilgi alanlarınıza en uygun olanlara katılın.",
+  "discover_explore_more": "Başka bir konuyu keşfedin",
+  "discover_communities_section": "%{tag} Toplulukları",
+  "discover_topics_section": "%{tag} etiketiyle ilgili son tartışmalar",
+  "discover_see_all_communities": "Tüm toplulukları gör",
+  "discover_community_directory": "Topluluk Rehberi",
   "remove_from_home_screen": "Kaldır",
   "preview": "Ön izle",
+  "community_recent_topics": "Gündemdeki Konular",
   "oops": "Oops, bir sorun oluştu.",
-  "still_loading": "Hala yükleniyor..."
+  "still_loading": "Hala yükleniyor...",
+  "tag_label_programming_language": "programlama"
 }
