@@ -83,7 +83,7 @@ const TermBar = props => {
           </View>
           <TextInput
             enterKeyHint="search"
-            keyboardType="url"
+            keyboardType={props.addSiteScreenParent ? 'url' : 'default'}
             clearButtonMode="never"
             autoCapitalize="none"
             autoCorrect={false}
