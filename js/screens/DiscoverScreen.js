@@ -150,43 +150,52 @@ class DiscoverScreen extends React.Component {
       view: VIEWS.TAG_DETAIL,
     });
 
-    this._fetchTagCommunities(tag);
-    this._fetchHotTopicsForTag(tag);
+    this._fetchTagDetail(tag);
   }
 
-  _fetchHotTopicsForTag(tag) {
-    api
-      .fetchHotTopics(tag, 1)
-      .then(json => {
-        if (tag !== this.state.activeTag) {
-          return; // stale response
-        }
+  async _fetchTagDetail(tag) {
+    const [communitiesResult, hotTopicsResult] = await Promise.allSettled([
+      api.fetchTagCommunities(tag),
+      api.fetchHotTopics(tag, 1),
+    ]);
 
-        const topics = json.hot_topics || [];
-        this.setState({
-          hotTopics: topics,
-          hotTopicsLoading: false,
-          hotTopicsHasMore: Boolean(json.more_topics_url),
-        });
+    if (tag !== this.state.activeTag) {
+      return; // stale response
+    }
 
-        if (topics.length === 0) {
-          this.setState({
-            view: VIEWS.ALL_COMMUNITIES,
-            previousView: VIEWS.SPLASH,
-            communitiesFilter: tag,
-            allCommunities: [],
-            allCommunitiesLoading: true,
-          });
-          this._fetchAllCommunities(tag);
-        }
-      })
-      .catch(e => {
-        console.log(e);
-        if (tag !== this.state.activeTag) {
-          return;
-        }
-        this.setState({ hotTopicsLoading: false });
+    if (communitiesResult.status === 'rejected') {
+      console.log(communitiesResult.reason);
+    }
+    if (hotTopicsResult.status === 'rejected') {
+      console.log(hotTopicsResult.reason);
+    }
+
+    const hotTopicsJson = hotTopicsResult.value;
+    const topics = hotTopicsJson?.hot_topics || [];
+    const loaded = {
+      hotTopicsLoading: false,
+      tagCommunitiesLoading: false,
+      tagCommunities: communitiesResult.value?.topics || [],
+    };
+
+    if (hotTopicsResult.status === 'fulfilled' && topics.length === 0) {
+      this.setState({
+        ...loaded,
+        view: VIEWS.ALL_COMMUNITIES,
+        previousView: VIEWS.SPLASH,
+        communitiesFilter: tag,
+        allCommunities: [],
+        allCommunitiesLoading: true,
       });
+      this._fetchAllCommunities(tag);
+      return;
+    }
+
+    this.setState({
+      ...loaded,
+      hotTopics: topics,
+      hotTopicsHasMore: Boolean(hotTopicsJson?.more_topics_url),
+    });
   }
 
   fetchHotTopics(tag, opts = {}) {
@@ -218,29 +227,6 @@ class DiscoverScreen extends React.Component {
       .catch(e => {
         console.log(e);
         this.setState({ hotTopicsLoading: false });
-      });
-  }
-
-  _fetchTagCommunities(tag) {
-    api
-      .fetchTagCommunities(tag)
-      .then(json => {
-        if (tag !== this.state.activeTag) {
-          return;
-        }
-
-        if (json.topics) {
-          this.setState({
-            tagCommunities: json.topics,
-            tagCommunitiesLoading: false,
-          });
-        } else {
-          this.setState({ tagCommunities: [], tagCommunitiesLoading: false });
-        }
-      })
-      .catch(e => {
-        console.log(e);
-        this.setState({ tagCommunitiesLoading: false });
       });
   }
 
