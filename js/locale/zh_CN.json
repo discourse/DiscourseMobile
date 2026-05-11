@@ -88,8 +88,18 @@
   "sites": "站点",
   "find_new_communities": "查找可以加入的新社区",
   "no_hot_topics": "未在此站点上找到热门话题。",
+  "discover_communities": "社区",
+  "discover_pick_tag": "您对什么感兴趣？",
+  "discover_pick_tag_description": "看看 Discourse 社区最近都在讨论什么，然后加入最符合您兴趣的社区。",
+  "discover_explore_more": "探索其他话题",
+  "discover_communities_section": "%{tag} 社区",
+  "discover_topics_section": "%{tag} 中的最近讨论",
+  "discover_see_all_communities": "查看所有社区",
+  "discover_community_directory": "社区目录",
   "remove_from_home_screen": "移除",
   "preview": "预览",
+  "community_recent_topics": "热门话题",
   "oops": "糟糕，出错了。",
-  "still_loading": "仍在加载…"
+  "still_loading": "仍在加载…",
+  "tag_label_programming_language": "编程"
 }
