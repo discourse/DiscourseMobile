@@ -172,8 +172,8 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-          "org.discourse.DiscourseApp" => "match AppStore org.discourse.DiscourseApp 1778609155",
-          "org.discourse.DiscourseApp.ShareExtension" => "match AppStore org.discourse.DiscourseApp.ShareExtension 1778609158"
+          "org.discourse.DiscourseApp" => "match AppStore org.discourse.DiscourseApp 1776778136",
+          "org.discourse.DiscourseApp.ShareExtension" => "match AppStore org.discourse.DiscourseApp.ShareExtension 1776778138"
         }
       },
       clean: true,
@@ -194,8 +194,8 @@ platform :ios do
       export_method: "ad-hoc",
       export_options: {
         provisioningProfiles: {
-          "org.discourse.DiscourseApp" => "match AdHoc org.discourse.DiscourseApp 1778609171",
-          "org.discourse.DiscourseApp.ShareExtension" => "match AdHoc org.discourse.DiscourseApp.ShareExtension 1778609174"
+          "org.discourse.DiscourseApp" => "match AdHoc org.discourse.DiscourseApp 1776778144",
+          "org.discourse.DiscourseApp.ShareExtension" => "match AdHoc org.discourse.DiscourseApp.ShareExtension 1776778146"
         }
       },
       clean: true,
