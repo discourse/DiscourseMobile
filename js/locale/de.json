@@ -92,8 +92,18 @@
   "sites": "Websites",
   "find_new_communities": "Finde neue Communitys, denen du beitreten kannst",
   "no_hot_topics": "Für diese Website wurden keine heißen Themen gefunden.",
+  "discover_communities": "Communities",
+  "discover_pick_tag": "Wofür interessierst du dich?",
+  "discover_pick_tag_description": "Schau dir an, worüber die Leute in den Discourse-Communities in letzter Zeit diskutiert haben, und trete denjenigen bei, die am besten zu deinen Interessen passen.",
+  "discover_explore_more": "Erkunde ein anderes Thema",
+  "discover_communities_section": "%{tag} Communities",
+  "discover_topics_section": "Aktuelle Diskussionen in %{tag}",
+  "discover_see_all_communities": "Alle Communities anzeigen",
+  "discover_community_directory": "Community-Verzeichnis",
   "remove_from_home_screen": "Entfernen",
   "preview": "Vorschau",
+  "community_recent_topics": "Heiße Themen",
   "oops": "Ups, da ist etwas schiefgelaufen.",
-  "still_loading": "Wird immer noch geladen …"
+  "still_loading": "Wird immer noch geladen …",
+  "tag_label_programming_language": "Programmieren"
 }
