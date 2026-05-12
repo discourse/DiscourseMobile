@@ -14,12 +14,10 @@ const SplashView = props => {
     onSelectTag,
     onSelectRecent,
     onSeeAllCommunities,
-    renderSearchBox,
   } = props;
 
   return (
     <View style={sharedStyles.container}>
-      {renderSearchBox()}
       <TagSplash
         tags={splashTags}
         loading={splashTagsLoading}

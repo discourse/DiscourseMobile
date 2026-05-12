@@ -30,7 +30,6 @@ const TagDetailView = props => {
     onRefresh,
     onExploreMore,
     onSelectTag,
-    renderSearchBox,
   } = props;
 
   const activeTagLabel = activeTag;
@@ -67,7 +66,6 @@ const TagDetailView = props => {
 
   return (
     <View style={sharedStyles.container}>
-      {renderSearchBox()}
       <TagFilterBar
         activeKey={activeTag}
         splashTags={splashTags}

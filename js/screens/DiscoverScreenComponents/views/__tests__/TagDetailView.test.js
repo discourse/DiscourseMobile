@@ -58,7 +58,6 @@ const baseProps = {
   onRefresh: () => {},
   onExploreMore: () => {},
   onSelectTag: () => {},
-  renderSearchBox: () => null,
 };
 
 describe('TagDetailView', () => {
