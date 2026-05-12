@@ -2,7 +2,7 @@ fastlane_require "base64"
 fastlane_require "fileutils"
 fastlane_require "json"
 
-IOS_APP_VERSION = "2.2.0"
+IOS_APP_VERSION = "2.2.1"
 ANDROID_APP_VERSION = "2.2.0" # run `fastlane bootstrap` after editing this
 PROJECT_NAME = "Discourse"
 IOS_TEAM_ID = "6T3LU73T8S"
@@ -172,8 +172,8 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-          "org.discourse.DiscourseApp" => "match AppStore org.discourse.DiscourseApp 1776778136",
-          "org.discourse.DiscourseApp.ShareExtension" => "match AppStore org.discourse.DiscourseApp.ShareExtension 1776778138"
+          "org.discourse.DiscourseApp" => "match AppStore org.discourse.DiscourseApp 1778609155",
+          "org.discourse.DiscourseApp.ShareExtension" => "match AppStore org.discourse.DiscourseApp.ShareExtension 1778609158"
         }
       },
       clean: true,
@@ -194,8 +194,8 @@ platform :ios do
       export_method: "ad-hoc",
       export_options: {
         provisioningProfiles: {
-          "org.discourse.DiscourseApp" => "match AdHoc org.discourse.DiscourseApp 1776778144",
-          "org.discourse.DiscourseApp.ShareExtension" => "match AdHoc org.discourse.DiscourseApp.ShareExtension 1776778146"
+          "org.discourse.DiscourseApp" => "match AdHoc org.discourse.DiscourseApp 1778609171",
+          "org.discourse.DiscourseApp.ShareExtension" => "match AdHoc org.discourse.DiscourseApp.ShareExtension 1778609174"
         }
       },
       clean: true,
