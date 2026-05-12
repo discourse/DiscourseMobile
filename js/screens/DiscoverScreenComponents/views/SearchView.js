@@ -29,7 +29,6 @@ const SearchView = props => {
     onResetToSplash,
     onRefresh,
     onEndReached,
-    renderSearchBox,
     renderSiteItem,
   } = props;
 
@@ -70,7 +69,6 @@ const SearchView = props => {
 
   return (
     <View style={sharedStyles.container}>
-      {renderSearchBox()}
       <FlatList
         keyboardDismissMode="on-drag"
         keyExtractor={item => String(item.id || item.featured_link)}

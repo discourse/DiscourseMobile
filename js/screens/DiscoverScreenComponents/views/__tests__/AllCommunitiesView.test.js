@@ -36,7 +36,6 @@ const baseProps = {
   selectionCount: 0,
   tabBarHeight: 0,
   onSelectFilter: () => {},
-  renderSearchBox: () => null,
   renderSiteItem: () => null,
 };
 

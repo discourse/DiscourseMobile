@@ -19,7 +19,6 @@ const AllCommunitiesView = props => {
     selectionCount,
     tabBarHeight,
     onSelectFilter,
-    renderSearchBox,
     renderSiteItem,
   } = props;
 
@@ -31,7 +30,6 @@ const AllCommunitiesView = props => {
 
   return (
     <View style={sharedStyles.container}>
-      {renderSearchBox()}
       <TagFilterBar
         activeKey={communitiesFilter}
         splashTags={splashTags}

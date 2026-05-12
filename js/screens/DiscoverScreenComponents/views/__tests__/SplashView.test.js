@@ -27,8 +27,7 @@ const renderWithTheme = async ui => {
 };
 
 describe('SplashView', () => {
-  it('renders the search box and forwards tag props to TagSplash', async () => {
-    const renderSearchBox = jest.fn(() => null);
+  it('forwards tag props to TagSplash', async () => {
     const onSelectTag = jest.fn();
     const tags = ['ai', 'finance'];
 
@@ -39,11 +38,8 @@ describe('SplashView', () => {
         onSelectTag={onSelectTag}
         onSelectRecent={() => {}}
         onSeeAllCommunities={() => {}}
-        renderSearchBox={renderSearchBox}
       />,
     );
-
-    expect(renderSearchBox).toHaveBeenCalled();
 
     const tagSplash = tree.root.findByType(MockTagSplash);
     expect(tagSplash.props.tags).toBe(tags);
@@ -62,7 +58,6 @@ describe('SplashView', () => {
         onSelectTag={onSelectTag}
         onSelectRecent={onSelectRecent}
         onSeeAllCommunities={onSeeAllCommunities}
-        renderSearchBox={() => null}
       />,
     );
 

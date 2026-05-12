@@ -30,7 +30,6 @@ const baseProps = {
   onResetToSplash: () => {},
   onRefresh: () => {},
   onEndReached: () => {},
-  renderSearchBox: () => null,
   renderSiteItem: () => null,
 };
 

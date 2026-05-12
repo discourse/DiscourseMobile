@@ -60,7 +60,6 @@ const baseProps = {
   onEndReached: () => {},
   onRefresh: () => {},
   onExploreMore: () => {},
-  renderSearchBox: () => null,
 };
 
 describe('CommunityDetailView (screen view)', () => {
