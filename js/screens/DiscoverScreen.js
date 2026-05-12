@@ -533,6 +533,7 @@ class DiscoverScreen extends React.Component {
       <BottomTabBarHeightContext.Consumer>
         {tabBarHeight => (
           <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
+            {this._renderSearchBox()}
             {this._renderContent(tabBarHeight)}
             <Toast config={toastConfig} />
           </SafeAreaView>
@@ -566,7 +567,6 @@ class DiscoverScreen extends React.Component {
         onSelectTag={tag => this.onSelectTag(tag)}
         onSelectRecent={() => this._goToAllCommunitiesFromSplash('recent')}
         onSeeAllCommunities={() => this._goToAllCommunitiesFromSplash()}
-        renderSearchBox={() => this._renderSearchBox()}
       />
     );
   }
@@ -595,7 +595,6 @@ class DiscoverScreen extends React.Component {
           }
         }}
         onEndReached={() => this._fetchNextSearchPage()}
-        renderSearchBox={() => this._renderSearchBox()}
         renderSiteItem={({ item }) => this._renderSiteItem({ item })}
       />
     );
@@ -623,7 +622,6 @@ class DiscoverScreen extends React.Component {
         }}
         onExploreMore={() => this._navigateToSplash()}
         onSelectTag={key => this._selectFromTagDetail(key)}
-        renderSearchBox={() => this._renderSearchBox()}
       />
     );
   }
@@ -639,7 +637,6 @@ class DiscoverScreen extends React.Component {
         selectionCount={this.state.selectionCount}
         tabBarHeight={tabBarHeight}
         onSelectFilter={key => this._selectCommunitiesFilter(key)}
-        renderSearchBox={() => this._renderSearchBox()}
         renderSiteItem={({ item }) => this._renderSiteItem({ item })}
       />
     );
@@ -676,7 +673,6 @@ class DiscoverScreen extends React.Component {
           this._fetchCommunityHotTopics(community.featured_link);
         }}
         onExploreMore={() => this._navigateToSplash()}
-        renderSearchBox={() => this._renderSearchBox()}
       />
     );
   }

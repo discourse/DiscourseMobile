@@ -26,7 +26,6 @@ const CommunityDetailView = props => {
     onEndReached,
     onRefresh,
     onExploreMore,
-    renderSearchBox,
   } = props;
 
   if (!community) {
@@ -46,7 +45,6 @@ const CommunityDetailView = props => {
 
   return (
     <View style={sharedStyles.container}>
-      {renderSearchBox()}
       <TagDetailHeader title={community.title} onBack={() => onBack()} />
       <DiscoverTopicList
         topics={communityTopics}
