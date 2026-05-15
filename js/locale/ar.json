@@ -111,8 +111,15 @@
   "discover_communities": "المجتمعات",
   "discover_pick_tag": "ما الذي يثير اهتمامك؟",
   "discover_pick_tag_description": "اطلع على ما يناقشه الناس في مجتمعات Discourse مؤخرًا، وانضم إلى المجتمعات التي تتناسب مع اهتماماتك.",
+  "discover_explore_more": "استكشف موضوعًا آخر",
+  "discover_communities_section": "مجتمعات %{tag}",
+  "discover_topics_section": "المناقشات الأخيرة في %{tag}",
+  "discover_see_all_communities": "عرض كل المجتمعات",
+  "discover_community_directory": "دليل المجتمع",
   "remove_from_home_screen": "إزالة",
   "preview": "معاينة",
+  "community_recent_topics": "الموضوعات الرائجة",
   "oops": "عذرًا، حدث خطأ ما.",
-  "still_loading": "لا يزال التحميل مستمرًا..."
+  "still_loading": "لا يزال التحميل مستمرًا...",
+  "tag_label_programming_language": "البرمجة"
 }

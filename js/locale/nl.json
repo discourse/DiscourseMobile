@@ -74,6 +74,7 @@
   "discover_open_source": "open source",
   "discover_international": "internationaal",
   "discover_recent": "recent",
+  "discover_ai": "ai",
   "active_counts": "%{active_users} actieve gebruikers",
   "ok": "OK",
   "cancel": "Annuleren",
@@ -91,6 +92,18 @@
   "sites": "Sites",
   "find_new_communities": "Vind nieuwe community's om lid van te worden",
   "no_hot_topics": "Er zijn geen populaire topics gevonden voor deze site.",
+  "discover_communities": "Community's",
+  "discover_pick_tag": "Waar ben je in geïnteresseerd?",
+  "discover_pick_tag_description": "Kijk waar mensen de laatste tijd over hebben gediscussieerd in Discourse-community's en sluit je aan bij de community's die het best aansluiten bij je interesses.",
+  "discover_explore_more": "Ander onderwerp verkennen",
+  "discover_communities_section": "%{tag} community's",
+  "discover_topics_section": "Recente discussies in %{tag}",
+  "discover_see_all_communities": "Alle communities bekijken",
+  "discover_community_directory": "Communitydirectory",
   "remove_from_home_screen": "Verwijderen",
-  "preview": "Voorbeeld"
+  "preview": "Voorbeeld",
+  "community_recent_topics": "Populaire topics",
+  "oops": "Oeps, er is iets misgegaan.",
+  "still_loading": "Nog steeds aan het laden...",
+  "tag_label_programming_language": "programmeren"
 }
