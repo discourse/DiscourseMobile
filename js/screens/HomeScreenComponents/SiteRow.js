@@ -127,14 +127,20 @@ export default function SiteRow(props) {
     if (props.site.authToken) {
       if (props.site.totalNew > 0) {
         shortcuts.new = {
-          link: '/new',
-          text: i18n.t('new_with_count', { count: props.site.totalNew }),
+          link: props.site.usingUnifiedNew ? '/new?subset=topics' : '/new',
+          text: props.site.usingUnifiedNew
+            ? i18n.t('new_with_count_unified', { count: props.site.totalNew })
+            : i18n.t('new_with_count', { count: props.site.totalNew }),
         };
       }
       if (props.site.totalUnread > 0) {
         shortcuts.unread = {
-          link: '/unread',
-          text: i18n.t('unread_with_count', { count: props.site.totalUnread }),
+          link: props.site.usingUnifiedNew ? '/new?subset=replies' : '/unread',
+          text: props.site.usingUnifiedNew
+            ? i18n.t('unread_with_count_unified', {
+                count: props.site.totalUnread,
+              })
+            : i18n.t('unread_with_count', { count: props.site.totalUnread }),
         };
       }
     }

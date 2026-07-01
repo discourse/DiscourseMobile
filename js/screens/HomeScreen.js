@@ -59,12 +59,17 @@ class HomeScreen extends React.Component {
           `${site.url}/session/otp/${site.oneTimePassword}`,
         );
       } else {
+        // Use & when the endpoint already carries a query string (eg
+        // /new?subset=topics) so we don't produce an invalid double-? URL.
+        const separator = endpoint.includes('?') ? '&' : '?';
         if (Platform.OS === 'ios') {
           const params = await this._siteManager.generateURLParams(site);
-          this.props.screenProps.openUrl(`${site.url}${endpoint}?${params}`);
+          this.props.screenProps.openUrl(
+            `${site.url}${endpoint}${separator}${params}`,
+          );
         } else {
           this.props.screenProps.openUrl(
-            `${site.url}${endpoint}?discourse_app=1`,
+            `${site.url}${endpoint}${separator}discourse_app=1`,
           );
         }
       }

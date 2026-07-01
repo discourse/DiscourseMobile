@@ -275,6 +275,8 @@ class Site {
       this.chatNotifications = totals.chat_notifications || 0;
       this.totalUnread = totals?.topic_tracking.unread || 0;
       this.totalNew = totals?.topic_tracking.new || 0;
+      this.usingUnifiedNew =
+        totals?.topic_tracking.unified_new_enabled ?? false;
       this.username = totals.username;
       if (totals.group_inboxes) {
         this.groupInboxes = totals.group_inboxes;
