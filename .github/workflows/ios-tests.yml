@@ -25,6 +25,7 @@ jobs:
       - name: Install macOS dependencies
         run: |
           brew tap wix/brew
+          brew trust wix/brew
           brew install applesimutils
         env:
           HOMEBREW_NO_AUTO_UPDATE: 1
@@ -77,6 +78,7 @@ jobs:
       - name: Install macOS dependencies
         run: |
           brew tap wix/brew
+          brew trust wix/brew
           brew install applesimutils
         env:
           HOMEBREW_NO_AUTO_UPDATE: 1
