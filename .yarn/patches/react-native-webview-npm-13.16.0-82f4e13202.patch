@@ -1,0 +1,22 @@
+diff --git a/apple/RNCWebViewImpl.m b/apple/RNCWebViewImpl.m
+index 7f5c24d6e2cfb26eddbc513bf17a81c24a7273e2..dbaa1c9cd61f61c5f3711c3d1d68b3af263ce04a 100644
+--- a/apple/RNCWebViewImpl.m
++++ b/apple/RNCWebViewImpl.m
+@@ -34,12 +34,11 @@ @interface _SwizzleHelperWK : UIView
+ @implementation _SwizzleHelperWK
+ -(id)inputAccessoryView
+ {
+-  if (_webView == nil) {
+-    return nil;
+-  }
+-
+-  if ([_webView respondsToSelector:@selector(inputAssistantItem)]) {
+-    UITextInputAssistantItem *inputAssistantItem = [_webView inputAssistantItem];
++  // iOS 26 renders the WKWebView keyboard bar via inputAssistantItem rather than
++  // the classic inputAccessoryView. Clear it on self (the reclassed content view)
++  // so hideKeyboardAccessoryView actually hides the bar.
++  if ([self respondsToSelector:@selector(inputAssistantItem)]) {
++    UITextInputAssistantItem *inputAssistantItem = [self inputAssistantItem];
+     inputAssistantItem.leadingBarButtonGroups = @[];
+     inputAssistantItem.trailingBarButtonGroups = @[];
+   }

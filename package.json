@@ -57,7 +57,7 @@
     "react-native-siri-shortcut": "^3.2.4",
     "react-native-svg": "^15.1.0",
     "react-native-toast-message": "^2.1.7",
-    "react-native-webview": "^13.12.3",
+    "react-native-webview": "patch:react-native-webview@npm%3A13.16.0#~/.yarn/patches/react-native-webview-npm-13.16.0-82f4e13202.patch",
     "react-native-worklets": "^0.5.0"
   },
   "devDependencies": {

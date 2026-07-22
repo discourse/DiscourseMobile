@@ -6173,7 +6173,7 @@ __metadata:
     react-native-siri-shortcut: "npm:^3.2.4"
     react-native-svg: "npm:^15.1.0"
     react-native-toast-message: "npm:^2.1.7"
-    react-native-webview: "npm:^13.12.3"
+    react-native-webview: "patch:react-native-webview@npm%3A13.16.0#~/.yarn/patches/react-native-webview-npm-13.16.0-82f4e13202.patch"
     react-native-worklets: "npm:^0.5.0"
     react-test-renderer: "npm:19.1.0"
     typescript: "npm:5.0.4"
@@ -12042,7 +12042,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-webview@npm:^13.12.3":
+"react-native-webview@npm:13.16.0":
   version: 13.16.0
   resolution: "react-native-webview@npm:13.16.0"
   dependencies:
@@ -12052,6 +12052,19 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/dc3d84c4785676bac3f316ec2119d3239f64fd8b18400dcc1cf8fa4f05b9bf677cf167aa4e7da72c9f60760eb6303c99da22324e15ff5fb380a3b1b31f531132
+  languageName: node
+  linkType: hard
+
+"react-native-webview@patch:react-native-webview@npm%3A13.16.0#~/.yarn/patches/react-native-webview-npm-13.16.0-82f4e13202.patch":
+  version: 13.16.0
+  resolution: "react-native-webview@patch:react-native-webview@npm%3A13.16.0#~/.yarn/patches/react-native-webview-npm-13.16.0-82f4e13202.patch::version=13.16.0&hash=51a67d"
+  dependencies:
+    escape-string-regexp: "npm:^4.0.0"
+    invariant: "npm:2.2.4"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/24e23359b7868f7a672f89f3c9162c0a82ac98c6646cc17d269b51cfaa69da84db072ebe6352fa33291a5cb5b625f24f18183641f628459478f196b33a5f780d
   languageName: node
   linkType: hard
 
