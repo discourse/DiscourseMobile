@@ -196,7 +196,7 @@ class WebViewComponent extends React.Component {
             allowsInlineMediaPlayback={true}
             allowsFullscreenVideo={true}
             allowsLinkPreview={true}
-            hideKeyboardAccessoryView={false}
+            hideKeyboardAccessoryView={!Platform.isPad}
             webviewDebuggingEnabled={true}
             onLoadEnd={() => {
               this.webview.requestFocus();

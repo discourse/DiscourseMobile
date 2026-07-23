@@ -33,6 +33,18 @@ target 'Discourse' do
       # :ccache_enabled => true
     )
 
+    # fmt 11.0.2 fails to compile with Xcode 26.4+ because its consteval
+    # implementation is incompatible with the newer Apple Clang. React Native
+    # 0.80 pins that fmt version, so compile only this pod as C++17 until React
+    # Native is upgraded to a version that includes a newer fmt release.
+    installer.pods_project.targets.each do |target|
+      next unless target.name == "fmt"
+
+      target.build_configurations.each do |build_config|
+        build_config.build_settings["CLANG_CXX_LANGUAGE_STANDARD"] = "c++17"
+      end
+    end
+
     # fix the "No template named 'unary_function'" error
     # see https://stackoverflow.com/questions/77133361/no-template-named-unary-function-in-namespace-std-did-you-mean-unary-fun
     # should be fixed in RN 0.72.5+

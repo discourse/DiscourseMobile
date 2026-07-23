@@ -1776,7 +1776,7 @@ PODS:
   - react-native-segmented-control (2.2.2):
     - React-Core
   - react-native-vector-icons-fontawesome5 (12.2.0)
-  - react-native-webview (13.16.0):
+  - react-native-webview (13.17.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2968,12 +2968,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
-  DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
+  boost: 1dca942403ed9342f98334bf4c3621f011aa7946
+  DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   fast_float: b32c788ed9c6a8c584d114d0047beda9664e7cc6
   FBLazyVector: 86588b5a1547e7a417942a08f49559b184e002c8
-  fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
-  glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
+  fmt: 01b82d4ca6470831d1cc0852a1af644be019e8f6
+  glog: 08b301085f15bcbb6ff8632a8ebaf239aae04e6a
   hermes-engine: bbc1152da7d2d40f9e59c28acc6576fcf5d28e2a
   RCT-Folly: 846fda9475e61ec7bcbf8a3fe81edfcaeb090669
   RCTDeprecation: 300c5eb91114d4339b0bb39505d0f4824d7299b7
@@ -3015,7 +3015,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 8ed800930eb7d0b6651218f69656e823d37b6ef7
   react-native-segmented-control: be570ddc1678933470a39471e0ebd824f23e39a8
   react-native-vector-icons-fontawesome5: 1199fa2cf3323fac0b9b52b2aecb1329aa3602a5
-  react-native-webview: 38b7d49cbe748b6fa02381be0a097d3922caf94a
+  react-native-webview: a685ccea981f1410f67245117d44bfb91c6d7df6
   React-NativeModulesApple: 37c08c3c54db55854de816b0df0f3683832be35a
   React-oscompat: 56d6de59f9ae95cd006a1c40be2cde83bc06a4e1
   React-perflogger: 4008bd05a8b6c157b06608c0ea0b8bd5d9c5e6c9
@@ -3062,6 +3062,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: a742cc68e8366fcfc681808162492bc0aa7a9498
 
-PODFILE CHECKSUM: 105b7f665a0c7a8986fa1cec6c9c9d43743ea208
+PODFILE CHECKSUM: 8125ac004090fc2c53beddf13d18c2becd0d99e9
 
 COCOAPODS: 1.16.2

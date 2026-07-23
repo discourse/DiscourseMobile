@@ -14,6 +14,9 @@ gem 'bigdecimal'
 gem 'logger'
 gem 'benchmark'
 gem 'mutex_m'
+# CFPropertyList (a CocoaPods dep) requires 'kconv', which Ruby 3.4 removed
+# from the standard library; the nkf gem ships kconv.rb and restores it.
+gem 'nkf'
 
 gem "fastlane"
 eval_gemfile("fastlane/Pluginfile")
