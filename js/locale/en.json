@@ -9,6 +9,11 @@
     "other": "%{count} commits approved"
   },
   "approved": "\"%{title}\" approved",
+  "call_connecting": "Connecting…",
+  "call_in_progress": "In a call",
+  "call_leave": "Leave call",
+  "call_mute": "Mute microphone",
+  "call_unmute": "Unmute microphone",
   "check_out_popular": "Check out these popular communities",
   "connect": "connect",
   "dont_know_where_to_start": "Don’t know where to start?",

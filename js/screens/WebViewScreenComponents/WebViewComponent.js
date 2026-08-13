@@ -21,6 +21,7 @@ import chroma from 'chroma-js';
 import SafariView from 'react-native-safari-view';
 import i18n from 'i18n-js';
 import Site from '../../site';
+import liveKitBridge from '../../livekit/bridge';
 import { ThemeContext } from '../../ThemeContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from '@react-native-community/blur';
@@ -92,6 +93,12 @@ class WebViewComponent extends React.Component {
     this.appStateSubscription = AppState.addEventListener(
       'change',
       this._handleAppStateChange,
+    );
+
+    // forward native LiveKit call state into the page
+    // (see js/livekit/bridge.js for the protocol)
+    this.liveKitUnsubscribe = liveKitBridge.subscribe(detail =>
+      this._sendLiveKitState(detail),
     );
   }
 
@@ -385,6 +392,20 @@ class WebViewComponent extends React.Component {
     this.siteManager.refreshSites();
     this.siteManager.clearActiveSite();
     this.appStateSubscription?.remove();
+    // the native call itself survives the webview closing;
+    // only the page notifications stop
+    this.liveKitUnsubscribe?.();
+  }
+
+  _sendLiveKitState(detail) {
+    const stateChange = `
+      window.dispatchEvent(new CustomEvent("LiveKitBridgeState", { detail: ${JSON.stringify(
+        detail,
+      )} }));
+      true;
+    `;
+
+    this.webview?.injectJavaScript(stateChange);
   }
 
   _sendAppStateChange(appState) {
@@ -458,7 +479,11 @@ class WebViewComponent extends React.Component {
   _onMessage(event) {
     let data = JSON.parse(event.nativeEvent.data);
 
-    let { headerBg, shareUrl, dismiss, markRead, showLogin } = data;
+    let { headerBg, shareUrl, dismiss, markRead, showLogin, livekit } = data;
+
+    if (livekit) {
+      liveKitBridge.handleMessage(livekit);
+    }
 
     if (headerBg && chroma.valid(headerBg)) {
       const headerBgChroma = chroma(headerBg);

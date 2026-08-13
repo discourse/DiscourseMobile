@@ -39,6 +39,7 @@ import { addShortcutListener } from 'react-native-siri-shortcut';
 import { enableScreens } from 'react-native-screens';
 import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 import { BlurView } from '@react-native-community/blur';
+import CallBar from './livekit/CallBar';
 
 import BackgroundFetch from './platforms/background-fetch';
 
@@ -662,6 +663,7 @@ class Discourse extends React.Component {
               )}
             </Stack.Screen>
           </Stack.Navigator>
+          <CallBar />
         </ThemeContext.Provider>
       </NavigationContainer>
     );
