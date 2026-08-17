@@ -194,6 +194,10 @@ class WebViewComponent extends React.Component {
             applicationNameForUserAgent={this.state.userAgentSuffix}
             allowsBackForwardNavigationGestures={true}
             allowsInlineMediaPlayback={true}
+            allowsPictureInPictureMediaPlayback={true}
+            allowsAirPlayForMediaPlayback={true}
+            mediaPlaybackRequiresUserAction={false}
+            mediaCapturePermissionGrantType={'grantIfSameHostElsePrompt'}
             allowsFullscreenVideo={true}
             allowsLinkPreview={true}
             hideKeyboardAccessoryView={!Platform.isPad}
