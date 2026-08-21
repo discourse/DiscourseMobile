@@ -17,6 +17,7 @@ import {
 import { WebView } from 'react-native-webview';
 import ErrorScreen from '../WebViewScreenComponents/ErrorScreen';
 import ProgressBar from '../../ProgressBar';
+import handleDownload from '../../lib/handleDownload';
 import chroma from 'chroma-js';
 import SafariView from 'react-native-safari-view';
 import i18n from 'i18n-js';
@@ -456,7 +457,19 @@ class WebViewComponent extends React.Component {
   }
 
   _onMessage(event) {
-    let data = JSON.parse(event.nativeEvent.data);
+    let data;
+
+    try {
+      data = JSON.parse(event.nativeEvent.data);
+    } catch (error) {
+      console.warn('WebView message: unparseable JSON', error);
+      return;
+    }
+
+    if (data?.type === 'download') {
+      void handleDownload(data);
+      return;
+    }
 
     let { headerBg, shareUrl, dismiss, markRead, showLogin } = data;
 
