@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-import { Alert, Platform, Share, ToastAndroid } from 'react-native';
+import { Alert, Platform, Share } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import handleDownload, {
   MAX_BRIDGED_DOWNLOAD_BYTES,
@@ -10,28 +10,23 @@ import handleDownload, {
 } from '../handleDownload';
 
 jest.mock('i18n-js', () => ({
-  t: (key, params) => (params?.filename ? `${key}:${params.filename}` : key),
+  t: key => key,
 }));
 
 jest.mock('react-native-blob-util', () => ({
   fs: {
     dirs: { CacheDir: '/cache' },
+    mkdir: jest.fn(() => Promise.resolve()),
     writeFile: jest.fn(() => Promise.resolve()),
     unlink: jest.fn(() => Promise.resolve()),
-  },
-  MediaCollection: {
-    copyToMediaStore: jest.fn(() => Promise.resolve()),
   },
 }));
 
 function message(overrides = {}) {
   return {
     type: 'download',
-    version: 1,
-    encoding: 'base64',
     filename: 'theme.zip',
     mimeType: 'application/zip',
-    byteLength: 1,
     data: 'eA==',
     ...overrides,
   };
@@ -43,53 +38,98 @@ describe('handleDownload', () => {
     Platform.OS = 'ios';
     Share.share = jest.fn(() => Promise.resolve());
     Alert.alert = jest.fn();
-    ToastAndroid.show = jest.fn();
   });
 
-  test('sanitizes filenames used in native paths', () => {
-    expect(sanitizeFilename('../../bad\\name:\u0000.zip')).toBe(
-      '_.._bad_name.zip',
+  test('strips path separators from filenames', () => {
+    expect(sanitizeFilename('../bad/name:file.zip')).toBe(
+      '.._bad_name_file.zip',
     );
-    expect(sanitizeFilename('...')).toBe('download');
+    expect(sanitizeFilename('')).toBe('download');
+    expect(sanitizeFilename(null)).toBe('download');
   });
 
-  test('rejects malformed and oversized messages', () => {
+  test('rejects messages missing required fields', () => {
+    expect(() => validateDownloadMessage(null)).toThrow(
+      'Invalid download request',
+    );
+    expect(() => validateDownloadMessage(message({ type: 'other' }))).toThrow();
+    expect(() => validateDownloadMessage(message({ filename: 123 }))).toThrow();
+  });
+
+  test('rejects non-base64 payloads', () => {
     expect(() =>
-      validateDownloadMessage(message({ data: 'not base64' })),
+      validateDownloadMessage(message({ data: 'not base64!' })),
     ).toThrow('Invalid download data');
-    expect(() =>
-      validateDownloadMessage(
-        message({ byteLength: MAX_BRIDGED_DOWNLOAD_BYTES + 1 }),
-      ),
-    ).toThrow('Download is too large');
+    expect(() => validateDownloadMessage(message({ data: 'abc' }))).toThrow(
+      'Invalid download data',
+    );
   });
 
-  test('writes, shares, and removes an iOS temporary file', async () => {
+  test('rejects payloads over the receiver-side size cap', () => {
+    const overCap = 'A'.repeat(
+      Math.ceil(((MAX_BRIDGED_DOWNLOAD_BYTES + 4) * 4) / 3 / 4) * 4,
+    );
+    expect(() => validateDownloadMessage(message({ data: overCap }))).toThrow(
+      'Download is too large',
+    );
+  });
+
+  test('writes to a unique directory so the shared filename is preserved', async () => {
     await handleDownload(message());
 
+    expect(ReactNativeBlobUtil.fs.mkdir).toHaveBeenCalledWith(
+      expect.stringMatching(/^\/cache\/download-/),
+    );
     expect(ReactNativeBlobUtil.fs.writeFile).toHaveBeenCalledWith(
-      expect.stringMatching(/^\/cache\/.+-theme\.zip$/),
+      expect.stringMatching(/^\/cache\/download-.+\/theme\.zip$/),
       'eA==',
       'base64',
     );
     expect(Share.share).toHaveBeenCalledWith(
-      expect.objectContaining({ title: 'theme.zip' }),
+      expect.objectContaining({
+        url: expect.stringMatching(
+          /^file:\/\/\/cache\/download-.+\/theme\.zip$/,
+        ),
+      }),
     );
-    expect(ReactNativeBlobUtil.fs.unlink).toHaveBeenCalled();
     expect(Alert.alert).not.toHaveBeenCalled();
   });
 
-  test('removes the temporary file and reports native failures', async () => {
+  test('unlinks the temp directory after the cleanup delay', async () => {
+    jest.useFakeTimers();
+    try {
+      await handleDownload(message());
+
+      expect(ReactNativeBlobUtil.fs.unlink).not.toHaveBeenCalled();
+      jest.runAllTimers();
+      expect(ReactNativeBlobUtil.fs.unlink).toHaveBeenCalledWith(
+        expect.stringMatching(/^\/cache\/download-/),
+      );
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
+  test('alerts a generic failure when the write fails', async () => {
     ReactNativeBlobUtil.fs.writeFile.mockRejectedValueOnce(
       new Error('disk full'),
     );
 
     await handleDownload(message());
 
-    expect(ReactNativeBlobUtil.fs.unlink).toHaveBeenCalled();
     expect(Alert.alert).toHaveBeenCalledWith(
       'download.failed_title',
-      'disk full',
+      'download.failed_message',
     );
+  });
+
+  test('ignores messages on non-iOS platforms', async () => {
+    Platform.OS = 'android';
+
+    await handleDownload(message());
+
+    expect(ReactNativeBlobUtil.fs.mkdir).not.toHaveBeenCalled();
+    expect(ReactNativeBlobUtil.fs.writeFile).not.toHaveBeenCalled();
+    expect(Share.share).not.toHaveBeenCalled();
   });
 });

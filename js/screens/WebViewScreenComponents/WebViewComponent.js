@@ -199,6 +199,11 @@ class WebViewComponent extends React.Component {
             allowsLinkPreview={true}
             hideKeyboardAccessoryView={!Platform.isPad}
             webviewDebuggingEnabled={true}
+            injectedJavaScriptBeforeContentLoaded={
+              Platform.OS === 'ios'
+                ? 'window.__discourseHubDownloadBridge = true; true;'
+                : undefined
+            }
             onLoadEnd={() => {
               this.webview.requestFocus();
             }}

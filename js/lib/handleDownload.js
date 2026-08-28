@@ -1,11 +1,13 @@
 /* @flow */
 'use strict';
 
-import { Alert, Platform, Share, ToastAndroid } from 'react-native';
+import { Alert, Platform, Share } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import i18n from 'i18n-js';
 
 export const MAX_BRIDGED_DOWNLOAD_BYTES = 25 * 1024 * 1024;
+
+const CLEANUP_DELAY = 20_000;
 
 let downloadSequence = 0;
 
@@ -14,16 +16,7 @@ export function sanitizeFilename(name) {
     return 'download';
   }
 
-  const cleaned = name
-    .normalize('NFC')
-    .replace(/[\p{Cc}\u202a-\u202e\u2066-\u2069]/gu, '')
-    .replace(/^\.+/, '')
-    .replace(/[. ]+$/, '')
-    .replace(/[/\\:]+/g, '_')
-    .replace(/_+(\.[^.]*)$/, '$1')
-    .trim()
-    .slice(0, 180);
-
+  const cleaned = name.replace(/[/\\:\0]+/g, '_').trim();
   return cleaned || 'download';
 }
 
@@ -37,89 +30,82 @@ export function validateDownloadMessage(message) {
     !message ||
     typeof message !== 'object' ||
     message.type !== 'download' ||
-    message.version !== 1 ||
-    message.encoding !== 'base64' ||
     typeof message.filename !== 'string' ||
-    typeof message.mimeType !== 'string' ||
-    typeof message.data !== 'string' ||
-    !Number.isSafeInteger(message.byteLength)
+    typeof message.data !== 'string'
   ) {
     throw new Error('Invalid download request');
   }
 
   if (
-    message.byteLength < 0 ||
-    message.byteLength > MAX_BRIDGED_DOWNLOAD_BYTES ||
-    message.data.length > Math.ceil((MAX_BRIDGED_DOWNLOAD_BYTES * 4) / 3) + 2
-  ) {
-    throw new Error('Download is too large');
-  }
-
-  if (
-    !/^[a-z0-9!#$&^_.+-]+\/[a-z0-9!#$&^_.+-]+$/i.test(message.mimeType) ||
     !/^[a-z0-9+/]*={0,2}$/i.test(message.data) ||
-    message.data.length % 4 !== 0 ||
-    base64ByteLength(message.data) !== message.byteLength
+    message.data.length % 4 !== 0
   ) {
     throw new Error('Invalid download data');
+  }
+  if (base64ByteLength(message.data) > MAX_BRIDGED_DOWNLOAD_BYTES) {
+    throw new Error('Download is too large');
   }
 
   return {
     filename: sanitizeFilename(message.filename),
-    mimeType: message.mimeType,
+    mimeType:
+      typeof message.mimeType === 'string'
+        ? message.mimeType
+        : 'application/octet-stream',
     data: message.data,
   };
 }
 
-function temporaryPath(filename) {
+function temporaryDirectory() {
   downloadSequence += 1;
-  const uniquePart = `${Date.now()}-${downloadSequence}-${Math.random()
+  const unique = `${Date.now()}-${downloadSequence}-${Math.random()
     .toString(36)
     .slice(2, 10)}`;
-  return `${ReactNativeBlobUtil.fs.dirs.CacheDir}/${uniquePart}-${filename}`;
+  return `${ReactNativeBlobUtil.fs.dirs.CacheDir}/download-${unique}`;
 }
 
-async function saveAndroidDownload(path, { filename, mimeType }) {
-  if (ReactNativeBlobUtil.MediaCollection?.copyToMediaStore) {
-    await ReactNativeBlobUtil.MediaCollection.copyToMediaStore(
-      { name: filename, parentFolder: '', mimeType },
-      'Download',
-      path,
-    );
-    ToastAndroid.show(
-      i18n.t('download.saved', { filename }),
-      ToastAndroid.LONG,
+function scheduleCleanup(dir) {
+  setTimeout(() => {
+    ReactNativeBlobUtil.fs.unlink(dir).catch(() => {});
+  }, CLEANUP_DELAY);
+}
+
+// The web side only selects the "bridge" download strategy on iOS (see
+// discourse/discourse's attachmentDownloadStrategy). Android's WebView has
+// handled downloads via the system DownloadManager since react-native-webview
+// 2.15, so it should never send us a `type: "download"` message — this guard
+// is defense-in-depth in case a stale web build or app version mismatch
+// still fires one.
+export default async function handleDownload(message) {
+  if (Platform.OS !== 'ios') {
+    console.warn(
+      'handleDownload: ignoring download message on non-iOS platform',
     );
     return;
   }
 
-  throw new Error(i18n.t('download.unsupported'));
-}
-
-export default async function handleDownload(message) {
-  let path;
+  let dir;
 
   try {
     const download = validateDownloadMessage(message);
-    path = temporaryPath(download.filename);
+    dir = temporaryDirectory();
+    await ReactNativeBlobUtil.fs.mkdir(dir);
+    const path = `${dir}/${download.filename}`;
     await ReactNativeBlobUtil.fs.writeFile(path, download.data, 'base64');
 
-    if (Platform.OS === 'ios') {
-      await Share.share({
-        url: `file://${path}`,
-        title: download.filename,
-      });
-    } else {
-      await saveAndroidDownload(path, download);
-    }
+    await Share.share({
+      url: `file://${path}`,
+      title: download.filename,
+    });
   } catch (error) {
+    console.warn('handleDownload failed', error);
     Alert.alert(
       i18n.t('download.failed_title'),
-      error instanceof Error ? error.message : String(error),
+      i18n.t('download.failed_message'),
     );
   } finally {
-    if (path) {
-      await ReactNativeBlobUtil.fs.unlink(path).catch(() => {});
+    if (dir) {
+      scheduleCleanup(dir);
     }
   }
 }

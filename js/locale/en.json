@@ -1,8 +1,7 @@
 {
   "download": {
     "failed_title": "Download failed",
-    "saved": "Saved %{filename} to Downloads",
-    "unsupported": "Saving downloads is not supported on this device"
+    "failed_message": "Something went wrong while preparing this download. Please try again."
   },
   "add_site": "Add Site",
   "add_sites": "Get started and follow the Discourse communities you love!",
