@@ -40,6 +40,7 @@
     "react": "19.1.0",
     "react-native": "^0.80.2",
     "react-native-background-fetch": "^4.2.3",
+    "react-native-blob-util": "^0.24.10",
     "react-native-custom-tabs": "https://github.com/adminphoeniixx/react-native-custom-tabs",
     "react-native-device-info": "^13.1.0",
     "react-native-draggable-flatlist": "^4.0.3",
