@@ -7,7 +7,6 @@
   "approved_commits": {
     "one": "הגשה %{count} אושרה",
     "two": "%{count} הגשות אושרו",
-    "many": "%{count} הגשות אושרו",
     "other": "%{count} הגשות אושרו"
   },
   "approved": "התקבל אישור עבור „%{title}”",
@@ -17,13 +16,11 @@
   "inbox_message": {
     "one": "הודעה %{count} בתיבה שלך אצל %{group_name}",
     "two": "%{count} הודעות בתיבה שלך אצל %{group_name}",
-    "many": "%{count} הודעות בתיבה שלך אצל %{group_name}",
     "other": "%{count} הודעות בתיבה שלך אצל %{group_name}"
   },
   "generic_notification_title": {
     "one": "התראה חדשה",
     "two": "שתי התראות חדשות",
-    "many": "%{count} התראות חדשות",
     "other": "%{count} התראות חדשות"
   },
   "generic_notification_body": "אפשר להתעדכן מה חדש דרך %{url}",
@@ -35,7 +32,6 @@
   "liked_more": {
     "one": "%{user1}, %{user2} ועוד %{count}",
     "two": "%{user1}, %{user2} ועוד %{count}",
-    "many": "%{user1}, %{user2} ועוד %{count}",
     "other": "%{user1}, %{user2} ועוד %{count}"
   },
   "loading": "בטעינה…",
