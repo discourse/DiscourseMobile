@@ -37,6 +37,7 @@
     "invariant": "^2.2",
     "lodash": "^4.17.21",
     "prop-types": "^15.8.1",
+    "protobufjs": "7.5.5",
     "react": "19.1.0",
     "react-native": "^0.80.2",
     "react-native-background-fetch": "^4.2.3",
