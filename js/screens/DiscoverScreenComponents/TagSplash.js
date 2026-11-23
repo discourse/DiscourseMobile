@@ -4,12 +4,12 @@
 import React, { useContext } from 'react';
 import {
   ActivityIndicator,
-  Dimensions,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableHighlight,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { ThemeContext } from '../../ThemeContext';
@@ -28,10 +28,10 @@ export const PRIMARY_TAGS = [
   { tag: 'open-source', label: 'open-source' },
 ];
 
-const largeLayout = Dimensions.get('window').width > 600;
-
 const TagSplash = props => {
   const theme = useContext(ThemeContext);
+  const { width } = useWindowDimensions();
+  const largeLayout = width > 600;
 
   if (props.loading) {
     return (
@@ -67,7 +67,8 @@ const TagSplash = props => {
     >
       <Text
         style={{
-          ...(secondary ? styles.secondaryTagLabel : styles.tagLabel),
+          ...styles.tagLabel,
+          fontSize: secondary ? (largeLayout ? 20 : 14) : largeLayout ? 24 : 16,
           color: theme.tagButtonTextColor,
         }}
       >
@@ -79,7 +80,10 @@ const TagSplash = props => {
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: theme.background }}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={[
+        styles.container,
+        { paddingHorizontal: largeLayout ? 80 : 20 },
+      ]}
       keyboardShouldPersistTaps="handled"
     >
       <View style={styles.header}>
@@ -113,6 +117,8 @@ const TagSplash = props => {
         <View
           style={{
             ...styles.secondaryGrid,
+            paddingVertical: largeLayout ? 30 : 15,
+            marginVertical: largeLayout ? 30 : 15,
             borderColor: theme.grayUILight,
           }}
         >
@@ -131,6 +137,7 @@ const TagSplash = props => {
         accessibilityRole="button"
         style={{
           ...styles.directoryButton,
+          paddingHorizontal: largeLayout ? 50 : 30,
           backgroundColor: theme.blueCallToAction,
         }}
         underlayColor={theme.blueUnread}
@@ -154,7 +161,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: Platform.OS === 'android' ? 10 : 30,
     paddingBottom: 30,
-    paddingHorizontal: largeLayout ? 80 : 20,
   },
   loadingContainer: {
     flex: 1,
@@ -185,8 +191,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    paddingVertical: largeLayout ? 30 : 15,
-    marginVertical: largeLayout ? 30 : 15,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
@@ -205,11 +209,6 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   tagLabel: {
-    fontSize: largeLayout ? 24 : 16,
-    fontWeight: '500',
-  },
-  secondaryTagLabel: {
-    fontSize: largeLayout ? 20 : 14,
     fontWeight: '500',
   },
   directoryButton: {
@@ -218,7 +217,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginTop: 10,
     paddingVertical: 15,
-    paddingHorizontal: largeLayout ? 50 : 30,
     borderRadius: 10,
   },
   directoryButtonText: {

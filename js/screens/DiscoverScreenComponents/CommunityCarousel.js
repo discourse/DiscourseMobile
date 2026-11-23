@@ -1,13 +1,12 @@
 /* @flow */
 'use strict';
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
   Text,
   TouchableHighlight,
-  useWindowDimensions,
   View,
 } from 'react-native';
 import { ThemeContext } from '../../ThemeContext';
@@ -31,11 +30,12 @@ function buildColumns(items) {
 
 const CommunityCarousel = props => {
   const theme = useContext(ThemeContext);
-  const { width: windowWidth } = useWindowDimensions();
+  const [width, setWidth] = useState(0);
+  const onLayout = ({ nativeEvent }) => setWidth(nativeEvent.layout.width);
   const cardWidth = Math.max(
     96,
     Math.floor(
-      (windowWidth - HORIZONTAL_PADDING * 2 - COLUMN_GAP * VISIBLE_GAPS) /
+      (width - HORIZONTAL_PADDING * 2 - COLUMN_GAP * VISIBLE_GAPS) /
         VISIBLE_COLUMNS,
     ),
   );
@@ -45,6 +45,7 @@ const CommunityCarousel = props => {
     return (
       <ScrollView
         horizontal={true}
+        onLayout={onLayout}
         showsHorizontalScrollIndicator={false}
         style={styles.scrollView}
         contentContainerStyle={styles.contentContainer}
@@ -100,6 +101,7 @@ const CommunityCarousel = props => {
   return (
     <ScrollView
       horizontal={true}
+      onLayout={onLayout}
       decelerationRate="fast"
       snapToInterval={cardWidth + COLUMN_GAP}
       snapToAlignment="start"

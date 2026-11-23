@@ -3,10 +3,10 @@
 
 import { useContext, useRef } from 'react';
 import {
-  Dimensions,
   StyleSheet,
   Text,
   TouchableHighlight,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
@@ -22,7 +22,8 @@ const SWIPE_BUTTON_WIDTH = 70;
 export default function SiteRow(props) {
   const theme = useContext(ThemeContext);
 
-  const largeLayout = Dimensions.get('window').width > 600;
+  const { width } = useWindowDimensions();
+  const largeLayout = width > 600;
   const iconUrl = props.site.icon;
   const milliseconds = (h, m, s) => (h * 60 * 60 + m * 60 + s) * 1000;
   // only remember last visited for 1 day

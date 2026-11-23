@@ -16,10 +16,16 @@
 
 #import "DiscourseKeyboardShortcuts.h"
 
+@interface DiscourseSceneDelegate : UIResponder <UIWindowSceneDelegate>
+@property (nonatomic, strong) UIWindow *window;
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  // UIKit connects the window scene after application launch.
+  self.automaticallyLoadReactNativeWindow = NO;
   self.moduleName = @"Discourse";
   self.dependencyProvider = [RCTAppDependencyProvider new];
   // You can add your custom initial props in the dictionary below.
@@ -48,22 +54,6 @@
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
-}
-
-- (BOOL)application:(UIApplication *)application
-   openURL:(NSURL *)url
-   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-{
-  return [RCTLinkingManager application:application openURL:url options:options];
-}
-
-// Only if your app is using [Universal Links](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html).
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
- restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
-{
-  return [RCTLinkingManager application:application
-                   continueUserActivity:userActivity
-                     restorationHandler:restorationHandler];
 }
 
 - (void)videoExitFullScreen:(id)sender
@@ -183,6 +173,67 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
   [userData setObject:@(1) forKey:@"openedInForeground"];
   [RNCPushNotificationIOS didReceiveRemoteNotification:userData];
   completionHandler();
+}
+
+@end
+
+@implementation DiscourseSceneDelegate
+
+- (void)scene:(UIScene *)scene
+willConnectToSession:(UISceneSession *)session
+      options:(UISceneConnectionOptions *)options
+{
+  if (![scene isKindOfClass:[UIWindowScene class]]) {
+    return;
+  }
+
+  AppDelegate *appDelegate = (AppDelegate *)UIApplication.sharedApplication.delegate;
+  // Provide cold-start links and notification payloads to the existing RN
+  // getInitialURL/getInitialNotification APIs before the JS app starts.
+  NSMutableDictionary *launchOptions = [NSMutableDictionary dictionary];
+  UIOpenURLContext *urlContext = options.URLContexts.anyObject;
+  if (urlContext) {
+    launchOptions[UIApplicationLaunchOptionsURLKey] = urlContext.URL;
+  }
+  for (NSUserActivity *activity in options.userActivities) {
+    if ([activity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb] && activity.webpageURL) {
+      launchOptions[UIApplicationLaunchOptionsUserActivityDictionaryKey] = @{
+        UIApplicationLaunchOptionsUserActivityTypeKey: activity.activityType,
+        @"UIApplicationLaunchOptionsUserActivityKey": activity,
+      };
+      break;
+    }
+  }
+  UNNotification *notification = options.notificationResponse.notification;
+  if (notification) {
+    launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] = notification.request.content.userInfo;
+  }
+
+  UIView *rootView = [appDelegate.rootViewFactory viewWithModuleName:appDelegate.moduleName
+                                                 initialProperties:appDelegate.initialProps
+                                                     launchOptions:launchOptions];
+  UIViewController *rootViewController = [appDelegate createRootViewController];
+  [appDelegate setRootView:rootView toRootViewController:rootViewController];
+
+  self.window = [[UIWindow alloc] initWithWindowScene:(UIWindowScene *)scene];
+  self.window.rootViewController = rootViewController;
+  // Keep the single window accessible to React Native and existing modules.
+  appDelegate.window = self.window;
+  [self.window makeKeyAndVisible];
+}
+
+- (void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts
+{
+  for (UIOpenURLContext *context in URLContexts) {
+    [RCTLinkingManager application:UIApplication.sharedApplication openURL:context.URL options:@{}];
+  }
+}
+
+- (void)scene:(UIScene *)scene continueUserActivity:(NSUserActivity *)userActivity
+{
+  [RCTLinkingManager application:UIApplication.sharedApplication
+            continueUserActivity:userActivity
+              restorationHandler:^(__unused NSArray *restorableObjects) {}];
 }
 
 @end

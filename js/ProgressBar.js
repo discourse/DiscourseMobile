@@ -2,14 +2,13 @@
 'use strict';
 
 import React, { useContext } from 'react';
-import { Dimensions, View } from 'react-native';
+import { View } from 'react-native';
 import Bar from 'react-native-progress/Bar';
 import { ThemeContext } from './ThemeContext';
 
-const ProgressBar = ({ progress, topInset }) => {
+const ProgressBar = ({ progress, topInset, leftInset, rightInset }) => {
   const theme = useContext(ThemeContext);
   const height = progress === 0 ? 0 : 4;
-  const { width } = Dimensions.get('window');
 
   return (
     <View
@@ -17,7 +16,8 @@ const ProgressBar = ({ progress, topInset }) => {
         backgroundColor: 'transparent',
         position: 'absolute',
         top: topInset,
-        left: 0,
+        left: leftInset,
+        right: rightInset,
         height,
       }}
     >
@@ -27,7 +27,7 @@ const ProgressBar = ({ progress, topInset }) => {
         color={theme.blueCallToAction}
         height={height}
         progress={progress}
-        width={width}
+        width={null}
       />
     </View>
   );

@@ -33,6 +33,19 @@ target 'Discourse' do
       # :ccache_enabled => true
     )
 
+    # Xcode 27 rejects older deployment targets, including those on pod
+    # resource bundles. Keep every pod at or above the Podfile minimum.
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |build_config|
+        settings = build_config.build_settings
+        deployment_target = settings['IPHONEOS_DEPLOYMENT_TARGET']
+        if deployment_target && Gem::Version.correct?(deployment_target) &&
+            Gem::Version.new(deployment_target) < app_ios_deployment_target
+          settings['IPHONEOS_DEPLOYMENT_TARGET'] = app_ios_deployment_target.version
+        end
+      end
+    end
+
     # fmt 11.0.2 fails to compile with Xcode 26.4+ because its consteval
     # implementation is incompatible with the newer Apple Clang. React Native
     # 0.80 pins that fmt version, so compile only this pod as C++17 until React
