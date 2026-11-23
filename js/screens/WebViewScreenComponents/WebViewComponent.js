@@ -76,6 +76,7 @@ class WebViewComponent extends React.Component {
       errorData: null,
       userAgentSuffix: 'DiscourseHub',
       layoutCalculated: false,
+      layoutWidth: 0,
       isLandscape: false,
       webviewUrl: this.props.url,
       authProcessActive: false,
@@ -118,6 +119,9 @@ class WebViewComponent extends React.Component {
     // and mobile version on split view.
     // That's why we append the device ID (which includes "iPad" on large window sizes only)
     const { width, height } = event.nativeEvent.layout;
+    if (width <= 0 || height <= 0) {
+      return;
+    }
 
     this.setState({
       userAgentSuffix:
@@ -125,6 +129,7 @@ class WebViewComponent extends React.Component {
           ? `DiscourseHub ${this.props.screenProps.deviceId}`
           : 'DiscourseHub',
       layoutCalculated: true,
+      layoutWidth: width,
       isLandscape: width > height,
     });
   }
@@ -162,6 +167,8 @@ class WebViewComponent extends React.Component {
 
   render() {
     const theme = this.context;
+    const { left, right, top } = this.props.insets;
+    const contentWidth = this.state.layoutWidth - left - right;
 
     return (
       <View
@@ -169,6 +176,8 @@ class WebViewComponent extends React.Component {
         style={{
           flex: 1,
           paddingTop: this.viewTopPadding,
+          paddingLeft: left,
+          paddingRight: right,
           backgroundColor: this.state.headerBg || theme.grayBackground,
         }}
       >
@@ -201,7 +210,7 @@ class WebViewComponent extends React.Component {
             mediaCapturePermissionGrantType={'grantIfSameHostElsePrompt'}
             allowsFullscreenVideo={true}
             allowsLinkPreview={true}
-            hideKeyboardAccessoryView={!Platform.isPad}
+            hideKeyboardAccessoryView={contentWidth <= 600}
             webviewDebuggingEnabled={true}
             injectedJavaScriptBeforeContentLoaded={
               Platform.OS === 'ios'
@@ -347,12 +356,14 @@ class WebViewComponent extends React.Component {
         )}
         <ProgressBar
           progress={this.state.progress}
-          topInset={this.props.insets.top}
+          topInset={top}
+          leftInset={left}
+          rightInset={right}
         />
         <View
           style={{
             ...styles.nudge,
-            marginTop: Math.max(this.props.insets.top, this.props.insets.top),
+            marginTop: top,
             height: 30,
             zIndex: 2,
           }}

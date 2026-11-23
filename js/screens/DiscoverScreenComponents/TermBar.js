@@ -4,12 +4,12 @@
 import React, { useContext } from 'react';
 
 import {
-  Dimensions,
   Linking,
   StyleSheet,
   Text,
   TextInput,
   TouchableHighlight,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import i18n from 'i18n-js';
@@ -21,7 +21,8 @@ const TermBar = props => {
   const theme = useContext(ThemeContext);
   const discoverHelpUrl = `${Site.discoverUrl()}/?faq`;
 
-  const largeLayout = Dimensions.get('window').width > 600;
+  const { width } = useWindowDimensions();
+  const largeLayout = width > 600;
 
   const infoIcon = props.addSiteScreenParent ? null : (
     <TouchableHighlight
